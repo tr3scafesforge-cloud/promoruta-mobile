@@ -25,6 +25,10 @@ class StartPage extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
+          Image.asset(
+            'assets/images/promo_ruta_logo.png',
+            height: 100,
+          ),
           Text(
             'Conecta anunciantes con promotores para campañas efectivas.',
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(

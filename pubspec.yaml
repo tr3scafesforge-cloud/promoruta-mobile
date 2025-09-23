@@ -61,7 +61,7 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - assets/images/
+    - assets/images/splash_img.png
     - assets/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -91,5 +91,11 @@ flutter:
   # see https://flutter.dev/to/font-from-package
 # Flutter Gen configuration
 flutter_gen:
-  output: lib/gen/
-  line_length: 80
+  output: lib/gen/ # Optional (default: lib/gen/)
+
+  integrations:
+    flutter_svg: true
+    rive: true
+    lottie: true
+  assets:
+    enabled: true
