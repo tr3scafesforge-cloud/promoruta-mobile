@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/gen/assets.gen.dart';
+import 'package:promoruta/l10n/app_localizations.dart';
 
 class StartPage extends StatelessWidget {
   const StartPage({super.key});
@@ -11,7 +12,7 @@ class StartPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-         
+
           const SizedBox(height: 32),
           Image.asset(
             Assets.images.splashImg.path,
@@ -20,7 +21,7 @@ class StartPage extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'Bienvenido a PromoRuta',
+            AppLocalizations.of(context)!.welcomeMessage,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
@@ -29,7 +30,7 @@ class StartPage extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'Conecta anunciantes con promotores para campañas efectivas.',
+            AppLocalizations.of(context)!.description,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   color: Colors.grey[700],
                 ),
