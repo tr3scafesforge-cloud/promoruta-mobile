@@ -19,8 +19,8 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
 
   final List<Widget> _pages = const [
     StartPage(),
-    ChooseRole(),
     Permissions(),
+    ChooseRole(),
     Login(),
   ];
 
