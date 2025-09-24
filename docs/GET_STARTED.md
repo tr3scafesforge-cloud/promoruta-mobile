@@ -25,7 +25,12 @@ Before you begin, ensure you have the following installed:
    flutter pub get
    ```
 
-3. **Generate code assets** (if using flutter_gen):
+3. **Generate localization files**:
+   ```bash
+   flutter gen-l10n
+   ```
+
+4. **Generate code assets** (if using flutter_gen):
    ```bash
    flutter pub run build_runner build
    ```
@@ -59,10 +64,17 @@ Before you begin, ensure you have the following installed:
 ## Development Workflow
 
 ### Code Generation
-The project uses `flutter_gen` for asset generation. After adding new assets, run:
-```bash
-flutter pub run build_runner build
-```
+The project uses `flutter_gen` for asset generation and Flutter's built-in localization tools.
+
+- **Asset generation**: After adding new assets, run:
+  ```bash
+  flutter pub run build_runner build
+  ```
+
+- **Localization generation**: After modifying ARB files in `lib/l10n/`, run:
+  ```bash
+  flutter gen-l10n
+  ```
 
 ### Testing
 Run tests:
