@@ -13,4 +13,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get description => 'Connect advertisers with promoters for effective campaigns.';
+
+  @override
+  String get start => 'Start';
+
+  @override
+  String get next => 'Next';
 }

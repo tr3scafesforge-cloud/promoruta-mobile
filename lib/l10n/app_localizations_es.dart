@@ -13,4 +13,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get description => 'Conecta anunciantes con promotores para campañas efectivas.';
+
+  @override
+  String get start => 'Empezar';
+
+  @override
+  String get next => 'Siguiente';
 }

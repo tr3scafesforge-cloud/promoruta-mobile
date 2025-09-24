@@ -97,17 +97,29 @@ abstract class AppLocalizations {
     Locale('pt')
   ];
 
-  /// No description provided for @welcomeMessage.
+  /// Welcome message displayed to users
   ///
   /// In en, this message translates to:
   /// **'Welcome to PromoRuta'**
   String get welcomeMessage;
 
-  /// No description provided for @description.
+  /// Description of the application
   ///
   /// In en, this message translates to:
   /// **'Connect advertisers with promoters for effective campaigns.'**
   String get description;
+
+  /// Label for the button to start the onboarding or process
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get start;
+
+  /// Label for the button to go to the next step
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
