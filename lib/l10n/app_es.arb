@@ -1,4 +1,11 @@
 {
+  "@@locale": "es",
   "welcomeMessage": "Bienvenido a PromoRuta",
-  "description": "Conecta anunciantes con promotores para campañas efectivas."
+  "@welcomeMessage": {
+    "description": "Welcome message displayed to users"
+  },  
+  "description": "Conecta anunciantes con promotores para campañas efectivas.",
+  "@description": {
+    "description": "Description of the application"
+  }
 }
