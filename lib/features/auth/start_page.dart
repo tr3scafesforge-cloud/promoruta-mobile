@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:promoruta/gen/assets.gen.dart';
 
 class StartPage extends StatelessWidget {
   const StartPage({super.key});
@@ -10,12 +11,14 @@ class StartPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(
-            Icons.location_on,
-            size: 100,
-            color: Colors.teal,
-          ),
+         
           const SizedBox(height: 32),
+          Image.asset(
+            Assets.images.splashImg.path,
+            height: 250,
+            opacity: const AlwaysStoppedAnimation(0.9),
+          ),
+          const SizedBox(height: 16),
           Text(
             'Bienvenido a PromoRuta',
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
@@ -25,10 +28,6 @@ class StartPage extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
-          Image.asset(
-            'assets/images/promo_ruta_logo.png',
-            height: 100,
-          ),
           Text(
             'Conecta anunciantes con promotores para campañas efectivas.',
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
