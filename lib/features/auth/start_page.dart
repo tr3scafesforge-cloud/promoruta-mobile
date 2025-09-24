@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:promoruta/core/utils/image_utils.dart';
 import 'package:promoruta/gen/assets.gen.dart';
 import 'package:promoruta/l10n/app_localizations.dart';
 
@@ -14,8 +15,8 @@ class StartPage extends StatelessWidget {
         children: [
 
           const SizedBox(height: 32),
-          Image.asset(
-            Assets.images.splashImg.path,
+          Image(
+            image: capImageSize(context, AssetImage(Assets.images.splashImg.path))!,
             height: 250,
             opacity: const AlwaysStoppedAnimation(0.9),
           ),
