@@ -3,7 +3,7 @@
   "welcomeMessage": "Bienvenido a PromoRuta",
   "@welcomeMessage": {
     "description": "Welcome message displayed to users"
-  },  
+  },
   "description": "Conecta anunciantes con promotores para campañas efectivas.",
   "@description": {
     "description": "Description of the application"
