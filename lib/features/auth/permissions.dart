@@ -17,7 +17,7 @@ class Permissions extends ConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 40),
               
@@ -39,6 +39,7 @@ class Permissions extends ConsumerWidget {
                       color: Colors.grey[600],
                       fontSize: 16,
                     ),
+                textAlign: TextAlign.center,
               ),
               const SizedBox(height: 40),
               
@@ -154,19 +155,19 @@ class Permissions extends ConsumerWidget {
                       ),
                     
                     // Skip Button
-                    const SizedBox(height: 12),
-                    TextButton(
-                      onPressed: () {
-                        context.go('/home'); // Allow user to skip
-                      },
-                      child: Text(
-                        'Saltar por ahora',
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
+                    const SizedBox(height: 40),
+                    // TextButton(
+                    //   onPressed: () {
+                    //     context.go('/home'); // Allow user to skip
+                    //   },
+                    //   child: Text(
+                    //     'Saltar por ahora',
+                    //     style: TextStyle(
+                    //       color: Colors.grey[600],
+                    //       fontSize: 16,
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
