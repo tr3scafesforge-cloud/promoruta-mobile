@@ -1,8 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:promoruta/core/constants/colors.dart';
 
-class Permissions extends StatelessWidget {
+class Permissions extends StatefulWidget {
   const Permissions({super.key});
+
+  @override
+  State<Permissions> createState() => _PermissionsState();
+}
+
+class _PermissionsState extends State<Permissions> {
+  bool _locationGranted = false;
+  bool _notificationGranted = false;
+  bool _microphoneGranted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkPermissions();
+  }
+
+  Future<void> _checkPermissions() async {
+    final locationStatus = await Permission.location.status;
+    final notificationStatus = await Permission.notification.status;
+    final microphoneStatus = await Permission.microphone.status;
+
+    setState(() {
+      _locationGranted = locationStatus.isGranted;
+      _notificationGranted = notificationStatus.isGranted;
+      _microphoneGranted = microphoneStatus.isGranted;
+    });
+  }
+
+  Future<void> _requestLocation() async {
+    final status = await Permission.location.request();
+    setState(() {
+      _locationGranted = status.isGranted;
+    });
+  }
+
+  Future<void> _requestNotification() async {
+    final status = await Permission.notification.request();
+    setState(() {
+      _notificationGranted = status.isGranted;
+    });
+  }
+
+  Future<void> _requestMicrophone() async {
+    final status = await Permission.microphone.request();
+    setState(() {
+      _microphoneGranted = status.isGranted;
+    });
+  }
+
+  bool get _allPermissionsGranted =>
+      _locationGranted && _notificationGranted && _microphoneGranted;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +93,8 @@ class Permissions extends StatelessWidget {
             title: 'Acceso a tu ubicación',
             subtitle:
                 'Indispensable para seguir la ruta y ver campañas cerca tuyo',
+            isGranted: _locationGranted,
+            onPressed: _requestLocation,
           ),
           const SizedBox(height: 20),
 
@@ -52,6 +106,8 @@ class Permissions extends StatelessWidget {
             title: 'Notificaciones',
             subtitle:
                 'Seguí el estado de las campañas y no te pierdas lo que vaya surgiendo',
+            isGranted: _notificationGranted,
+            onPressed: _requestNotification,
           ),
           const SizedBox(height: 20),
 
@@ -63,19 +119,49 @@ class Permissions extends StatelessWidget {
             title: 'Permitir micrófono',
             subtitle:
                 'Grabar campañas de audio y reproducir contenido promocional',
+            isGranted: _microphoneGranted,
+            onPressed: _requestMicrophone,
+            isDisabled: !_microphoneGranted, // Keep disabled until granted
+          ),
+          const SizedBox(height: 40),
+
+          // Continue Button
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: _allPermissionsGranted ? () {
+                // Navigate to next screen or something
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('All permissions granted!')),
+                );
+              } : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text(
+                'Continuar',
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+            ),
           ),
         ],
       ),
     );
   }
 }
-
 class _PermissionCard extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
   final Color backgroundColor;
   final String title;
   final String subtitle;
+  final bool isGranted;
+  final VoidCallback onPressed;
+  final bool? isDisabled;
 
   const _PermissionCard({
     required this.icon,
@@ -83,6 +169,9 @@ class _PermissionCard extends StatelessWidget {
     required this.backgroundColor,
     required this.title,
     required this.subtitle,
+    required this.isGranted,
+    required this.onPressed,
+    this.isDisabled,
   });
 
   @override
@@ -128,6 +217,16 @@ class _PermissionCard extends StatelessWidget {
                               fontSize: 16,
                             ),
                       ),
+                    ),
+                    ElevatedButton(
+                      onPressed: (isDisabled ?? false) ? null : onPressed,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: isGranted ? Colors.green : AppColors.primary,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        textStyle: const TextStyle(fontSize: 14),
+                      ),
+                      child: Text(isGranted ? 'Concedido' : 'Permitir'),
                     ),
                   ],
                 ),
