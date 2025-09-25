@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:promoruta/l10n/app_localizations.dart';
+import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'choose_role.dart';
@@ -100,8 +100,8 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
               ),
               child: Text(
                 _currentPage == _pages.length - 1
-                    ? AppLocalizations.of(context)!.start
-                    : AppLocalizations.of(context)!.next,
+                    ? AppLocalizations.of(context).start
+                    : AppLocalizations.of(context).next,
                 style: const TextStyle(color: Colors.white, fontSize: 16),
               ),
             ),

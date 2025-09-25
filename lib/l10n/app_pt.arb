@@ -15,5 +15,9 @@
     "next": "Próximo",
     "@next": {
         "description": "Label for the button to go to the next step"
+    },
+    "login": "Entrar",
+    "@login": {
+        "description": "Label for the login button"
     }
 }

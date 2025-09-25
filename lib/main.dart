@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'features/auth/onboarding_page_view.dart';
+
+import 'package:promoruta/gen/l10n/app_localizations.dart';
+
 import 'presentation/home_screen.dart';
-import 'l10n/app_localizations.dart';
+import 'features/auth/onboarding_page_view.dart';
 
 void main() {
   runApp(const PromorutaApp());
