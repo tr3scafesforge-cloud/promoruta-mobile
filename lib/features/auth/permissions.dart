@@ -70,7 +70,6 @@ class _PermissionCard extends StatelessWidget {
   final Color backgroundColor;
   final String title;
   final String subtitle;
-  final bool hasWarning;
 
   const _PermissionCard({
     required this.icon,
@@ -78,7 +77,6 @@ class _PermissionCard extends StatelessWidget {
     required this.backgroundColor,
     required this.title,
     required this.subtitle,
-    this.hasWarning = false,
   });
 
   @override
@@ -88,9 +86,7 @@ class _PermissionCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.grey[50],
         borderRadius: BorderRadius.circular(12),
-        border: hasWarning 
-          ? Border.all(color: const Color(0xFF2196F3), width: 2)
-          : null,
+        border: Border.all(color: const Color(0xFFE1E7EF), width: 1),
       ),
       child: Row(
         children: [
@@ -127,20 +123,6 @@ class _PermissionCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    if (hasWarning)
-                      Container(
-                        width: 20,
-                        height: 20,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFFFFA726),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.warning,
-                          color: Colors.white,
-                          size: 12,
-                        ),
-                      ),
                   ],
                 ),
                 const SizedBox(height: 4),
