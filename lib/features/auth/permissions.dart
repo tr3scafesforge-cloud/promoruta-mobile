@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:promoruta/core/constants/colors.dart';
 
 class Permissions extends StatelessWidget {
   const Permissions({super.key});
@@ -9,54 +10,59 @@ class Permissions extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             'Permisos y accesos',
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+            style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
-                  fontSize: 32,
+                  fontSize: 36,
                 ),
           ),
           const SizedBox(height: 16),
-          
+
           Text(
             'Actívá estos permisos para una mejor experiencia',
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Colors.grey[600],
-                  fontSize: 16,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: AppColors.textPrimary,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w100,
                 ),
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 40),
-          
+
           // Location Permission Card
           _PermissionCard(
             icon: Icons.location_on,
             iconColor: const Color(0xFF2196F3),
             backgroundColor: const Color(0xFFE3F2FD),
             title: 'Acceso a tu ubicación',
-            subtitle: 'Indispensable para seguir la ruta y ver campañas cerca tuyo',
+            subtitle:
+                'Indispensable para seguir la ruta y ver campañas cerca tuyo',
           ),
           const SizedBox(height: 20),
-          
+
           // Notifications Permission Card
           _PermissionCard(
             icon: Icons.notifications,
             iconColor: const Color(0xFFFF9800),
             backgroundColor: const Color(0xFFFFF3E0),
             title: 'Notificaciones',
-            subtitle: 'Seguí el estado de las campañas y no te pierdas lo que vaya surgiendo',
+            subtitle:
+                'Seguí el estado de las campañas y no te pierdas lo que vaya surgiendo',
           ),
           const SizedBox(height: 20),
-          
+
           // Microphone Permission Card
           _PermissionCard(
             icon: Icons.mic,
             iconColor: const Color(0xFF4CAF50),
             backgroundColor: const Color(0xFFE8F5E8),
             title: 'Permitir micrófono',
-            subtitle: 'Grabar campañas de audio y reproducir contenido promocional',
+            subtitle:
+                'Grabar campañas de audio y reproducir contenido promocional',
           ),
         ],
       ),
@@ -105,7 +111,7 @@ class _PermissionCard extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 16),
-          
+
           // Text content
           Expanded(
             child: Column(
@@ -116,11 +122,11 @@ class _PermissionCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         title,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                        ),
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
                       ),
                     ),
                   ],
