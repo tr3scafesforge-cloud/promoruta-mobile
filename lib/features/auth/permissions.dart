@@ -153,6 +153,7 @@ class _PermissionsState extends State<Permissions> {
     );
   }
 }
+
 class _PermissionCard extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
