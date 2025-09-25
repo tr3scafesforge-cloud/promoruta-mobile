@@ -27,7 +27,7 @@ class Permissions extends ConsumerWidget {
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
-                      fontSize: 32,
+                      fontSize: 36,
                     ),
               ),
               const SizedBox(height: 16),
@@ -37,7 +37,7 @@ class Permissions extends ConsumerWidget {
                 'Actívá estos permisos para una mejor experiencia',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: Colors.grey[600],
-                      fontSize: 16,
+                      fontSize: 24,
                     ),
                 textAlign: TextAlign.center,
               ),
