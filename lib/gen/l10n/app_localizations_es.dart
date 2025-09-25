@@ -1,3 +1,5 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -10,7 +12,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get welcomeMessage => 'Bienvenido a PromoRuta';
 
   @override
-  String get description => 'Conecta anunciantes con promotores para campañas efectivas.';
+  String get description =>
+      'Conecta anunciantes con promotores para campañas efectivas.';
 
   @override
   String get start => 'Empezar';

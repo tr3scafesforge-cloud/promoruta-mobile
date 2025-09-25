@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -46,10 +47,9 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboardingDone', true);
     // Navigate to login or home
-    // For now, just pop or navigate to home
+    // For now, just navigate to home
     if (mounted) {
-      Navigator.of(context)
-          .pushReplacementNamed('/home'); // Assuming home route
+      context.go('/home');
     }
   }
 
