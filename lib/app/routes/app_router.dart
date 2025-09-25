@@ -8,39 +8,96 @@ import 'package:promoruta/features/auth/permissions.dart';
 import 'package:promoruta/features/auth/start_page.dart';
 import 'package:promoruta/presentation/home_screen.dart';
 
+part 'app_router.g.dart';
+
+@TypedGoRoute<AppStartupRoute>(
+  path: '/',
+)
+class AppStartupRoute extends GoRouteData with _$AppStartupRoute {
+  const AppStartupRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const AppStartup();
+  }
+}
+
+@TypedGoRoute<OnboardingRoute>(
+  path: '/onboarding',
+)
+class OnboardingRoute extends GoRouteData with _$OnboardingRoute {
+  const OnboardingRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const OnboardingPageView();
+  }
+}
+
+@TypedGoRoute<HomeRoute>(
+  path: '/home',
+)
+class HomeRoute extends GoRouteData with _$HomeRoute {
+  const HomeRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const HomeScreen();
+  }
+}
+
+@TypedGoRoute<LoginRoute>(
+  path: '/login',
+)
+class LoginRoute extends GoRouteData with _$LoginRoute {
+  const LoginRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const Login();
+  }
+}
+
+@TypedGoRoute<ChooseRoleRoute>(
+  path: '/choose-role',
+)
+class ChooseRoleRoute extends GoRouteData with _$ChooseRoleRoute {
+  const ChooseRoleRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ChooseRole();
+  }
+}
+
+@TypedGoRoute<PermissionsRoute>(
+  path: '/permissions',
+)
+class PermissionsRoute extends GoRouteData with _$PermissionsRoute {
+  const PermissionsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const Permissions();
+  }
+}
+
+@TypedGoRoute<StartPageRoute>(
+  path: '/start',
+)
+class StartPageRoute extends GoRouteData with _$StartPageRoute {
+  const StartPageRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const StartPage();
+  }
+}
+
 class AppRouter {
   static final GoRouter router = GoRouter(
     initialLocation: '/',
-    routes: [
-      GoRoute(
-        path: '/',
-        builder: (context, state) => const AppStartup(),
-      ),
-      GoRoute(
-        path: '/onboarding',
-        builder: (context, state) => const OnboardingPageView(),
-      ),
-      GoRoute(
-        path: '/home',
-        builder: (context, state) => const HomeScreen(),
-      ),
-      GoRoute(
-        path: '/login',
-        builder: (context, state) => const Login(),
-      ),
-      GoRoute(
-        path: '/choose-role',
-        builder: (context, state) => const ChooseRole(),
-      ),
-      GoRoute(
-        path: '/permissions',
-        builder: (context, state) => const Permissions(),
-      ),
-      GoRoute(
-        path: '/start',
-        builder: (context, state) => const StartPage(),
-      ),
-    ],
+    routes: $appRoutes, // This will be generated
   );
 }
 
@@ -65,12 +122,12 @@ class _AppStartupState extends State<AppStartup> {
 
     if (mounted) {
       if (!onboardingDone) {
-        context.go('/onboarding');
+        const OnboardingRoute().go(context);
       } else if (isLoggedIn) {
-        context.go('/home');
+        const HomeRoute().go(context);
       } else {
         // For now, go to home, but in real app, go to login
-        context.go('/home');
+        const HomeRoute().go(context);
       }
     }
   }
