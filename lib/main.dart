@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'app/routes/app_router.dart';
+import 'core/constants/colors.dart';
 
 void main() {
   runApp(const PromorutaApp());
@@ -60,8 +62,9 @@ class _PromorutaAppState extends State<PromorutaApp> {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
+        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
         useMaterial3: true,
+        fontFamily: GoogleFonts.robotoFlex().fontFamily,
       ),
       routerConfig: AppRouter.router,
     );
