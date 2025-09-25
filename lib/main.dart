@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,7 +8,12 @@ import 'app/routes/app_router.dart';
 import 'core/constants/colors.dart';
 
 void main() {
-  runApp(const PromorutaApp());
+  runApp(
+    // Wrap your app with ProviderScope
+    const ProviderScope(
+      child: PromorutaApp(),
+    ),
+  );
 }
 
 class PromorutaApp extends StatefulWidget {

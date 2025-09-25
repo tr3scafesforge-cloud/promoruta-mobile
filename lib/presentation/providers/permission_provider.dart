@@ -1,7 +1,5 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-part 'permission_provider.g.dart';
 
 // Permission state model
 class PermissionState {
@@ -40,13 +38,9 @@ class PermissionState {
 }
 
 // Permission notifier
-@riverpod
-class PermissionNotifier extends _$PermissionNotifier {
-  @override
-  PermissionState build() {
-    // Initialize and check current permissions
+class PermissionNotifier extends StateNotifier<PermissionState> {
+  PermissionNotifier() : super(const PermissionState()) {
     _checkCurrentPermissions();
-    return const PermissionState();
   }
 
   // Check current permission status
@@ -140,3 +134,8 @@ class PermissionNotifier extends _$PermissionNotifier {
     await _checkCurrentPermissions();
   }
 }
+
+// Provider
+final permissionNotifierProvider = StateNotifierProvider<PermissionNotifier, PermissionState>(
+  (ref) => PermissionNotifier(),
+);
