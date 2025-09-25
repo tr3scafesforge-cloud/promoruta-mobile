@@ -37,7 +37,6 @@ class Permissions extends StatelessWidget {
             backgroundColor: const Color(0xFFE3F2FD),
             title: 'Acceso a tu ubicación',
             subtitle: 'Indispensable para seguir la ruta y ver campañas cerca tuyo',
-            hasWarning: true,
           ),
           const SizedBox(height: 20),
           
