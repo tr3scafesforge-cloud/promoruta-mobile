@@ -53,7 +53,6 @@ class Permissions extends ConsumerWidget {
                       backgroundColor: const Color(0xFFE3F2FD),
                       title: 'Acceso a tu ubicación',
                       subtitle: 'Indispensable para seguir la ruta y ver campañas cerca tuyo',
-                      hasWarning: true,
                       isGranted: permissionState.locationGranted,
                       onTap: () => permissionNotifier.requestLocationPermission(),
                     ),
@@ -185,7 +184,6 @@ class _PermissionCard extends StatelessWidget {
   final Color backgroundColor;
   final String title;
   final String subtitle;
-  final bool hasWarning;
   final bool isGranted;
   final VoidCallback onTap;
 
@@ -197,7 +195,6 @@ class _PermissionCard extends StatelessWidget {
     required this.subtitle,
     required this.isGranted,
     required this.onTap,
-    this.hasWarning = false,
   });
 
   @override
@@ -210,8 +207,8 @@ class _PermissionCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: isGranted ? Colors.green[50] : Colors.grey[50],
           borderRadius: BorderRadius.circular(12),
-          border: hasWarning && !isGranted
-            ? Border.all(color: const Color(0xFF2196F3), width: 2)
+          border: !isGranted
+            ? Border.all(color: const Color(0xFFE1E7EF), width: 2)
             : isGranted 
               ? Border.all(color: Colors.green, width: 2)
               : null,
@@ -251,7 +248,7 @@ class _PermissionCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      if (hasWarning && !isGranted)
+                      if (!isGranted)
                         Container(
                           width: 20,
                           height: 20,
