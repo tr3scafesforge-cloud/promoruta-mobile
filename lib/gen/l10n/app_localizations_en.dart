@@ -83,4 +83,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get optional => 'Optional';
+
+  @override
+  String get chooseRoleTitle => 'Advertiser or promoter?\nChoose your role';
+
+  @override
+  String get chooseRoleSubtitle => 'How do you prefer to use PromoRuta?';
+
+  @override
+  String get advertiserTitle => 'I\'m an advertiser';
+
+  @override
+  String get advertiserDescription => 'Create audio campaigns, choose routes and receive reports on how your message was broadcast';
+
+  @override
+  String get promoterTitle => 'I\'m a promoter';
+
+  @override
+  String get promoterDescription => 'Look for nearby opportunities, accept campaigns and earn income with sound advertising';
 }

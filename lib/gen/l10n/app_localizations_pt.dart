@@ -83,4 +83,22 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get optional => 'Opcional';
+
+  @override
+  String get chooseRoleTitle => 'Anunciante ou promotor?\nEscolha seu papel';
+
+  @override
+  String get chooseRoleSubtitle => 'Como você prefere usar o PromoRuta?';
+
+  @override
+  String get advertiserTitle => 'Sou anunciante';
+
+  @override
+  String get advertiserDescription => 'Crie campanhas de áudio, escolha rotas e receba relatórios sobre como sua mensagem foi transmitida';
+
+  @override
+  String get promoterTitle => 'Sou promotor';
+
+  @override
+  String get promoterDescription => 'Procure oportunidades próximas, aceite campanhas e ganhe renda com publicidade sonora';
 }

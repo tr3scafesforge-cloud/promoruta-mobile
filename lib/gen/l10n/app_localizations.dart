@@ -252,6 +252,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Optional'**
   String get optional;
+
+  /// Main title for the choose role screen
+  ///
+  /// In en, this message translates to:
+  /// **'Advertiser or promoter?\nChoose your role'**
+  String get chooseRoleTitle;
+
+  /// Subtitle for the choose role screen
+  ///
+  /// In en, this message translates to:
+  /// **'How do you prefer to use PromoRuta?'**
+  String get chooseRoleSubtitle;
+
+  /// Title for the advertiser role option
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m an advertiser'**
+  String get advertiserTitle;
+
+  /// Description for the advertiser role
+  ///
+  /// In en, this message translates to:
+  /// **'Create audio campaigns, choose routes and receive reports on how your message was broadcast'**
+  String get advertiserDescription;
+
+  /// Title for the promoter role option
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m a promoter'**
+  String get promoterTitle;
+
+  /// Description for the promoter role
+  ///
+  /// In en, this message translates to:
+  /// **'Look for nearby opportunities, accept campaigns and earn income with sound advertising'**
+  String get promoterDescription;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

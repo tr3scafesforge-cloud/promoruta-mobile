@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/core/utils/image_utils.dart';
 import 'package:promoruta/gen/assets.gen.dart';
+import 'package:promoruta/gen/l10n/app_localizations.dart';
 
 class ChooseRole extends StatelessWidget {
   const ChooseRole({super.key});
@@ -16,7 +17,7 @@ class ChooseRole extends StatelessWidget {
             children: [
               const SizedBox(height: 20),
               Text(
-                '¿Anunciante o promotor?\nElegí tu rol',
+                AppLocalizations.of(context).chooseRoleTitle,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -25,7 +26,7 @@ class ChooseRole extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                '¿Cómo preferís usar Promoruta?',
+                AppLocalizations.of(context).chooseRoleSubtitle,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: Colors.grey[700],
                     ),
@@ -68,7 +69,7 @@ class ChooseRole extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Soy anunciante',
+                              AppLocalizations.of(context).advertiserTitle,
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium
@@ -79,7 +80,7 @@ class ChooseRole extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              'Crea campañas de audio, elegí los recorridos y recibí reportes de cómo se difundió tu mensaje',
+                              AppLocalizations.of(context).advertiserDescription,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
@@ -131,7 +132,7 @@ class ChooseRole extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Soy promotor',
+                              AppLocalizations.of(context).promoterTitle,
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium
@@ -142,7 +143,7 @@ class ChooseRole extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              'Mirá oportunidades cerca, aceptá campañas y sumá ingresos con publicidad sonora',
+                              AppLocalizations.of(context).promoterDescription,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium

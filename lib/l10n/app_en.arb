@@ -103,5 +103,29 @@
   "optional": "Optional",
   "@optional": {
     "description": "Status text when permission is optional"
+  },
+  "chooseRoleTitle": "Advertiser or promoter?\nChoose your role",
+  "@chooseRoleTitle": {
+    "description": "Main title for the choose role screen"
+  },
+  "chooseRoleSubtitle": "How do you prefer to use PromoRuta?",
+  "@chooseRoleSubtitle": {
+    "description": "Subtitle for the choose role screen"
+  },
+  "advertiserTitle": "I'm an advertiser",
+  "@advertiserTitle": {
+    "description": "Title for the advertiser role option"
+  },
+  "advertiserDescription": "Create audio campaigns, choose routes and receive reports on how your message was broadcast",
+  "@advertiserDescription": {
+    "description": "Description for the advertiser role"
+  },
+  "promoterTitle": "I'm a promoter",
+  "@promoterTitle": {
+    "description": "Title for the promoter role option"
+  },
+  "promoterDescription": "Look for nearby opportunities, accept campaigns and earn income with sound advertising",
+  "@promoterDescription": {
+    "description": "Description for the promoter role"
   }
 }
