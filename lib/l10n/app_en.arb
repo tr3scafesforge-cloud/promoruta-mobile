@@ -19,5 +19,9 @@
   "login": "Login",
   "@login": {
     "description": "Label for the login button"
+  },
+  "permissionsAccess": "Permissions and Access",
+  "@permissionsAccess": {
+    "description": "Title for the permissions and access screen"
   }
 }

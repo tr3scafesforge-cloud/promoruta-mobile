@@ -1,4 +1,3 @@
-// lib/features/auth/permissions.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -20,10 +19,8 @@ class Permissions extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 40),
-              
-              // Title
               Text(
-                'Permisos y accesos',
+                AppLocalizations.of(context)!.permissionsAccess,
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -32,7 +29,6 @@ class Permissions extends ConsumerWidget {
               ),
               const SizedBox(height: 16),
               
-              // Subtitle
               Text(
                 'Actívá estos permisos para una mejor experiencia',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(

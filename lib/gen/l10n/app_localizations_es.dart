@@ -20,4 +20,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get login => 'Iniciar sesión';
+
+  @override
+  String get permissionsAccess => 'Permisos y accesos';
 }

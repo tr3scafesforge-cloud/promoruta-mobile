@@ -20,4 +20,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get login => 'Login';
+
+  @override
+  String get permissionsAccess => 'Permissions and Access';
 }

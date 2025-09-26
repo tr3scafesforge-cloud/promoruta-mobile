@@ -126,6 +126,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Login'**
   String get login;
+
+  /// Title for the permissions and access screen
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions and Access'**
+  String get permissionsAccess;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -20,4 +20,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get login => 'Entrar';
+
+  @override
+  String get permissionsAccess => 'Permissões e Acessos';
 }
