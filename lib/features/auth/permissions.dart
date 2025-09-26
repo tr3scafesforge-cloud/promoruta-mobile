@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/presentation/providers/permission_provider.dart';
 
@@ -187,12 +188,12 @@ class _PermissionCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isGranted ? Colors.green[50] : Colors.grey[50],
+          color: isGranted ? Colors.green[50] : AppColors.background,
           borderRadius: BorderRadius.circular(12),
           border: !isGranted
-              ? Border.all(color: const Color(0xFFE1E7EF), width: 2)
+              ? Border.all(color: AppColors.grayStroke, width: 1)
               : isGranted
-                  ? Border.all(color: Colors.green, width: 2)
+                  ? Border.all(color: Colors.green, width: 1)
                   : null,
         ),
         child: Row(

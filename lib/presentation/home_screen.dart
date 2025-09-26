@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:promoruta/core/constants/colors.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -8,7 +9,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('PromoRuta'),
-        backgroundColor: Colors.teal,
+        backgroundColor: AppColors.primary,
       ),
       body: const Center(
         child: Text('Welcome to PromoRuta Home'),
