@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/presentation/providers/permission_provider.dart';
 
 class Permissions extends ConsumerWidget {
@@ -20,7 +21,7 @@ class Permissions extends ConsumerWidget {
             children: [
               const SizedBox(height: 40),
               Text(
-                AppLocalizations.of(context)!.permissionsAccess,
+                AppLocalizations.of(context).permissionsAccess,
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
