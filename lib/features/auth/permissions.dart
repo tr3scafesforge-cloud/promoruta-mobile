@@ -27,9 +27,10 @@ class Permissions extends ConsumerWidget {
                       color: Colors.black,
                       fontSize: 36,
                     ),
+                textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),
-              
+
               Text(
                 'Actívá estos permisos para una mejor experiencia',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -39,7 +40,7 @@ class Permissions extends ConsumerWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 40),
-              
+
               // Permission Cards
               Expanded(
                 child: Column(
@@ -50,38 +51,44 @@ class Permissions extends ConsumerWidget {
                       iconColor: const Color(0xFF2196F3),
                       backgroundColor: const Color(0xFFE3F2FD),
                       title: 'Acceso a tu ubicación',
-                      subtitle: 'Indispensable para seguir la ruta y ver campañas cerca tuyo',
+                      subtitle:
+                          'Indispensable para seguir la ruta y ver campañas cerca tuyo',
                       isGranted: permissionState.locationGranted,
-                      onTap: () => permissionNotifier.requestLocationPermission(),
+                      onTap: () =>
+                          permissionNotifier.requestLocationPermission(),
                     ),
                     const SizedBox(height: 20),
-                    
+
                     // Notifications Permission Card
                     _PermissionCard(
                       icon: Icons.notifications,
                       iconColor: const Color(0xFFFF9800),
                       backgroundColor: const Color(0xFFFFF3E0),
                       title: 'Notificaciones',
-                      subtitle: 'Seguí el estado de las campañas y no te pierdas lo que vaya surgiendo',
+                      subtitle:
+                          'Seguí el estado de las campañas y no te pierdas lo que vaya surgiendo',
                       isGranted: permissionState.notificationGranted,
-                      onTap: () => permissionNotifier.requestNotificationPermission(),
+                      onTap: () =>
+                          permissionNotifier.requestNotificationPermission(),
                     ),
                     const SizedBox(height: 20),
-                    
+
                     // Microphone Permission Card
                     _PermissionCard(
                       icon: Icons.mic,
                       iconColor: const Color(0xFF4CAF50),
                       backgroundColor: const Color(0xFFE8F5E8),
                       title: 'Permitir micrófono',
-                      subtitle: 'Grabar campañas de audio y reproducir contenido promocional',
+                      subtitle:
+                          'Grabar campañas de audio y reproducir contenido promocional',
                       isGranted: permissionState.microphoneGranted,
-                      onTap: () => permissionNotifier.requestMicrophonePermission(),
+                      onTap: () =>
+                          permissionNotifier.requestMicrophonePermission(),
                     ),
                   ],
                 ),
               ),
-              
+
               // Bottom buttons
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 24.0),
@@ -91,11 +98,12 @@ class Permissions extends ConsumerWidget {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: permissionState.isLoading 
-                          ? null 
-                          : () async {
-                              await permissionNotifier.requestAllPermissions();
-                            },
+                        onPressed: permissionState.isLoading
+                            ? null
+                            : () async {
+                                await permissionNotifier
+                                    .requestAllPermissions();
+                              },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF2196F3),
                           foregroundColor: Colors.white,
@@ -105,25 +113,25 @@ class Permissions extends ConsumerWidget {
                           ),
                         ),
                         child: permissionState.isLoading
-                          ? const SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Text(
+                                'Permitir todos los accesos',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            )
-                          : const Text(
-                              'Permitir todos los accesos',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
                       ),
                     ),
                     const SizedBox(height: 12),
-                    
+
                     // Continue Button (only show if critical permissions are granted)
                     if (permissionState.allCriticalPermissionsGranted)
                       SizedBox(
@@ -131,7 +139,8 @@ class Permissions extends ConsumerWidget {
                         child: ElevatedButton(
                           onPressed: () {
                             // Navigate to next screen
-                            context.go('/home'); // or wherever you want to go next
+                            context
+                                .go('/home'); // or wherever you want to go next
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF4CAF50),
@@ -150,7 +159,7 @@ class Permissions extends ConsumerWidget {
                           ),
                         ),
                       ),
-                    
+
                     // Skip Button
                     const SizedBox(height: 40),
                     // TextButton(
@@ -206,10 +215,10 @@ class _PermissionCard extends StatelessWidget {
           color: isGranted ? Colors.green[50] : Colors.grey[50],
           borderRadius: BorderRadius.circular(12),
           border: !isGranted
-            ? Border.all(color: const Color(0xFFE1E7EF), width: 2)
-            : isGranted 
-              ? Border.all(color: Colors.green, width: 2)
-              : null,
+              ? Border.all(color: const Color(0xFFE1E7EF), width: 2)
+              : isGranted
+                  ? Border.all(color: Colors.green, width: 2)
+                  : null,
         ),
         child: Row(
           children: [
@@ -228,7 +237,7 @@ class _PermissionCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 16),
-            
+
             // Text content
             Expanded(
               child: Column(
