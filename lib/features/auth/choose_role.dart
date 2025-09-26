@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/core/utils/image_utils.dart';
 import 'package:promoruta/gen/assets.gen.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
@@ -78,7 +79,7 @@ class ChooseRole extends StatelessWidget {
                                   .textTheme
                                   .titleMedium
                                   ?.copyWith(
-                                    color: Colors.teal,
+                                    color: AppColors.secondary,
                                     fontWeight: FontWeight.bold,
                                   ),
                             ),
@@ -89,7 +90,7 @@ class ChooseRole extends StatelessWidget {
                                   .textTheme
                                   .bodyMedium
                                   ?.copyWith(
-                                    color: Colors.grey[700],
+                                    color: AppColors.textSecondary,
                                   ),
                             ),
                           ],
@@ -152,7 +153,7 @@ class ChooseRole extends StatelessWidget {
                                   .textTheme
                                   .bodyMedium
                                   ?.copyWith(
-                                    color: Colors.grey[700],
+                                    color: AppColors.textSecondary,
                                   ),
                             ),
                           ],
