@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:promoruta/core/utils/image_utils.dart';
+import 'package:promoruta/gen/assets.gen.dart';
 
 class ChooseRole extends StatelessWidget {
   const ChooseRole({super.key});
@@ -50,7 +52,16 @@ class ChooseRole extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.campaign, size: 48, color: Colors.teal),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image(
+                          image: capImageSize(
+                            context,
+                            AssetImage(Assets.images.advertiserSelection.path),
+                          )!,
+                          height: 48,
+                        ),
+                      ),
                       const SizedBox(width: 16),
                       Expanded(
                         child: Column(
@@ -58,7 +69,10 @@ class ChooseRole extends StatelessWidget {
                           children: [
                             Text(
                               'Soy anunciante',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
                                     color: Colors.teal,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -66,7 +80,10 @@ class ChooseRole extends StatelessWidget {
                             const SizedBox(height: 4),
                             Text(
                               'Crea campañas de audio, elegí los recorridos y recibí reportes de cómo se difundió tu mensaje',
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
                                     color: Colors.grey[700],
                                   ),
                             ),
@@ -98,7 +115,16 @@ class ChooseRole extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.campaign_outlined, size: 48, color: Colors.deepOrange),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image(
+                          image: capImageSize(
+                            context,
+                            AssetImage(Assets.images.promoterSelection.path),
+                          )!,
+                          height: 48,
+                        ),
+                      ),
                       const SizedBox(width: 16),
                       Expanded(
                         child: Column(
@@ -106,7 +132,10 @@ class ChooseRole extends StatelessWidget {
                           children: [
                             Text(
                               'Soy promotor',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
                                     color: Colors.deepOrange,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -114,7 +143,10 @@ class ChooseRole extends StatelessWidget {
                             const SizedBox(height: 4),
                             Text(
                               'Mirá oportunidades cerca, aceptá campañas y sumá ingresos con publicidad sonora',
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
                                     color: Colors.grey[700],
                                   ),
                             ),
