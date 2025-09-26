@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -76,7 +77,7 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
                 controller: _pageController,
                 count: _pages.length,
                 effect: const ExpandingDotsEffect(
-                  activeDotColor: Colors.teal,
+                  activeDotColor: AppColors.secondary,
                   dotColor: Color(0xFFD6D6D6),
                   dotHeight: 8,
                   dotWidth: 8,
@@ -92,7 +93,7 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
             child: ElevatedButton(
               onPressed: _nextPage,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.teal,
+                backgroundColor: AppColors.secondary,
                 minimumSize: const Size(double.infinity, 48),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),

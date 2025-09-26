@@ -18,17 +18,21 @@ class ChooseRole extends StatelessWidget {
               const SizedBox(height: 20),
               Text(
                 AppLocalizations.of(context).chooseRoleTitle,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
+                      fontSize: 28
+                      ,
                     ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),
               Text(
                 AppLocalizations.of(context).chooseRoleSubtitle,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Colors.grey[700],
+                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w100,
+                      fontSize: 20,
                     ),
                 textAlign: TextAlign.center,
               ),
