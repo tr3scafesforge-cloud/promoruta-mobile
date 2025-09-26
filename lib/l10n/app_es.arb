@@ -63,5 +63,45 @@
   "permissionGranted": "Permiso concedido",
   "@permissionGranted": {
     "description": "Text indicating permission has been granted"
+  },
+  "locationPermissionRequiredTitle": "Permiso de ubicación requerido",
+  "@locationPermissionRequiredTitle": {
+    "description": "Title for location permission dialog"
+  },
+  "locationPermissionExplanation": "Necesitamos acceso a tu ubicación para mostrarte campañas cerca de ti y ayudarte con la navegación.",
+  "@locationPermissionExplanation": {
+    "description": "Explanation for why location permission is needed"
+  },
+  "cancel": "Cancelar",
+  "@cancel": {
+    "description": "Button text to cancel an action"
+  },
+  "allow": "Permitir",
+  "@allow": {
+    "description": "Button text to allow permission"
+  },
+  "permissionDenied": "Permiso denegado",
+  "@permissionDenied": {
+    "description": "Title when permission is denied"
+  },
+  "permissionPermanentlyDenied": "Los permisos han sido denegados permanentemente. Por favor, ve a configuración para habilitarlos.",
+  "@permissionPermanentlyDenied": {
+    "description": "Message when permissions are permanently denied"
+  },
+  "settings": "Configuración",
+  "@settings": {
+    "description": "Button text to open app settings"
+  },
+  "granted": "Concedido",
+  "@granted": {
+    "description": "Status text when permission is granted"
+  },
+  "required": "Requerido",
+  "@required": {
+    "description": "Status text when permission is required"
+  },
+  "optional": "Opcional",
+  "@optional": {
+    "description": "Status text when permission is optional"
   }
 }

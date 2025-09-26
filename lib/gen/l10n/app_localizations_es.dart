@@ -53,4 +53,34 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get permissionGranted => 'Permiso concedido';
+
+  @override
+  String get locationPermissionRequiredTitle => 'Permiso de ubicación requerido';
+
+  @override
+  String get locationPermissionExplanation => 'Necesitamos acceso a tu ubicación para mostrarte campañas cerca de ti y ayudarte con la navegación.';
+
+  @override
+  String get cancel => 'Cancelar';
+
+  @override
+  String get allow => 'Permitir';
+
+  @override
+  String get permissionDenied => 'Permiso denegado';
+
+  @override
+  String get permissionPermanentlyDenied => 'Los permisos han sido denegados permanentemente. Por favor, ve a configuración para habilitarlos.';
+
+  @override
+  String get settings => 'Configuración';
+
+  @override
+  String get granted => 'Concedido';
+
+  @override
+  String get required => 'Requerido';
+
+  @override
+  String get optional => 'Opcional';
 }

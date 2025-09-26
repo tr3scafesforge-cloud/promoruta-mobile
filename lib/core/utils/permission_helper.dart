@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/presentation/providers/permission_provider.dart';
 
 class PermissionHelper {
@@ -37,20 +38,20 @@ class PermissionHelper {
     final shouldRequest = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Permiso de ubicación requerido'),
-        content: const Text(
-          'Necesitamos acceso a tu ubicación para mostrarte campañas cerca de ti y ayudarte con la navegación.',
+        title: Text(AppLocalizations.of(context).locationPermissionRequiredTitle),
+        content: Text(
+          AppLocalizations.of(context).locationPermissionExplanation,
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancelar'),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Permitir'),
-          ),
-        ],
+           TextButton(
+             onPressed: () => Navigator.of(context).pop(false),
+             child: Text(AppLocalizations.of(context).cancel),
+           ),
+           ElevatedButton(
+             onPressed: () => Navigator.of(context).pop(true),
+             child: Text(AppLocalizations.of(context).allow),
+           ),
+         ],
       ),
     );
 
@@ -66,23 +67,23 @@ class PermissionHelper {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Permiso denegado'),
-        content: const Text(
-          'Los permisos han sido denegados permanentemente. Por favor, ve a configuración para habilitarlos.',
+        title: Text(AppLocalizations.of(context).permissionDenied),
+        content: Text(
+          AppLocalizations.of(context).permissionPermanentlyDenied,
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancelar'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              openAppSettings();
-            },
-            child: const Text('Configuración'),
-          ),
-        ],
+           TextButton(
+             onPressed: () => Navigator.of(context).pop(),
+             child: Text(AppLocalizations.of(context).cancel),
+           ),
+           ElevatedButton(
+             onPressed: () {
+               Navigator.of(context).pop();
+               openAppSettings();
+             },
+             child: Text(AppLocalizations.of(context).settings),
+           ),
+         ],
       ),
     );
   }
@@ -90,18 +91,18 @@ class PermissionHelper {
 
 // Extension to easily check permissions in any widget
 extension PermissionStateExtension on PermissionState {
-  String getLocationStatusText() {
-    if (locationGranted) return 'Concedido';
-    return 'Requerido';
-  }
+   String getLocationStatusText(BuildContext context) {
+     if (locationGranted) return AppLocalizations.of(context).granted;
+     return AppLocalizations.of(context).required;
+   }
 
-  String getNotificationStatusText() {
-    if (notificationGranted) return 'Concedido';
-    return 'Opcional';
-  }
+   String getNotificationStatusText(BuildContext context) {
+     if (notificationGranted) return AppLocalizations.of(context).granted;
+     return AppLocalizations.of(context).optional;
+   }
 
-  String getMicrophoneStatusText() {
-    if (microphoneGranted) return 'Concedido';
-    return 'Opcional';
-  }
+   String getMicrophoneStatusText(BuildContext context) {
+     if (microphoneGranted) return AppLocalizations.of(context).granted;
+     return AppLocalizations.of(context).optional;
+   }
 }

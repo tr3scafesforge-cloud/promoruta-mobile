@@ -192,6 +192,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Permission granted'**
   String get permissionGranted;
+
+  /// Title for location permission dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission required'**
+  String get locationPermissionRequiredTitle;
+
+  /// Explanation for why location permission is needed
+  ///
+  /// In en, this message translates to:
+  /// **'We need access to your location to show you campaigns near you and help with navigation.'**
+  String get locationPermissionExplanation;
+
+  /// Button text to cancel an action
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// Button text to allow permission
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get allow;
+
+  /// Title when permission is denied
+  ///
+  /// In en, this message translates to:
+  /// **'Permission denied'**
+  String get permissionDenied;
+
+  /// Message when permissions are permanently denied
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions have been permanently denied. Please go to settings to enable them.'**
+  String get permissionPermanentlyDenied;
+
+  /// Button text to open app settings
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// Status text when permission is granted
+  ///
+  /// In en, this message translates to:
+  /// **'Granted'**
+  String get granted;
+
+  /// Status text when permission is required
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get required;
+
+  /// Status text when permission is optional
+  ///
+  /// In en, this message translates to:
+  /// **'Optional'**
+  String get optional;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
