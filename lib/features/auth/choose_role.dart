@@ -21,7 +21,7 @@ class ChooseRole extends StatelessWidget {
                 AppLocalizations.of(context).chooseRoleTitle,
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: AppColors.textPrimary,
                       fontSize: 28
                       ,
                     ),
@@ -31,7 +31,7 @@ class ChooseRole extends StatelessWidget {
               Text(
                 AppLocalizations.of(context).chooseRoleSubtitle,
                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Colors.black,
+                      color: AppColors.textPrimary,
                       fontWeight: FontWeight.w100,
                       fontSize: 20,
                     ),
@@ -47,7 +47,7 @@ class ChooseRole extends StatelessWidget {
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    color: Colors.white,
+                    color: AppColors.background,
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withValues(alpha: 0.05),
