@@ -32,7 +32,7 @@ class Permissions extends ConsumerWidget {
               const SizedBox(height: 16),
 
               Text(
-                'Actívá estos permisos para una mejor experiencia',
+                AppLocalizations.of(context).permissionsSubtitle,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: Colors.grey[600],
                       fontSize: 24,
@@ -50,9 +50,9 @@ class Permissions extends ConsumerWidget {
                       icon: Icons.location_on,
                       iconColor: const Color(0xFF2196F3),
                       backgroundColor: const Color(0xFFE3F2FD),
-                      title: 'Acceso a tu ubicación',
+                      title: AppLocalizations.of(context).locationTitle,
                       subtitle:
-                          'Indispensable para seguir la ruta y ver campañas cerca tuyo',
+                          AppLocalizations.of(context).locationSubtitle,
                       isGranted: permissionState.locationGranted,
                       onTap: () =>
                           permissionNotifier.requestLocationPermission(),
@@ -64,9 +64,9 @@ class Permissions extends ConsumerWidget {
                       icon: Icons.notifications,
                       iconColor: const Color(0xFFFF9800),
                       backgroundColor: const Color(0xFFFFF3E0),
-                      title: 'Notificaciones',
+                      title: AppLocalizations.of(context).notificationsTitle,
                       subtitle:
-                          'Seguí el estado de las campañas y no te pierdas lo que vaya surgiendo',
+                          AppLocalizations.of(context).notificationsSubtitle,
                       isGranted: permissionState.notificationGranted,
                       onTap: () =>
                           permissionNotifier.requestNotificationPermission(),
@@ -78,9 +78,9 @@ class Permissions extends ConsumerWidget {
                       icon: Icons.mic,
                       iconColor: const Color(0xFF4CAF50),
                       backgroundColor: const Color(0xFFE8F5E8),
-                      title: 'Permitir micrófono',
+                      title: AppLocalizations.of(context).microphoneTitle,
                       subtitle:
-                          'Grabar campañas de audio y reproducir contenido promocional',
+                          AppLocalizations.of(context).microphoneSubtitle,
                       isGranted: permissionState.microphoneGranted,
                       onTap: () =>
                           permissionNotifier.requestMicrophonePermission(),
@@ -121,8 +121,8 @@ class Permissions extends ConsumerWidget {
                                   strokeWidth: 2,
                                 ),
                               )
-                            : const Text(
-                                'Permitir todos los accesos',
+                            : Text(
+                                AppLocalizations.of(context).allowAllPermissions,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
@@ -150,8 +150,8 @@ class Permissions extends ConsumerWidget {
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
-                          child: const Text(
-                            'Continuar',
+                          child: Text(
+                            AppLocalizations.of(context).continueButton,
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -279,7 +279,7 @@ class _PermissionCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    isGranted ? 'Permiso concedido' : subtitle,
+                    isGranted ? AppLocalizations.of(context).permissionGranted : subtitle,
                     style: TextStyle(
                       fontSize: 14,
                       color: isGranted ? Colors.green[600] : Colors.grey[600],
