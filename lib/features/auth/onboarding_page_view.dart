@@ -78,7 +78,7 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
                 count: _pages.length,
                 effect: const ExpandingDotsEffect(
                   activeDotColor: AppColors.secondary,
-                  dotColor: Color(0xFFD6D6D6),
+                  dotColor: AppColors.grayStroke,
                   dotHeight: 8,
                   dotWidth: 8,
                   spacing: 8,
