@@ -132,6 +132,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Permissions and Access'**
   String get permissionsAccess;
+
+  /// Subtitle explaining why permissions are needed
+  ///
+  /// In en, this message translates to:
+  /// **'Activate these permissions for a better experience'**
+  String get permissionsSubtitle;
+
+  /// Title for location permission
+  ///
+  /// In en, this message translates to:
+  /// **'Access to your location'**
+  String get locationTitle;
+
+  /// Subtitle for location permission
+  ///
+  /// In en, this message translates to:
+  /// **'Essential to follow the route and see campaigns near you'**
+  String get locationSubtitle;
+
+  /// Title for notifications permission
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notificationsTitle;
+
+  /// Subtitle for notifications permission
+  ///
+  /// In en, this message translates to:
+  /// **'Follow the status of campaigns and don\'t miss what\'s coming up'**
+  String get notificationsSubtitle;
+
+  /// Title for microphone permission
+  ///
+  /// In en, this message translates to:
+  /// **'Allow microphone'**
+  String get microphoneTitle;
+
+  /// Subtitle for microphone permission
+  ///
+  /// In en, this message translates to:
+  /// **'Record audio campaigns and play promotional content'**
+  String get microphoneSubtitle;
+
+  /// Button text to allow all permissions
+  ///
+  /// In en, this message translates to:
+  /// **'Allow all accesses'**
+  String get allowAllPermissions;
+
+  /// Button text to continue to next screen
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueButton;
+
+  /// Text indicating permission has been granted
+  ///
+  /// In en, this message translates to:
+  /// **'Permission granted'**
+  String get permissionGranted;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

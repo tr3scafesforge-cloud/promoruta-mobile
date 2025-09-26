@@ -23,5 +23,45 @@
   "permissionsAccess": "Permissions and Access",
   "@permissionsAccess": {
     "description": "Title for the permissions and access screen"
+  },
+  "permissionsSubtitle": "Activate these permissions for a better experience",
+  "@permissionsSubtitle": {
+    "description": "Subtitle explaining why permissions are needed"
+  },
+  "locationTitle": "Access to your location",
+  "@locationTitle": {
+    "description": "Title for location permission"
+  },
+  "locationSubtitle": "Essential to follow the route and see campaigns near you",
+  "@locationSubtitle": {
+    "description": "Subtitle for location permission"
+  },
+  "notificationsTitle": "Notifications",
+  "@notificationsTitle": {
+    "description": "Title for notifications permission"
+  },
+  "notificationsSubtitle": "Follow the status of campaigns and don't miss what's coming up",
+  "@notificationsSubtitle": {
+    "description": "Subtitle for notifications permission"
+  },
+  "microphoneTitle": "Allow microphone",
+  "@microphoneTitle": {
+    "description": "Title for microphone permission"
+  },
+  "microphoneSubtitle": "Record audio campaigns and play promotional content",
+  "@microphoneSubtitle": {
+    "description": "Subtitle for microphone permission"
+  },
+  "allowAllPermissions": "Allow all accesses",
+  "@allowAllPermissions": {
+    "description": "Button text to allow all permissions"
+  },
+  "continueButton": "Continue",
+  "@continueButton": {
+    "description": "Button text to continue to next screen"
+  },
+  "permissionGranted": "Permission granted",
+  "@permissionGranted": {
+    "description": "Text indicating permission has been granted"
   }
 }

@@ -23,5 +23,45 @@
   "permissionsAccess": "Permisos y accesos",
   "@permissionsAccess": {
     "description": "Title for the permissions and access screen"
+  },
+  "permissionsSubtitle": "Actívá estos permisos para una mejor experiencia",
+  "@permissionsSubtitle": {
+    "description": "Subtitle explaining why permissions are needed"
+  },
+  "locationTitle": "Acceso a tu ubicación",
+  "@locationTitle": {
+    "description": "Title for location permission"
+  },
+  "locationSubtitle": "Indispensable para seguir la ruta y ver campañas cerca tuyo",
+  "@locationSubtitle": {
+    "description": "Subtitle for location permission"
+  },
+  "notificationsTitle": "Notificaciones",
+  "@notificationsTitle": {
+    "description": "Title for notifications permission"
+  },
+  "notificationsSubtitle": "Seguí el estado de las campañas y no te pierdas lo que vaya surgiendo",
+  "@notificationsSubtitle": {
+    "description": "Subtitle for notifications permission"
+  },
+  "microphoneTitle": "Permitir micrófono",
+  "@microphoneTitle": {
+    "description": "Title for microphone permission"
+  },
+  "microphoneSubtitle": "Grabar campañas de audio y reproducir contenido promocional",
+  "@microphoneSubtitle": {
+    "description": "Subtitle for microphone permission"
+  },
+  "allowAllPermissions": "Permitir todos los accesos",
+  "@allowAllPermissions": {
+    "description": "Button text to allow all permissions"
+  },
+  "continueButton": "Continuar",
+  "@continueButton": {
+    "description": "Button text to continue to next screen"
+  },
+  "permissionGranted": "Permiso concedido",
+  "@permissionGranted": {
+    "description": "Text indicating permission has been granted"
   }
 }
