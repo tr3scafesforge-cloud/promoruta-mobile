@@ -97,7 +97,7 @@ class Permissions extends ConsumerWidget {
                                     .requestAllPermissions();
                               },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF2196F3),
+                          backgroundColor: AppColors.blueDark,
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
