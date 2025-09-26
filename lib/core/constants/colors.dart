@@ -32,4 +32,5 @@ class AppColors {
 
   static const Color grayStroke = Color(0xFFE1E7EF);
   static const Color blueDark = Color(0xFF3C83F6);
+  static const Color deepOrange = Color(0xFFF97415);
 }
