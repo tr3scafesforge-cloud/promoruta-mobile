@@ -55,6 +55,7 @@ class _PromorutaAppState extends State<PromorutaApp> {
   Widget build(BuildContext context) {
     if (_locale == null) {
       return const MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: Scaffold(
           body: Center(
             child: CircularProgressIndicator(),
@@ -73,6 +74,7 @@ class _PromorutaAppState extends State<PromorutaApp> {
         fontFamily: GoogleFonts.robotoFlex().fontFamily,
       ),
       routerConfig: AppRouter.router,
+      debugShowCheckedModeBanner: false,
     );
   }
 }

@@ -41,25 +41,20 @@ class Permissions extends ConsumerWidget {
               ),
               const SizedBox(height: 40),
 
-              // Permission Cards
               Expanded(
                 child: Column(
                   children: [
-                    // Location Permission Card
                     _PermissionCard(
                       icon: Icons.location_on,
                       iconColor: const Color(0xFF2196F3),
                       backgroundColor: const Color(0xFFE3F2FD),
                       title: AppLocalizations.of(context).locationTitle,
-                      subtitle:
-                          AppLocalizations.of(context).locationSubtitle,
+                      subtitle: AppLocalizations.of(context).locationSubtitle,
                       isGranted: permissionState.locationGranted,
                       onTap: () =>
                           permissionNotifier.requestLocationPermission(),
                     ),
                     const SizedBox(height: 20),
-
-                    // Notifications Permission Card
                     _PermissionCard(
                       icon: Icons.notifications,
                       iconColor: const Color(0xFFFF9800),
@@ -72,15 +67,12 @@ class Permissions extends ConsumerWidget {
                           permissionNotifier.requestNotificationPermission(),
                     ),
                     const SizedBox(height: 20),
-
-                    // Microphone Permission Card
                     _PermissionCard(
                       icon: Icons.mic,
                       iconColor: const Color(0xFF4CAF50),
                       backgroundColor: const Color(0xFFE8F5E8),
                       title: AppLocalizations.of(context).microphoneTitle,
-                      subtitle:
-                          AppLocalizations.of(context).microphoneSubtitle,
+                      subtitle: AppLocalizations.of(context).microphoneSubtitle,
                       isGranted: permissionState.microphoneGranted,
                       onTap: () =>
                           permissionNotifier.requestMicrophonePermission(),
@@ -94,7 +86,6 @@ class Permissions extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(vertical: 24.0),
                 child: Column(
                   children: [
-                    // Request All Permissions Button
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
@@ -122,7 +113,8 @@ class Permissions extends ConsumerWidget {
                                 ),
                               )
                             : Text(
-                                AppLocalizations.of(context).allowAllPermissions,
+                                AppLocalizations.of(context)
+                                    .allowAllPermissions,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
@@ -131,14 +123,11 @@ class Permissions extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
-
-                    // Continue Button (only show if critical permissions are granted)
                     if (permissionState.allCriticalPermissionsGranted)
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            // Navigate to next screen
                             context
                                 .go('/home'); // or wherever you want to go next
                           },
@@ -159,21 +148,7 @@ class Permissions extends ConsumerWidget {
                           ),
                         ),
                       ),
-
-                    // Skip Button
                     const SizedBox(height: 40),
-                    // TextButton(
-                    //   onPressed: () {
-                    //     context.go('/home'); // Allow user to skip
-                    //   },
-                    //   child: Text(
-                    //     'Saltar por ahora',
-                    //     style: TextStyle(
-                    //       color: Colors.grey[600],
-                    //       fontSize: 16,
-                    //     ),
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
@@ -279,7 +254,9 @@ class _PermissionCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    isGranted ? AppLocalizations.of(context).permissionGranted : subtitle,
+                    isGranted
+                        ? AppLocalizations.of(context).permissionGranted
+                        : subtitle,
                     style: TextStyle(
                       fontSize: 14,
                       color: isGranted ? Colors.green[600] : Colors.grey[600],
