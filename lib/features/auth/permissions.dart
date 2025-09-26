@@ -35,7 +35,7 @@ class Permissions extends ConsumerWidget {
               Text(
                 AppLocalizations.of(context).permissionsSubtitle,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Colors.grey[600],
+                      color: AppColors.textSecondary,
                       fontSize: 24,
                     ),
                 textAlign: TextAlign.center,
@@ -47,8 +47,8 @@ class Permissions extends ConsumerWidget {
                   children: [
                     _PermissionCard(
                       icon: Icons.location_on,
-                      iconColor: const Color(0xFF2196F3),
-                      backgroundColor: const Color(0xFFE3F2FD),
+                      iconColor: AppColors.blueDark,
+                      backgroundColor: AppColors.blueDark.withValues(alpha: 0.2),
                       title: AppLocalizations.of(context).locationTitle,
                       subtitle: AppLocalizations.of(context).locationSubtitle,
                       isGranted: permissionState.locationGranted,
@@ -58,8 +58,8 @@ class Permissions extends ConsumerWidget {
                     const SizedBox(height: 20),
                     _PermissionCard(
                       icon: Icons.notifications,
-                      iconColor: const Color(0xFFFF9800),
-                      backgroundColor: const Color(0xFFFFF3E0),
+                      iconColor: AppColors.deepOrange,
+                      backgroundColor: AppColors.deepOrange.withValues(alpha: 0.2),
                       title: AppLocalizations.of(context).notificationsTitle,
                       subtitle:
                           AppLocalizations.of(context).notificationsSubtitle,
@@ -70,8 +70,8 @@ class Permissions extends ConsumerWidget {
                     const SizedBox(height: 20),
                     _PermissionCard(
                       icon: Icons.mic,
-                      iconColor: const Color(0xFF4CAF50),
-                      backgroundColor: const Color(0xFFE8F5E8),
+                      iconColor: AppColors.secondary,
+                      backgroundColor: AppColors.secondary.withValues(alpha: 0.2),
                       title: AppLocalizations.of(context).microphoneTitle,
                       subtitle: AppLocalizations.of(context).microphoneSubtitle,
                       isGranted: permissionState.microphoneGranted,
@@ -260,7 +260,7 @@ class _PermissionCard extends StatelessWidget {
                         : subtitle,
                     style: TextStyle(
                       fontSize: 14,
-                      color: isGranted ? Colors.green[600] : Colors.grey[600],
+                      color: isGranted ? Colors.green[600] : AppColors.textSecondary,
                     ),
                   ),
                 ],
