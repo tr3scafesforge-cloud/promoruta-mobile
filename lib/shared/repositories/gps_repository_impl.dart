@@ -1,33 +1,27 @@
 import 'dart:async';
 
-import '../../core/models/gps_point.dart' as model;
-import '../../core/models/route.dart' as model_route;
-import '../datasources/local/gps_local_data_source.dart';
-import '../datasources/remote/gps_remote_data_source.dart';
-import '../services/connectivity_service.dart';
-import '../services/sync_service.dart';
-import 'gps_repository.dart';
+import 'package:promoruta/core/core.dart';
+import 'package:promoruta/shared/shared.dart' hide Route, GpsPoint;
+
 
 class GpsRepositoryImpl implements GpsRepository {
   final GpsLocalDataSource _localDataSource;
-  final GpsRemoteDataSource _remoteDataSource;
   final ConnectivityService _connectivityService;
   final SyncService _syncService;
 
   GpsRepositoryImpl(
     this._localDataSource,
-    this._remoteDataSource,
     this._connectivityService,
     this._syncService,
   );
 
   @override
-  Future<model_route.Route> startRoute(String campaignId) async {
+  Future<Route> startRoute(String campaignId) async {
     // Get current user - assuming we have a way to get current user ID
     // For now, using a placeholder
     const promoterId = 'current_user_id'; // TODO: Get from auth repository
 
-    final route = model_route.Route(
+    final route = Route(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       promoterId: promoterId,
       campaignId: campaignId,
@@ -41,18 +35,18 @@ class GpsRepositoryImpl implements GpsRepository {
   }
 
   @override
-  Future<void> addGpsPoint(model.GpsPoint point) async {
+  Future<void> addGpsPoint(GpsPoint point) async {
     await _localDataSource.saveGpsPoints([point]);
   }
 
   @override
-  Future<model_route.Route> endRoute(String routeId) async {
+  Future<Route> endRoute(String routeId) async {
     final route = await _localDataSource.getRoute(routeId);
     if (route == null) {
       throw Exception('Route not found');
     }
 
-    final updatedRoute = model_route.Route(
+    final updatedRoute = Route(
       id: route.id,
       promoterId: route.promoterId,
       campaignId: route.campaignId,
@@ -78,17 +72,17 @@ class GpsRepositoryImpl implements GpsRepository {
   }
 
   @override
-  Future<List<model_route.Route>> getRoutes() async {
+  Future<List<Route>> getRoutes() async {
     return await _localDataSource.getRoutes();
   }
 
   @override
-  Future<model_route.Route?> getRoute(String id) async {
+  Future<Route?> getRoute(String id) async {
     return await _localDataSource.getRoute(id);
   }
 
   @override
-  Future<List<model.GpsPoint>> getRoutePoints(String routeId) async {
+  Future<List<GpsPoint>> getRoutePoints(String routeId) async {
     return await _localDataSource.getGpsPoints(routeId);
   }
 

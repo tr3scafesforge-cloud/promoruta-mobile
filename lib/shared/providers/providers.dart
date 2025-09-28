@@ -1,28 +1,10 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:promoruta/shared/shared.dart';
 
-import '../../core/models/campaign.dart' as model;
-import '../../core/models/gps_point.dart' as model;
-import '../../core/models/route.dart' as model_route;
-import '../../core/models/user.dart' as model;
-import '../datasources/local/auth_local_data_source.dart';
-import '../datasources/local/campaign_local_data_source.dart';
-import '../datasources/local/db/database.dart';
-import '../datasources/local/gps_local_data_source.dart';
-import '../datasources/remote/auth_remote_data_source.dart';
-import '../datasources/remote/campaign_remote_data_source.dart';
-import '../datasources/remote/gps_remote_data_source.dart';
-import '../repositories/auth_repository.dart';
-import '../repositories/auth_repository_impl.dart';
-import '../repositories/campaign_repository.dart';
-import '../repositories/campaign_repository_impl.dart';
-import '../repositories/gps_repository.dart';
-import '../repositories/gps_repository_impl.dart';
-import '../services/connectivity_service.dart';
-import '../services/connectivity_service_impl.dart';
-import '../services/sync_service.dart';
-import '../services/sync_service_impl.dart';
+import 'package:promoruta/core/core.dart' as model;
+
 
 // Database provider
 final databaseProvider = Provider<AppDatabase>((ref) {
@@ -146,13 +128,11 @@ final campaignRepositoryProvider = Provider<CampaignRepository>((ref) {
 
 final gpsRepositoryProvider = Provider<GpsRepository>((ref) {
   final localDataSource = ref.watch(gpsLocalDataSourceProvider);
-  final remoteDataSource = ref.watch(gpsRemoteDataSourceProvider);
   final connectivityService = ref.watch(connectivityServiceProvider);
   final syncService = ref.watch(syncServiceProvider);
 
   return GpsRepositoryImpl(
     localDataSource,
-    remoteDataSource,
     connectivityService,
     syncService,
   );

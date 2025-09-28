@@ -1,9 +1,6 @@
-import '../../core/models/campaign.dart' as model;
-import '../datasources/local/campaign_local_data_source.dart';
-import '../datasources/remote/campaign_remote_data_source.dart';
-import '../services/connectivity_service.dart';
-import '../services/sync_service.dart';
-import 'campaign_repository.dart';
+
+import 'package:promoruta/core/core.dart' as model;
+import 'package:promoruta/shared/shared.dart' hide Campaign;
 
 class CampaignRepositoryImpl implements CampaignRepository {
   final CampaignLocalDataSource _localDataSource;

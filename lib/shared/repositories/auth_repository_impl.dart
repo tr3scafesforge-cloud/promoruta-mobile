@@ -1,10 +1,7 @@
-import 'package:dio/dio.dart';
 
-import '../../core/models/user.dart' as model;
-import '../datasources/local/auth_local_data_source.dart';
-import '../datasources/remote/auth_remote_data_source.dart';
-import '../services/connectivity_service.dart';
-import 'auth_repository.dart';
+import 'package:promoruta/core/core.dart' as model;
+import 'package:promoruta/shared/shared.dart';
+
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthLocalDataSource _localDataSource;
