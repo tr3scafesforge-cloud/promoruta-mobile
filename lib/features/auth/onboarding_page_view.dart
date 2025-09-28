@@ -5,7 +5,6 @@ import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'choose_role.dart';
-import 'login.dart';
 import 'permissions.dart';
 import 'start_page.dart';
 
@@ -24,7 +23,6 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
     StartPage(),
     Permissions(),
     ChooseRole(),
-    Login(),
   ];
 
   @override
