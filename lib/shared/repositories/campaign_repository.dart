@@ -1,4 +1,4 @@
-import '../../core/models/campaign.dart';
+import 'package:promoruta/core/core.dart';
 
 /// Abstract repository for campaign operations.
 /// Handles fetching, creating, and managing campaigns with offline support.

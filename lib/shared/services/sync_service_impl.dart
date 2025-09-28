@@ -1,12 +1,4 @@
-import '../../core/models/campaign.dart' as model;
-import '../../core/models/gps_point.dart' as model;
-import '../../core/models/route.dart' as model_route;
-import '../../core/models/user.dart' as model;
-import '../repositories/auth_repository.dart' show AuthLocalDataSource, AuthRemoteDataSource;
-import '../repositories/campaign_repository.dart' show CampaignLocalDataSource, CampaignRemoteDataSource;
-import '../repositories/gps_repository.dart' show GpsLocalDataSource, GpsRemoteDataSource;
-import 'connectivity_service.dart';
-import 'sync_service.dart';
+import 'package:promoruta/shared/shared.dart';
 
 class SyncServiceImpl implements SyncService {
   final ConnectivityService _connectivityService;

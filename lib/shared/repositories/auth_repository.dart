@@ -1,4 +1,4 @@
-import '../../core/models/user.dart';
+import 'package:promoruta/core/core.dart';
 
 /// Abstract repository for authentication operations.
 /// Handles login, logout, and user session management with offline support.
