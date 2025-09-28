@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Login extends StatelessWidget {
-  const Login({super.key});
+  const Login({super.key, required this.role});
+
+  final String role;
 
   @override
   Widget build(BuildContext context) {

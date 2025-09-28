@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/core/utils/image_utils.dart';
 import 'package:promoruta/gen/assets.gen.dart';
@@ -39,9 +40,10 @@ class ChooseRole extends StatelessWidget {
               ),
               const SizedBox(height: 40),
               // Card for Anunciante
-              GestureDetector(
+              InkWell(
                 onTap: () {
-                  // Navigate to anunciante flow
+                  // Navigate to login with role
+                  context.go('/login?role=advertiser');
                 },
                 child: Container(
                   padding: const EdgeInsets.all(16),
@@ -102,9 +104,10 @@ class ChooseRole extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               // Card for Promotor
-              GestureDetector(
+              InkWell(
                 onTap: () {
-                  // Navigate to promotor flow
+                  // Navigate to login with role
+                  context.go('/login?role=promoter');
                 },
                 child: Container(
                   padding: const EdgeInsets.all(16),

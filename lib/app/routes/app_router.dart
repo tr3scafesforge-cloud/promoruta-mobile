@@ -50,11 +50,14 @@ class HomeRoute extends GoRouteData with _$HomeRoute {
   path: '/login',
 )
 class LoginRoute extends GoRouteData with _$LoginRoute {
-  const LoginRoute();
+  const LoginRoute({this.role});
+
+  final String? role;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const Login();
+    final roleParam = state.uri.queryParameters['role'] ?? 'unknown';
+    return Login(role: roleParam);
   }
 }
 
