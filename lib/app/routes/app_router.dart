@@ -120,7 +120,8 @@ class _AppStartupState extends State<AppStartup> {
 
   Future<void> _checkAppState() async {
     final prefs = await SharedPreferences.getInstance();
-    final onboardingDone = prefs.getBool('onboardingDone') ?? false;
+    // final onboardingDone = prefs.getBool('onboardingDone') ?? false;
+    final onboardingDone = false; // todo: set to false for testing
     final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
 
     if (mounted) {
