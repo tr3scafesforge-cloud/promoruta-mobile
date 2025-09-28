@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:promoruta/core/constants/colors.dart';
-import 'package:promoruta/core/utils/image_utils.dart';
+import 'package:promoruta/core/utils/image_helper.dart';
 import 'package:promoruta/gen/assets.gen.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 
