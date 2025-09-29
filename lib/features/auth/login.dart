@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:promoruta/core/core.dart';
 import 'package:promoruta/gen/assets.gen.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 
@@ -123,9 +124,9 @@ class _LoginState extends State<Login> {
                               AppLocalizations.of(context).emailLabel,
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyMedium
+                                  .titleMedium
                                   ?.copyWith(
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.bold,
                                     color: Colors.black87,
                                   ),
                             ),
@@ -133,26 +134,27 @@ class _LoginState extends State<Login> {
                             TextFormField(
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
-                              decoration: InputDecoration(
-                                hintText:
-                                    AppLocalizations.of(context).emailHint,
-                                hintStyle: TextStyle(color: Colors.grey[400]),
+                              decoration: InputDecoration(                               
                                 filled: true,
-                                fillColor: Colors.grey[50],
+                                fillColor: AppColors.primary,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[300]!),
+                                  borderSide: BorderSide(
+                                    color: AppColors.grayLigthStroke,
+                                  ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[300]!),
+                                  borderSide: BorderSide(
+                                    color: AppColors.grayLigthStroke,
+                                  ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                   borderSide: const BorderSide(
-                                      color: Colors.teal, width: 2),
+                                    color: AppColors.secondary,
+                                    width: 2,
+                                  ),
                                 ),
                                 contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 16,
