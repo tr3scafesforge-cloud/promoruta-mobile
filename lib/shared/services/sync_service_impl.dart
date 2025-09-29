@@ -1,3 +1,4 @@
+import 'package:promoruta/core/utils/logger.dart';
 import 'package:promoruta/shared/shared.dart';
 
 class SyncServiceImpl implements SyncService {
@@ -36,7 +37,7 @@ class SyncServiceImpl implements SyncService {
       await _syncAuth();
     } catch (e) {
       // Log error, but don't throw to avoid breaking the app
-      print('Sync failed: $e');
+      AppLogger.sync.e('Sync failed: $e');
     }
   }
 
@@ -85,7 +86,7 @@ class SyncServiceImpl implements SyncService {
       // Save to local storage
       await _campaignLocalDataSource.saveCampaigns(remoteCampaigns);
     } catch (e) {
-      print('Failed to sync campaigns: $e');
+      AppLogger.sync.e('Failed to sync campaigns: $e');
     }
   }
 
@@ -104,11 +105,11 @@ class SyncServiceImpl implements SyncService {
 
           // Mark as synced (you might want to add a synced flag to the model)
         } catch (e) {
-          print('Failed to sync route ${route.id}: $e');
+          AppLogger.sync.e('Failed to sync route ${route.id}: $e');
         }
       }
     } catch (e) {
-      print('Failed to sync GPS routes: $e');
+      AppLogger.sync.e('Failed to sync GPS routes: $e');
     }
   }
 }
