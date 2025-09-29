@@ -105,27 +105,6 @@ class _LoginState extends State<Login> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Login Title with Icon
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.login,
-                              size: 24,
-                              color: Colors.black,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              AppLocalizations.of(context).login,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                            ),
-                          ],
-                        ),
                         const SizedBox(height: 8),
                         Text(
                           AppLocalizations.of(context).enterCredentials,
@@ -155,7 +134,8 @@ class _LoginState extends State<Login> {
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context).emailHint,
+                                hintText:
+                                    AppLocalizations.of(context).emailHint,
                                 hintStyle: TextStyle(color: Colors.grey[400]),
                                 filled: true,
                                 fillColor: Colors.grey[50],
@@ -181,11 +161,13 @@ class _LoginState extends State<Login> {
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return AppLocalizations.of(context).pleaseEnterEmail;
+                                  return AppLocalizations.of(context)
+                                      .pleaseEnterEmail;
                                 }
                                 if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                                     .hasMatch(value)) {
-                                  return AppLocalizations.of(context).enterValidEmail;
+                                  return AppLocalizations.of(context)
+                                      .enterValidEmail;
                                 }
                                 return null;
                               },
@@ -213,7 +195,8 @@ class _LoginState extends State<Login> {
                               controller: _passwordController,
                               obscureText: _obscurePassword,
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context).passwordHint,
+                                hintText:
+                                    AppLocalizations.of(context).passwordHint,
                                 hintStyle: TextStyle(color: Colors.grey[400]),
                                 filled: true,
                                 fillColor: Colors.grey[50],
@@ -252,10 +235,12 @@ class _LoginState extends State<Login> {
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return AppLocalizations.of(context).pleaseEnterPassword;
+                                  return AppLocalizations.of(context)
+                                      .pleaseEnterPassword;
                                 }
                                 if (value.length < 6) {
-                                  return AppLocalizations.of(context).passwordMinLength;
+                                  return AppLocalizations.of(context)
+                                      .passwordMinLength;
                                 }
                                 return null;
                               },
@@ -266,7 +251,7 @@ class _LoginState extends State<Login> {
 
                         // Forgot Password Link
                         Align(
-                          alignment: Alignment.centerLeft,
+                          alignment: Alignment.centerRight,
                           child: TextButton(
                             onPressed: () {
                               // TODO: Implement forgot password
@@ -283,7 +268,6 @@ class _LoginState extends State<Login> {
                                   .bodyMedium
                                   ?.copyWith(
                                     color: Colors.teal,
-                                    decoration: TextDecoration.underline,
                                   ),
                             ),
                           ),
@@ -293,7 +277,13 @@ class _LoginState extends State<Login> {
                         // Login Button
                         SizedBox(
                           width: double.infinity,
-                          child: ElevatedButton(
+                          child: ElevatedButton.icon(
+                            icon: const Icon(
+                              Icons.login,
+                              size: 24,
+                              color: Colors.white,
+                            ),
+                            iconAlignment: IconAlignment.start,
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 // TODO: Implement login logic
@@ -311,7 +301,7 @@ class _LoginState extends State<Login> {
                               ),
                               elevation: 2,
                             ),
-                            child: Text(
+                            label: Text(
                               AppLocalizations.of(context).login,
                               style: Theme.of(context)
                                   .textTheme
