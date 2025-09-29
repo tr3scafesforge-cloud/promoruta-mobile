@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/core/core.dart';
 import 'package:promoruta/gen/assets.gen.dart';
+import 'package:promoruta/app/routes/app_router.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 
 class Login extends StatefulWidget {
@@ -288,10 +289,12 @@ class _LoginState extends State<Login> {
                             iconAlignment: IconAlignment.start,
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                // TODO: Implement login logic
-                                print('Email: ${_emailController.text}');
-                                print('Password: ${_passwordController.text}');
-                                print('Role: ${widget.role}');
+                                // Mock login logic - navigate based on role
+                                if (widget.role == 'promoter') {
+                                  const PromoterHomeRoute().go(context);
+                                } else if (widget.role == 'advertiser') {
+                                  const AdvertiserHomeRoute().go(context);
+                                }
                               }
                             },
                             style: ElevatedButton.styleFrom(

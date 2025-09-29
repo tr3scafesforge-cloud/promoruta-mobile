@@ -14,6 +14,8 @@ List<RouteBase> get $appRoutes => [
       $chooseRoleRoute,
       $permissionsRoute,
       $startPageRoute,
+      $promoterHomeRoute,
+      $advertiserHomeRoute,
     ];
 
 RouteBase get $appStartupRoute => GoRouteData.$route(
@@ -201,6 +203,62 @@ mixin _$StartPageRoute on GoRouteData {
   @override
   String get location => GoRouteData.$location(
         '/start',
+      );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $promoterHomeRoute => GoRouteData.$route(
+      path: '/promoter-home',
+      factory: _$PromoterHomeRoute._fromState,
+    );
+
+mixin _$PromoterHomeRoute on GoRouteData {
+  static PromoterHomeRoute _fromState(GoRouterState state) =>
+      const PromoterHomeRoute();
+
+  @override
+  String get location => GoRouteData.$location(
+        '/promoter-home',
+      );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $advertiserHomeRoute => GoRouteData.$route(
+      path: '/advertiser-home',
+      factory: _$AdvertiserHomeRoute._fromState,
+    );
+
+mixin _$AdvertiserHomeRoute on GoRouteData {
+  static AdvertiserHomeRoute _fromState(GoRouterState state) =>
+      const AdvertiserHomeRoute();
+
+  @override
+  String get location => GoRouteData.$location(
+        '/advertiser-home',
       );
 
   @override

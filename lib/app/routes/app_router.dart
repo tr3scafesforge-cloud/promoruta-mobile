@@ -7,6 +7,8 @@ import 'package:promoruta/features/auth/onboarding_page_view.dart';
 import 'package:promoruta/features/auth/permissions.dart';
 import 'package:promoruta/features/auth/start_page.dart';
 import 'package:promoruta/presentation/home_screen.dart';
+import 'package:promoruta/presentation/promotor/promoter_home_screen.dart';
+import 'package:promoruta/presentation/advertiser/advertiser_home_screen.dart';
 
 part 'app_router.g.dart';
 
@@ -94,6 +96,30 @@ class StartPageRoute extends GoRouteData with _$StartPageRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const StartPage();
+  }
+}
+
+@TypedGoRoute<PromoterHomeRoute>(
+  path: '/promoter-home',
+)
+class PromoterHomeRoute extends GoRouteData with _$PromoterHomeRoute {
+  const PromoterHomeRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const PromoterHomeScreen();
+  }
+}
+
+@TypedGoRoute<AdvertiserHomeRoute>(
+  path: '/advertiser-home',
+)
+class AdvertiserHomeRoute extends GoRouteData with _$AdvertiserHomeRoute {
+  const AdvertiserHomeRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const AdvertiserHomeScreen();
   }
 }
 
