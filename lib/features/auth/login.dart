@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:promoruta/gen/assets.gen.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key, required this.role});
@@ -33,17 +34,34 @@ class _LoginState extends State<Login> {
             child: Column(
               children: [
                 const SizedBox(height: 40),
+                // Role Image Hero
+                Center(
+                  child: Hero(
+                    tag: '${widget.role}_image',
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image(
+                        image: widget.role == 'advertiser'
+                            ? AssetImage(Assets.images.advertiserSelection.path)
+                            : AssetImage(Assets.images.promoterSelection.path),
+                        height: 80,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
                 // Header Section
                 Column(
                   children: [
                     Text(
                       'PROMORUTA',
-                      style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 32,
-                            color: Colors.black,
-                            letterSpacing: 1.2,
-                          ),
+                      style:
+                          Theme.of(context).textTheme.headlineLarge?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 32,
+                                color: Colors.black,
+                                letterSpacing: 1.2,
+                              ),
                     ),
                     const SizedBox(height: 8),
                     Text(
@@ -63,7 +81,7 @@ class _LoginState extends State<Login> {
                   ],
                 ),
                 const SizedBox(height: 60),
-                
+
                 // Login Form Card
                 Container(
                   padding: const EdgeInsets.all(32.0),
@@ -72,7 +90,9 @@ class _LoginState extends State<Login> {
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
+                        color: Colors.grey.withValues(
+                          alpha: .1,
+                        ),
                         spreadRadius: 1,
                         blurRadius: 10,
                         offset: const Offset(0, 2),
@@ -95,7 +115,10 @@ class _LoginState extends State<Login> {
                             const SizedBox(width: 8),
                             Text(
                               'Iniciar sesión',
-                              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall
+                                  ?.copyWith(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
                                   ),
@@ -105,22 +128,26 @@ class _LoginState extends State<Login> {
                         const SizedBox(height: 8),
                         Text(
                           'Ingresá tus credenciales para acceder a tu cuenta',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: Colors.grey[600],
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: Colors.grey[600],
+                                  ),
                         ),
                         const SizedBox(height: 32),
-                        
+
                         // Email Field
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Email',
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
                                     fontWeight: FontWeight.w500,
                                     color: Colors.black87,
-                              ),
+                                  ),
                             ),
                             const SizedBox(height: 8),
                             TextFormField(
@@ -133,15 +160,18 @@ class _LoginState extends State<Login> {
                                 fillColor: Colors.grey[50],
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide: BorderSide(color: Colors.grey[300]!),
+                                  borderSide:
+                                      BorderSide(color: Colors.grey[300]!),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide: BorderSide(color: Colors.grey[300]!),
+                                  borderSide:
+                                      BorderSide(color: Colors.grey[300]!),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide: const BorderSide(color: Colors.teal, width: 2),
+                                  borderSide: const BorderSide(
+                                      color: Colors.teal, width: 2),
                                 ),
                                 contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 16,
@@ -152,7 +182,8 @@ class _LoginState extends State<Login> {
                                 if (value == null || value.isEmpty) {
                                   return 'Por favor ingresa tu email';
                                 }
-                                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                                    .hasMatch(value)) {
                                   return 'Ingresa un email válido';
                                 }
                                 return null;
@@ -161,17 +192,20 @@ class _LoginState extends State<Login> {
                           ],
                         ),
                         const SizedBox(height: 20),
-                        
+
                         // Password Field
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Contraseña',
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
                                     fontWeight: FontWeight.w500,
                                     color: Colors.black87,
-                              ),
+                                  ),
                             ),
                             const SizedBox(height: 8),
                             TextFormField(
@@ -184,19 +218,24 @@ class _LoginState extends State<Login> {
                                 fillColor: Colors.grey[50],
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide: BorderSide(color: Colors.grey[300]!),
+                                  borderSide:
+                                      BorderSide(color: Colors.grey[300]!),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide: BorderSide(color: Colors.grey[300]!),
+                                  borderSide:
+                                      BorderSide(color: Colors.grey[300]!),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide: const BorderSide(color: Colors.teal, width: 2),
+                                  borderSide: const BorderSide(
+                                      color: Colors.teal, width: 2),
                                 ),
                                 suffixIcon: IconButton(
                                   icon: Icon(
-                                    _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                                    _obscurePassword
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
                                     color: Colors.grey[600],
                                   ),
                                   onPressed: () {
@@ -223,7 +262,7 @@ class _LoginState extends State<Login> {
                           ],
                         ),
                         const SizedBox(height: 16),
-                        
+
                         // Forgot Password Link
                         Align(
                           alignment: Alignment.centerLeft,
@@ -238,15 +277,18 @@ class _LoginState extends State<Login> {
                             ),
                             child: Text(
                               '¿Olvidaste tu contraseña?',
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
                                     color: Colors.teal,
                                     decoration: TextDecoration.underline,
-                              ),
+                                  ),
                             ),
                           ),
                         ),
                         const SizedBox(height: 32),
-                        
+
                         // Login Button
                         SizedBox(
                           width: double.infinity,
@@ -270,34 +312,41 @@ class _LoginState extends State<Login> {
                             ),
                             child: Text(
                               'Iniciar Sesión',
-                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(
                                     fontWeight: FontWeight.w600,
                                     color: Colors.white,
-                              ),
+                                  ),
                             ),
                           ),
                         ),
                         const SizedBox(height: 24),
-                        
+
                         // Divider
                         Row(
                           children: [
                             Expanded(child: Divider(color: Colors.grey[300])),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
                               child: Text(
                                 'O CONTINÚA CON',
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
                                       color: Colors.grey[600],
                                       fontWeight: FontWeight.w500,
-                                ),
+                                    ),
                               ),
                             ),
                             Expanded(child: Divider(color: Colors.grey[300])),
                           ],
                         ),
                         const SizedBox(height: 24),
-                        
+
                         // Social Login Buttons
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -323,16 +372,19 @@ class _LoginState extends State<Login> {
                           ],
                         ),
                         const SizedBox(height: 32),
-                        
+
                         // Register Link
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               '¿No tienes cuenta aún? ',
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
                                     color: Colors.grey[600],
-                              ),
+                                  ),
                             ),
                             TextButton(
                               onPressed: () {
@@ -345,10 +397,13 @@ class _LoginState extends State<Login> {
                               ),
                               child: Text(
                                 'Regístrate',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
                                       color: Colors.teal,
                                       fontWeight: FontWeight.w600,
-                                ),
+                                    ),
                               ),
                             ),
                           ],

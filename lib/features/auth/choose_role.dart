@@ -47,6 +47,7 @@ class ChooseRole extends StatelessWidget {
                 cardColor: AppColors.background,
                 titleColor: AppColors.secondary,
                 onTap: () => context.go('/login?role=advertiser'),
+                heroTag: 'advertiser_image',
               ),
               const SizedBox(height: 20),
               // Card for Promotor
@@ -57,6 +58,7 @@ class ChooseRole extends StatelessWidget {
                 cardColor: Colors.white,
                 titleColor: Colors.deepOrange,
                 onTap: () => context.go('/login?role=promoter'),
+                heroTag: 'promoter_image',
               ),
             ],
           ),
@@ -76,6 +78,7 @@ class RoleCard extends StatefulWidget {
     required this.cardColor,
     required this.titleColor,
     required this.onTap,
+    required this.heroTag,
   });
 
   final String title;
@@ -84,6 +87,7 @@ class RoleCard extends StatefulWidget {
   final Color cardColor;
   final Color titleColor;
   final VoidCallback onTap;
+  final String heroTag;
 
   @override
   State<RoleCard> createState() => _RoleCardState();
@@ -119,14 +123,17 @@ class _RoleCardState extends State<RoleCard> {
           ),
           child: Row(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image(
-                  image: capImageSize(
-                    context,
-                    widget.image,
-                  )!,
-                  height: 48,
+              Hero(
+                tag: widget.heroTag,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image(
+                    image: capImageSize(
+                      context,
+                      widget.image,
+                    )!,
+                    height: 48,
+                  ),
                 ),
               ),
               const SizedBox(width: 16),
