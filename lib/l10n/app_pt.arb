@@ -126,6 +126,70 @@
     },
     "promoterDescription": "Procure oportunidades próximas, aceite campanhas e ganhe renda com publicidade sonora",
     "@promoterDescription": {
-      "description": "Description for the promoter role"
+        "description": "Description for the promoter role"
+    },
+    "appName": "PROMORUTA",
+    "@appName": {
+        "description": "Application name"
+    },
+    "welcomeBack": "Bem-vindo de volta!",
+    "@welcomeBack": {
+        "description": "Welcome back message"
+    },
+    "loginToContinue": "Faça login para continuar",
+    "@loginToContinue": {
+        "description": "Prompt to log in to continue"
+    },
+    "enterCredentials": "Digite suas credenciais para acessar sua conta",
+    "@enterCredentials": {
+        "description": "Instruction to enter credentials"
+    },
+    "emailLabel": "Email",
+    "@emailLabel": {
+        "description": "Label for email field"
+    },
+    "emailHint": "myemail@email.com",
+    "@emailHint": {
+        "description": "Hint text for email input"
+    },
+    "pleaseEnterEmail": "Por favor, digite seu email",
+    "@pleaseEnterEmail": {
+        "description": "Validation message for empty email"
+    },
+    "enterValidEmail": "Digite um email válido",
+    "@enterValidEmail": {
+        "description": "Validation message for invalid email"
+    },
+    "passwordLabel": "Senha",
+    "@passwordLabel": {
+        "description": "Label for password field"
+    },
+    "passwordHint": "Digite sua senha",
+    "@passwordHint": {
+        "description": "Hint text for password input"
+    },
+    "pleaseEnterPassword": "Por favor, digite sua senha",
+    "@pleaseEnterPassword": {
+        "description": "Validation message for empty password"
+    },
+    "passwordMinLength": "A senha deve ter pelo menos 6 caracteres",
+    "@passwordMinLength": {
+        "description": "Validation message for short password"
+    },
+    "forgotPassword": "Esqueceu sua senha?",
+    "@forgotPassword": {
+        "description": "Forgot password link text"
+    },
+    "orContinueWith": "OU CONTINUE COM",
+    "@orContinueWith": {
+        "description": "Divider text for social login"
+    },
+    "noAccountYet": "Ainda não tem uma conta? ",
+    "@noAccountYet": {
+        "description": "Text before sign up link"
+    },
+    "signUp": "Inscrever-se",
+    "@signUp": {
+        "description": "Sign up button text"
     }
   }

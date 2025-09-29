@@ -288,6 +288,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Look for nearby opportunities, accept campaigns and earn income with sound advertising'**
   String get promoterDescription;
+
+  /// Application name
+  ///
+  /// In en, this message translates to:
+  /// **'PROMORUTA'**
+  String get appName;
+
+  /// Welcome back message
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back!'**
+  String get welcomeBack;
+
+  /// Prompt to log in to continue
+  ///
+  /// In en, this message translates to:
+  /// **'Log in to continue'**
+  String get loginToContinue;
+
+  /// Instruction to enter credentials
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your credentials to access your account'**
+  String get enterCredentials;
+
+  /// Label for email field
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get emailLabel;
+
+  /// Hint text for email input
+  ///
+  /// In en, this message translates to:
+  /// **'myemail@email.com'**
+  String get emailHint;
+
+  /// Validation message for empty email
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your email'**
+  String get pleaseEnterEmail;
+
+  /// Validation message for invalid email
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email'**
+  String get enterValidEmail;
+
+  /// Label for password field
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get passwordLabel;
+
+  /// Hint text for password input
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get passwordHint;
+
+  /// Validation message for empty password
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your password'**
+  String get pleaseEnterPassword;
+
+  /// Validation message for short password
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get passwordMinLength;
+
+  /// Forgot password link text
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot your password?'**
+  String get forgotPassword;
+
+  /// Divider text for social login
+  ///
+  /// In en, this message translates to:
+  /// **'OR CONTINUE WITH'**
+  String get orContinueWith;
+
+  /// Text before sign up link
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account yet? '**
+  String get noAccountYet;
+
+  /// Sign up button text
+  ///
+  /// In en, this message translates to:
+  /// **'Sign up'**
+  String get signUp;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/gen/assets.gen.dart';
+import 'package:promoruta/gen/l10n/app_localizations.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key, required this.role});
@@ -54,7 +55,7 @@ class _LoginState extends State<Login> {
                 Column(
                   children: [
                     Text(
-                      'PROMORUTA',
+                      AppLocalizations.of(context).appName,
                       style:
                           Theme.of(context).textTheme.headlineLarge?.copyWith(
                                 fontWeight: FontWeight.bold,
@@ -65,14 +66,14 @@ class _LoginState extends State<Login> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      '¡Bienvenido de vuelta!',
+                      AppLocalizations.of(context).welcomeBack,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             color: Colors.grey[600],
                             fontSize: 16,
                           ),
                     ),
                     Text(
-                      'Iniciá sesión para continuar',
+                      AppLocalizations.of(context).loginToContinue,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             color: Colors.grey[600],
                             fontSize: 16,
@@ -80,7 +81,7 @@ class _LoginState extends State<Login> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 60),
+                const SizedBox(height: 20),
 
                 // Login Form Card
                 Container(
@@ -114,7 +115,7 @@ class _LoginState extends State<Login> {
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              'Iniciar sesión',
+                              AppLocalizations.of(context).login,
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineSmall
@@ -127,7 +128,7 @@ class _LoginState extends State<Login> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Ingresá tus credenciales para acceder a tu cuenta',
+                          AppLocalizations.of(context).enterCredentials,
                           style:
                               Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     color: Colors.grey[600],
@@ -140,7 +141,7 @@ class _LoginState extends State<Login> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Email',
+                              AppLocalizations.of(context).emailLabel,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
@@ -154,7 +155,7 @@ class _LoginState extends State<Login> {
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
-                                hintText: 'myemail@email.com',
+                                hintText: AppLocalizations.of(context).emailHint,
                                 hintStyle: TextStyle(color: Colors.grey[400]),
                                 filled: true,
                                 fillColor: Colors.grey[50],
@@ -180,11 +181,11 @@ class _LoginState extends State<Login> {
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Por favor ingresa tu email';
+                                  return AppLocalizations.of(context).pleaseEnterEmail;
                                 }
                                 if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                                     .hasMatch(value)) {
-                                  return 'Ingresa un email válido';
+                                  return AppLocalizations.of(context).enterValidEmail;
                                 }
                                 return null;
                               },
@@ -198,7 +199,7 @@ class _LoginState extends State<Login> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Contraseña',
+                              AppLocalizations.of(context).passwordLabel,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
@@ -212,7 +213,7 @@ class _LoginState extends State<Login> {
                               controller: _passwordController,
                               obscureText: _obscurePassword,
                               decoration: InputDecoration(
-                                hintText: 'Ingrese su contraseña',
+                                hintText: AppLocalizations.of(context).passwordHint,
                                 hintStyle: TextStyle(color: Colors.grey[400]),
                                 filled: true,
                                 fillColor: Colors.grey[50],
@@ -251,10 +252,10 @@ class _LoginState extends State<Login> {
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Por favor ingresa tu contraseña';
+                                  return AppLocalizations.of(context).pleaseEnterPassword;
                                 }
                                 if (value.length < 6) {
-                                  return 'La contraseña debe tener al menos 6 caracteres';
+                                  return AppLocalizations.of(context).passwordMinLength;
                                 }
                                 return null;
                               },
@@ -276,7 +277,7 @@ class _LoginState extends State<Login> {
                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             ),
                             child: Text(
-                              '¿Olvidaste tu contraseña?',
+                              AppLocalizations.of(context).forgotPassword,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
@@ -311,7 +312,7 @@ class _LoginState extends State<Login> {
                               elevation: 2,
                             ),
                             child: Text(
-                              'Iniciar Sesión',
+                              AppLocalizations.of(context).login,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyLarge
@@ -332,7 +333,7 @@ class _LoginState extends State<Login> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 16),
                               child: Text(
-                                'O CONTINÚA CON',
+                                AppLocalizations.of(context).orContinueWith,
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodySmall
@@ -378,7 +379,7 @@ class _LoginState extends State<Login> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              '¿No tienes cuenta aún? ',
+                              AppLocalizations.of(context).noAccountYet,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
@@ -396,7 +397,7 @@ class _LoginState extends State<Login> {
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               ),
                               child: Text(
-                                'Regístrate',
+                                AppLocalizations.of(context).signUp,
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyMedium

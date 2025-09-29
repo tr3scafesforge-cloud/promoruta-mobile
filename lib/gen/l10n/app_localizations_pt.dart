@@ -101,4 +101,52 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get promoterDescription => 'Procure oportunidades próximas, aceite campanhas e ganhe renda com publicidade sonora';
+
+  @override
+  String get appName => 'PROMORUTA';
+
+  @override
+  String get welcomeBack => 'Bem-vindo de volta!';
+
+  @override
+  String get loginToContinue => 'Faça login para continuar';
+
+  @override
+  String get enterCredentials => 'Digite suas credenciais para acessar sua conta';
+
+  @override
+  String get emailLabel => 'Email';
+
+  @override
+  String get emailHint => 'myemail@email.com';
+
+  @override
+  String get pleaseEnterEmail => 'Por favor, digite seu email';
+
+  @override
+  String get enterValidEmail => 'Digite um email válido';
+
+  @override
+  String get passwordLabel => 'Senha';
+
+  @override
+  String get passwordHint => 'Digite sua senha';
+
+  @override
+  String get pleaseEnterPassword => 'Por favor, digite sua senha';
+
+  @override
+  String get passwordMinLength => 'A senha deve ter pelo menos 6 caracteres';
+
+  @override
+  String get forgotPassword => 'Esqueceu sua senha?';
+
+  @override
+  String get orContinueWith => 'OU CONTINUE COM';
+
+  @override
+  String get noAccountYet => 'Ainda não tem uma conta? ';
+
+  @override
+  String get signUp => 'Inscrever-se';
 }

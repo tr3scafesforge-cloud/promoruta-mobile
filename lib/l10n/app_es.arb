@@ -127,5 +127,69 @@
   "promoterDescription": "Mirá oportunidades cerca, aceptá campañas y sumá ingresos con publicidad sonora",
   "@promoterDescription": {
     "description": "Description for the promoter role"
+  },
+  "appName": "PROMORUTA",
+  "@appName": {
+    "description": "Application name"
+  },
+  "welcomeBack": "¡Bienvenido de vuelta!",
+  "@welcomeBack": {
+    "description": "Welcome back message"
+  },
+  "loginToContinue": "Iniciá sesión para continuar",
+  "@loginToContinue": {
+    "description": "Prompt to log in to continue"
+  },
+  "enterCredentials": "Ingresá tus credenciales para acceder a tu cuenta",
+  "@enterCredentials": {
+    "description": "Instruction to enter credentials"
+  },
+  "emailLabel": "Email",
+  "@emailLabel": {
+    "description": "Label for email field"
+  },
+  "emailHint": "myemail@email.com",
+  "@emailHint": {
+    "description": "Hint text for email input"
+  },
+  "pleaseEnterEmail": "Por favor ingresa tu email",
+  "@pleaseEnterEmail": {
+    "description": "Validation message for empty email"
+  },
+  "enterValidEmail": "Ingresa un email válido",
+  "@enterValidEmail": {
+    "description": "Validation message for invalid email"
+  },
+  "passwordLabel": "Contraseña",
+  "@passwordLabel": {
+    "description": "Label for password field"
+  },
+  "passwordHint": "Ingrese su contraseña",
+  "@passwordHint": {
+    "description": "Hint text for password input"
+  },
+  "pleaseEnterPassword": "Por favor ingresa tu contraseña",
+  "@pleaseEnterPassword": {
+    "description": "Validation message for empty password"
+  },
+  "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
+  "@passwordMinLength": {
+    "description": "Validation message for short password"
+  },
+  "forgotPassword": "¿Olvidaste tu contraseña?",
+  "@forgotPassword": {
+    "description": "Forgot password link text"
+  },
+  "orContinueWith": "O CONTINÚA CON",
+  "@orContinueWith": {
+    "description": "Divider text for social login"
+  },
+  "noAccountYet": "¿No tienes cuenta aún? ",
+  "@noAccountYet": {
+    "description": "Text before sign up link"
+  },
+  "signUp": "Regístrate",
+  "@signUp": {
+    "description": "Sign up button text"
   }
 }

@@ -127,5 +127,69 @@
   "promoterDescription": "Look for nearby opportunities, accept campaigns and earn income with sound advertising",
   "@promoterDescription": {
     "description": "Description for the promoter role"
+  },
+  "appName": "PROMORUTA",
+  "@appName": {
+    "description": "Application name"
+  },
+  "welcomeBack": "Welcome back!",
+  "@welcomeBack": {
+    "description": "Welcome back message"
+  },
+  "loginToContinue": "Log in to continue",
+  "@loginToContinue": {
+    "description": "Prompt to log in to continue"
+  },
+  "enterCredentials": "Enter your credentials to access your account",
+  "@enterCredentials": {
+    "description": "Instruction to enter credentials"
+  },
+  "emailLabel": "Email",
+  "@emailLabel": {
+    "description": "Label for email field"
+  },
+  "emailHint": "myemail@email.com",
+  "@emailHint": {
+    "description": "Hint text for email input"
+  },
+  "pleaseEnterEmail": "Please enter your email",
+  "@pleaseEnterEmail": {
+    "description": "Validation message for empty email"
+  },
+  "enterValidEmail": "Enter a valid email",
+  "@enterValidEmail": {
+    "description": "Validation message for invalid email"
+  },
+  "passwordLabel": "Password",
+  "@passwordLabel": {
+    "description": "Label for password field"
+  },
+  "passwordHint": "Enter your password",
+  "@passwordHint": {
+    "description": "Hint text for password input"
+  },
+  "pleaseEnterPassword": "Please enter your password",
+  "@pleaseEnterPassword": {
+    "description": "Validation message for empty password"
+  },
+  "passwordMinLength": "Password must be at least 6 characters",
+  "@passwordMinLength": {
+    "description": "Validation message for short password"
+  },
+  "forgotPassword": "Forgot your password?",
+  "@forgotPassword": {
+    "description": "Forgot password link text"
+  },
+  "orContinueWith": "OR CONTINUE WITH",
+  "@orContinueWith": {
+    "description": "Divider text for social login"
+  },
+  "noAccountYet": "Don't have an account yet? ",
+  "@noAccountYet": {
+    "description": "Text before sign up link"
+  },
+  "signUp": "Sign up",
+  "@signUp": {
+    "description": "Sign up button text"
   }
 }

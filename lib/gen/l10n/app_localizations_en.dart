@@ -101,4 +101,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get promoterDescription => 'Look for nearby opportunities, accept campaigns and earn income with sound advertising';
+
+  @override
+  String get appName => 'PROMORUTA';
+
+  @override
+  String get welcomeBack => 'Welcome back!';
+
+  @override
+  String get loginToContinue => 'Log in to continue';
+
+  @override
+  String get enterCredentials => 'Enter your credentials to access your account';
+
+  @override
+  String get emailLabel => 'Email';
+
+  @override
+  String get emailHint => 'myemail@email.com';
+
+  @override
+  String get pleaseEnterEmail => 'Please enter your email';
+
+  @override
+  String get enterValidEmail => 'Enter a valid email';
+
+  @override
+  String get passwordLabel => 'Password';
+
+  @override
+  String get passwordHint => 'Enter your password';
+
+  @override
+  String get pleaseEnterPassword => 'Please enter your password';
+
+  @override
+  String get passwordMinLength => 'Password must be at least 6 characters';
+
+  @override
+  String get forgotPassword => 'Forgot your password?';
+
+  @override
+  String get orContinueWith => 'OR CONTINUE WITH';
+
+  @override
+  String get noAccountYet => 'Don\'t have an account yet? ';
+
+  @override
+  String get signUp => 'Sign up';
 }
