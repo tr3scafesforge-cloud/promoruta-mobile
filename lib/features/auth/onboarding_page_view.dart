@@ -84,27 +84,29 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
               ),
             ),
           ),
-          Positioned(
-            bottom: 24,
-            left: 24,
-            right: 24,
-            child: ElevatedButton(
-              onPressed: _nextPage,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.secondary,
-                minimumSize: const Size(double.infinity, 48),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+          if (_currentPage < _pages.length - 1)
+            Positioned(
+              bottom: 24,
+              left: 24,
+              right: 24,
+              child: ElevatedButton(
+                onPressed: _nextPage,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.secondary,
+                  minimumSize: const Size(double.infinity, 48),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Text(
+                  AppLocalizations.of(context).next,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
                 ),
               ),
-              child: Text(
-                _currentPage == _pages.length - 1
-                    ? AppLocalizations.of(context).start
-                    : AppLocalizations.of(context).next,
-                style: const TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
-          ),
+            )
         ],
       ),
     );
