@@ -35,7 +35,6 @@ class _LoginState extends State<Login> {
             padding: const EdgeInsets.all(24.0),
             child: Column(
               children: [
-                const SizedBox(height: 40),
                 // Role Image Hero
                 Center(
                   child: Hero(
@@ -111,10 +110,10 @@ class _LoginState extends State<Login> {
                           AppLocalizations.of(context).enterCredentials,
                           style:
                               Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: Colors.grey[600],
+                                    color: AppColors.textSecondary,
                                   ),
                         ),
-                        const SizedBox(height: 32),
+                        const SizedBox(height: 20),
 
                         // Email Field
                         Column(
@@ -127,14 +126,14 @@ class _LoginState extends State<Login> {
                                   .titleMedium
                                   ?.copyWith(
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.black87,
+                                    color: Colors.black,
                                   ),
                             ),
                             const SizedBox(height: 8),
                             TextFormField(
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
-                              decoration: InputDecoration(                               
+                              decoration: InputDecoration(
                                 filled: true,
                                 fillColor: AppColors.primary,
                                 border: OutlineInputBorder(
@@ -186,10 +185,10 @@ class _LoginState extends State<Login> {
                               AppLocalizations.of(context).passwordLabel,
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyMedium
+                                  .titleMedium
                                   ?.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black87,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
                                   ),
                             ),
                             const SizedBox(height: 8),
@@ -197,32 +196,33 @@ class _LoginState extends State<Login> {
                               controller: _passwordController,
                               obscureText: _obscurePassword,
                               decoration: InputDecoration(
-                                hintText:
-                                    AppLocalizations.of(context).passwordHint,
-                                hintStyle: TextStyle(color: Colors.grey[400]),
                                 filled: true,
-                                fillColor: Colors.grey[50],
+                                fillColor: AppColors.primary,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[300]!),
+                                  borderSide: BorderSide(
+                                    color: AppColors.grayLigthStroke,
+                                  ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[300]!),
+                                  borderSide: BorderSide(
+                                    color: AppColors.grayLigthStroke,
+                                  ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                   borderSide: const BorderSide(
-                                      color: Colors.teal, width: 2),
+                                    color: AppColors.secondary,
+                                    width: 2,
+                                  ),
                                 ),
                                 suffixIcon: IconButton(
                                   icon: Icon(
                                     _obscurePassword
                                         ? Icons.visibility
                                         : Icons.visibility_off,
-                                    color: Colors.grey[600],
+                                    color: AppColors.textSecondary,
                                   ),
                                   onPressed: () {
                                     setState(() {
@@ -295,7 +295,7 @@ class _LoginState extends State<Login> {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.teal,
+                              backgroundColor: AppColors.secondary,
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
