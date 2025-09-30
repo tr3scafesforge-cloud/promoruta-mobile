@@ -191,5 +191,125 @@
   "signUp": "Sign up",
   "@signUp": {
     "description": "Sign up button text"
+  },
+  "goodMorning": "Good morning",
+  "@goodMorning": {
+    "description": "Greeting in the morning"
+  },
+  "readyToCreateNextCampaign": "Ready to create your next campaign",
+  "@readyToCreateNextCampaign": {
+    "description": "Subtitle for the home screen"
+  },
+  "createCampaignWip": "Create campaign (WIP)",
+  "@createCampaignWip": {
+    "description": "Snackbar message for create campaign button"
+  },
+  "home": "Home",
+  "@home": {
+    "description": "Bottom navigation label for home"
+  },
+  "campaigns": "Campaigns",
+  "@campaigns": {
+    "description": "Bottom navigation label for campaigns"
+  },
+  "live": "Live",
+  "@live": {
+    "description": "Bottom navigation label for live"
+  },
+  "history": "History",
+  "@history": {
+    "description": "Bottom navigation label for history"
+  },
+  "profile": "Profile",
+  "@profile": {
+    "description": "Bottom navigation label for profile"
+  },
+  "active": "Active",
+  "@active": {
+    "description": "Label for active campaigns"
+  },
+  "zonesCovered": "Zones covered",
+  "@zonesCovered": {
+    "description": "Label for zones covered stat"
+  },
+  "thisWeek": "this week",
+  "@thisWeek": {
+    "description": "Time period for stats"
+  },
+  "investment": "Investment",
+  "@investment": {
+    "description": "Label for investment stat"
+  },
+  "accumulated": "accumulated",
+  "@accumulated": {
+    "description": "Label for accumulated investment"
+  },
+  "activeCampaigns": "Active campaigns",
+  "@activeCampaigns": {
+    "description": "Section header for active campaigns"
+  },
+  "seeAll": "See all",
+  "@seeAll": {
+    "description": "Button text to see all campaigns"
+  },
+  "seeAllWip": "See all (WIP)",
+  "@seeAllWip": {
+    "description": "Snackbar message for see all button"
+  },
+  "createYourFirstCampaign": "Create your first campaign",
+  "@createYourFirstCampaign": {
+    "description": "Title for create first campaign card"
+  },
+  "designAudioAdMarkRouteStartPromoting": "Design an audio ad, mark your route and start promoting",
+  "@designAudioAdMarkRouteStartPromoting": {
+    "description": "Description for create first campaign card"
+  },
+  "startCampaign": "Start campaign",
+  "@startCampaign": {
+    "description": "Button text to start campaign"
+  },
+  "startCampaignWip": "Start campaign (WIP)",
+  "@startCampaignWip": {
+    "description": "Snackbar message for start campaign button"
+  },
+  "coffeeShopPromotion": "Coffee Shop Promotion",
+  "@coffeeShopPromotion": {
+    "description": "Campaign title example"
+  },
+  "today": "Today",
+  "@today": {
+    "description": "Time label for today"
+  },
+  "route": "Route",
+  "@route": {
+    "description": "Label for route metric"
+  },
+  "audio": "Audio",
+  "@audio": {
+    "description": "Label for audio metric"
+  },
+  "completed": "Completed",
+  "@completed": {
+    "description": "Label for completed metric"
+  },
+  "twoActivePromoters": "2 Active promoters",
+  "@twoActivePromoters": {
+    "description": "Subtitle for campaign card"
+  },
+  "storeOpening": "Store Opening",
+  "@storeOpening": {
+    "description": "Campaign title example"
+  },
+  "pending": "Pending",
+  "@pending": {
+    "description": "Status label for pending"
+  },
+  "waitingForPromoters": "Waiting for promoters",
+  "@waitingForPromoters": {
+    "description": "Subtitle for pending campaign"
+  },
+  "placeholderPending": " (pending)",
+  "@placeholderPending": {
+    "description": "Suffix for placeholder tabs"
   }
 }

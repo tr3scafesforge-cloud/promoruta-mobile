@@ -149,4 +149,94 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get signUp => 'Regístrate';
+
+  @override
+  String get goodMorning => 'Buenos días';
+
+  @override
+  String get readyToCreateNextCampaign => 'Listo para crear tu próxima campaña';
+
+  @override
+  String get createCampaignWip => 'Crear campaña (WIP)';
+
+  @override
+  String get home => 'Inicio';
+
+  @override
+  String get campaigns => 'Campañas';
+
+  @override
+  String get live => 'En vivo';
+
+  @override
+  String get history => 'Historial';
+
+  @override
+  String get profile => 'Perfil';
+
+  @override
+  String get active => 'Activas';
+
+  @override
+  String get zonesCovered => 'Zonas recorridas';
+
+  @override
+  String get thisWeek => 'esta semana';
+
+  @override
+  String get investment => 'Inversión';
+
+  @override
+  String get accumulated => 'acumulada';
+
+  @override
+  String get activeCampaigns => 'Campañas activas';
+
+  @override
+  String get seeAll => 'Ver todas';
+
+  @override
+  String get seeAllWip => 'Ver todas (WIP)';
+
+  @override
+  String get createYourFirstCampaign => 'Crea tu primera campaña';
+
+  @override
+  String get designAudioAdMarkRouteStartPromoting => 'Diseñá un aviso de audio, marcá tu recorrido y empezá a promocionar';
+
+  @override
+  String get startCampaign => 'Iniciar campaña';
+
+  @override
+  String get startCampaignWip => 'Iniciar campaña (WIP)';
+
+  @override
+  String get coffeeShopPromotion => 'Promoción Cafetería';
+
+  @override
+  String get today => 'Hoy';
+
+  @override
+  String get route => 'Ruta';
+
+  @override
+  String get audio => 'Audio';
+
+  @override
+  String get completed => 'Completado';
+
+  @override
+  String get twoActivePromoters => '2 Promotores activos';
+
+  @override
+  String get storeOpening => 'Apertura Tienda';
+
+  @override
+  String get pending => 'Pendiente';
+
+  @override
+  String get waitingForPromoters => 'Esperando promotores';
+
+  @override
+  String get placeholderPending => ' (pendiente)';
 }

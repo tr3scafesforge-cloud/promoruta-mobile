@@ -1,195 +1,315 @@
 {
-    "@@locale": "pt",
-    "welcomeMessage": "Bem-vindo ao PromoRuta",
-    "@welcomeMessage": {
-        "description": "Welcome message displayed to users"
-    },
-    "description": "Conecte anunciantes com promotores para campanhas eficazes.",
-    "@description": {
-        "description": "Description of the application"
-    },
-    "start": "Começar",
-    "@start": {
-        "description": "Label for the button to start the onboarding or process"
-    },
-    "next": "Próximo",
-    "@next": {
-        "description": "Label for the button to go to the next step"
-    },
-    "login": "Entrar",
-    "@login": {
-        "description": "Label for the login button"
-    },
-    "permissionsAccess": "Permissões e Acessos",
-    "@permissionsAccess": {
-      "description": "Title for the permissions and access screen"
-    },
-    "permissionsSubtitle": "Ative essas permissões para uma melhor experiência",
-    "@permissionsSubtitle": {
-      "description": "Subtitle explaining why permissions are needed"
-    },
-    "locationTitle": "Acesso à sua localização",
-    "@locationTitle": {
-      "description": "Title for location permission"
-    },
-    "locationSubtitle": "Essencial para seguir a rota e ver campanhas perto de você",
-    "@locationSubtitle": {
-      "description": "Subtitle for location permission"
-    },
-    "notificationsTitle": "Notificações",
-    "@notificationsTitle": {
-      "description": "Title for notifications permission"
-    },
-    "notificationsSubtitle": "Acompanhe o status das campanhas e não perca o que está por vir",
-    "@notificationsSubtitle": {
-      "description": "Subtitle for notifications permission"
-    },
-    "microphoneTitle": "Permitir microfone",
-    "@microphoneTitle": {
-      "description": "Title for microphone permission"
-    },
-    "microphoneSubtitle": "Gravar campanhas de áudio e reproduzir conteúdo promocional",
-    "@microphoneSubtitle": {
-      "description": "Subtitle for microphone permission"
-    },
-    "allowAllPermissions": "Permitir todos os acessos",
-    "@allowAllPermissions": {
-      "description": "Button text to allow all permissions"
-    },
-    "continueButton": "Continuar",
-    "@continueButton": {
-      "description": "Button text to continue to next screen"
-    },
-    "permissionGranted": "Permissão concedida",
-    "@permissionGranted": {
-      "description": "Text indicating permission has been granted"
-    },
-    "locationPermissionRequiredTitle": "Permissão de localização necessária",
-    "@locationPermissionRequiredTitle": {
-      "description": "Title for location permission dialog"
-    },
-    "locationPermissionExplanation": "Precisamos de acesso à sua localização para mostrar campanhas perto de você e ajudar com a navegação.",
-    "@locationPermissionExplanation": {
-      "description": "Explanation for why location permission is needed"
-    },
-    "cancel": "Cancelar",
-    "@cancel": {
-      "description": "Button text to cancel an action"
-    },
-    "allow": "Permitir",
-    "@allow": {
-      "description": "Button text to allow permission"
-    },
-    "permissionDenied": "Permissão negada",
-    "@permissionDenied": {
-      "description": "Title when permission is denied"
-    },
-    "permissionPermanentlyDenied": "As permissões foram negadas permanentemente. Por favor, vá às configurações para habilitá-las.",
-    "@permissionPermanentlyDenied": {
-      "description": "Message when permissions are permanently denied"
-    },
-    "settings": "Configurações",
-    "@settings": {
-      "description": "Button text to open app settings"
-    },
-    "granted": "Concedido",
-    "@granted": {
-      "description": "Status text when permission is granted"
-    },
-    "required": "Necessário",
-    "@required": {
-      "description": "Status text when permission is required"
-    },
-    "optional": "Opcional",
-    "@optional": {
-      "description": "Status text when permission is optional"
-    },
-    "chooseRoleTitle": "Anunciante ou promotor?\nEscolha seu papel",
-    "@chooseRoleTitle": {
-      "description": "Main title for the choose role screen"
-    },
-    "chooseRoleSubtitle": "Como você prefere usar o PromoRuta?",
-    "@chooseRoleSubtitle": {
-      "description": "Subtitle for the choose role screen"
-    },
-    "advertiserTitle": "Sou anunciante",
-    "@advertiserTitle": {
-      "description": "Title for the advertiser role option"
-    },
-    "advertiserDescription": "Crie campanhas de áudio, escolha rotas e receba relatórios sobre como sua mensagem foi transmitida",
-    "@advertiserDescription": {
-      "description": "Description for the advertiser role"
-    },
-    "promoterTitle": "Sou promotor",
-    "@promoterTitle": {
-      "description": "Title for the promoter role option"
-    },
-    "promoterDescription": "Procure oportunidades próximas, aceite campanhas e ganhe renda com publicidade sonora",
-    "@promoterDescription": {
-        "description": "Description for the promoter role"
-    },
-    "appName": "PROMORUTA",
-    "@appName": {
-        "description": "Application name"
-    },
-    "welcomeBack": "Bem-vindo de volta!",
-    "@welcomeBack": {
-        "description": "Welcome back message"
-    },
-    "loginToContinue": "Faça login para continuar",
-    "@loginToContinue": {
-        "description": "Prompt to log in to continue"
-    },
-    "enterCredentials": "Digite suas credenciais para acessar sua conta",
-    "@enterCredentials": {
-        "description": "Instruction to enter credentials"
-    },
-    "emailLabel": "Email",
-    "@emailLabel": {
-        "description": "Label for email field"
-    },
-    "emailHint": "myemail@email.com",
-    "@emailHint": {
-        "description": "Hint text for email input"
-    },
-    "pleaseEnterEmail": "Por favor, digite seu email",
-    "@pleaseEnterEmail": {
-        "description": "Validation message for empty email"
-    },
-    "enterValidEmail": "Digite um email válido",
-    "@enterValidEmail": {
-        "description": "Validation message for invalid email"
-    },
-    "passwordLabel": "Senha",
-    "@passwordLabel": {
-        "description": "Label for password field"
-    },
-    "passwordHint": "Digite sua senha",
-    "@passwordHint": {
-        "description": "Hint text for password input"
-    },
-    "pleaseEnterPassword": "Por favor, digite sua senha",
-    "@pleaseEnterPassword": {
-        "description": "Validation message for empty password"
-    },
-    "passwordMinLength": "A senha deve ter pelo menos 6 caracteres",
-    "@passwordMinLength": {
-        "description": "Validation message for short password"
-    },
-    "forgotPassword": "Esqueceu sua senha?",
-    "@forgotPassword": {
-        "description": "Forgot password link text"
-    },
-    "orContinueWith": "OU CONTINUE COM",
-    "@orContinueWith": {
-        "description": "Divider text for social login"
-    },
-    "noAccountYet": "Ainda não tem uma conta? ",
-    "@noAccountYet": {
-        "description": "Text before sign up link"
-    },
-    "signUp": "Inscrever-se",
-    "@signUp": {
-        "description": "Sign up button text"
-    }
+  "@@locale": "pt",
+  "welcomeMessage": "Bem-vindo ao PromoRuta",
+  "@welcomeMessage": {
+    "description": "Welcome message displayed to users"
+  },
+  "description": "Conecte anunciantes com promotores para campanhas eficazes.",
+  "@description": {
+    "description": "Description of the application"
+  },
+  "start": "Começar",
+  "@start": {
+    "description": "Label for the button to start the onboarding or process"
+  },
+  "next": "Próximo",
+  "@next": {
+    "description": "Label for the button to go to the next step"
+  },
+  "login": "Entrar",
+  "@login": {
+    "description": "Label for the login button"
+  },
+  "permissionsAccess": "Permissões e Acessos",
+  "@permissionsAccess": {
+    "description": "Title for the permissions and access screen"
+  },
+  "permissionsSubtitle": "Ative essas permissões para uma melhor experiência",
+  "@permissionsSubtitle": {
+    "description": "Subtitle explaining why permissions are needed"
+  },
+  "locationTitle": "Acesso à sua localização",
+  "@locationTitle": {
+    "description": "Title for location permission"
+  },
+  "locationSubtitle": "Essencial para seguir a rota e ver campanhas perto de você",
+  "@locationSubtitle": {
+    "description": "Subtitle for location permission"
+  },
+  "notificationsTitle": "Notificações",
+  "@notificationsTitle": {
+    "description": "Title for notifications permission"
+  },
+  "notificationsSubtitle": "Acompanhe o status das campanhas e não perca o que está por vir",
+  "@notificationsSubtitle": {
+    "description": "Subtitle for notifications permission"
+  },
+  "microphoneTitle": "Permitir microfone",
+  "@microphoneTitle": {
+    "description": "Title for microphone permission"
+  },
+  "microphoneSubtitle": "Gravar campanhas de áudio e reproduzir conteúdo promocional",
+  "@microphoneSubtitle": {
+    "description": "Subtitle for microphone permission"
+  },
+  "allowAllPermissions": "Permitir todos os acessos",
+  "@allowAllPermissions": {
+    "description": "Button text to allow all permissions"
+  },
+  "continueButton": "Continuar",
+  "@continueButton": {
+    "description": "Button text to continue to next screen"
+  },
+  "permissionGranted": "Permissão concedida",
+  "@permissionGranted": {
+    "description": "Text indicating permission has been granted"
+  },
+  "locationPermissionRequiredTitle": "Permissão de localização necessária",
+  "@locationPermissionRequiredTitle": {
+    "description": "Title for location permission dialog"
+  },
+  "locationPermissionExplanation": "Precisamos de acesso à sua localização para mostrar campanhas perto de você e ajudar com a navegação.",
+  "@locationPermissionExplanation": {
+    "description": "Explanation for why location permission is needed"
+  },
+  "cancel": "Cancelar",
+  "@cancel": {
+    "description": "Button text to cancel an action"
+  },
+  "allow": "Permitir",
+  "@allow": {
+    "description": "Button text to allow permission"
+  },
+  "permissionDenied": "Permissão negada",
+  "@permissionDenied": {
+    "description": "Title when permission is denied"
+  },
+  "permissionPermanentlyDenied": "As permissões foram negadas permanentemente. Por favor, vá às configurações para habilitá-las.",
+  "@permissionPermanentlyDenied": {
+    "description": "Message when permissions are permanently denied"
+  },
+  "settings": "Configurações",
+  "@settings": {
+    "description": "Button text to open app settings"
+  },
+  "granted": "Concedido",
+  "@granted": {
+    "description": "Status text when permission is granted"
+  },
+  "required": "Necessário",
+  "@required": {
+    "description": "Status text when permission is required"
+  },
+  "optional": "Opcional",
+  "@optional": {
+    "description": "Status text when permission is optional"
+  },
+  "chooseRoleTitle": "Anunciante ou promotor?\nEscolha seu papel",
+  "@chooseRoleTitle": {
+    "description": "Main title for the choose role screen"
+  },
+  "chooseRoleSubtitle": "Como você prefere usar o PromoRuta?",
+  "@chooseRoleSubtitle": {
+    "description": "Subtitle for the choose role screen"
+  },
+  "advertiserTitle": "Sou anunciante",
+  "@advertiserTitle": {
+    "description": "Title for the advertiser role option"
+  },
+  "advertiserDescription": "Crie campanhas de áudio, escolha rotas e receba relatórios sobre como sua mensagem foi transmitida",
+  "@advertiserDescription": {
+    "description": "Description for the advertiser role"
+  },
+  "promoterTitle": "Sou promotor",
+  "@promoterTitle": {
+    "description": "Title for the promoter role option"
+  },
+  "promoterDescription": "Procure oportunidades próximas, aceite campanhas e ganhe renda com publicidade sonora",
+  "@promoterDescription": {
+    "description": "Description for the promoter role"
+  },
+  "appName": "PROMORUTA",
+  "@appName": {
+    "description": "Application name"
+  },
+  "welcomeBack": "Bem-vindo de volta!",
+  "@welcomeBack": {
+    "description": "Welcome back message"
+  },
+  "loginToContinue": "Faça login para continuar",
+  "@loginToContinue": {
+    "description": "Prompt to log in to continue"
+  },
+  "enterCredentials": "Digite suas credenciais para acessar sua conta",
+  "@enterCredentials": {
+    "description": "Instruction to enter credentials"
+  },
+  "emailLabel": "Email",
+  "@emailLabel": {
+    "description": "Label for email field"
+  },
+  "emailHint": "myemail@email.com",
+  "@emailHint": {
+    "description": "Hint text for email input"
+  },
+  "pleaseEnterEmail": "Por favor, digite seu email",
+  "@pleaseEnterEmail": {
+    "description": "Validation message for empty email"
+  },
+  "enterValidEmail": "Digite um email válido",
+  "@enterValidEmail": {
+    "description": "Validation message for invalid email"
+  },
+  "passwordLabel": "Senha",
+  "@passwordLabel": {
+    "description": "Label for password field"
+  },
+  "passwordHint": "Digite sua senha",
+  "@passwordHint": {
+    "description": "Hint text for password input"
+  },
+  "pleaseEnterPassword": "Por favor, digite sua senha",
+  "@pleaseEnterPassword": {
+    "description": "Validation message for empty password"
+  },
+  "passwordMinLength": "A senha deve ter pelo menos 6 caracteres",
+  "@passwordMinLength": {
+    "description": "Validation message for short password"
+  },
+  "forgotPassword": "Esqueceu sua senha?",
+  "@forgotPassword": {
+    "description": "Forgot password link text"
+  },
+  "orContinueWith": "OU CONTINUE COM",
+  "@orContinueWith": {
+    "description": "Divider text for social login"
+  },
+  "noAccountYet": "Ainda não tem uma conta? ",
+  "@noAccountYet": {
+    "description": "Text before sign up link"
+  },
+  "signUp": "Inscrever-se",
+  "@signUp": {
+    "description": "Sign up button text"
+  },
+  "goodMorning": "Bom dia",
+  "@goodMorning": {
+    "description": "Greeting in the morning"
+  },
+  "readyToCreateNextCampaign": "Pronto para criar sua próxima campanha",
+  "@readyToCreateNextCampaign": {
+    "description": "Subtitle for the home screen"
+  },
+  "createCampaignWip": "Criar campanha (WIP)",
+  "@createCampaignWip": {
+    "description": "Snackbar message for create campaign button"
+  },
+  "home": "Início",
+  "@home": {
+    "description": "Bottom navigation label for home"
+  },
+  "campaigns": "Campanhas",
+  "@campaigns": {
+    "description": "Bottom navigation label for campaigns"
+  },
+  "live": "Ao vivo",
+  "@live": {
+    "description": "Bottom navigation label for live"
+  },
+  "history": "Histórico",
+  "@history": {
+    "description": "Bottom navigation label for history"
+  },
+  "profile": "Perfil",
+  "@profile": {
+    "description": "Bottom navigation label for profile"
+  },
+  "active": "Ativas",
+  "@active": {
+    "description": "Label for active campaigns"
+  },
+  "zonesCovered": "Zonas percorridas",
+  "@zonesCovered": {
+    "description": "Label for zones covered stat"
+  },
+  "thisWeek": "esta semana",
+  "@thisWeek": {
+    "description": "Time period for stats"
+  },
+  "investment": "Investimento",
+  "@investment": {
+    "description": "Label for investment stat"
+  },
+  "accumulated": "acumulado",
+  "@accumulated": {
+    "description": "Label for accumulated investment"
+  },
+  "activeCampaigns": "Campanhas ativas",
+  "@activeCampaigns": {
+    "description": "Section header for active campaigns"
+  },
+  "seeAll": "Ver todas",
+  "@seeAll": {
+    "description": "Button text to see all campaigns"
+  },
+  "seeAllWip": "Ver todas (WIP)",
+  "@seeAllWip": {
+    "description": "Snackbar message for see all button"
+  },
+  "createYourFirstCampaign": "Crie sua primeira campanha",
+  "@createYourFirstCampaign": {
+    "description": "Title for create first campaign card"
+  },
+  "designAudioAdMarkRouteStartPromoting": "Crie um anúncio de áudio, marque sua rota e comece a promover",
+  "@designAudioAdMarkRouteStartPromoting": {
+    "description": "Description for create first campaign card"
+  },
+  "startCampaign": "Iniciar campanha",
+  "@startCampaign": {
+    "description": "Button text to start campaign"
+  },
+  "startCampaignWip": "Iniciar campanha (WIP)",
+  "@startCampaignWip": {
+    "description": "Snackbar message for start campaign button"
+  },
+  "coffeeShopPromotion": "Promoção Cafeteria",
+  "@coffeeShopPromotion": {
+    "description": "Campaign title example"
+  },
+  "today": "Hoje",
+  "@today": {
+    "description": "Time label for today"
+  },
+  "route": "Rota",
+  "@route": {
+    "description": "Label for route metric"
+  },
+  "audio": "Áudio",
+  "@audio": {
+    "description": "Label for audio metric"
+  },
+  "completed": "Concluído",
+  "@completed": {
+    "description": "Label for completed metric"
+  },
+  "twoActivePromoters": "2 Promotores ativos",
+  "@twoActivePromoters": {
+    "description": "Subtitle for campaign card"
+  },
+  "storeOpening": "Abertura da Loja",
+  "@storeOpening": {
+    "description": "Campaign title example"
+  },
+  "pending": "Pendente",
+  "@pending": {
+    "description": "Status label for pending"
+  },
+  "waitingForPromoters": "Aguardando promotores",
+  "@waitingForPromoters": {
+    "description": "Subtitle for pending campaign"
+  },
+  "placeholderPending": " (pendente)",
+  "@placeholderPending": {
+    "description": "Suffix for placeholder tabs"
   }
+}

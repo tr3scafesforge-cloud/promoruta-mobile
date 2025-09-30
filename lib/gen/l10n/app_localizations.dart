@@ -384,6 +384,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign up'**
   String get signUp;
+
+  /// Greeting in the morning
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning'**
+  String get goodMorning;
+
+  /// Subtitle for the home screen
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to create your next campaign'**
+  String get readyToCreateNextCampaign;
+
+  /// Snackbar message for create campaign button
+  ///
+  /// In en, this message translates to:
+  /// **'Create campaign (WIP)'**
+  String get createCampaignWip;
+
+  /// Bottom navigation label for home
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
+
+  /// Bottom navigation label for campaigns
+  ///
+  /// In en, this message translates to:
+  /// **'Campaigns'**
+  String get campaigns;
+
+  /// Bottom navigation label for live
+  ///
+  /// In en, this message translates to:
+  /// **'Live'**
+  String get live;
+
+  /// Bottom navigation label for history
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get history;
+
+  /// Bottom navigation label for profile
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// Label for active campaigns
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get active;
+
+  /// Label for zones covered stat
+  ///
+  /// In en, this message translates to:
+  /// **'Zones covered'**
+  String get zonesCovered;
+
+  /// Time period for stats
+  ///
+  /// In en, this message translates to:
+  /// **'this week'**
+  String get thisWeek;
+
+  /// Label for investment stat
+  ///
+  /// In en, this message translates to:
+  /// **'Investment'**
+  String get investment;
+
+  /// Label for accumulated investment
+  ///
+  /// In en, this message translates to:
+  /// **'accumulated'**
+  String get accumulated;
+
+  /// Section header for active campaigns
+  ///
+  /// In en, this message translates to:
+  /// **'Active campaigns'**
+  String get activeCampaigns;
+
+  /// Button text to see all campaigns
+  ///
+  /// In en, this message translates to:
+  /// **'See all'**
+  String get seeAll;
+
+  /// Snackbar message for see all button
+  ///
+  /// In en, this message translates to:
+  /// **'See all (WIP)'**
+  String get seeAllWip;
+
+  /// Title for create first campaign card
+  ///
+  /// In en, this message translates to:
+  /// **'Create your first campaign'**
+  String get createYourFirstCampaign;
+
+  /// Description for create first campaign card
+  ///
+  /// In en, this message translates to:
+  /// **'Design an audio ad, mark your route and start promoting'**
+  String get designAudioAdMarkRouteStartPromoting;
+
+  /// Button text to start campaign
+  ///
+  /// In en, this message translates to:
+  /// **'Start campaign'**
+  String get startCampaign;
+
+  /// Snackbar message for start campaign button
+  ///
+  /// In en, this message translates to:
+  /// **'Start campaign (WIP)'**
+  String get startCampaignWip;
+
+  /// Campaign title example
+  ///
+  /// In en, this message translates to:
+  /// **'Coffee Shop Promotion'**
+  String get coffeeShopPromotion;
+
+  /// Time label for today
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
+
+  /// Label for route metric
+  ///
+  /// In en, this message translates to:
+  /// **'Route'**
+  String get route;
+
+  /// Label for audio metric
+  ///
+  /// In en, this message translates to:
+  /// **'Audio'**
+  String get audio;
+
+  /// Label for completed metric
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completed;
+
+  /// Subtitle for campaign card
+  ///
+  /// In en, this message translates to:
+  /// **'2 Active promoters'**
+  String get twoActivePromoters;
+
+  /// Campaign title example
+  ///
+  /// In en, this message translates to:
+  /// **'Store Opening'**
+  String get storeOpening;
+
+  /// Status label for pending
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get pending;
+
+  /// Subtitle for pending campaign
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for promoters'**
+  String get waitingForPromoters;
+
+  /// Suffix for placeholder tabs
+  ///
+  /// In en, this message translates to:
+  /// **' (pending)'**
+  String get placeholderPending;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

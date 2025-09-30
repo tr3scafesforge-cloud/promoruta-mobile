@@ -149,4 +149,94 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get signUp => 'Sign up';
+
+  @override
+  String get goodMorning => 'Good morning';
+
+  @override
+  String get readyToCreateNextCampaign => 'Ready to create your next campaign';
+
+  @override
+  String get createCampaignWip => 'Create campaign (WIP)';
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get campaigns => 'Campaigns';
+
+  @override
+  String get live => 'Live';
+
+  @override
+  String get history => 'History';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get active => 'Active';
+
+  @override
+  String get zonesCovered => 'Zones covered';
+
+  @override
+  String get thisWeek => 'this week';
+
+  @override
+  String get investment => 'Investment';
+
+  @override
+  String get accumulated => 'accumulated';
+
+  @override
+  String get activeCampaigns => 'Active campaigns';
+
+  @override
+  String get seeAll => 'See all';
+
+  @override
+  String get seeAllWip => 'See all (WIP)';
+
+  @override
+  String get createYourFirstCampaign => 'Create your first campaign';
+
+  @override
+  String get designAudioAdMarkRouteStartPromoting => 'Design an audio ad, mark your route and start promoting';
+
+  @override
+  String get startCampaign => 'Start campaign';
+
+  @override
+  String get startCampaignWip => 'Start campaign (WIP)';
+
+  @override
+  String get coffeeShopPromotion => 'Coffee Shop Promotion';
+
+  @override
+  String get today => 'Today';
+
+  @override
+  String get route => 'Route';
+
+  @override
+  String get audio => 'Audio';
+
+  @override
+  String get completed => 'Completed';
+
+  @override
+  String get twoActivePromoters => '2 Active promoters';
+
+  @override
+  String get storeOpening => 'Store Opening';
+
+  @override
+  String get pending => 'Pending';
+
+  @override
+  String get waitingForPromoters => 'Waiting for promoters';
+
+  @override
+  String get placeholderPending => ' (pending)';
 }

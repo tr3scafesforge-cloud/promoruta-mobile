@@ -191,5 +191,125 @@
   "signUp": "Regístrate",
   "@signUp": {
     "description": "Sign up button text"
+  },
+  "goodMorning": "Buenos días",
+  "@goodMorning": {
+    "description": "Greeting in the morning"
+  },
+  "readyToCreateNextCampaign": "Listo para crear tu próxima campaña",
+  "@readyToCreateNextCampaign": {
+    "description": "Subtitle for the home screen"
+  },
+  "createCampaignWip": "Crear campaña (WIP)",
+  "@createCampaignWip": {
+    "description": "Snackbar message for create campaign button"
+  },
+  "home": "Inicio",
+  "@home": {
+    "description": "Bottom navigation label for home"
+  },
+  "campaigns": "Campañas",
+  "@campaigns": {
+    "description": "Bottom navigation label for campaigns"
+  },
+  "live": "En vivo",
+  "@live": {
+    "description": "Bottom navigation label for live"
+  },
+  "history": "Historial",
+  "@history": {
+    "description": "Bottom navigation label for history"
+  },
+  "profile": "Perfil",
+  "@profile": {
+    "description": "Bottom navigation label for profile"
+  },
+  "active": "Activas",
+  "@active": {
+    "description": "Label for active campaigns"
+  },
+  "zonesCovered": "Zonas recorridas",
+  "@zonesCovered": {
+    "description": "Label for zones covered stat"
+  },
+  "thisWeek": "esta semana",
+  "@thisWeek": {
+    "description": "Time period for stats"
+  },
+  "investment": "Inversión",
+  "@investment": {
+    "description": "Label for investment stat"
+  },
+  "accumulated": "acumulada",
+  "@accumulated": {
+    "description": "Label for accumulated investment"
+  },
+  "activeCampaigns": "Campañas activas",
+  "@activeCampaigns": {
+    "description": "Section header for active campaigns"
+  },
+  "seeAll": "Ver todas",
+  "@seeAll": {
+    "description": "Button text to see all campaigns"
+  },
+  "seeAllWip": "Ver todas (WIP)",
+  "@seeAllWip": {
+    "description": "Snackbar message for see all button"
+  },
+  "createYourFirstCampaign": "Crea tu primera campaña",
+  "@createYourFirstCampaign": {
+    "description": "Title for create first campaign card"
+  },
+  "designAudioAdMarkRouteStartPromoting": "Diseñá un aviso de audio, marcá tu recorrido y empezá a promocionar",
+  "@designAudioAdMarkRouteStartPromoting": {
+    "description": "Description for create first campaign card"
+  },
+  "startCampaign": "Iniciar campaña",
+  "@startCampaign": {
+    "description": "Button text to start campaign"
+  },
+  "startCampaignWip": "Iniciar campaña (WIP)",
+  "@startCampaignWip": {
+    "description": "Snackbar message for start campaign button"
+  },
+  "coffeeShopPromotion": "Promoción Cafetería",
+  "@coffeeShopPromotion": {
+    "description": "Campaign title example"
+  },
+  "today": "Hoy",
+  "@today": {
+    "description": "Time label for today"
+  },
+  "route": "Ruta",
+  "@route": {
+    "description": "Label for route metric"
+  },
+  "audio": "Audio",
+  "@audio": {
+    "description": "Label for audio metric"
+  },
+  "completed": "Completado",
+  "@completed": {
+    "description": "Label for completed metric"
+  },
+  "twoActivePromoters": "2 Promotores activos",
+  "@twoActivePromoters": {
+    "description": "Subtitle for campaign card"
+  },
+  "storeOpening": "Apertura Tienda",
+  "@storeOpening": {
+    "description": "Campaign title example"
+  },
+  "pending": "Pendiente",
+  "@pending": {
+    "description": "Status label for pending"
+  },
+  "waitingForPromoters": "Esperando promotores",
+  "@waitingForPromoters": {
+    "description": "Subtitle for pending campaign"
+  },
+  "placeholderPending": " (pendiente)",
+  "@placeholderPending": {
+    "description": "Suffix for placeholder tabs"
   }
 }
