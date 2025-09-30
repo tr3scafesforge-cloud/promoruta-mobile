@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/core/constants/colors.dart';
+import 'package:promoruta/gen/l10n/app_localizations.dart';
 
 class AdvertiserHomeScreen extends StatefulWidget {
   const AdvertiserHomeScreen({super.key});
@@ -13,6 +14,8 @@ class _AdvertiserHomeScreenState extends State<AdvertiserHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF3F5F7),
       appBar: AppBar(
@@ -23,13 +26,13 @@ class _AdvertiserHomeScreenState extends State<AdvertiserHomeScreen> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Buenos días',
+            Text(l10n.goodMorning,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w700,
                     )),
             const SizedBox(height: 2),
             Text(
-              'Listo para crear tu próxima campaña',
+              l10n.readyToCreateNextCampaign,
               style: Theme.of(context)
                   .textTheme
                   .bodySmall
@@ -38,12 +41,14 @@ class _AdvertiserHomeScreenState extends State<AdvertiserHomeScreen> {
           ],
         ),
       ),
-      body: _currentIndex == 0 ? const _HomeContent() : _PlaceholderTab(index: _currentIndex),
+      body: _currentIndex == 0
+          ? _HomeContent(l10n: l10n)
+          : _PlaceholderTab(index: _currentIndex, l10n: l10n),
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.primary,
         onPressed: () {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Crear campaña (WIP)')),
+            SnackBar(content: Text(l10n.createCampaignWip)),
           );
         },
         child: const Icon(Icons.add),
@@ -56,12 +61,12 @@ class _AdvertiserHomeScreenState extends State<AdvertiserHomeScreen> {
         onTap: (i) {
           setState(() => _currentIndex = i);
         },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home_rounded), label: 'Inicio'),
-          BottomNavigationBarItem(icon: Icon(Icons.view_list_rounded), label: 'Campañas'),
-          BottomNavigationBarItem(icon: Icon(Icons.podcasts_rounded), label: 'En vivo'),
-          BottomNavigationBarItem(icon: Icon(Icons.history_rounded), label: 'Historial'),
-          BottomNavigationBarItem(icon: Icon(Icons.person_rounded), label: 'Perfil'),
+        items: [
+          BottomNavigationBarItem(icon: const Icon(Icons.home_rounded), label: l10n.home),
+          BottomNavigationBarItem(icon: const Icon(Icons.view_list_rounded), label: l10n.campaigns),
+          BottomNavigationBarItem(icon: const Icon(Icons.podcasts_rounded), label: l10n.live),
+          BottomNavigationBarItem(icon: const Icon(Icons.history_rounded), label: l10n.history),
+          BottomNavigationBarItem(icon: const Icon(Icons.person_rounded), label: l10n.profile),
         ],
       ),
     );
@@ -69,7 +74,8 @@ class _AdvertiserHomeScreenState extends State<AdvertiserHomeScreen> {
 }
 
 class _HomeContent extends StatelessWidget {
-  const _HomeContent();
+  final AppLocalizations l10n;
+  const _HomeContent({required this.l10n});
 
   @override
   Widget build(BuildContext context) {
@@ -78,31 +84,31 @@ class _HomeContent extends StatelessWidget {
       children: [
         // KPI cards
         Row(
-          children: const [
+          children: [
             Expanded(
               child: _StatCard(
                 icon: Icons.trending_up_rounded,
                 value: '3',
-                labelTop: 'Campañas',
-                labelBottom: 'Activas',
+                labelTop: l10n.campaigns,
+                labelBottom: l10n.active,
               ),
             ),
-            SizedBox(width: 12),
+            const SizedBox(width: 12),
             Expanded(
               child: _StatCard(
                 icon: Icons.place_rounded,
                 value: '12',
-                labelTop: 'Zonas recorridas',
-                labelBottom: 'esta semana',
+                labelTop: l10n.zonesCovered,
+                labelBottom: l10n.thisWeek,
               ),
             ),
-            SizedBox(width: 12),
+            const SizedBox(width: 12),
             Expanded(
               child: _StatCard(
                 icon: Icons.attach_money_rounded,
                 value: '\$284',
-                labelTop: 'Inversión',
-                labelBottom: 'acumulada',
+                labelTop: l10n.investment,
+                labelBottom: l10n.accumulated,
               ),
             ),
           ],
@@ -110,7 +116,7 @@ class _HomeContent extends StatelessWidget {
         const SizedBox(height: 16),
 
         // First campaign card
-        const _CreateFirstCampaignCard(),
+        _CreateFirstCampaignCard(l10n: l10n),
 
         const SizedBox(height: 16),
 
@@ -118,52 +124,52 @@ class _HomeContent extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Campañas activas',
+            Text(l10n.activeCampaigns,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w700,
                     )),
             TextButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Ver todas (WIP)')),
+                  SnackBar(content: Text(l10n.seeAllWip)),
                 );
               },
-              child: const Text('Ver todas'),
+              child: Text(l10n.seeAll),
             ),
           ],
         ),
 
         // Campaign list
-        const _CampaignCard(
+        _CampaignCard(
           icon: Icons.play_circle_fill_rounded,
           iconColor: Colors.teal,
-          title: 'Promoción Cafetería',
-          statusChipLabel: 'En vivo',
-          statusChipColor: Color(0xFFE6F4FF),
+          title: l10n.coffeeShopPromotion,
+          statusChipLabel: l10n.active,
+          statusChipColor: const Color(0xFFE6F4FF),
           rightAmount: '\$48.20',
-          rightSubtitle: 'Hoy',
+          rightSubtitle: l10n.today,
           metrics: [
-            _CampaignMetric(value: '2.4km', label: 'Ruta'),
-            _CampaignMetric(value: '45s', label: 'Audio'),
-            _CampaignMetric(value: '68%', label: 'Completado'),
+            _CampaignMetric(value: '2.4km', label: l10n.route),
+            _CampaignMetric(value: '45s', label: l10n.audio),
+            _CampaignMetric(value: '68%', label: l10n.completed),
           ],
-          subtitle: '2 Promotores activos',
+          subtitle: l10n.twoActivePromoters,
         ),
         const SizedBox(height: 12),
-        const _CampaignCard(
+        _CampaignCard(
           icon: Icons.schedule_rounded,
-          iconColor: Color(0xFFFFB74D),
-          title: 'Apertura Tienda',
-          statusChipLabel: 'Pendiente',
-          statusChipColor: Color(0xFFFFF3E0),
+          iconColor: const Color(0xFFFFB74D),
+          title: l10n.storeOpening,
+          statusChipLabel: l10n.pending,
+          statusChipColor: const Color(0xFFFFF3E0),
           rightAmount: '\$0.00',
-          rightSubtitle: 'Hoy',
+          rightSubtitle: l10n.today,
           metrics: [
-            _CampaignMetric(value: '1.8km', label: 'Ruta'),
-            _CampaignMetric(value: '30s', label: 'Audio'),
-            _CampaignMetric(value: '0%', label: 'Completado'),
+            _CampaignMetric(value: '1.8km', label: l10n.route),
+            _CampaignMetric(value: '30s', label: l10n.audio),
+            _CampaignMetric(value: '0%', label: l10n.completed),
           ],
-          subtitle: 'Esperando promotores',
+          subtitle: l10n.waitingForPromoters,
         ),
       ],
     );
@@ -226,7 +232,8 @@ class _StatCard extends StatelessWidget {
 }
 
 class _CreateFirstCampaignCard extends StatelessWidget {
-  const _CreateFirstCampaignCard();
+  final AppLocalizations l10n;
+  const _CreateFirstCampaignCard({required this.l10n});
 
   @override
   Widget build(BuildContext context) {
@@ -252,13 +259,13 @@ class _CreateFirstCampaignCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Crea tu primera campaña',
+                  Text(l10n.createYourFirstCampaign,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w700,
                           )),
                   const SizedBox(height: 4),
                   Text(
-                    'Diseñá un aviso de audio, marcá tu recorrido y empezá a promocionar',
+                    l10n.designAudioAdMarkRouteStartPromoting,
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall
@@ -276,10 +283,10 @@ class _CreateFirstCampaignCard extends StatelessWidget {
                       ),
                       onPressed: () {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Iniciar campaña (WIP)')),
+                          SnackBar(content: Text(l10n.startCampaignWip)),
                         );
                       },
-                      child: const Text('Iniciar campaña'),
+                      child: Text(l10n.startCampaign),
                     ),
                   )
                 ],
@@ -447,20 +454,28 @@ class _CampaignMetric {
 
 class _PlaceholderTab extends StatelessWidget {
   final int index;
-  const _PlaceholderTab({required this.index});
+  final AppLocalizations l10n;
+  const _PlaceholderTab({required this.index, required this.l10n});
 
-  String get _label => switch (index) {
-        1 => 'Campañas',
-        2 => 'En vivo',
-        3 => 'Historial',
-        4 => 'Perfil',
-        _ => 'Inicio'
-      };
+  String get _label {
+    switch (index) {
+      case 1:
+        return l10n.campaigns;
+      case 2:
+        return l10n.live;
+      case 3:
+        return l10n.history;
+      case 4:
+        return l10n.profile;
+      default:
+        return l10n.home;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('$_label (pendiente)',
+      child: Text('${_label}${l10n.placeholderPending}',
           style: Theme.of(context).textTheme.titleMedium),
     );
   }
