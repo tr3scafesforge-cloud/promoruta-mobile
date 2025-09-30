@@ -34,26 +34,30 @@ class PermissionHelper {
 
     if (hasPermission) return true;
 
-    // Show dialog explaining why we need the permission
+    if (!context.mounted) return false;
+
     final shouldRequest = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(AppLocalizations.of(context).locationPermissionRequiredTitle),
+        title:
+            Text(AppLocalizations.of(context).locationPermissionRequiredTitle),
         content: Text(
           AppLocalizations.of(context).locationPermissionExplanation,
         ),
         actions: [
-           TextButton(
-             onPressed: () => Navigator.of(context).pop(false),
-             child: Text(AppLocalizations.of(context).cancel),
-           ),
-           ElevatedButton(
-             onPressed: () => Navigator.of(context).pop(true),
-             child: Text(AppLocalizations.of(context).allow),
-           ),
-         ],
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(AppLocalizations.of(context).cancel),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(AppLocalizations.of(context).allow),
+          ),
+        ],
       ),
     );
+
+    if (!context.mounted) return false;
 
     if (shouldRequest == true) {
       return await permissionNotifier.requestLocationPermission();
@@ -72,37 +76,39 @@ class PermissionHelper {
           AppLocalizations.of(context).permissionPermanentlyDenied,
         ),
         actions: [
-           TextButton(
-             onPressed: () => Navigator.of(context).pop(),
-             child: Text(AppLocalizations.of(context).cancel),
-           ),
-           ElevatedButton(
-             onPressed: () {
-               Navigator.of(context).pop();
-               openAppSettings();
-             },
-             child: Text(AppLocalizations.of(context).settings),
-           ),
-         ],
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(AppLocalizations.of(context).cancel),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              openAppSettings();
+            },
+            child: Text(AppLocalizations.of(context).settings),
+          ),
+        ],
       ),
     );
+
+    if (!context.mounted) return;
   }
 }
 
 // Extension to easily check permissions in any widget
 extension PermissionStateExtension on PermissionState {
-   String getLocationStatusText(BuildContext context) {
-     if (locationGranted) return AppLocalizations.of(context).granted;
-     return AppLocalizations.of(context).required;
-   }
+  String getLocationStatusText(BuildContext context) {
+    if (locationGranted) return AppLocalizations.of(context).granted;
+    return AppLocalizations.of(context).required;
+  }
 
-   String getNotificationStatusText(BuildContext context) {
-     if (notificationGranted) return AppLocalizations.of(context).granted;
-     return AppLocalizations.of(context).optional;
-   }
+  String getNotificationStatusText(BuildContext context) {
+    if (notificationGranted) return AppLocalizations.of(context).granted;
+    return AppLocalizations.of(context).optional;
+  }
 
-   String getMicrophoneStatusText(BuildContext context) {
-     if (microphoneGranted) return AppLocalizations.of(context).granted;
-     return AppLocalizations.of(context).optional;
-   }
+  String getMicrophoneStatusText(BuildContext context) {
+    if (microphoneGranted) return AppLocalizations.of(context).granted;
+    return AppLocalizations.of(context).optional;
+  }
 }
