@@ -221,12 +221,13 @@ class _CreateFirstCampaignCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   SizedBox(
-                    height: 40,
+                    height: 30,
+                    width: double.infinity,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
+                        backgroundColor: AppColors.secondary,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                       onPressed: () {
@@ -234,7 +235,14 @@ class _CreateFirstCampaignCard extends StatelessWidget {
                           SnackBar(content: Text(l10n.startCampaignWip)),
                         );
                       },
-                      child: Text(l10n.startCampaign),
+                      child: Text(
+                        l10n.startCampaign,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   )
                 ],
