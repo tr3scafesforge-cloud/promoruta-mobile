@@ -6,7 +6,7 @@ class AdvertiserCampaignsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     return Center(
       child: Text('${l10n.campaigns}${l10n.placeholderPending}',
           style: Theme.of(context).textTheme.titleMedium),
