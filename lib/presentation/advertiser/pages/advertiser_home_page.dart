@@ -30,6 +30,8 @@ class _HomeContent extends StatelessWidget {
                 value: '3',
                 labelTop: l10n.campaigns,
                 labelBottom: l10n.active,
+                iconColor: AppColors.blueDark,
+                backgroundColor: AppColors.blueDark.withValues(alpha: .2),
               ),
             ),
             const SizedBox(width: 12),
@@ -39,6 +41,8 @@ class _HomeContent extends StatelessWidget {
                 value: '12',
                 labelTop: l10n.zonesCovered,
                 labelBottom: l10n.thisWeek,
+                iconColor: AppColors.green,
+                backgroundColor: AppColors.green.withValues(alpha: .2),
               ),
             ),
             const SizedBox(width: 12),
@@ -48,6 +52,8 @@ class _HomeContent extends StatelessWidget {
                 value: '\$284',
                 labelTop: l10n.investment,
                 labelBottom: l10n.accumulated,
+                iconColor: AppColors.secondary,
+                backgroundColor: AppColors.secondary.withValues(alpha: .2),
               ),
             ),
           ],
@@ -119,12 +125,16 @@ class _StatCard extends StatelessWidget {
   final String value;
   final String labelTop;
   final String labelBottom;
+  final Color? iconColor;
+  final Color? backgroundColor;
 
   const _StatCard({
     required this.icon,
     required this.value,
     required this.labelTop,
     required this.labelBottom,
+    this.iconColor,
+    this.backgroundColor,
   });
 
   @override
@@ -139,8 +149,11 @@ class _StatCard extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 20,
-              backgroundColor: const Color(0xFFF0F6F5),
-              child: Icon(icon, color: AppColors.primary),
+              backgroundColor: backgroundColor ?? const Color(0xFFF0F6F5),
+              child: Icon(
+                icon,
+                color: iconColor ?? AppColors.secondary,
+              ),
             ),
             const SizedBox(height: 8),
             Text(
@@ -161,10 +174,9 @@ class _StatCard extends StatelessWidget {
             Text(
               labelBottom,
               textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .labelMedium
-                  ?.copyWith(color: Colors.grey[700]),
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
             ),
           ],
         ),
