@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
+import 'package:promoruta/shared/widgets/app_card.dart';
 
 class AdvertiserHomePage extends StatelessWidget {
   const AdvertiserHomePage({super.key});
@@ -139,49 +140,44 @@ class _StatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 0,
-      color: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(
-          children: [
-            CircleAvatar(
-              radius: 20,
-              backgroundColor: backgroundColor ?? const Color(0xFFF0F6F5),
-              child: Icon(
-                icon,
-                color: iconColor ?? AppColors.secondary,
-              ),
+    return AppCard(
+      padding: const EdgeInsets.all(14),
+      child: Column(
+        children: [
+          CircleAvatar(
+            radius: 20,
+            backgroundColor: backgroundColor ?? const Color(0xFFF0F6F5),
+            child: Icon(
+              icon,
+              color: iconColor ?? AppColors.secondary,
             ),
-            const SizedBox(height: 8),
-            Text(
-              value,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
-            ),
-            const SizedBox(height: 2),
-            Text(
-              labelTop,
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              style: Theme.of(context)
-                  .textTheme
-                  .labelMedium
-                  ?.copyWith(color: Colors.grey[700]),
-            ),
-            Text(
-              labelBottom,
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            value,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            labelTop,
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            style: Theme.of(context)
+                .textTheme
+                .labelMedium
+                ?.copyWith(color: Colors.grey[700]),
+          ),
+          Text(
+            labelBottom,
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+          ),
+        ],
       ),
     );
   }
@@ -193,84 +189,73 @@ class _CreateFirstCampaignCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 0,
-      color: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-        side: BorderSide(
-          color: AppColors.grayDarkStroke,
-          width: 1,
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            GestureDetector(
-              onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(l10n.createCampaignWip)),
-                );
-              },
-              child: Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: AppColors.secondary.withValues(alpha: .2),
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                child: Icon(Icons.add, color: AppColors.secondary, size: 28),
+    return AppCard(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          GestureDetector(
+            onTap: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(l10n.createCampaignWip)),
+              );
+            },
+            child: Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: AppColors.secondary.withValues(alpha: .2),
+                borderRadius: BorderRadius.circular(25),
               ),
+              child: Icon(Icons.add, color: AppColors.secondary, size: 28),
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(l10n.createYourFirstCampaign,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          )),
-                  const SizedBox(height: 4),
-                  Text(
-                    l10n.designAudioAdMarkRouteStartPromoting,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(color: Colors.grey[700]),
-                  ),
-                  const SizedBox(height: 12),
-                  SizedBox(
-                    height: 30,
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.secondary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(l10n.startCampaignWip)),
-                        );
-                      },
-                      child: Text(
-                        l10n.startCampaign,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(l10n.createYourFirstCampaign,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        )),
+                const SizedBox(height: 4),
+                Text(
+                  l10n.designAudioAdMarkRouteStartPromoting,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(color: Colors.grey[700]),
+                ),
+                const SizedBox(height: 12),
+                SizedBox(
+                  height: 30,
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.secondary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                  )
-                ],
-              ),
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(l10n.startCampaignWip)),
+                      );
+                    },
+                    child: Text(
+                      l10n.startCampaign,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                )
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -301,94 +286,89 @@ class _CampaignCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 0,
-      color: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(
-          children: [
-            // Header row
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CircleAvatar(
-                  radius: 18,
-                  backgroundColor: statusChipColor,
-                  child: Icon(icon, color: iconColor),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(title,
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                  )),
-                      const SizedBox(height: 4),
-                      Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 2),
-                            decoration: BoxDecoration(
-                              color: statusChipColor,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Text(
-                              statusChipLabel,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelSmall
-                                  ?.copyWith(color: Colors.grey[800]),
-                            ),
+    return AppCard(
+      padding: const EdgeInsets.all(14),
+      child: Column(
+        children: [
+          // Header row
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CircleAvatar(
+                radius: 18,
+                backgroundColor: statusChipColor,
+                child: Icon(icon, color: iconColor),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title,
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                )),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: statusChipColor,
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                          const SizedBox(width: 8),
-                          Text(
-                            subtitle,
+                          child: Text(
+                            statusChipLabel,
                             style: Theme.of(context)
                                 .textTheme
-                                .labelMedium
-                                ?.copyWith(color: Colors.grey[700]),
+                                .labelSmall
+                                ?.copyWith(color: Colors.grey[800]),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      rightAmount,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w800,
-                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          subtitle,
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelMedium
+                              ?.copyWith(color: Colors.grey[700]),
+                        ),
+                      ],
                     ),
-                    Text(rightSubtitle,
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelSmall
-                            ?.copyWith(color: Colors.grey[700])),
                   ],
                 ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            // Metrics row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: metrics
-                  .map((m) => Expanded(
-                        child: _MetricTile(value: m.value, label: m.label),
-                      ))
-                  .toList(),
-            ),
-          ],
-        ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    rightAmount,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w800,
+                        ),
+                  ),
+                  Text(rightSubtitle,
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelSmall
+                          ?.copyWith(color: Colors.grey[700])),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          // Metrics row
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: metrics
+                .map((m) => Expanded(
+                      child: _MetricTile(value: m.value, label: m.label),
+                    ))
+                .toList(),
+          ),
+        ],
       ),
     );
   }

@@ -24,3 +24,6 @@ export 'datasources/local/db/database.dart';
 
 // Providers
 export 'providers/providers.dart';
+
+// Widgets
+export 'widgets/app_card.dart';
