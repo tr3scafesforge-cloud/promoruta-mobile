@@ -54,7 +54,6 @@ class _HomeContent extends StatelessWidget {
         ),
         const SizedBox(height: 16),
 
-        // First campaign card
         _CreateFirstCampaignCard(l10n: l10n),
 
         const SizedBox(height: 16),
@@ -154,14 +153,18 @@ class _StatCard extends StatelessWidget {
             Text(
               labelTop,
               textAlign: TextAlign.center,
-              style:
-                  Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.grey[700]),
+              style: Theme.of(context)
+                  .textTheme
+                  .labelMedium
+                  ?.copyWith(color: Colors.grey[700]),
             ),
             Text(
               labelBottom,
               textAlign: TextAlign.center,
-              style:
-                  Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.grey[700]),
+              style: Theme.of(context)
+                  .textTheme
+                  .labelMedium
+                  ?.copyWith(color: Colors.grey[700]),
             ),
           ],
         ),
@@ -179,7 +182,13 @@ class _CreateFirstCampaignCard extends StatelessWidget {
     return Card(
       elevation: 0,
       color: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(
+          color: AppColors.grayDarkStroke,
+          width: 1,
+        ),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
@@ -188,10 +197,10 @@ class _CreateFirstCampaignCard extends StatelessWidget {
               width: 44,
               height: 44,
               decoration: BoxDecoration(
-                color: const Color(0xFFE8F5F1),
+                color: AppColors.grayLigthStroke,
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(Icons.add, color: AppColors.primary),
+              child: Icon(Icons.add, color: AppColors.secondary, size: 28),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -286,15 +295,16 @@ class _CampaignCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(title,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w700,
-                              )),
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                  )),
                       const SizedBox(height: 4),
                       Row(
                         children: [
                           Container(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 2),
                             decoration: BoxDecoration(
                               color: statusChipColor,
                               borderRadius: BorderRadius.circular(20),
@@ -376,8 +386,10 @@ class _MetricTile extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             label,
-            style:
-                Theme.of(context).textTheme.labelSmall?.copyWith(color: Colors.grey[700]),
+            style: Theme.of(context)
+                .textTheme
+                .labelSmall
+                ?.copyWith(color: Colors.grey[700]),
           ),
         ],
       ),
