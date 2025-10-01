@@ -475,7 +475,7 @@ class _PlaceholderTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('${_label}${l10n.placeholderPending}',
+      child: Text('$_label${l10n.placeholderPending}',
           style: Theme.of(context).textTheme.titleMedium),
     );
   }
