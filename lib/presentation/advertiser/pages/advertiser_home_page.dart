@@ -34,7 +34,7 @@ class _HomeContent extends StatelessWidget {
                 backgroundColor: AppColors.blueDark.withValues(alpha: .2),
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 5),
             Expanded(
               child: _StatCard(
                 icon: Icons.place_rounded,
@@ -45,7 +45,7 @@ class _HomeContent extends StatelessWidget {
                 backgroundColor: AppColors.green.withValues(alpha: .2),
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 5),
             Expanded(
               child: _StatCard(
                 icon: Icons.attach_money_rounded,
@@ -58,11 +58,11 @@ class _HomeContent extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 10),
 
         _CreateFirstCampaignCard(l10n: l10n),
 
-        const SizedBox(height: 16),
+        const SizedBox(height: 5),
 
         // Section header
         Row(
