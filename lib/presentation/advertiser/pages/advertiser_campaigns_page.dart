@@ -106,39 +106,6 @@ class _AdvertiserCampaignsPageState extends State<AdvertiserCampaignsPage> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF3F5F7),
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        scrolledUnderElevation: 0,
-        titleSpacing: 16,
-        title: Text(
-          'Campañas',
-          style: theme.textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.w800,
-            color: Colors.black,
-          ),
-        ),
-        actions: [
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-            child: FilledButton.icon(
-              onPressed: () {
-                // TODO: navigate to create flow
-              },
-              icon: const Icon(Icons.add),
-              label: const Text('Nueva campaña'),
-              style: FilledButton.styleFrom(
-                backgroundColor: const Color(0xFF11A192),
-                foregroundColor: Colors.white,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                textStyle: const TextStyle(fontWeight: FontWeight.w600),
-              ),
-            ),
-          ),
-        ],
-      ),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),

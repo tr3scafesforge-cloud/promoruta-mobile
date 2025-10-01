@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/widgets/bottom_navigation_item.dart';
+import 'package:promoruta/shared/widgets/advertiser_app_bar.dart';
 import 'package:promoruta/presentation/advertiser/pages/advertiser_home_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/advertiser_campaigns_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/advertiser_live_page.dart';
@@ -24,29 +25,7 @@ class _AdvertiserHomeScreenState extends State<AdvertiserHomeScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.primary,
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: false,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(l10n.goodMorning,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    )),
-            const SizedBox(height: 2),
-            Text(
-              l10n.readyToCreateNextCampaign,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(color: Colors.grey[600]),
-            ),
-          ],
-        ),
-      ),
+      appBar: _buildAppBar(context, l10n),
       body: SafeArea(
         top: false,
         child: _getPage(_currentIndex),
@@ -132,6 +111,46 @@ class _AdvertiserHomeScreenState extends State<AdvertiserHomeScreen> {
         return const AdvertiserProfilePage();
       default:
         return const AdvertiserHomePage();
+    }
+  }
+
+  PreferredSizeWidget _buildAppBar(BuildContext context, AppLocalizations l10n) {
+    switch (_currentIndex) {
+      case 0: // Home
+        return AdvertiserAppBar(
+          title: l10n.goodMorning,
+          subtitle: l10n.readyToCreateNextCampaign,
+        );
+      case 1: // Campaigns
+        return AdvertiserAppBar(
+          title: l10n.campaigns,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+              child: FilledButton.icon(
+                onPressed: () {
+                  // TODO: navigate to create flow
+                },
+                icon: const Icon(Icons.add),
+                label: const Text('Nueva campaña'),
+                style: FilledButton.styleFrom(
+                  backgroundColor: const Color(0xFF11A192),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                  textStyle: const TextStyle(fontWeight: FontWeight.w600),
+                ),
+              ),
+            ),
+          ],
+        );
+      case 2: // Live
+        return AdvertiserAppBar(title: l10n.live);
+      case 3: // History
+        return AdvertiserAppBar(title: l10n.history);
+      case 4: // Profile
+        return AdvertiserAppBar(title: l10n.profile);
+      default:
+        return AdvertiserAppBar(title: l10n.home);
     }
   }
 }
