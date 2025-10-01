@@ -104,58 +104,55 @@ class _AdvertiserCampaignsPageState extends State<AdvertiserCampaignsPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFF3F5F7),
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
-          children: [
-            _SearchAndFilterBar(
-              controller: _searchCtrl,
-              onChanged: (_) => setState(() {}),
-              onClear: () {
-                _searchCtrl.clear();
-                setState(() {});
-              },
-              onOpenFilters: _openFiltersSheet,
+    return SafeArea(
+      child: ListView(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+        children: [
+          _SearchAndFilterBar(
+            controller: _searchCtrl,
+            onChanged: (_) => setState(() {}),
+            onClear: () {
+              _searchCtrl.clear();
+              setState(() {});
+            },
+            onOpenFilters: _openFiltersSheet,
+          ),
+          const SizedBox(height: 12),
+          _StatusSegmented(
+            selected: _selected,
+            onChanged: (s) => setState(() => _selected = s),
+          ),
+          if (_hasAnyExtraFilter)
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: _ActiveFiltersBar(
+                maxDistanceKm: _maxDistanceKm,
+                minBudget: _minBudget,
+                onClearAll: () {
+                  setState(() {
+                    _maxDistanceKm = null;
+                    _minBudget = null;
+                  });
+                },
+              ),
             ),
-            const SizedBox(height: 12),
-            _StatusSegmented(
-              selected: _selected,
-              onChanged: (s) => setState(() => _selected = s),
-            ),
-            if (_hasAnyExtraFilter)
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: _ActiveFiltersBar(
-                  maxDistanceKm: _maxDistanceKm,
-                  minBudget: _minBudget,
-                  onClearAll: () {
-                    setState(() {
-                      _maxDistanceKm = null;
-                      _minBudget = null;
-                    });
-                  },
+          const SizedBox(height: 10),
+          ..._filtered.map((c) => Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: _CampaignCard(campaign: c),
+              )),
+          if (_filtered.isEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 48),
+              child: Center(
+                child: Text(
+                  'No hay campañas para los filtros seleccionados.',
+                  style: theme.textTheme.bodyMedium
+                      ?.copyWith(color: Colors.grey[700]),
                 ),
               ),
-            const SizedBox(height: 10),
-            ..._filtered.map((c) => Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: _CampaignCard(campaign: c),
-                )),
-            if (_filtered.isEmpty)
-              Padding(
-                padding: const EdgeInsets.only(top: 48),
-                child: Center(
-                  child: Text(
-                    'No hay campañas para los filtros seleccionados.',
-                    style: theme.textTheme.bodyMedium
-                        ?.copyWith(color: Colors.grey[700]),
-                  ),
-                ),
-              ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }
