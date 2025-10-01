@@ -14,7 +14,7 @@ class _AdvertiserHomeScreenState extends State<AdvertiserHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF3F5F7),
@@ -57,7 +57,8 @@ class _AdvertiserHomeScreenState extends State<AdvertiserHomeScreen> {
         height: kBottomNavigationBarHeight,
         decoration: const BoxDecoration(
           color: Colors.white,
-          border: Border(top: BorderSide(color: AppColors.grayStroke, width: 1)),
+          border:
+              Border(top: BorderSide(color: AppColors.grayStroke, width: 1)),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -75,22 +76,40 @@ class _AdvertiserHomeScreenState extends State<AdvertiserHomeScreen> {
 
   Widget _buildNavItem(int index, IconData icon, String label) {
     final isSelected = _currentIndex == index;
+
     return Expanded(
-      child: InkWell(
-        splashColor: AppColors.secondary.withValues(alpha: .7),
-        onTap: () => setState(() => _currentIndex = index),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: isSelected ? AppColors.secondary : AppColors.textPrimary),
-            Text(
-              label,
-              style: TextStyle(
-                color: isSelected ? AppColors.secondary : AppColors.textPrimary,
-                fontSize: 12,
-              ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          splashColor: AppColors.secondary.withValues(alpha: .10),
+          highlightColor: Colors.transparent,
+          splashFactory: InkRipple.splashFactory,
+          customBorder:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          radius: 28,
+          onTap: () => setState(() => _currentIndex = index),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(icon,
+                    color: isSelected
+                        ? AppColors.secondary
+                        : AppColors.textPrimary),
+                const SizedBox(height: 2),
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: isSelected
+                        ? AppColors.secondary
+                        : AppColors.textPrimary,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -239,14 +258,18 @@ class _StatCard extends StatelessWidget {
             Text(
               labelTop,
               textAlign: TextAlign.center,
-              style:
-                  Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.grey[700]),
+              style: Theme.of(context)
+                  .textTheme
+                  .labelMedium
+                  ?.copyWith(color: Colors.grey[700]),
             ),
             Text(
               labelBottom,
               textAlign: TextAlign.center,
-              style:
-                  Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.grey[700]),
+              style: Theme.of(context)
+                  .textTheme
+                  .labelMedium
+                  ?.copyWith(color: Colors.grey[700]),
             ),
           ],
         ),
@@ -371,15 +394,16 @@ class _CampaignCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(title,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w700,
-                              )),
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                  )),
                       const SizedBox(height: 4),
                       Row(
                         children: [
                           Container(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 2),
                             decoration: BoxDecoration(
                               color: statusChipColor,
                               borderRadius: BorderRadius.circular(20),
@@ -461,8 +485,10 @@ class _MetricTile extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             label,
-            style:
-                Theme.of(context).textTheme.labelSmall?.copyWith(color: Colors.grey[700]),
+            style: Theme.of(context)
+                .textTheme
+                .labelSmall
+                ?.copyWith(color: Colors.grey[700]),
           ),
         ],
       ),
