@@ -23,7 +23,7 @@ class _AdvertiserHomeScreenState extends State<AdvertiserHomeScreen> {
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF3F5F7),
+      backgroundColor: AppColors.primary,
       appBar: AppBar(
         elevation: 0,
         centerTitle: false,
@@ -49,13 +49,20 @@ class _AdvertiserHomeScreenState extends State<AdvertiserHomeScreen> {
       ),
       body: _getPage(_currentIndex),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.primary,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(50),
+        ),
+        backgroundColor: AppColors.secondary,
         onPressed: () {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(l10n.createCampaignWip)),
           );
         },
-        child: const Icon(Icons.add),
+        child: const Icon(
+          Icons.add_rounded,
+          color: Colors.white,
+          size: 38,
+        ),
       ),
       bottomNavigationBar: Container(
         height: kBottomNavigationBarHeight,
