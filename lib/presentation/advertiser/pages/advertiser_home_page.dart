@@ -193,14 +193,21 @@ class _CreateFirstCampaignCard extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Row(
           children: [
-            Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: AppColors.grayLigthStroke,
-                borderRadius: BorderRadius.circular(12),
+            GestureDetector(
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(l10n.createCampaignWip)),
+                );
+              },
+              child: Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: AppColors.secondary.withValues(alpha: .2),
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: Icon(Icons.add, color: AppColors.secondary, size: 28),
               ),
-              child: Icon(Icons.add, color: AppColors.secondary, size: 28),
             ),
             const SizedBox(width: 12),
             Expanded(
