@@ -55,8 +55,8 @@ class _AdvertiserHomeScreenState extends State<AdvertiserHomeScreen> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
-        selectedItemColor: AppColors.primary,
-        unselectedItemColor: Colors.grey[600],
+        selectedItemColor: AppColors.secondary,
+        unselectedItemColor: AppColors.textPrimary,
         type: BottomNavigationBarType.fixed,
         onTap: (i) {
           setState(() => _currentIndex = i);
