@@ -47,7 +47,10 @@ class _AdvertiserHomeScreenState extends State<AdvertiserHomeScreen> {
           ],
         ),
       ),
-      body: _getPage(_currentIndex),
+      body: SafeArea(
+        top: false,
+        child: _getPage(_currentIndex),
+      ),
       floatingActionButton: FloatingActionButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50),
@@ -65,7 +68,7 @@ class _AdvertiserHomeScreenState extends State<AdvertiserHomeScreen> {
         ),
       ),
       bottomNavigationBar: Container(
-        height: kBottomNavigationBarHeight,
+        height: kBottomNavigationBarHeight + MediaQuery.of(context).viewPadding.bottom,
         decoration: const BoxDecoration(
           color: Colors.white,
           border:
