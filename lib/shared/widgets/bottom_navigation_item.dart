@@ -6,6 +6,9 @@ class BottomNavigationItem extends StatelessWidget {
   final IconData icon;
   final String label;
   final VoidCallback onTap;
+  final Color? splashColor;
+  final Color? selectedColor;
+  final Color? unselectedColor;
 
   const BottomNavigationItem({
     super.key,
@@ -13,6 +16,9 @@ class BottomNavigationItem extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.onTap,
+    this.splashColor,
+    this.selectedColor = AppColors.secondary,
+    this.unselectedColor = AppColors.textPrimary,
   });
 
   @override
@@ -21,7 +27,7 @@ class BottomNavigationItem extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          splashColor: AppColors.secondary.withValues(alpha: .10),
+          splashColor: splashColor ?? AppColors.primary.withValues(alpha: .10),
           highlightColor: Colors.transparent,
           splashFactory: InkRipple.splashFactory,
           customBorder:
@@ -33,17 +39,15 @@ class BottomNavigationItem extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(icon,
-                    color: isSelected
-                        ? AppColors.secondary
-                        : AppColors.textPrimary),
+                Icon(
+                  icon,
+                  color: isSelected ? selectedColor : unselectedColor,
+                ),
                 const SizedBox(height: 2),
                 Text(
                   label,
                   style: TextStyle(
-                    color: isSelected
-                        ? AppColors.secondary
-                        : AppColors.textPrimary,
+                    color:  isSelected ? selectedColor : unselectedColor,
                     fontSize: 12,
                   ),
                 ),
