@@ -53,21 +53,45 @@ class _AdvertiserHomeScreenState extends State<AdvertiserHomeScreen> {
         },
         child: const Icon(Icons.add),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        selectedItemColor: AppColors.secondary,
-        unselectedItemColor: AppColors.textPrimary,
-        type: BottomNavigationBarType.fixed,
-        onTap: (i) {
-          setState(() => _currentIndex = i);
-        },
-        items: [
-          BottomNavigationBarItem(icon: const Icon(Icons.home_rounded), label: l10n.home),
-          BottomNavigationBarItem(icon: const Icon(Icons.view_list_rounded), label: l10n.campaigns),
-          BottomNavigationBarItem(icon: const Icon(Icons.podcasts_rounded), label: l10n.live),
-          BottomNavigationBarItem(icon: const Icon(Icons.history_rounded), label: l10n.history),
-          BottomNavigationBarItem(icon: const Icon(Icons.person_rounded), label: l10n.profile),
-        ],
+      bottomNavigationBar: Container(
+        height: kBottomNavigationBarHeight,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          border: Border(top: BorderSide(color: AppColors.grayStroke, width: 1)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _buildNavItem(0, Icons.home_rounded, l10n.home),
+            _buildNavItem(1, Icons.view_list_rounded, l10n.campaigns),
+            _buildNavItem(2, Icons.podcasts_rounded, l10n.live),
+            _buildNavItem(3, Icons.history_rounded, l10n.history),
+            _buildNavItem(4, Icons.person_rounded, l10n.profile),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavItem(int index, IconData icon, String label) {
+    final isSelected = _currentIndex == index;
+    return Expanded(
+      child: InkWell(
+        splashColor: AppColors.secondary.withValues(alpha: .7),
+        onTap: () => setState(() => _currentIndex = index),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: isSelected ? AppColors.secondary : AppColors.textPrimary),
+            Text(
+              label,
+              style: TextStyle(
+                color: isSelected ? AppColors.secondary : AppColors.textPrimary,
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
