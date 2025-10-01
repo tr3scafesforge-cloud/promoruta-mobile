@@ -166,6 +166,7 @@ class _StatCard extends StatelessWidget {
             Text(
               labelTop,
               textAlign: TextAlign.center,
+              maxLines: 1,
               style: Theme.of(context)
                   .textTheme
                   .labelMedium
@@ -174,6 +175,7 @@ class _StatCard extends StatelessWidget {
             Text(
               labelBottom,
               textAlign: TextAlign.center,
+              maxLines: 1,
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
                     color: AppColors.textSecondary,
                   ),
