@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
+import 'package:promoruta/shared/widgets/bottom_navigation_item.dart';
 
 class AdvertiserHomeScreen extends StatefulWidget {
   const AdvertiserHomeScreen({super.key});
@@ -63,53 +64,37 @@ class _AdvertiserHomeScreenState extends State<AdvertiserHomeScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildNavItem(0, Icons.home_rounded, l10n.home),
-            _buildNavItem(1, Icons.view_list_rounded, l10n.campaigns),
-            _buildNavItem(2, Icons.podcasts_rounded, l10n.live),
-            _buildNavItem(3, Icons.history_rounded, l10n.history),
-            _buildNavItem(4, Icons.person_rounded, l10n.profile),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNavItem(int index, IconData icon, String label) {
-    final isSelected = _currentIndex == index;
-
-    return Expanded(
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          splashColor: AppColors.secondary.withValues(alpha: .10),
-          highlightColor: Colors.transparent,
-          splashFactory: InkRipple.splashFactory,
-          customBorder:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          radius: 28,
-          onTap: () => setState(() => _currentIndex = index),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 6),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(icon,
-                    color: isSelected
-                        ? AppColors.secondary
-                        : AppColors.textPrimary),
-                const SizedBox(height: 2),
-                Text(
-                  label,
-                  style: TextStyle(
-                    color: isSelected
-                        ? AppColors.secondary
-                        : AppColors.textPrimary,
-                    fontSize: 12,
-                  ),
-                ),
-              ],
+            BottomNavigationItem(
+              isSelected: _currentIndex == 0,
+              icon: Icons.home_rounded,
+              label: l10n.home,
+              onTap: () => setState(() => _currentIndex = 0),
             ),
-          ),
+            BottomNavigationItem(
+              isSelected: _currentIndex == 1,
+              icon: Icons.view_list_rounded,
+              label: l10n.campaigns,
+              onTap: () => setState(() => _currentIndex = 1),
+            ),
+            BottomNavigationItem(
+              isSelected: _currentIndex == 2,
+              icon: Icons.podcasts_rounded,
+              label: l10n.live,
+              onTap: () => setState(() => _currentIndex = 2),
+            ),
+            BottomNavigationItem(
+              isSelected: _currentIndex == 3,
+              icon: Icons.history_rounded,
+              label: l10n.history,
+              onTap: () => setState(() => _currentIndex = 3),
+            ),
+            BottomNavigationItem(
+              isSelected: _currentIndex == 4,
+              icon: Icons.person_rounded,
+              label: l10n.profile,
+              onTap: () => setState(() => _currentIndex = 4),
+            ),
+          ],
         ),
       ),
     );
