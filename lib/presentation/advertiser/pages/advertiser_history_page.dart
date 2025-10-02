@@ -1,30 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
+import 'package:promoruta/shared/models/campaign_ui.dart';
 import 'package:intl/intl.dart';
-
-enum CampaignStatus { completed, canceled, expired }
-
-class Campaign {
-  final String title;
-  final DateTime dateTime;
-  final String location;
-  final double distanceKm;
-  final int durationSec;
-  final int payUsd;
-  final int peopleNeeded;
-  final CampaignStatus status;
-
-  const Campaign({
-    required this.title,
-    required this.dateTime,
-    required this.location,
-    required this.distanceKm,
-    required this.durationSec,
-    required this.payUsd,
-    required this.peopleNeeded,
-    required this.status,
-  });
-}
 
 class AdvertiserHistoryPage extends StatefulWidget {
   const AdvertiserHistoryPage({super.key});
@@ -41,6 +18,7 @@ class _AdvertiserHistoryPageState extends State<AdvertiserHistoryPage> {
 
   final _data = <Campaign>[
     Campaign(
+      id: '1',
       title: 'Promoción Agua',
       dateTime: DateTime(2025, 1, 1, 10, 50),
       location: 'Montevideo Shopping',
@@ -51,6 +29,7 @@ class _AdvertiserHistoryPageState extends State<AdvertiserHistoryPage> {
       status: CampaignStatus.completed,
     ),
     Campaign(
+      id: '2',
       title: 'Promoción Agua II',
       dateTime: DateTime(2025, 1, 1, 14, 50),
       location: 'Montevideo Shopping',
@@ -61,6 +40,7 @@ class _AdvertiserHistoryPageState extends State<AdvertiserHistoryPage> {
       status: CampaignStatus.canceled,
     ),
     Campaign(
+      id: '3',
       title: 'Promoción Agua III',
       dateTime: DateTime(2025, 1, 1, 9, 50),
       location: 'Montevideo Shopping',
@@ -128,7 +108,7 @@ class _AdvertiserHistoryPageState extends State<AdvertiserHistoryPage> {
           for (final c in _filtered)
             _CampaignCard(
               campaign: c,
-              dateFormatted: df.format(c.dateTime),
+              dateFormatted: df.format(c.dateTime!),
             ),
           if (_filtered.isEmpty)
             Padding(
@@ -281,6 +261,8 @@ class _CampaignCard extends StatelessWidget {
         return const Color(0xFFE11D48);
       case CampaignStatus.expired:
         return const Color(0xFF9CA3AF);
+      default:
+        return Colors.grey;
     }
   }
 
@@ -292,6 +274,8 @@ class _CampaignCard extends StatelessWidget {
         return 'Cancelada';
       case CampaignStatus.expired:
         return 'Expirada';
+      default:
+        return 'Desconocida';
     }
   }
 
@@ -431,6 +415,7 @@ class _CampaignCard extends StatelessWidget {
                           color: const Color(0xFF111827),
                           onTap: () {},
                         ),
+                      _ => const SizedBox.shrink(),
                     },
                   ),
                 ],

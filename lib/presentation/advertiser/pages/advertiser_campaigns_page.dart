@@ -1,32 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/core/core.dart';
 import 'package:promoruta/shared/shared.dart';
-
-enum CampaignStatus { all, active, pending, completed }
-
-class Campaign {
-  final String title;
-  final String subtitle; // e.g., "2 Promotores activos"
-  final String location;
-  final double distanceKm;
-  final int completionPct; // 0..100
-  final int audioSeconds;
-  final double budget; // $
-  final String dateRange; // formatted for UI
-  final CampaignStatus status;
-
-  const Campaign({
-    required this.title,
-    required this.subtitle,
-    required this.location,
-    required this.distanceKm,
-    required this.completionPct,
-    required this.audioSeconds,
-    required this.budget,
-    required this.dateRange,
-    required this.status,
-  });
-}
+import 'package:promoruta/shared/models/campaign_ui.dart' as ui;
 
 class AdvertiserCampaignsPage extends StatefulWidget {
   const AdvertiserCampaignsPage({super.key});
@@ -38,20 +13,21 @@ class AdvertiserCampaignsPage extends StatefulWidget {
 
 class _AdvertiserCampaignsPageState extends State<AdvertiserCampaignsPage> {
   final TextEditingController _searchCtrl = TextEditingController();
-  CampaignStatus _selected = CampaignStatus.all;
+  ui.CampaignStatus _selected = ui.CampaignStatus.all;
 
   // Simple "extra filters" example – extend as you need
   double? _maxDistanceKm; // null = disabled
   double? _minBudget;
 
   static const _statuses = [
-    CampaignStatus.all,
-    CampaignStatus.active,
-    CampaignStatus.pending,
-    CampaignStatus.completed,
+    ui.CampaignStatus.all,
+    ui.CampaignStatus.active,
+    ui.CampaignStatus.pending,
+    ui.CampaignStatus.completed,
   ];
-  final List<Campaign> _all = const [
-    Campaign(
+  final List<ui.Campaign> _all = [
+    ui.Campaign(
+      id: '1',
       title: 'Promoción Cafetería',
       subtitle: '2 Promotores activos',
       location: 'Punta Carretas',
@@ -60,9 +36,10 @@ class _AdvertiserCampaignsPageState extends State<AdvertiserCampaignsPage> {
       audioSeconds: 45,
       budget: 48.20,
       dateRange: '2025-01-01 - 2025-01-02',
-      status: CampaignStatus.active,
+      status: ui.CampaignStatus.active,
     ),
-    Campaign(
+    ui.Campaign(
+      id: '2',
       title: 'Apertura Tienda',
       subtitle: 'Promotores pendientes',
       location: 'Nuevo Centro',
@@ -71,9 +48,10 @@ class _AdvertiserCampaignsPageState extends State<AdvertiserCampaignsPage> {
       audioSeconds: 45,
       budget: 2000.00,
       dateRange: '2025-01-01 - 2025-01-02',
-      status: CampaignStatus.pending,
+      status: ui.CampaignStatus.pending,
     ),
-    Campaign(
+    ui.Campaign(
+      id: '3',
       title: 'Promoción Agua',
       subtitle: 'Montevideo Shopping',
       location: 'Montevideo Shopping',
@@ -82,22 +60,22 @@ class _AdvertiserCampaignsPageState extends State<AdvertiserCampaignsPage> {
       audioSeconds: 30,
       budget: 100.00,
       dateRange: '2025-01-01 - 2025-01-02',
-      status: CampaignStatus.completed,
+      status: ui.CampaignStatus.completed,
     ),
   ];
 
-  List<Campaign> get _filtered {
+  List<ui.Campaign> get _filtered {
     final q = _searchCtrl.text.trim().toLowerCase();
 
     return _all.where((c) {
-      final byStatus = _selected == CampaignStatus.all || c.status == _selected;
+      final byStatus = _selected == ui.CampaignStatus.all || c.status == _selected;
       final bySearch = q.isEmpty ||
           c.title.toLowerCase().contains(q) ||
           c.location.toLowerCase().contains(q) ||
-          c.subtitle.toLowerCase().contains(q);
+          (c.subtitle?.toLowerCase().contains(q) ?? false);
       final byDistance =
           _maxDistanceKm == null || c.distanceKm <= _maxDistanceKm!;
-      final byBudget = _minBudget == null || c.budget >= _minBudget!;
+      final byBudget = _minBudget == null || (c.budget != null && c.budget! >= _minBudget!);
       return byStatus && bySearch && byDistance && byBudget;
     }).toList();
   }
@@ -330,18 +308,19 @@ class _SmallFilterChip extends StatelessWidget {
 /// ————— Campaign card —————
 class _CampaignCard extends StatelessWidget {
   const _CampaignCard({required this.campaign});
-  final Campaign campaign;
+  final ui.Campaign campaign;
 
   @override
   Widget build(BuildContext context) {
     final badge = switch (campaign.status) {
-      CampaignStatus.active =>
+      ui.CampaignStatus.active =>
         _StatusBadge(text: 'Activa', color: const Color(0xFF11A192)),
-      CampaignStatus.pending =>
+      ui.CampaignStatus.pending =>
         _StatusBadge(text: 'Pendiente', color: const Color(0xFFF6A723)),
-      CampaignStatus.completed =>
+      ui.CampaignStatus.completed =>
         _StatusBadge(text: 'Completada', color: const Color(0xFF8893A2)),
-      CampaignStatus.all => const SizedBox.shrink(),
+      ui.CampaignStatus.all => const SizedBox.shrink(),
+      _ => const SizedBox.shrink(),
     };
 
     return Container(
@@ -376,7 +355,7 @@ class _CampaignCard extends StatelessWidget {
             ),
             const SizedBox(height: 2),
             Text(
-              campaign.subtitle,
+              campaign.subtitle ?? '',
               style: Theme.of(context)
                   .textTheme
                   .bodySmall
@@ -401,7 +380,7 @@ class _CampaignCard extends StatelessWidget {
                     size: 16, color: Colors.black54),
                 const SizedBox(width: 6),
                 Text(
-                  campaign.dateRange,
+                  campaign.dateRange ?? '',
                   style: Theme.of(context)
                       .textTheme
                       .bodySmall
@@ -420,7 +399,7 @@ class _CampaignCard extends StatelessWidget {
                     value: '${campaign.completionPct}%', label: 'Completado'),
                 _StatTile(value: '${campaign.audioSeconds}s', label: 'Audio'),
                 _StatTile(
-                    value: '\$${campaign.budget.toStringAsFixed(2)}',
+                    value: '\$${campaign.budget?.toStringAsFixed(2) ?? '0.00'}',
                     label: 'Presupuesto'),
               ],
             ),
