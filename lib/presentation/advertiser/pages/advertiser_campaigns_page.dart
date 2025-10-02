@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:promoruta/core/core.dart';
 import 'package:promoruta/shared/shared.dart';
 import 'package:promoruta/shared/models/campaign_ui.dart' as ui;
+import 'package:promoruta/shared/widgets/advertiser_search_filter_bar.dart';
 
 class AdvertiserCampaignsPage extends StatefulWidget {
   const AdvertiserCampaignsPage({super.key});
@@ -94,14 +95,15 @@ class _AdvertiserCampaignsPageState extends State<AdvertiserCampaignsPage> {
       child: ListView(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
         children: [
-          _SearchAndFilterBar(
+          AdvertiserSearchFilterBar(
             controller: _searchCtrl,
+            hint: 'Buscar campañas',
             onChanged: (_) => setState(() {}),
             onClear: () {
               _searchCtrl.clear();
               setState(() {});
             },
-            onOpenFilters: _openFiltersSheet,
+            onFilterTap: _openFiltersSheet,
           ),
           const SizedBox(height: 12),
           MultiSwitch(
@@ -185,69 +187,6 @@ class _AdvertiserCampaignsPageState extends State<AdvertiserCampaignsPage> {
   }
 }
 
-/// ————— Search + filter bar —————
-class _SearchAndFilterBar extends StatelessWidget {
-  const _SearchAndFilterBar({
-    required this.controller,
-    required this.onChanged,
-    required this.onClear,
-    required this.onOpenFilters,
-  });
-
-  final TextEditingController controller;
-  final ValueChanged<String> onChanged;
-  final VoidCallback onClear;
-  final VoidCallback onOpenFilters;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: const Color(0xFFE7EBF0)),
-            ),
-            child: Row(
-              children: [
-                const SizedBox(width: 12),
-                const Icon(Icons.search, size: 20, color: Colors.black54),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: TextField(
-                    controller: controller,
-                    onChanged: onChanged,
-                    decoration: const InputDecoration(
-                      hintText: 'Buscar campañas',
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-                if (controller.text.isNotEmpty)
-                  IconButton(
-                    icon: const Icon(Icons.close, size: 18),
-                    onPressed: onClear,
-                  ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(width: 10),
-        IconButton.filled(
-          onPressed: onOpenFilters,
-          style: IconButton.styleFrom(
-            backgroundColor: Colors.white,
-            side: const BorderSide(color: Color(0xFFE7EBF0)),
-          ),
-          icon: const Icon(Icons.tune, color: Colors.black87),
-          tooltip: 'Filtros',
-        ),
-      ],
-    );
-  }
-}
 
 
 /// ————— Active filters summary bar —————

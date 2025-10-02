@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/models/campaign_ui.dart';
+import 'package:promoruta/shared/widgets/advertiser_search_filter_bar.dart';
 import 'package:intl/intl.dart';
 
 class AdvertiserHistoryPage extends StatefulWidget {
@@ -96,7 +97,7 @@ class _AdvertiserHistoryPageState extends State<AdvertiserHistoryPage> {
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: [
           // Search
-          _SearchField(
+          AdvertiserSearchFilterBar(
             controller: _search,
             hint: 'Buscar campañas',
             onChanged: (_) => setState(() {}),
@@ -166,83 +167,6 @@ class _AdvertiserHistoryPageState extends State<AdvertiserHistoryPage> {
   }
 }
 
-/// --- UI PARTS ---
-
-class _SearchField extends StatelessWidget {
-  const _SearchField({
-    required this.controller,
-    required this.hint,
-    required this.onChanged,
-    required this.onFilterTap,
-  });
-
-  final TextEditingController controller;
-  final String hint;
-  final ValueChanged<String> onChanged;
-  final VoidCallback onFilterTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            height: 44,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(22),
-              boxShadow: const [
-                BoxShadow(
-                  blurRadius: 8,
-                  spreadRadius: -2,
-                  offset: Offset(0, 2),
-                  color: Color(0x22000000),
-                ),
-              ],
-            ),
-            child: Row(
-              children: [
-                const SizedBox(width: 12),
-                const Icon(Icons.search, size: 20, color: Colors.black45),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: TextField(
-                    controller: controller,
-                    onChanged: onChanged,
-                    decoration: InputDecoration(
-                      hintText: hint,
-                      border: InputBorder.none,
-                      isDense: true,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(width: 8),
-        Ink(
-          decoration: const ShapeDecoration(
-            color: Colors.white,
-            shape: CircleBorder(),
-            shadows: [
-              BoxShadow(
-                blurRadius: 8,
-                spreadRadius: -2,
-                offset: Offset(0, 2),
-                color: Color(0x22000000),
-              ),
-            ],
-          ),
-          child: IconButton(
-            onPressed: onFilterTap,
-            icon: const Icon(Icons.tune),
-          ),
-        ),
-      ],
-    );
-  }
-}
 
 class _CampaignCard extends StatelessWidget {
   const _CampaignCard({
