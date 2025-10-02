@@ -19,7 +19,7 @@ class MultiSwitch extends StatefulWidget {
     this.inactiveColor,
     this.backgroundColor,
     this.height = 50,
-    this.borderRadius = 25,
+    this.borderRadius = 15,
   });
 
   @override
