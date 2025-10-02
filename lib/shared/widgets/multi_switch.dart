@@ -11,7 +11,7 @@ class MultiSwitch extends StatefulWidget {
   final double? borderRadius;
 
   const MultiSwitch({
-    Key? key,
+    super.key,
     required this.options,
     this.initialIndex = 0,
     required this.onChanged,
@@ -20,7 +20,7 @@ class MultiSwitch extends StatefulWidget {
     this.backgroundColor,
     this.height = 50,
     this.borderRadius = 25,
-  }) : super(key: key);
+  });
 
   @override
   State<MultiSwitch> createState() => _MultiSwitchState();
