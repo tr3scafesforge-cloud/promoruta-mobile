@@ -132,12 +132,7 @@ class _AdvertiserHistoryPageState extends State<AdvertiserHistoryPage> {
               onChanged: (_) => setState(() {}),
               onFilterTap: () => _openBottomFilters(context),
             ),
-            const SizedBox(height: 12),
-            // Filter bar
-            _FilterBar(
-              selectedIndex: _selectedFilter,
-              onSelected: (i) => setState(() => _selectedFilter = i),
-            ),
+
             const SizedBox(height: 12),
             // Cards
             for (final c in _filtered)
@@ -177,11 +172,6 @@ class _AdvertiserHistoryPageState extends State<AdvertiserHistoryPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _FilterBar(
-                selectedIndex: _selectedFilter,
-                onSelected: (i) => setModal(() => _selectedFilter = i),
-                dense: true,
-              ),
               const SizedBox(height: 16),
               SizedBox(
                 width: double.infinity,
@@ -285,37 +275,6 @@ class _SearchField extends StatelessWidget {
   }
 }
 
-class _FilterBar extends StatelessWidget {
-  const _FilterBar({
-    required this.selectedIndex,
-    required this.onSelected,
-    this.dense = false,
-  });
-
-  final int selectedIndex;
-  final ValueChanged<int> onSelected;
-  final bool dense;
-
-  @override
-  Widget build(BuildContext context) {
-    final labels = ['Todas', 'Completadas', 'Canceladas', 'Expiradas'];
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: List.generate(labels.length, (i) {
-        final selected = i == selectedIndex;
-        return ChoiceChip(
-          label: Text(labels[i]),
-          selected: selected,
-          onSelected: (_) => onSelected(i),
-          materialTapTargetSize:
-              dense ? MaterialTapTargetSize.shrinkWrap : null,
-        );
-      }),
-    );
-  }
-}
-
 class _CampaignCard extends StatelessWidget {
   const _CampaignCard({
     required this.campaign,
@@ -397,8 +356,8 @@ class _CampaignCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Container(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           color: _statusColor.withOpacity(.12),
                           borderRadius: BorderRadius.circular(999),
@@ -446,13 +405,21 @@ class _CampaignCard extends StatelessWidget {
                   // Metrics row
                   Row(
                     children: [
-                      _Pill(icon: Icons.near_me_outlined, text: '${campaign.distanceKm}km'),
+                      _Pill(
+                          icon: Icons.near_me_outlined,
+                          text: '${campaign.distanceKm}km'),
                       const SizedBox(width: 8),
-                      _Pill(icon: Icons.schedule, text: '${campaign.durationSec}s'),
+                      _Pill(
+                          icon: Icons.schedule,
+                          text: '${campaign.durationSec}s'),
                       const SizedBox(width: 8),
-                      _Pill(icon: Icons.attach_money, text: '\$${campaign.payUsd}'),
+                      _Pill(
+                          icon: Icons.attach_money,
+                          text: '\$${campaign.payUsd}'),
                       const SizedBox(width: 8),
-                      _Pill(icon: Icons.groups_outlined, text: '${campaign.peopleNeeded}'),
+                      _Pill(
+                          icon: Icons.groups_outlined,
+                          text: '${campaign.peopleNeeded}'),
                     ],
                   ),
                   const SizedBox(height: 10),
