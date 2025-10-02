@@ -19,7 +19,7 @@ class MultiSwitch extends StatefulWidget {
     this.inactiveColor,
     this.backgroundColor,
     this.height = 50,
-    this.borderRadius = 15,
+    this.borderRadius = 20,
   });
 
   @override
@@ -67,7 +67,7 @@ class _MultiSwitchState extends State<MultiSwitch> {
               AnimatedPositioned(
                 duration: const Duration(milliseconds: 250),
                 curve: Curves.easeInOut,
-                left: itemWidth * _selectedIndex,
+                left: (itemWidth * _selectedIndex) + 4,
                 top: 4,
                 bottom: 4,
                 width: itemWidth - 8,
@@ -100,8 +100,12 @@ class _MultiSwitchState extends State<MultiSwitch> {
                       child: Container(
                         color: Colors.transparent,
                         alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
                         child: Text(
                           widget.options[index],
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             color: _selectedIndex == index
                                 ? inactiveColor
@@ -109,7 +113,7 @@ class _MultiSwitchState extends State<MultiSwitch> {
                             fontWeight: _selectedIndex == index
                                 ? FontWeight.w600
                                 : FontWeight.w500,
-                            fontSize: 14,
+                            fontSize: 13,
                           ),
                         ),
                       ),
@@ -123,4 +127,102 @@ class _MultiSwitchState extends State<MultiSwitch> {
       ),
     );
   }
+}
+
+// Example usage
+class MultiSwitchExample extends StatefulWidget {
+  const MultiSwitchExample({super.key});
+
+  @override
+  State<MultiSwitchExample> createState() => _MultiSwitchExampleState();
+}
+
+class _MultiSwitchExampleState extends State<MultiSwitchExample> {
+  int _selectedIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[100],
+      appBar: AppBar(
+        title: const Text('Multi Switch Component'),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Task Filter',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+            MultiSwitch(
+              options: const ['Todas', 'Activas', 'Pendientes', 'Completadas'],
+              initialIndex: _selectedIndex,
+              onChanged: (index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+                print('Selected: ${index}');
+              },
+            ),
+            const SizedBox(height: 32),
+            Text(
+              'Selected: ${['Todas', 'Activas', 'Pendientes', 'Completadas'][_selectedIndex]}',
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 20),
+            // Buttons to control from parent
+            const Text(
+              'Control from parent:',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 8,
+              children: [
+                ElevatedButton(
+                  onPressed: () => setState(() => _selectedIndex = 0),
+                  child: const Text('Todas'),
+                ),
+                ElevatedButton(
+                  onPressed: () => setState(() => _selectedIndex = 1),
+                  child: const Text('Activas'),
+                ),
+                ElevatedButton(
+                  onPressed: () => setState(() => _selectedIndex = 2),
+                  child: const Text('Pendientes'),
+                ),
+                ElevatedButton(
+                  onPressed: () => setState(() => _selectedIndex = 3),
+                  child: const Text('Completadas'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+void main() {
+  runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: MultiSwitchExample(),
+  ));
 }
