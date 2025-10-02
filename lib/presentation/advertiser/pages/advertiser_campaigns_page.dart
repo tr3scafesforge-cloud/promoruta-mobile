@@ -263,7 +263,7 @@ class _SearchAndFilterBar extends StatelessWidget {
             backgroundColor: Colors.white,
             side: const BorderSide(color: Color(0xFFE7EBF0)),
           ),
-          icon: const Icon(Icons.filter_alt_outlined, color: Colors.black87),
+          icon: const Icon(Icons.tune, color: Colors.black87),
           tooltip: 'Filtros',
         ),
       ],
