@@ -40,10 +40,16 @@ class _AdvertiserCampaignsPageState extends State<AdvertiserCampaignsPage> {
   final TextEditingController _searchCtrl = TextEditingController();
   CampaignStatus _selected = CampaignStatus.all;
 
-  // Simple “extra filters” example – extend as you need
+  // Simple "extra filters" example – extend as you need
   double? _maxDistanceKm; // null = disabled
   double? _minBudget;
-  int _selectedIndex = 0;
+
+  static const _statuses = [
+    CampaignStatus.all,
+    CampaignStatus.active,
+    CampaignStatus.pending,
+    CampaignStatus.completed,
+  ];
   final List<Campaign> _all = const [
     Campaign(
       title: 'Promoción Cafetería',
@@ -122,18 +128,9 @@ class _AdvertiserCampaignsPageState extends State<AdvertiserCampaignsPage> {
           const SizedBox(height: 12),
           MultiSwitch(
             options: const ['Todas', 'Activas', 'Pendientes', 'Completadas'],
-            initialIndex: _selectedIndex,
+            initialIndex: _statuses.indexOf(_selected),
             backgroundColor: AppColors.grayDarkStroke.withValues(alpha: .70),
-            onChanged: (index) {
-              setState(() {
-                _selectedIndex = index;
-              });
-              print('Selected: ${index}');
-            },
-          ),
-          _StatusSegmented(
-            selected: _selected,
-            onChanged: (s) => setState(() => _selected = s),
+            onChanged: (index) => setState(() => _selected = _statuses[index]),
           ),
           if (_hasAnyExtraFilter)
             Padding(
@@ -259,59 +256,6 @@ class _SearchAndFilterBar extends StatelessWidget {
   }
 }
 
-/// ————— Status segmented switch —————
-class _StatusSegmented extends StatelessWidget {
-  const _StatusSegmented({
-    required this.selected,
-    required this.onChanged,
-  });
-
-  final CampaignStatus selected;
-  final ValueChanged<CampaignStatus> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final labels = <CampaignStatus, String>{
-      CampaignStatus.all: 'Todas',
-      CampaignStatus.active: 'Activas',
-      CampaignStatus.pending: 'Pendientes',
-      CampaignStatus.completed: 'Completadas',
-    };
-
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFFEFF3F6),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      padding: const EdgeInsets.all(6),
-      child: Row(
-        children: labels.entries.map((e) {
-          final bool isSel = e.key == selected;
-          return Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: ChoiceChip(
-                selected: isSel,
-                onSelected: (_) => onChanged(e.key),
-                label: Text(e.value),
-                labelStyle: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: isSel ? Colors.white : Colors.black87,
-                ),
-                selectedColor: const Color(0xFF11A192),
-                backgroundColor: Colors.white,
-                side: const BorderSide(color: Color(0xFFE0E6EC)),
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-              ),
-            ),
-          );
-        }).toList(),
-      ),
-    );
-  }
-}
 
 /// ————— Active filters summary bar —————
 class _ActiveFiltersBar extends StatelessWidget {
