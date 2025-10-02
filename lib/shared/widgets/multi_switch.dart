@@ -77,7 +77,7 @@ class _MultiSwitchState extends State<MultiSwitch> {
                     borderRadius: BorderRadius.circular(widget.borderRadius! - 4),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black.withValues(alpha: .1),
                         blurRadius: 4,
                         offset: const Offset(0, 2),
                       ),
