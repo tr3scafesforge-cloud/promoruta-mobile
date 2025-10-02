@@ -110,51 +110,40 @@ class _AdvertiserHistoryPageState extends State<AdvertiserHistoryPage> {
   Widget build(BuildContext context) {
     final df = DateFormat('d MMMM yyyy HH:mm', 'es');
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFF3F5F7),
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        foregroundColor: Colors.black87,
-        title: const Text(
-          'Historial Campañas',
-          style: TextStyle(fontWeight: FontWeight.w800),
-        ),
-      ),
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
-          children: [
-            // Search
-            _SearchField(
-              controller: _search,
-              hint: 'Buscar campañas',
-              onChanged: (_) => setState(() {}),
-              onFilterTap: () => _openBottomFilters(context),
-            ),
+    return Container(
+      color: const Color(0xFFF3F5F7),
+      child: ListView(
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+        children: [
+          // Search
+          _SearchField(
+            controller: _search,
+            hint: 'Buscar campañas',
+            onChanged: (_) => setState(() {}),
+            onFilterTap: () => _openBottomFilters(context),
+          ),
 
-            const SizedBox(height: 12),
-            // Cards
-            for (final c in _filtered)
-              _CampaignCard(
-                campaign: c,
-                dateFormatted: df.format(c.dateTime),
-              ),
-            if (_filtered.isEmpty)
-              Padding(
-                padding: const EdgeInsets.only(top: 36),
-                child: Center(
-                  child: Text(
-                    'No se encontraron campañas',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(color: Colors.black54),
-                  ),
+          const SizedBox(height: 12),
+          // Cards
+          for (final c in _filtered)
+            _CampaignCard(
+              campaign: c,
+              dateFormatted: df.format(c.dateTime),
+            ),
+          if (_filtered.isEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 36),
+              child: Center(
+                child: Text(
+                  'No se encontraron campañas',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: Colors.black54),
                 ),
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }
