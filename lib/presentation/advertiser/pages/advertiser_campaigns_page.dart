@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:promoruta/shared/shared.dart';
 
 enum CampaignStatus { all, active, pending, completed }
 
@@ -41,7 +42,7 @@ class _AdvertiserCampaignsPageState extends State<AdvertiserCampaignsPage> {
   // Simple “extra filters” example – extend as you need
   double? _maxDistanceKm; // null = disabled
   double? _minBudget;
-
+  int _selectedIndex = 0;
   final List<Campaign> _all = const [
     Campaign(
       title: 'Promoción Cafetería',
@@ -118,6 +119,16 @@ class _AdvertiserCampaignsPageState extends State<AdvertiserCampaignsPage> {
             onOpenFilters: _openFiltersSheet,
           ),
           const SizedBox(height: 12),
+          MultiSwitch(
+            options: const ['Todas', 'Activas', 'Pendientes', 'Completadas'],
+            initialIndex: _selectedIndex,
+            onChanged: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+              print('Selected: ${index}');
+            },
+          ),
           _StatusSegmented(
             selected: _selected,
             onChanged: (s) => setState(() => _selected = s),
