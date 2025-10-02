@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:promoruta/core/core.dart';
 import 'package:promoruta/shared/shared.dart';
 
 enum CampaignStatus { all, active, pending, completed }
@@ -122,6 +123,7 @@ class _AdvertiserCampaignsPageState extends State<AdvertiserCampaignsPage> {
           MultiSwitch(
             options: const ['Todas', 'Activas', 'Pendientes', 'Completadas'],
             initialIndex: _selectedIndex,
+            backgroundColor: AppColors.grayDarkStroke.withValues(alpha: .70),
             onChanged: (index) {
               setState(() {
                 _selectedIndex = index;
