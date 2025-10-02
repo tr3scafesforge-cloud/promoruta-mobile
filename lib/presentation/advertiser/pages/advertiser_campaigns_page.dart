@@ -147,9 +147,24 @@ class _AdvertiserCampaignsPageState extends State<AdvertiserCampaignsPage> {
               ),
             ),
           const SizedBox(height: 10),
-          ..._filtered.map((c) => Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: _CampaignCard(campaign: c),
+          ..._filtered.map((c) => AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (Widget child, Animation<double> animation) =>
+                    SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(0, 0.1),
+                        end: Offset.zero,
+                      ).animate(animation),
+                      child: FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      ),
+                    ),
+                child: Padding(
+                  key: ValueKey(c.title),
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: _CampaignCard(campaign: c),
+                ),
               )),
           if (_filtered.isEmpty)
             Padding(
