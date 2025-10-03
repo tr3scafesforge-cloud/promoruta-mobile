@@ -13,7 +13,7 @@ final _mockCampaigns = <model.Campaign>[
     advertiserId: 'advertiser_1',
     startDate: DateTime(2025, 1, 1, 10, 50),
     endDate: DateTime(2025, 1, 2, 10, 50),
-    isActive: true,
+    status: model.CampaignStatus.active,
   ),
   model.Campaign(
     id: '2',
@@ -22,7 +22,7 @@ final _mockCampaigns = <model.Campaign>[
     advertiserId: 'advertiser_1',
     startDate: DateTime(2025, 1, 1, 14, 50),
     endDate: DateTime(2025, 1, 2, 14, 50),
-    isActive: false,
+    status: model.CampaignStatus.canceled,
   ),
   model.Campaign(
     id: '3',
@@ -31,7 +31,7 @@ final _mockCampaigns = <model.Campaign>[
     advertiserId: 'advertiser_1',
     startDate: DateTime(2025, 1, 1, 9, 50),
     endDate: DateTime(2025, 1, 2, 9, 50),
-    isActive: false,
+    status: model.CampaignStatus.expired,
   ),
 ];
 
@@ -39,6 +39,23 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
   final AppDatabase db;
 
   CampaignLocalDataSourceImpl(this.db);
+
+  model.CampaignStatus _parseStatus(String statusString) {
+    switch (statusString) {
+      case 'active':
+        return model.CampaignStatus.active;
+      case 'pending':
+        return model.CampaignStatus.pending;
+      case 'completed':
+        return model.CampaignStatus.completed;
+      case 'canceled':
+        return model.CampaignStatus.canceled;
+      case 'expired':
+        return model.CampaignStatus.expired;
+      default:
+        return model.CampaignStatus.active;
+    }
+  }
 
   @override
   Future<void> saveCampaigns(List<model.Campaign> campaigns) async {
@@ -53,7 +70,7 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
             advertiserId: Value(campaign.advertiserId),
             startDate: Value(campaign.startDate),
             endDate: Value(campaign.endDate),
-            isActive: Value(campaign.isActive),
+            isActive: Value(campaign.status == model.CampaignStatus.active),
           ),
           onConflict: DoUpdate(
             (_) => CampaignsCompanion(
@@ -62,7 +79,7 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
               advertiserId: Value(campaign.advertiserId),
               startDate: Value(campaign.startDate),
               endDate: Value(campaign.endDate),
-              isActive: Value(campaign.isActive),
+              isActive: Value(campaign.status == model.CampaignStatus.active),
             ),
           ),
         );
@@ -88,7 +105,7 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
       advertiserId: row.advertiserId,
       startDate: row.startDate,
       endDate: row.endDate,
-      isActive: row.isActive,
+      status: row.isActive ? model.CampaignStatus.active : model.CampaignStatus.expired,
     )).toList();
   }
 
@@ -102,7 +119,7 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
         advertiserId: Value(campaign.advertiserId),
         startDate: Value(campaign.startDate),
         endDate: Value(campaign.endDate),
-        isActive: Value(campaign.isActive),
+        isActive: Value(campaign.status == model.CampaignStatus.active),
       ),
     );
   }
@@ -122,7 +139,7 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
       advertiserId: campaignRow.advertiserId,
       startDate: campaignRow.startDate,
       endDate: campaignRow.endDate,
-      isActive: campaignRow.isActive,
+      status: campaignRow.isActive ? model.CampaignStatus.active : model.CampaignStatus.expired,
     );
   }
 

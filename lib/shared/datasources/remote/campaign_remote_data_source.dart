@@ -12,6 +12,23 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
     this.baseUrl = 'https://api.promoruta.com', // Replace with actual API URL
   });
 
+  CampaignStatus _parseStatus(String statusString) {
+    switch (statusString.toLowerCase()) {
+      case 'active':
+        return CampaignStatus.active;
+      case 'pending':
+        return CampaignStatus.pending;
+      case 'completed':
+        return CampaignStatus.completed;
+      case 'canceled':
+        return CampaignStatus.canceled;
+      case 'expired':
+        return CampaignStatus.expired;
+      default:
+        return CampaignStatus.active;
+    }
+  }
+
   @override
   Future<List<Campaign>> getCampaigns() async {
     try {
@@ -26,7 +43,7 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
           advertiserId: json['advertiserId'],
           startDate: DateTime.parse(json['startDate']),
           endDate: DateTime.parse(json['endDate']),
-          isActive: json['isActive'] ?? true,
+          status: _parseStatus(json['status'] ?? 'active'),
         )).toList();
       } else {
         throw Exception('Failed to fetch campaigns: ${response.statusMessage}');
@@ -50,7 +67,7 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
           advertiserId: json['advertiserId'],
           startDate: DateTime.parse(json['startDate']),
           endDate: DateTime.parse(json['endDate']),
-          isActive: json['isActive'] ?? true,
+          status: _parseStatus(json['status'] ?? 'active'),
         );
       } else {
         throw Exception('Failed to fetch campaign: ${response.statusMessage}');
@@ -71,7 +88,7 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
           'advertiserId': campaign.advertiserId,
           'startDate': campaign.startDate.toIso8601String(),
           'endDate': campaign.endDate.toIso8601String(),
-          'isActive': campaign.isActive,
+          'status': campaign.status.name,
         },
       );
 
@@ -84,7 +101,7 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
           advertiserId: json['advertiserId'],
           startDate: DateTime.parse(json['startDate']),
           endDate: DateTime.parse(json['endDate']),
-          isActive: json['isActive'] ?? true,
+          status: _parseStatus(json['status'] ?? 'active'),
         );
       } else {
         throw Exception('Failed to create campaign: ${response.statusMessage}');
@@ -105,7 +122,7 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
           'advertiserId': campaign.advertiserId,
           'startDate': campaign.startDate.toIso8601String(),
           'endDate': campaign.endDate.toIso8601String(),
-          'isActive': campaign.isActive,
+          'status': campaign.status.name,
         },
       );
 
@@ -118,7 +135,7 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
           advertiserId: json['advertiserId'],
           startDate: DateTime.parse(json['startDate']),
           endDate: DateTime.parse(json['endDate']),
-          isActive: json['isActive'] ?? true,
+          status: _parseStatus(json['status'] ?? 'active'),
         );
       } else {
         throw Exception('Failed to update campaign: ${response.statusMessage}');
