@@ -69,7 +69,7 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
             advertiserId: Value(campaign.advertiserId),
             startDate: Value(campaign.startDate),
             endDate: Value(campaign.endDate),
-            isActive: Value(campaign.status == model.CampaignStatus.active),
+            status: Value(campaign.status.name),
           ),
           onConflict: DoUpdate(
             (_) => CampaignsCompanion(
@@ -78,7 +78,7 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
               advertiserId: Value(campaign.advertiserId),
               startDate: Value(campaign.startDate),
               endDate: Value(campaign.endDate),
-              isActive: Value(campaign.status == model.CampaignStatus.active),
+              status: Value(campaign.status.name),
             ),
           ),
         );
@@ -104,8 +104,7 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
       advertiserId: row.advertiserId,
       startDate: row.startDate,
       endDate: row.endDate,
-      status: row.isActive ? model.CampaignStatus.active : model.CampaignStatus.expired,
-      
+      status: _parseStatus(row.status),
     )).toList();
   }
 
@@ -119,7 +118,7 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
         advertiserId: Value(campaign.advertiserId),
         startDate: Value(campaign.startDate),
         endDate: Value(campaign.endDate),
-        isActive: Value(campaign.status == model.CampaignStatus.active),
+        status: Value(campaign.status.name),
       ),
     );
   }
@@ -139,7 +138,7 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
       advertiserId: campaignRow.advertiserId,
       startDate: campaignRow.startDate,
       endDate: campaignRow.endDate,
-      status: campaignRow.isActive ? model.CampaignStatus.active : model.CampaignStatus.expired,
+      status: _parseStatus(campaignRow.status),
     );
   }
 

@@ -267,7 +267,7 @@ class UsersCompanion extends UpdateCompanion<User> {
   }
 }
 
-class $CampaignsTable extends Campaigns
+class $CampaignsTable extends CampaignsEntity
     with TableInfo<$CampaignsTable, Campaign> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -307,19 +307,17 @@ class $CampaignsTable extends Campaigns
   late final GeneratedColumn<DateTime> endDate = GeneratedColumn<DateTime>(
       'end_date', aliasedName, false,
       type: DriftSqlType.dateTime, requiredDuringInsert: true);
-  static const VerificationMeta _isActiveMeta =
-      const VerificationMeta('isActive');
+  static const VerificationMeta _statusMeta =
+      const VerificationMeta('status');
   @override
-  late final GeneratedColumn<bool> isActive = GeneratedColumn<bool>(
-      'is_active', aliasedName, false,
-      type: DriftSqlType.bool,
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+      'status', aliasedName, false,
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('CHECK ("is_active" IN (0, 1))'),
-      defaultValue: const Constant(true));
+      defaultValue: const Constant('active'));
   @override
   List<GeneratedColumn> get $columns =>
-      [id, title, description, advertiserId, startDate, endDate, isActive];
+      [id, title, description, advertiserId, startDate, endDate, status];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -369,9 +367,9 @@ class $CampaignsTable extends Campaigns
     } else if (isInserting) {
       context.missing(_endDateMeta);
     }
-    if (data.containsKey('is_active')) {
-      context.handle(_isActiveMeta,
-          isActive.isAcceptableOrUnknown(data['is_active']!, _isActiveMeta));
+    if (data.containsKey('status')) {
+      context.handle(_statusMeta,
+          status.isAcceptableOrUnknown(data['status']!, _statusMeta));
     }
     return context;
   }
@@ -394,8 +392,8 @@ class $CampaignsTable extends Campaigns
           .read(DriftSqlType.dateTime, data['${effectivePrefix}start_date'])!,
       endDate: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}end_date'])!,
-      isActive: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}is_active'])!,
+      status: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}status'])!,
     );
   }
 
@@ -412,7 +410,7 @@ class Campaign extends DataClass implements Insertable<Campaign> {
   final String advertiserId;
   final DateTime startDate;
   final DateTime endDate;
-  final bool isActive;
+  final String status;
   const Campaign(
       {required this.id,
       required this.title,
@@ -420,7 +418,7 @@ class Campaign extends DataClass implements Insertable<Campaign> {
       required this.advertiserId,
       required this.startDate,
       required this.endDate,
-      required this.isActive});
+      required this.status});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -430,7 +428,7 @@ class Campaign extends DataClass implements Insertable<Campaign> {
     map['advertiser_id'] = Variable<String>(advertiserId);
     map['start_date'] = Variable<DateTime>(startDate);
     map['end_date'] = Variable<DateTime>(endDate);
-    map['is_active'] = Variable<bool>(isActive);
+    map['status'] = Variable<String>(status);
     return map;
   }
 
@@ -442,7 +440,7 @@ class Campaign extends DataClass implements Insertable<Campaign> {
       advertiserId: Value(advertiserId),
       startDate: Value(startDate),
       endDate: Value(endDate),
-      isActive: Value(isActive),
+      status: Value(status),
     );
   }
 
@@ -456,7 +454,7 @@ class Campaign extends DataClass implements Insertable<Campaign> {
       advertiserId: serializer.fromJson<String>(json['advertiserId']),
       startDate: serializer.fromJson<DateTime>(json['startDate']),
       endDate: serializer.fromJson<DateTime>(json['endDate']),
-      isActive: serializer.fromJson<bool>(json['isActive']),
+      status: serializer.fromJson<String>(json['status']),
     );
   }
   @override
@@ -469,7 +467,7 @@ class Campaign extends DataClass implements Insertable<Campaign> {
       'advertiserId': serializer.toJson<String>(advertiserId),
       'startDate': serializer.toJson<DateTime>(startDate),
       'endDate': serializer.toJson<DateTime>(endDate),
-      'isActive': serializer.toJson<bool>(isActive),
+      'status': serializer.toJson<String>(status),
     };
   }
 
@@ -480,7 +478,7 @@ class Campaign extends DataClass implements Insertable<Campaign> {
           String? advertiserId,
           DateTime? startDate,
           DateTime? endDate,
-          bool? isActive}) =>
+          String? status}) =>
       Campaign(
         id: id ?? this.id,
         title: title ?? this.title,
@@ -488,7 +486,7 @@ class Campaign extends DataClass implements Insertable<Campaign> {
         advertiserId: advertiserId ?? this.advertiserId,
         startDate: startDate ?? this.startDate,
         endDate: endDate ?? this.endDate,
-        isActive: isActive ?? this.isActive,
+        status: status ?? this.status,
       );
   Campaign copyWithCompanion(CampaignsCompanion data) {
     return Campaign(
@@ -501,7 +499,7 @@ class Campaign extends DataClass implements Insertable<Campaign> {
           : this.advertiserId,
       startDate: data.startDate.present ? data.startDate.value : this.startDate,
       endDate: data.endDate.present ? data.endDate.value : this.endDate,
-      isActive: data.isActive.present ? data.isActive.value : this.isActive,
+      status: data.status.present ? data.status.value : this.status,
     );
   }
 
@@ -514,14 +512,14 @@ class Campaign extends DataClass implements Insertable<Campaign> {
           ..write('advertiserId: $advertiserId, ')
           ..write('startDate: $startDate, ')
           ..write('endDate: $endDate, ')
-          ..write('isActive: $isActive')
+          ..write('status: $status')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(
-      id, title, description, advertiserId, startDate, endDate, isActive);
+      id, title, description, advertiserId, startDate, endDate, status);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -532,7 +530,7 @@ class Campaign extends DataClass implements Insertable<Campaign> {
           other.advertiserId == this.advertiserId &&
           other.startDate == this.startDate &&
           other.endDate == this.endDate &&
-          other.isActive == this.isActive);
+          other.status == this.status);
 }
 
 class CampaignsCompanion extends UpdateCompanion<Campaign> {
@@ -542,7 +540,7 @@ class CampaignsCompanion extends UpdateCompanion<Campaign> {
   final Value<String> advertiserId;
   final Value<DateTime> startDate;
   final Value<DateTime> endDate;
-  final Value<bool> isActive;
+  final Value<String> status;
   final Value<int> rowid;
   const CampaignsCompanion({
     this.id = const Value.absent(),
@@ -551,7 +549,7 @@ class CampaignsCompanion extends UpdateCompanion<Campaign> {
     this.advertiserId = const Value.absent(),
     this.startDate = const Value.absent(),
     this.endDate = const Value.absent(),
-    this.isActive = const Value.absent(),
+    this.status = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   CampaignsCompanion.insert({
@@ -561,7 +559,7 @@ class CampaignsCompanion extends UpdateCompanion<Campaign> {
     required String advertiserId,
     required DateTime startDate,
     required DateTime endDate,
-    this.isActive = const Value.absent(),
+    this.status = const Value.absent(),
     this.rowid = const Value.absent(),
   })  : id = Value(id),
         title = Value(title),
@@ -598,7 +596,7 @@ class CampaignsCompanion extends UpdateCompanion<Campaign> {
       Value<String>? advertiserId,
       Value<DateTime>? startDate,
       Value<DateTime>? endDate,
-      Value<bool>? isActive,
+      Value<String>? status,
       Value<int>? rowid}) {
     return CampaignsCompanion(
       id: id ?? this.id,
@@ -607,7 +605,7 @@ class CampaignsCompanion extends UpdateCompanion<Campaign> {
       advertiserId: advertiserId ?? this.advertiserId,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
-      isActive: isActive ?? this.isActive,
+      status: status ?? this.status,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -633,8 +631,8 @@ class CampaignsCompanion extends UpdateCompanion<Campaign> {
     if (endDate.present) {
       map['end_date'] = Variable<DateTime>(endDate.value);
     }
-    if (isActive.present) {
-      map['is_active'] = Variable<bool>(isActive.value);
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -651,7 +649,7 @@ class CampaignsCompanion extends UpdateCompanion<Campaign> {
           ..write('advertiserId: $advertiserId, ')
           ..write('startDate: $startDate, ')
           ..write('endDate: $endDate, ')
-          ..write('isActive: $isActive, ')
+          ..write('status: $status, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1573,7 +1571,7 @@ typedef $$CampaignsTableCreateCompanionBuilder = CampaignsCompanion Function({
   required String advertiserId,
   required DateTime startDate,
   required DateTime endDate,
-  Value<bool> isActive,
+  Value<String> status,
   Value<int> rowid,
 });
 typedef $$CampaignsTableUpdateCompanionBuilder = CampaignsCompanion Function({
@@ -1583,7 +1581,7 @@ typedef $$CampaignsTableUpdateCompanionBuilder = CampaignsCompanion Function({
   Value<String> advertiserId,
   Value<DateTime> startDate,
   Value<DateTime> endDate,
-  Value<bool> isActive,
+  Value<String> status,
   Value<int> rowid,
 });
 
@@ -1614,8 +1612,8 @@ class $$CampaignsTableFilterComposer
   ColumnFilters<DateTime> get endDate => $composableBuilder(
       column: $table.endDate, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<bool> get isActive => $composableBuilder(
-      column: $table.isActive, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get status => $composableBuilder(
+      column: $table.status, builder: (column) => ColumnFilters(column));
 }
 
 class $$CampaignsTableOrderingComposer
@@ -1646,8 +1644,8 @@ class $$CampaignsTableOrderingComposer
   ColumnOrderings<DateTime> get endDate => $composableBuilder(
       column: $table.endDate, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<bool> get isActive => $composableBuilder(
-      column: $table.isActive, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get status => $composableBuilder(
+      column: $table.status, builder: (column) => ColumnOrderings(column));
 }
 
 class $$CampaignsTableAnnotationComposer
@@ -1677,8 +1675,8 @@ class $$CampaignsTableAnnotationComposer
   GeneratedColumn<DateTime> get endDate =>
       $composableBuilder(column: $table.endDate, builder: (column) => column);
 
-  GeneratedColumn<bool> get isActive =>
-      $composableBuilder(column: $table.isActive, builder: (column) => column);
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
 }
 
 class $$CampaignsTableTableManager extends RootTableManager<
@@ -1710,7 +1708,7 @@ class $$CampaignsTableTableManager extends RootTableManager<
             Value<String> advertiserId = const Value.absent(),
             Value<DateTime> startDate = const Value.absent(),
             Value<DateTime> endDate = const Value.absent(),
-            Value<bool> isActive = const Value.absent(),
+            Value<String> status = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               CampaignsCompanion(
@@ -1720,7 +1718,7 @@ class $$CampaignsTableTableManager extends RootTableManager<
             advertiserId: advertiserId,
             startDate: startDate,
             endDate: endDate,
-            isActive: isActive,
+            status: status,
             rowid: rowid,
           ),
           createCompanionCallback: ({
@@ -1730,7 +1728,7 @@ class $$CampaignsTableTableManager extends RootTableManager<
             required String advertiserId,
             required DateTime startDate,
             required DateTime endDate,
-            Value<bool> isActive = const Value.absent(),
+            Value<String> status = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               CampaignsCompanion.insert(
@@ -1740,7 +1738,7 @@ class $$CampaignsTableTableManager extends RootTableManager<
             advertiserId: advertiserId,
             startDate: startDate,
             endDate: endDate,
-            isActive: isActive,
+            status: status,
             rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0

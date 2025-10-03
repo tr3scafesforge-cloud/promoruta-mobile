@@ -5,6 +5,8 @@ import 'package:drift/native.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
+import 'entities/campaigns_entity.dart';
+
 part 'database.g.dart';
 
 // Tables
@@ -18,18 +20,6 @@ class Users extends Table {
   Set<Column> get primaryKey => {id};
 }
 
-class Campaigns extends Table {
-  TextColumn get id => text()();
-  TextColumn get title => text()();
-  TextColumn get description => text()();
-  TextColumn get advertiserId => text()();
-  DateTimeColumn get startDate => dateTime()();
-  DateTimeColumn get endDate => dateTime()();
-  BoolColumn get isActive => boolean().withDefault(const Constant(true))();
-
-  @override
-  Set<Column> get primaryKey => {id};
-}
 
 class Routes extends Table {
   TextColumn get id => text()();
@@ -57,7 +47,7 @@ class GpsPoints extends Table {
 }
 
 // Database class
-@DriftDatabase(tables: [Users, Campaigns, Routes, GpsPoints])
+@DriftDatabase(tables: [Users, CampaignsEntity, Routes, GpsPoints])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
