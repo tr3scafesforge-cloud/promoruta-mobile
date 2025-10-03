@@ -7,23 +7,6 @@ import 'package:promoruta/shared/shared.dart';
 import 'package:promoruta/core/core.dart' as model;
 import 'package:intl/intl.dart';
 
-// Extension to convert core Campaign to UI Campaign
-extension CampaignMapper on model.Campaign {
-  ui.Campaign toUiModel() {
-    return ui.Campaign(
-      id: id,
-      title: title,
-      subtitle: description,
-      location: 'Unknown Location', // Could be enhanced with location data
-      distanceKm: 0.0, // Could be calculated based on user location
-      status: isActive ? ui.CampaignStatus.active : ui.CampaignStatus.expired,
-      dateTime: startDate,
-      payUsd: 0, // Could be added to core model if needed
-      peopleNeeded: 0, // Could be added to core model if needed
-    );
-  }
-}
-
 class AdvertiserHistoryPage extends ConsumerStatefulWidget {
   const AdvertiserHistoryPage({super.key});
 

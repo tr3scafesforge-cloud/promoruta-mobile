@@ -26,6 +26,9 @@ export 'datasources/local/db/database.dart';
 export 'use_cases/base_use_case.dart';
 export 'use_cases/campaign_use_cases.dart';
 
+// Models
+export 'models/campaign_mappers.dart';
+
 // Providers
 export 'providers/providers.dart';
 
