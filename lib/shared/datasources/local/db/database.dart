@@ -57,7 +57,7 @@ class AppDatabase extends _$AppDatabase {
   static LazyDatabase _openConnection() {
     return LazyDatabase(() async {
       final dbFolder = await getApplicationDocumentsDirectory();
-      final file = File(p.join(dbFolder.path, 'promoruta.db'));
+      final file = File(p.join(dbFolder.path, 'promoruta_v2.db'));
       return NativeDatabase.createInBackground(file);
     });
   }

@@ -244,8 +244,11 @@ class CampaignsNotifier extends StateNotifier<AsyncValue<List<model.Campaign>>> 
     state = const AsyncValue.loading();
     try {
       final campaigns = await _getCampaignsUseCase();
+      print('CampaignsNotifier: Loaded ${campaigns.length} campaigns');
       state = AsyncValue.data(campaigns);
     } catch (e, stack) {
+      print('CampaignsNotifier: Error loading campaigns: $e');
+      print('CampaignsNotifier: Stack trace: $stack');
       state = AsyncValue.error(e, stack);
     }
   }

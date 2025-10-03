@@ -22,8 +22,11 @@ class _AdvertiserHistoryPageState extends ConsumerState<AdvertiserHistoryPage> {
     final campaignsAsync = ref.watch(campaignsProvider);
     final q = _search.text.trim().toLowerCase();
 
+    print('AdvertiserHistoryPage: campaignsAsync state: $campaignsAsync');
+
     return campaignsAsync.maybeWhen(
       data: (campaigns) {
+        print('AdvertiserHistoryPage: Processing ${campaigns.length} campaigns');
         Iterable<ui.Campaign> list = campaigns.map((c) => c.toUiModel());
 
         // filter by chip
@@ -47,9 +50,14 @@ class _AdvertiserHistoryPageState extends ConsumerState<AdvertiserHistoryPage> {
               c.title.toLowerCase().contains(q) == true ||
               c.location.toLowerCase().contains(q) == true);
         }
-        return list.toList();
+        final result = list.toList();
+        print('AdvertiserHistoryPage: Filtered to ${result.length} campaigns');
+        return result;
       },
-      orElse: () => <ui.Campaign>[],
+      orElse: () {
+        print('AdvertiserHistoryPage: maybeWhen orElse triggered');
+        return <ui.Campaign>[];
+      },
     );
   }
 
