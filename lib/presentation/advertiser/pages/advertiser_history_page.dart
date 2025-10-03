@@ -1,84 +1,75 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
-import 'package:promoruta/shared/models/campaign_ui.dart';
+import 'package:promoruta/shared/models/campaign_ui.dart' as ui;
 import 'package:promoruta/shared/widgets/advertiser_search_filter_bar.dart';
+import 'package:promoruta/shared/shared.dart';
+import 'package:promoruta/core/core.dart' as model;
 import 'package:intl/intl.dart';
 
-class AdvertiserHistoryPage extends StatefulWidget {
+// Extension to convert core Campaign to UI Campaign
+extension CampaignMapper on model.Campaign {
+  ui.Campaign toUiModel() {
+    return ui.Campaign(
+      id: id,
+      title: title,
+      subtitle: description,
+      location: 'Unknown Location', // Could be enhanced with location data
+      distanceKm: 0.0, // Could be calculated based on user location
+      status: isActive ? ui.CampaignStatus.active : ui.CampaignStatus.expired,
+      dateTime: startDate,
+      payUsd: 0, // Could be added to core model if needed
+      peopleNeeded: 0, // Could be added to core model if needed
+    );
+  }
+}
+
+class AdvertiserHistoryPage extends ConsumerStatefulWidget {
   const AdvertiserHistoryPage({super.key});
 
   @override
-  State<AdvertiserHistoryPage> createState() => _AdvertiserHistoryPageState();
+  ConsumerState<AdvertiserHistoryPage> createState() => _AdvertiserHistoryPageState();
 }
 
-class _AdvertiserHistoryPageState extends State<AdvertiserHistoryPage> {
+class _AdvertiserHistoryPageState extends ConsumerState<AdvertiserHistoryPage> {
   final TextEditingController _search = TextEditingController();
 
   /// 0=todas, 1=completadas, 2=canceladas, 3=expiradas
   int _selectedFilter = 0;
 
-  final _data = <Campaign>[
-    Campaign(
-      id: '1',
-      title: 'Promoción Agua',
-      dateTime: DateTime(2025, 1, 1, 10, 50),
-      location: 'Montevideo Shopping',
-      distanceKm: 2.4,
-      durationSec: 30,
-      payUsd: 100,
-      peopleNeeded: 100,
-      status: CampaignStatus.completed,
-    ),
-    Campaign(
-      id: '2',
-      title: 'Promoción Agua II',
-      dateTime: DateTime(2025, 1, 1, 14, 50),
-      location: 'Montevideo Shopping',
-      distanceKm: 2.4,
-      durationSec: 30,
-      payUsd: 100,
-      peopleNeeded: 0,
-      status: CampaignStatus.canceled,
-    ),
-    Campaign(
-      id: '3',
-      title: 'Promoción Agua III',
-      dateTime: DateTime(2025, 1, 1, 9, 50),
-      location: 'Montevideo Shopping',
-      distanceKm: 2.4,
-      durationSec: 30,
-      payUsd: 100,
-      peopleNeeded: 0,
-      status: CampaignStatus.expired,
-    ),
-  ];
-
-  List<Campaign> get _filtered {
+  List<ui.Campaign> get _filtered {
+    final campaignsAsync = ref.watch(campaignsProvider);
     final q = _search.text.trim().toLowerCase();
-    Iterable<Campaign> list = _data;
 
-    // filter by chip
-    switch (_selectedFilter) {
-      case 1:
-        list = list.where((c) => c.status == CampaignStatus.completed);
-        break;
-      case 2:
-        list = list.where((c) => c.status == CampaignStatus.canceled);
-        break;
-      case 3:
-        list = list.where((c) => c.status == CampaignStatus.expired);
-        break;
-      default:
-        break; // todas
-    }
+    return campaignsAsync.maybeWhen(
+      data: (campaigns) {
+        Iterable<ui.Campaign> list = campaigns.map((c) => c.toUiModel());
 
-    // filter by query
-    if (q.isNotEmpty) {
-      list = list.where((c) =>
-          c.title.toLowerCase().contains(q) ||
-          c.location.toLowerCase().contains(q));
-    }
-    return list.toList();
+        // filter by chip
+        switch (_selectedFilter) {
+          case 1:
+            list = list.where((c) => c?.status == ui.CampaignStatus.completed);
+            break;
+          case 2:
+            list = list.where((c) => c?.status == ui.CampaignStatus.canceled);
+            break;
+          case 3:
+            list = list.where((c) => c?.status == ui.CampaignStatus.expired);
+            break;
+          default:
+            break; // todas
+        }
+
+        // filter by query
+        if (q.isNotEmpty) {
+          list = list.where((c) =>
+              c?.title?.toLowerCase().contains(q) == true ||
+              c?.location?.toLowerCase().contains(q) == true);
+        }
+        return list.toList();
+      },
+      orElse: () => <ui.Campaign>[],
+    );
   }
 
   @override
@@ -174,16 +165,16 @@ class _CampaignCard extends StatelessWidget {
     required this.dateFormatted,
   });
 
-  final Campaign campaign;
+  final ui.Campaign campaign;
   final String dateFormatted;
 
   Color get _statusColor {
     switch (campaign.status) {
-      case CampaignStatus.completed:
+      case ui.CampaignStatus.completed:
         return const Color(0xFF31C48D);
-      case CampaignStatus.canceled:
+      case ui.CampaignStatus.canceled:
         return const Color(0xFFE11D48);
-      case CampaignStatus.expired:
+      case ui.CampaignStatus.expired:
         return const Color(0xFF9CA3AF);
       default:
         return Colors.grey;
@@ -192,11 +183,11 @@ class _CampaignCard extends StatelessWidget {
 
   String get _statusLabel {
     switch (campaign.status) {
-      case CampaignStatus.completed:
+      case ui.CampaignStatus.completed:
         return 'Completada';
-      case CampaignStatus.canceled:
+      case ui.CampaignStatus.canceled:
         return 'Cancelada';
-      case CampaignStatus.expired:
+      case ui.CampaignStatus.expired:
         return 'Expirada';
       default:
         return 'Desconocida';
@@ -324,17 +315,17 @@ class _CampaignCard extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: switch (campaign.status) {
-                      CampaignStatus.completed => _ActionButton(
+                      ui.CampaignStatus.completed => _ActionButton(
                           label: 'Ver Reporte',
                           color: const Color(0xFF31C48D),
                           onTap: () {},
                         ),
-                      CampaignStatus.canceled => _ActionButton(
+                      ui.CampaignStatus.canceled => _ActionButton(
                           label: 'Duplicar',
                           color: const Color(0xFFE11D48),
                           onTap: () {},
                         ),
-                      CampaignStatus.expired => _ActionButton(
+                      ui.CampaignStatus.expired => _ActionButton(
                           label: 'Reactivar',
                           color: const Color(0xFF111827),
                           onTap: () {},

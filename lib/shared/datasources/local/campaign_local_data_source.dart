@@ -4,6 +4,37 @@ import '../../../core/models/campaign.dart' as model;
 import '../../repositories/campaign_repository.dart';
 import 'db/database.dart';
 
+// Mock data for offline scenarios
+final _mockCampaigns = <model.Campaign>[
+  model.Campaign(
+    id: '1',
+    title: 'Promoción Agua',
+    description: 'Campaña de promoción de agua mineral',
+    advertiserId: 'advertiser_1',
+    startDate: DateTime(2025, 1, 1, 10, 50),
+    endDate: DateTime(2025, 1, 2, 10, 50),
+    isActive: true,
+  ),
+  model.Campaign(
+    id: '2',
+    title: 'Promoción Agua II',
+    description: 'Segunda campaña de promoción de agua mineral',
+    advertiserId: 'advertiser_1',
+    startDate: DateTime(2025, 1, 1, 14, 50),
+    endDate: DateTime(2025, 1, 2, 14, 50),
+    isActive: false,
+  ),
+  model.Campaign(
+    id: '3',
+    title: 'Promoción Agua III',
+    description: 'Tercera campaña de promoción de agua mineral',
+    advertiserId: 'advertiser_1',
+    startDate: DateTime(2025, 1, 1, 9, 50),
+    endDate: DateTime(2025, 1, 2, 9, 50),
+    isActive: false,
+  ),
+];
+
 class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
   final AppDatabase db;
 
@@ -42,6 +73,14 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
   @override
   Future<List<model.Campaign>> getCampaigns() async {
     final campaignRows = await db.select(db.campaigns).get();
+
+    // If no data in database, return mock data for offline scenarios
+    if (campaignRows.isEmpty) {
+      // Save mock data to database for future use
+      await saveCampaigns(_mockCampaigns);
+      return _mockCampaigns;
+    }
+
     return campaignRows.map((row) => model.Campaign(
       id: row.id,
       title: row.title,

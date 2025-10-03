@@ -22,6 +22,10 @@ export 'datasources/remote/campaign_remote_data_source.dart';
 export 'datasources/remote/gps_remote_data_source.dart';
 export 'datasources/local/db/database.dart';
 
+// Use Cases
+export 'use_cases/base_use_case.dart';
+export 'use_cases/campaign_use_cases.dart';
+
 // Providers
 export 'providers/providers.dart';
 

@@ -138,6 +138,32 @@ final gpsRepositoryProvider = Provider<GpsRepository>((ref) {
   );
 });
 
+// Use Cases
+final getCampaignsUseCaseProvider = Provider<GetCampaignsUseCase>((ref) {
+  final repository = ref.watch(campaignRepositoryProvider);
+  return GetCampaignsUseCase(repository);
+});
+
+final getCampaignUseCaseProvider = Provider<GetCampaignUseCase>((ref) {
+  final repository = ref.watch(campaignRepositoryProvider);
+  return GetCampaignUseCase(repository);
+});
+
+final createCampaignUseCaseProvider = Provider<CreateCampaignUseCase>((ref) {
+  final repository = ref.watch(campaignRepositoryProvider);
+  return CreateCampaignUseCase(repository);
+});
+
+final updateCampaignUseCaseProvider = Provider<UpdateCampaignUseCase>((ref) {
+  final repository = ref.watch(campaignRepositoryProvider);
+  return UpdateCampaignUseCase(repository);
+});
+
+final deleteCampaignUseCaseProvider = Provider<DeleteCampaignUseCase>((ref) {
+  final repository = ref.watch(campaignRepositoryProvider);
+  return DeleteCampaignUseCase(repository);
+});
+
 // State Notifiers for UI
 final authStateProvider = StateNotifierProvider<AuthNotifier, AsyncValue<model.User?>>((ref) {
   final repository = ref.watch(authRepositoryProvider);
@@ -145,8 +171,16 @@ final authStateProvider = StateNotifierProvider<AuthNotifier, AsyncValue<model.U
 });
 
 final campaignsProvider = StateNotifierProvider<CampaignsNotifier, AsyncValue<List<model.Campaign>>>((ref) {
-  final repository = ref.watch(campaignRepositoryProvider);
-  return CampaignsNotifier(repository);
+  final getCampaignsUseCase = ref.watch(getCampaignsUseCaseProvider);
+  final createCampaignUseCase = ref.watch(createCampaignUseCaseProvider);
+  final updateCampaignUseCase = ref.watch(updateCampaignUseCaseProvider);
+  final deleteCampaignUseCase = ref.watch(deleteCampaignUseCaseProvider);
+  return CampaignsNotifier(
+    getCampaignsUseCase,
+    createCampaignUseCase,
+    updateCampaignUseCase,
+    deleteCampaignUseCase,
+  );
 });
 
 final connectivityStatusProvider = StreamProvider<bool>((ref) {
@@ -192,16 +226,24 @@ class AuthNotifier extends StateNotifier<AsyncValue<model.User?>> {
 }
 
 class CampaignsNotifier extends StateNotifier<AsyncValue<List<model.Campaign>>> {
-  final CampaignRepository _repository;
+  final GetCampaignsUseCase _getCampaignsUseCase;
+  final CreateCampaignUseCase _createCampaignUseCase;
+  final UpdateCampaignUseCase _updateCampaignUseCase;
+  final DeleteCampaignUseCase _deleteCampaignUseCase;
 
-  CampaignsNotifier(this._repository) : super(const AsyncValue.loading()) {
+  CampaignsNotifier(
+    this._getCampaignsUseCase,
+    this._createCampaignUseCase,
+    this._updateCampaignUseCase,
+    this._deleteCampaignUseCase,
+  ) : super(const AsyncValue.loading()) {
     loadCampaigns();
   }
 
   Future<void> loadCampaigns() async {
     state = const AsyncValue.loading();
     try {
-      final campaigns = await _repository.getCampaigns();
+      final campaigns = await _getCampaignsUseCase();
       state = AsyncValue.data(campaigns);
     } catch (e, stack) {
       state = AsyncValue.error(e, stack);
@@ -210,10 +252,38 @@ class CampaignsNotifier extends StateNotifier<AsyncValue<List<model.Campaign>>> 
 
   Future<void> createCampaign(model.Campaign campaign) async {
     try {
-      final created = await _repository.createCampaign(campaign);
+      final created = await _createCampaignUseCase(campaign);
       state = state.maybeWhen(
         data: (campaigns) => AsyncValue.data([...campaigns, created]),
         orElse: () => AsyncValue.data([created]),
+      );
+    } catch (e, stack) {
+      state = AsyncValue.error(e, stack);
+    }
+  }
+
+  Future<void> updateCampaign(model.Campaign campaign) async {
+    try {
+      final updated = await _updateCampaignUseCase(campaign);
+      state = state.maybeWhen(
+        data: (campaigns) => AsyncValue.data(
+          campaigns.map((c) => c.id == updated.id ? updated : c).toList(),
+        ),
+        orElse: () => AsyncValue.data([updated]),
+      );
+    } catch (e, stack) {
+      state = AsyncValue.error(e, stack);
+    }
+  }
+
+  Future<void> deleteCampaign(String campaignId) async {
+    try {
+      await _deleteCampaignUseCase(campaignId);
+      state = state.maybeWhen(
+        data: (campaigns) => AsyncValue.data(
+          campaigns.where((c) => c.id != campaignId).toList(),
+        ),
+        orElse: () => const AsyncValue.data([]),
       );
     } catch (e, stack) {
       state = AsyncValue.error(e, stack);
