@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/models/campaign_ui.dart' as ui;
 import 'package:promoruta/shared/widgets/advertiser_search_filter_bar.dart';
 import 'package:promoruta/shared/shared.dart';
-import 'package:promoruta/core/core.dart' as model;
 import 'package:intl/intl.dart';
 
 class AdvertiserHistoryPage extends ConsumerStatefulWidget {
@@ -31,13 +29,13 @@ class _AdvertiserHistoryPageState extends ConsumerState<AdvertiserHistoryPage> {
         // filter by chip
         switch (_selectedFilter) {
           case 1:
-            list = list.where((c) => c?.status == ui.CampaignStatus.completed);
+            list = list.where((c) => c.status == ui.CampaignStatus.completed);
             break;
           case 2:
-            list = list.where((c) => c?.status == ui.CampaignStatus.canceled);
+            list = list.where((c) => c.status == ui.CampaignStatus.canceled);
             break;
           case 3:
-            list = list.where((c) => c?.status == ui.CampaignStatus.expired);
+            list = list.where((c) => c.status == ui.CampaignStatus.expired);
             break;
           default:
             break; // todas
@@ -46,8 +44,8 @@ class _AdvertiserHistoryPageState extends ConsumerState<AdvertiserHistoryPage> {
         // filter by query
         if (q.isNotEmpty) {
           list = list.where((c) =>
-              c?.title?.toLowerCase().contains(q) == true ||
-              c?.location?.toLowerCase().contains(q) == true);
+              c.title.toLowerCase().contains(q) == true ||
+              c.location.toLowerCase().contains(q) == true);
         }
         return list.toList();
       },
