@@ -1,8 +1,7 @@
 import 'package:drift/drift.dart';
+import 'package:promoruta/core/core.dart' as model;
+import 'package:promoruta/shared/shared.dart';
 
-import '../../../core/models/campaign.dart' as model;
-import '../../repositories/campaign_repository.dart';
-import 'db/database.dart';
 
 // Mock data for offline scenarios
 final _mockCampaigns = <model.Campaign>[
@@ -13,7 +12,7 @@ final _mockCampaigns = <model.Campaign>[
     advertiserId: 'advertiser_1',
     startDate: DateTime(2025, 1, 1, 10, 50),
     endDate: DateTime(2025, 1, 2, 10, 50),
-    status: model.CampaignStatus.active,
+    status: model.CampaignStatus.completed,
   ),
   model.Campaign(
     id: '2',
@@ -106,6 +105,7 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
       startDate: row.startDate,
       endDate: row.endDate,
       status: row.isActive ? model.CampaignStatus.active : model.CampaignStatus.expired,
+      
     )).toList();
   }
 
