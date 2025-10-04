@@ -43,20 +43,11 @@ class _AdvertiserProfilePageState extends State<AdvertiserProfilePage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final surface = theme.colorScheme.surface;
-    final onSurface = theme.colorScheme.onSurface;
-    final cardColor = theme.colorScheme.surfaceVariant.withOpacity(0.4);
+    final cardColor = theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.4);
 
-    return Scaffold(
-      backgroundColor: theme.colorScheme.surfaceVariant.withOpacity(0.2),
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: surface,
-        foregroundColor: onSurface,
-        title: const Text('Perfil'),
-        centerTitle: false,
-      ),
-      body: ListView(
+    return Container(
+      color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.2),
+      child: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
         children: [
           // Account card
@@ -105,10 +96,7 @@ class _AdvertiserProfilePageState extends State<AdvertiserProfilePage> {
             onTap: widget.onTapLanguage,
           ),
         ],
-      ),
-
-      // If you already have a global BottomNavigationBar, remove this.
-      bottomNavigationBar: _BottomNavMock(currentIndex: 4),
+      )
     );
   }
 }
@@ -248,28 +236,6 @@ class _ArrowTileCard extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-/* -------------------------- Bottom nav (mock) -------------------------- */
-class _BottomNavMock extends StatelessWidget {
-  const _BottomNavMock({required this.currentIndex});
-
-  final int currentIndex;
-
-  @override
-  Widget build(BuildContext context) {
-    return NavigationBar(
-      selectedIndex: currentIndex,
-      onDestinationSelected: (_) {},
-      destinations: const [
-        NavigationDestination(icon: Icon(Icons.home_outlined), label: 'Inicio'),
-        NavigationDestination(icon: Icon(Icons.cases_outlined), label: 'Campañas'),
-        NavigationDestination(icon: Icon(Icons.podcasts), label: 'En vivo'),
-        NavigationDestination(icon: Icon(Icons.history), label: 'Historial'),
-        NavigationDestination(icon: Icon(Icons.person), label: 'Perfil'),
-      ],
     );
   }
 }
