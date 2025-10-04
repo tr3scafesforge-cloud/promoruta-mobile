@@ -630,6 +630,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reactivate'**
   String get reactivate;
+
+  /// Label for status section in filter modal
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get status;
+
+  /// Label for canceled status option
+  ///
+  /// In en, this message translates to:
+  /// **'Canceled'**
+  String get canceled;
+
+  /// Label for expired status option
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get expired;
+
+  /// Label for all status option
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
+
+  /// Button text to reset filter
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Filter'**
+  String get resetFilter;
+
+  /// Button text to apply filter
+  ///
+  /// In en, this message translates to:
+  /// **'Apply Filter'**
+  String get applyFilter;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

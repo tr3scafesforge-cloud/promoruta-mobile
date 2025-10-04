@@ -355,5 +355,29 @@
   "reactivate": "Reativar",
   "@reactivate": {
     "description": "Button text to reactivate campaign"
+  },
+  "status": "Estado",
+  "@status": {
+    "description": "Label for status section in filter modal"
+  },
+  "canceled": "Cancelada",
+  "@canceled": {
+    "description": "Label for canceled status option"
+  },
+  "expired": "Expirada",
+  "@expired": {
+    "description": "Label for expired status option"
+  },
+  "all": "Todos",
+  "@all": {
+    "description": "Label for all status option"
+  },
+  "resetFilter": "Redefinir Filtro",
+  "@resetFilter": {
+    "description": "Button text to reset filter"
+  },
+  "applyFilter": "Aplicar Filtro",
+  "@applyFilter": {
+    "description": "Button text to apply filter"
   }
 }

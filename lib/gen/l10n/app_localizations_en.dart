@@ -272,4 +272,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reactivate => 'Reactivate';
+
+  @override
+  String get status => 'Status';
+
+  @override
+  String get canceled => 'Canceled';
+
+  @override
+  String get expired => 'Expired';
+
+  @override
+  String get all => 'All';
+
+  @override
+  String get resetFilter => 'Reset Filter';
+
+  @override
+  String get applyFilter => 'Apply Filter';
 }

@@ -130,7 +130,7 @@ class _AdvertiserHistoryPageState extends ConsumerState<AdvertiserHistoryPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 4),
-                    Text('Estado',
+                    Text(AppLocalizations.of(context).status,
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                               fontWeight: FontWeight.w800,
                             )),
@@ -145,28 +145,28 @@ class _AdvertiserHistoryPageState extends ConsumerState<AdvertiserHistoryPage> {
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
                         _StatusOptionCard(
-                          label: 'Completada',
+                          label: AppLocalizations.of(context).completed,
                           icon: Icons.check_circle_outlined,
                           color: const Color(0xFF0F9D58), // green
                           selected: tempSelected == 1,
                           onTap: () => setModal(() => tempSelected = 1),
                         ),
                         _StatusOptionCard(
-                          label: 'Cancelada',
+                          label: AppLocalizations.of(context).canceled,
                           icon: Icons.cancel_outlined,
                           color: const Color(0xFFD81B60), // magenta/red
                           selected: tempSelected == 2,
                           onTap: () => setModal(() => tempSelected = 2),
                         ),
                         _StatusOptionCard(
-                          label: 'Expirada',
+                          label: AppLocalizations.of(context).expired,
                           icon: Icons.access_time_outlined,
                           color: const Color(0xFF111827), // dark/gray
                           selected: tempSelected == 3,
                           onTap: () => setModal(() => tempSelected = 3),
                         ),
                         _StatusOptionCard(
-                          label: 'Todos',
+                          label: AppLocalizations.of(context).all,
                           icon: Icons.all_inclusive,
                           color: const Color(
                               0xFF0FA4A3), // teal (filled look when selected)
@@ -192,7 +192,7 @@ class _AdvertiserHistoryPageState extends ConsumerState<AdvertiserHistoryPage> {
                         ),
                         onPressed: () => setModal(() => tempSelected = 0),
                         child: Text(
-                          'Resetear Filtro',
+                          AppLocalizations.of(context).resetFilter,
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             color: Colors.black87,
@@ -215,8 +215,8 @@ class _AdvertiserHistoryPageState extends ConsumerState<AdvertiserHistoryPage> {
                           // persist chosen value in the parent state
                           setState(() => _selectedFilter = tempSelected);
                         },
-                        child: const Text(
-                          'Aplicar Filtro',
+                        child: Text(
+                          AppLocalizations.of(context).applyFilter,
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
