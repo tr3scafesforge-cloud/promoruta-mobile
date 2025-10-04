@@ -1,15 +1,275 @@
 import 'package:flutter/material.dart';
-import 'package:promoruta/gen/l10n/app_localizations.dart';
 
-class AdvertiserProfilePage extends StatelessWidget {
-  const AdvertiserProfilePage({super.key});
+class AdvertiserProfilePage extends StatefulWidget {
+  const AdvertiserProfilePage({
+    super.key,
+    this.name = 'Melissa Domehr',
+    this.email = 'melissa.domehr@mail.com',
+    this.avatarImage,
+    this.isDarkMode = false,
+    this.onToggleDarkMode,
+    this.onTapSecurity,
+    this.onTapLanguage,
+    this.onTapAccount,
+  });
+
+  final String name;
+  final String email;
+  final ImageProvider? avatarImage;
+
+  /// Initial dark mode state (you can pass Theme.of(context).brightness == Brightness.dark)
+  final bool isDarkMode;
+
+  /// Called when the user flips the dark mode switch.
+  final ValueChanged<bool>? onToggleDarkMode;
+
+  final VoidCallback? onTapSecurity;
+  final VoidCallback? onTapLanguage;
+  final VoidCallback? onTapAccount;
+
+  @override
+  State<AdvertiserProfilePage> createState() => _AdvertiserProfilePageState();
+}
+
+class _AdvertiserProfilePageState extends State<AdvertiserProfilePage> {
+  late bool _darkMode;
+
+  @override
+  void initState() {
+    super.initState();
+    _darkMode = widget.isDarkMode;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    return Center(
-      child: Text('${l10n.profile}${l10n.placeholderPending}',
-          style: Theme.of(context).textTheme.titleMedium),
+    final theme = Theme.of(context);
+    final surface = theme.colorScheme.surface;
+    final onSurface = theme.colorScheme.onSurface;
+    final cardColor = theme.colorScheme.surfaceVariant.withOpacity(0.4);
+
+    return Scaffold(
+      backgroundColor: theme.colorScheme.surfaceVariant.withOpacity(0.2),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: surface,
+        foregroundColor: onSurface,
+        title: const Text('Perfil'),
+        centerTitle: false,
+      ),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+        children: [
+          // Account card
+          _ProfileCard(
+            background: cardColor,
+            onTap: widget.onTapAccount,
+            leading: CircleAvatar(
+              radius: 24,
+              backgroundImage: widget.avatarImage,
+              child: widget.avatarImage == null
+                  ? const Icon(Icons.person, size: 28)
+                  : null,
+            ),
+            title: widget.name,
+            subtitle: widget.email,
+          ),
+          const SizedBox(height: 16),
+
+          // Dark mode switch
+          _SwitchTileCard(
+            background: cardColor,
+            icon: Icons.nightlight_round,
+            label: 'Modo Oscuro',
+            value: _darkMode,
+            onChanged: (v) {
+              setState(() => _darkMode = v);
+              widget.onToggleDarkMode?.call(v);
+            },
+          ),
+          const SizedBox(height: 12),
+
+          // Security
+          _ArrowTileCard(
+            background: cardColor,
+            icon: Icons.shield_outlined,
+            label: 'Seguridad',
+            onTap: widget.onTapSecurity,
+          ),
+          const SizedBox(height: 12),
+
+          // Language
+          _ArrowTileCard(
+            background: cardColor,
+            icon: Icons.language,
+            label: 'Language',
+            onTap: widget.onTapLanguage,
+          ),
+        ],
+      ),
+
+      // If you already have a global BottomNavigationBar, remove this.
+      bottomNavigationBar: _BottomNavMock(currentIndex: 4),
+    );
+  }
+}
+
+/* ------------------------------ UI pieces ------------------------------ */
+
+class _ProfileCard extends StatelessWidget {
+  const _ProfileCard({
+    required this.leading,
+    required this.title,
+    required this.subtitle,
+    required this.background,
+    this.onTap,
+  });
+
+  final Widget leading;
+  final String title;
+  final String subtitle;
+  final Color background;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Material(
+      color: background,
+      borderRadius: BorderRadius.circular(12),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+          child: Row(
+            children: [
+              leading,
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        )),
+                    const SizedBox(height: 4),
+                    Text(subtitle,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                        )),
+                  ],
+                ),
+              ),
+              const Icon(Icons.chevron_right),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SwitchTileCard extends StatelessWidget {
+  const _SwitchTileCard({
+    required this.icon,
+    required this.label,
+    required this.value,
+    required this.onChanged,
+    required this.background,
+  });
+
+  final IconData icon;
+  final String label;
+  final bool value;
+  final ValueChanged<bool> onChanged;
+  final Color background;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Material(
+      color: background,
+      borderRadius: BorderRadius.circular(12),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        child: Row(
+          children: [
+            Icon(icon, size: 24),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(label,
+                  style: theme.textTheme.titleMedium
+                      ?.copyWith(fontWeight: FontWeight.w700)),
+            ),
+            Switch.adaptive(value: value, onChanged: onChanged),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ArrowTileCard extends StatelessWidget {
+  const _ArrowTileCard({
+    required this.icon,
+    required this.label,
+    required this.background,
+    this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final Color background;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Material(
+      color: background,
+      borderRadius: BorderRadius.circular(12),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+          child: Row(
+            children: [
+              Icon(icon, size: 24),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(label,
+                    style: theme.textTheme.titleMedium
+                        ?.copyWith(fontWeight: FontWeight.w700)),
+              ),
+              const Icon(Icons.chevron_right),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/* -------------------------- Bottom nav (mock) -------------------------- */
+class _BottomNavMock extends StatelessWidget {
+  const _BottomNavMock({required this.currentIndex});
+
+  final int currentIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    return NavigationBar(
+      selectedIndex: currentIndex,
+      onDestinationSelected: (_) {},
+      destinations: const [
+        NavigationDestination(icon: Icon(Icons.home_outlined), label: 'Inicio'),
+        NavigationDestination(icon: Icon(Icons.cases_outlined), label: 'Campañas'),
+        NavigationDestination(icon: Icon(Icons.podcasts), label: 'En vivo'),
+        NavigationDestination(icon: Icon(Icons.history), label: 'Historial'),
+        NavigationDestination(icon: Icon(Icons.person), label: 'Perfil'),
+      ],
     );
   }
 }
