@@ -123,101 +123,113 @@ class _AdvertiserHistoryPageState extends ConsumerState<AdvertiserHistoryPage> {
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.7,
             child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                const SizedBox(height: 4),
-                Text('Estado',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w800,
-                        )),
-                const SizedBox(height: 12),
-
-                // 2x2 grid of options
-                GridView.count(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _StatusOptionCard(
-                      label: 'Completada',
-                      icon: Icons.check_circle_outlined,
-                      color: const Color(0xFF0F9D58), // green
-                      selected: tempSelected == 1,
-                      onTap: () => setModal(() => tempSelected = 1),
+                    const SizedBox(height: 4),
+                    Text('Estado',
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.w800,
+                            )),
+                    const SizedBox(height: 12),
+
+                    // 2x2 grid of options
+                    GridView.count(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        _StatusOptionCard(
+                          label: 'Completada',
+                          icon: Icons.check_circle_outlined,
+                          color: const Color(0xFF0F9D58), // green
+                          selected: tempSelected == 1,
+                          onTap: () => setModal(() => tempSelected = 1),
+                        ),
+                        _StatusOptionCard(
+                          label: 'Cancelada',
+                          icon: Icons.cancel_outlined,
+                          color: const Color(0xFFD81B60), // magenta/red
+                          selected: tempSelected == 2,
+                          onTap: () => setModal(() => tempSelected = 2),
+                        ),
+                        _StatusOptionCard(
+                          label: 'Expirada',
+                          icon: Icons.access_time_outlined,
+                          color: const Color(0xFF111827), // dark/gray
+                          selected: tempSelected == 3,
+                          onTap: () => setModal(() => tempSelected = 3),
+                        ),
+                        _StatusOptionCard(
+                          label: 'Todos',
+                          icon: Icons.all_inclusive,
+                          color: const Color(
+                              0xFF0FA4A3), // teal (filled look when selected)
+                          filledOnSelect: true,
+                          selected: tempSelected == 0,
+                          onTap: () => setModal(() => tempSelected = 0),
+                        ),
+                      ],
                     ),
-                    _StatusOptionCard(
-                      label: 'Cancelada',
-                      icon: Icons.cancel_outlined,
-                      color: const Color(0xFFD81B60), // magenta/red
-                      selected: tempSelected == 2,
-                      onTap: () => setModal(() => tempSelected = 2),
+
+                    const SizedBox(height: 20),
+
+                    // Reset & Apply buttons
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.black87,
+                          side: const BorderSide(color: Color(0xFFE5E7EB)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                        ),
+                        onPressed: () => setModal(() => tempSelected = 0),
+                        child: Text(
+                          'Resetear Filtro',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ),
                     ),
-                    _StatusOptionCard(
-                      label: 'Expirada',
-                      icon: Icons.access_time_outlined,
-                      color: const Color(0xFF111827), // dark/gray
-                      selected: tempSelected == 3,
-                      onTap: () => setModal(() => tempSelected = 3),
-                    ),
-                    _StatusOptionCard(
-                      label: 'Todos',
-                      icon: Icons.all_inclusive,
-                      color: const Color(
-                          0xFF0FA4A3), // teal (filled look when selected)
-                      filledOnSelect: true,
-                      selected: tempSelected == 0,
-                      onTap: () => setModal(() => tempSelected = 0),
+                    const SizedBox(height: 8),
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton(
+                        style: FilledButton.styleFrom(
+                          backgroundColor: const Color(0xFF0FA4A3),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          // persist chosen value in the parent state
+                          setState(() => _selectedFilter = tempSelected);
+                        },
+                        child: const Text(
+                          'Aplicar Filtro',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
-
-                const SizedBox(height: 20),
-
-                // Reset & Apply buttons
-                SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.black87,
-                      side: const BorderSide(color: Color(0xFFE5E7EB)),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                    ),
-                    onPressed: () => setModal(() => tempSelected = 0),
-                    child: const Text('Resetear Filtro'),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                SizedBox(
-                  width: double.infinity,
-                  child: FilledButton(
-                    style: FilledButton.styleFrom(
-                      backgroundColor: const Color(0xFF0FA4A3),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      // persist chosen value in the parent state
-                      setState(() => _selectedFilter = tempSelected);
-                    },
-                    child: const Text('Aplicar Filtro'),
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
-      );
-    },
+          );
+        },
       ),
     );
   }
