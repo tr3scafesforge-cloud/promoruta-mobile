@@ -37,4 +37,7 @@ class AppColors {
   static const Color grayDarkStroke = Color(0xFFD9D9D9);
 
   static const Color green = Color(0xFF21C45D);
+  static const Color completedGreenColor = Color(0xFF00BC7D);
+  static const Color canceledRedColor = Color(0xFFC60036);
+  static const Color expiredColor = Color(0xFF1D293D);
 }

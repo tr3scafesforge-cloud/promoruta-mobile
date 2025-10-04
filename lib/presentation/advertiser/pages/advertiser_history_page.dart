@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:promoruta/core/core.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/models/campaign_ui.dart' as ui;
 import 'package:promoruta/shared/widgets/advertiser_search_filter_bar.dart';
@@ -247,11 +248,11 @@ class _CampaignCard extends StatelessWidget {
   Color get _statusColor {
     switch (campaign.status) {
       case ui.CampaignStatus.completed:
-        return const Color(0xFF31C48D);
+        return AppColors.completedGreenColor;
       case ui.CampaignStatus.canceled:
-        return const Color(0xFFE11D48);
+        return AppColors.canceledRedColor;
       case ui.CampaignStatus.expired:
-        return const Color(0xFF9CA3AF);
+        return AppColors.expiredColor;
       default:
         return Colors.grey;
     }
