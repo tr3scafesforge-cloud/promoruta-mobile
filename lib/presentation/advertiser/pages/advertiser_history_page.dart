@@ -9,7 +9,8 @@ class AdvertiserHistoryPage extends ConsumerStatefulWidget {
   const AdvertiserHistoryPage({super.key});
 
   @override
-  ConsumerState<AdvertiserHistoryPage> createState() => _AdvertiserHistoryPageState();
+  ConsumerState<AdvertiserHistoryPage> createState() =>
+      _AdvertiserHistoryPageState();
 }
 
 class _AdvertiserHistoryPageState extends ConsumerState<AdvertiserHistoryPage> {
@@ -22,11 +23,8 @@ class _AdvertiserHistoryPageState extends ConsumerState<AdvertiserHistoryPage> {
     final campaignsAsync = ref.watch(campaignsProvider);
     final q = _search.text.trim().toLowerCase();
 
-    print('AdvertiserHistoryPage: campaignsAsync state: $campaignsAsync');
-
     return campaignsAsync.maybeWhen(
       data: (campaigns) {
-        print('AdvertiserHistoryPage: Processing ${campaigns.length} campaigns');
         Iterable<ui.Campaign> list = campaigns.map((c) => c.toUiModel());
 
         // filter by chip
@@ -51,11 +49,9 @@ class _AdvertiserHistoryPageState extends ConsumerState<AdvertiserHistoryPage> {
               c.location.toLowerCase().contains(q) == true);
         }
         final result = list.toList();
-        print('AdvertiserHistoryPage: Filtered to ${result.length} campaigns');
         return result;
       },
       orElse: () {
-        print('AdvertiserHistoryPage: maybeWhen orElse triggered');
         return <ui.Campaign>[];
       },
     );
@@ -147,7 +143,6 @@ class _AdvertiserHistoryPageState extends ConsumerState<AdvertiserHistoryPage> {
   }
 }
 
-
 class _CampaignCard extends StatelessWidget {
   const _CampaignCard({
     required this.campaign,
@@ -236,7 +231,9 @@ class _CampaignCard extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: _statusColor.withOpacity(.12),
+                          color: _statusColor.withValues(
+                            alpha: .12,
+                          ),
                           borderRadius: BorderRadius.circular(999),
                         ),
                         child: Row(
@@ -372,7 +369,7 @@ class _ActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: color.withOpacity(.1),
+      color: color.withValues(alpha: .1),
       borderRadius: BorderRadius.circular(8),
       child: InkWell(
         onTap: onTap,
