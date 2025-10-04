@@ -239,4 +239,37 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get placeholderPending => ' (pendiente)';
+
+  @override
+  String get searchCampaigns => 'Buscar campañas';
+
+  @override
+  String get noCampaignsFound => 'No se encontraron campañas';
+
+  @override
+  String get applyFilters => 'Aplicar filtros';
+
+  @override
+  String get clear => 'Limpiar';
+
+  @override
+  String get statusCompleted => 'Completada';
+
+  @override
+  String get statusCanceled => 'Cancelada';
+
+  @override
+  String get statusExpired => 'Expirada';
+
+  @override
+  String get statusUnknown => 'Desconocida';
+
+  @override
+  String get viewReport => 'Ver Reporte';
+
+  @override
+  String get duplicate => 'Duplicar';
+
+  @override
+  String get reactivate => 'Reactivar';
 }

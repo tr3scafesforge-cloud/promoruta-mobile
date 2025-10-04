@@ -564,6 +564,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **' (pending)'**
   String get placeholderPending;
+
+  /// Hint text for search campaigns input
+  ///
+  /// In en, this message translates to:
+  /// **'Search campaigns'**
+  String get searchCampaigns;
+
+  /// Message when no campaigns are found
+  ///
+  /// In en, this message translates to:
+  /// **'No campaigns found'**
+  String get noCampaignsFound;
+
+  /// Button text to apply filters
+  ///
+  /// In en, this message translates to:
+  /// **'Apply filters'**
+  String get applyFilters;
+
+  /// Button text to clear filters
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clear;
+
+  /// Status label for completed campaigns
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get statusCompleted;
+
+  /// Status label for canceled campaigns
+  ///
+  /// In en, this message translates to:
+  /// **'Canceled'**
+  String get statusCanceled;
+
+  /// Status label for expired campaigns
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get statusExpired;
+
+  /// Status label for unknown campaign status
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get statusUnknown;
+
+  /// Button text to view campaign report
+  ///
+  /// In en, this message translates to:
+  /// **'View Report'**
+  String get viewReport;
+
+  /// Button text to duplicate campaign
+  ///
+  /// In en, this message translates to:
+  /// **'Duplicate'**
+  String get duplicate;
+
+  /// Button text to reactivate campaign
+  ///
+  /// In en, this message translates to:
+  /// **'Reactivate'**
+  String get reactivate;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

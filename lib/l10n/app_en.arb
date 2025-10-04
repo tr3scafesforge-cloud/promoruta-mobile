@@ -311,5 +311,49 @@
   "placeholderPending": " (pending)",
   "@placeholderPending": {
     "description": "Suffix for placeholder tabs"
+  },
+  "searchCampaigns": "Search campaigns",
+  "@searchCampaigns": {
+    "description": "Hint text for search campaigns input"
+  },
+  "noCampaignsFound": "No campaigns found",
+  "@noCampaignsFound": {
+    "description": "Message when no campaigns are found"
+  },
+  "applyFilters": "Apply filters",
+  "@applyFilters": {
+    "description": "Button text to apply filters"
+  },
+  "clear": "Clear",
+  "@clear": {
+    "description": "Button text to clear filters"
+  },
+  "statusCompleted": "Completed",
+  "@statusCompleted": {
+    "description": "Status label for completed campaigns"
+  },
+  "statusCanceled": "Canceled",
+  "@statusCanceled": {
+    "description": "Status label for canceled campaigns"
+  },
+  "statusExpired": "Expired",
+  "@statusExpired": {
+    "description": "Status label for expired campaigns"
+  },
+  "statusUnknown": "Unknown",
+  "@statusUnknown": {
+    "description": "Status label for unknown campaign status"
+  },
+  "viewReport": "View Report",
+  "@viewReport": {
+    "description": "Button text to view campaign report"
+  },
+  "duplicate": "Duplicate",
+  "@duplicate": {
+    "description": "Button text to duplicate campaign"
+  },
+  "reactivate": "Reactivate",
+  "@reactivate": {
+    "description": "Button text to reactivate campaign"
   }
 }

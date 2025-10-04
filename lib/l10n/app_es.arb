@@ -311,5 +311,49 @@
   "placeholderPending": " (pendiente)",
   "@placeholderPending": {
     "description": "Suffix for placeholder tabs"
+  },
+  "searchCampaigns": "Buscar campañas",
+  "@searchCampaigns": {
+    "description": "Hint text for search campaigns input"
+  },
+  "noCampaignsFound": "No se encontraron campañas",
+  "@noCampaignsFound": {
+    "description": "Message when no campaigns are found"
+  },
+  "applyFilters": "Aplicar filtros",
+  "@applyFilters": {
+    "description": "Button text to apply filters"
+  },
+  "clear": "Limpiar",
+  "@clear": {
+    "description": "Button text to clear filters"
+  },
+  "statusCompleted": "Completada",
+  "@statusCompleted": {
+    "description": "Status label for completed campaigns"
+  },
+  "statusCanceled": "Cancelada",
+  "@statusCanceled": {
+    "description": "Status label for canceled campaigns"
+  },
+  "statusExpired": "Expirada",
+  "@statusExpired": {
+    "description": "Status label for expired campaigns"
+  },
+  "statusUnknown": "Desconocida",
+  "@statusUnknown": {
+    "description": "Status label for unknown campaign status"
+  },
+  "viewReport": "Ver Reporte",
+  "@viewReport": {
+    "description": "Button text to view campaign report"
+  },
+  "duplicate": "Duplicar",
+  "@duplicate": {
+    "description": "Button text to duplicate campaign"
+  },
+  "reactivate": "Reactivar",
+  "@reactivate": {
+    "description": "Button text to reactivate campaign"
   }
 }

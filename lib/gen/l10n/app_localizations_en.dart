@@ -239,4 +239,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get placeholderPending => ' (pending)';
+
+  @override
+  String get searchCampaigns => 'Search campaigns';
+
+  @override
+  String get noCampaignsFound => 'No campaigns found';
+
+  @override
+  String get applyFilters => 'Apply filters';
+
+  @override
+  String get clear => 'Clear';
+
+  @override
+  String get statusCompleted => 'Completed';
+
+  @override
+  String get statusCanceled => 'Canceled';
+
+  @override
+  String get statusExpired => 'Expired';
+
+  @override
+  String get statusUnknown => 'Unknown';
+
+  @override
+  String get viewReport => 'View Report';
+
+  @override
+  String get duplicate => 'Duplicate';
+
+  @override
+  String get reactivate => 'Reactivate';
 }

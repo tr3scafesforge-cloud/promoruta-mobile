@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/models/campaign_ui.dart' as ui;
 import 'package:promoruta/shared/widgets/advertiser_search_filter_bar.dart';
 import 'package:promoruta/shared/shared.dart';
@@ -75,7 +76,7 @@ class _AdvertiserHistoryPageState extends ConsumerState<AdvertiserHistoryPage> {
           // Search
           AdvertiserSearchFilterBar(
             controller: _search,
-            hint: 'Buscar campañas',
+            hint: AppLocalizations.of(context).searchCampaigns,
             onChanged: (_) => setState(() {}),
             onFilterTap: () => _openBottomFilters(context),
           ),
@@ -92,7 +93,7 @@ class _AdvertiserHistoryPageState extends ConsumerState<AdvertiserHistoryPage> {
               padding: const EdgeInsets.only(top: 36),
               child: Center(
                 child: Text(
-                  'No se encontraron campañas',
+                  AppLocalizations.of(context).noCampaignsFound,
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium
@@ -126,14 +127,14 @@ class _AdvertiserHistoryPageState extends ConsumerState<AdvertiserHistoryPage> {
                     Navigator.pop(context);
                     setState(() {}); // apply
                   },
-                  child: const Text('Aplicar filtros'),
+                  child: Text(AppLocalizations.of(context).applyFilters),
                 ),
               ),
               TextButton(
                 onPressed: () {
                   setModal(() => _selectedFilter = 0);
                 },
-                child: const Text('Limpiar'),
+                child: Text(AppLocalizations.of(context).clear),
               ),
             ],
           ),
@@ -165,16 +166,16 @@ class _CampaignCard extends StatelessWidget {
     }
   }
 
-  String get _statusLabel {
+  String _statusLabel(BuildContext context) {
     switch (campaign.status) {
       case ui.CampaignStatus.completed:
-        return 'Completada';
+        return AppLocalizations.of(context).statusCompleted;
       case ui.CampaignStatus.canceled:
-        return 'Cancelada';
+        return AppLocalizations.of(context).statusCanceled;
       case ui.CampaignStatus.expired:
-        return 'Expirada';
+        return AppLocalizations.of(context).statusExpired;
       default:
-        return 'Desconocida';
+        return AppLocalizations.of(context).statusUnknown;
     }
   }
 
@@ -242,7 +243,7 @@ class _CampaignCard extends StatelessWidget {
                             const Icon(Icons.check_circle, size: 14),
                             const SizedBox(width: 4),
                             Text(
-                              _statusLabel,
+                              _statusLabel(context),
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
@@ -302,17 +303,17 @@ class _CampaignCard extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: switch (campaign.status) {
                       ui.CampaignStatus.completed => _ActionButton(
-                          label: 'Ver Reporte',
+                          label: AppLocalizations.of(context).viewReport,
                           color: const Color(0xFF31C48D),
                           onTap: () {},
                         ),
                       ui.CampaignStatus.canceled => _ActionButton(
-                          label: 'Duplicar',
+                          label: AppLocalizations.of(context).duplicate,
                           color: const Color(0xFFE11D48),
                           onTap: () {},
                         ),
                       ui.CampaignStatus.expired => _ActionButton(
-                          label: 'Reactivar',
+                          label: AppLocalizations.of(context).reactivate,
                           color: const Color(0xFF111827),
                           onTap: () {},
                         ),
