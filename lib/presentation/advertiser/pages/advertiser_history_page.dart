@@ -292,7 +292,7 @@ class _CampaignCard extends StatelessWidget {
           // Left status stripe
           Container(
             width: 6,
-            height: 118,
+            height: 150,
             decoration: BoxDecoration(
               color: _statusColor,
               borderRadius: const BorderRadius.horizontal(
