@@ -287,20 +287,21 @@ class _CampaignCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Row(
-        children: [
-          // Left status stripe
-          Container(
-            width: 6,
-            height: 150,
-            decoration: BoxDecoration(
-              color: _statusColor,
-              borderRadius: const BorderRadius.horizontal(
-                left: Radius.circular(14),
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Left status stripe
+            Container(
+              width: 6,
+              decoration: BoxDecoration(
+                color: _statusColor,
+                borderRadius: const BorderRadius.horizontal(
+                  left: Radius.circular(14),
+                ),
               ),
             ),
-          ),
-          Expanded(
+            Expanded(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
               child: Column(
@@ -418,7 +419,8 @@ class _CampaignCard extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ),
+  );
   }
 }
 
