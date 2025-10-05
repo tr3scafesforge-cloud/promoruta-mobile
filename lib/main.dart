@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'app/routes/app_router.dart';
 import 'core/constants/colors.dart';
+import 'shared/providers/providers.dart';
 
 void main() {
   runApp(
@@ -63,18 +64,32 @@ class _PromorutaAppState extends State<PromorutaApp> {
         ),
       );
     }
-    return MaterialApp.router(
-      title: 'PromoRuta',
-      locale: _locale,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
-        useMaterial3: true,
-        fontFamily: GoogleFonts.robotoFlex().fontFamily,
-      ),
-      routerConfig: AppRouter.router,
-      debugShowCheckedModeBanner: false,
+    return Consumer(
+      builder: (context, ref, child) {
+        final themeMode = ref.watch(themeModeProvider);
+        return MaterialApp.router(
+          title: 'PromoRuta',
+          locale: _locale,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
+            useMaterial3: true,
+            fontFamily: GoogleFonts.robotoFlex().fontFamily,
+          ),
+          darkTheme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: AppColors.primary,
+              brightness: Brightness.dark,
+            ),
+            useMaterial3: true,
+            fontFamily: GoogleFonts.robotoFlex().fontFamily,
+          ),
+          themeMode: themeMode,
+          routerConfig: AppRouter.router,
+          debugShowCheckedModeBanner: false,
+        );
+      },
     );
   }
 }

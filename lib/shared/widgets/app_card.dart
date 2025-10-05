@@ -21,18 +21,19 @@ class AppCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       width: width,
       height: height,
       margin: margin,
       child: Card(
         elevation: 0,
-        color: Colors.white,
+        color: theme.colorScheme.surface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
           side: hasBorder
-              ? const BorderSide(
-                  color: AppColors.grayDarkStroke,
+              ? BorderSide(
+                  color: theme.colorScheme.outline,
                   width: 1,
                 )
               : BorderSide.none,

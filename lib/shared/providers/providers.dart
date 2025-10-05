@@ -1,9 +1,12 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/shared/shared.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:promoruta/core/core.dart' as model;
+import 'package:promoruta/core/constants/colors.dart';
 
 
 // Database provider
@@ -187,6 +190,39 @@ final connectivityStatusProvider = StreamProvider<bool>((ref) {
   final connectivityService = ref.watch(connectivityServiceProvider);
   return connectivityService.connectivityStream;
 });
+
+// Theme provider
+final themeModeProvider = StateNotifierProvider<ThemeModeNotifier, ThemeMode>((ref) {
+  return ThemeModeNotifier();
+});
+
+class ThemeModeNotifier extends StateNotifier<ThemeMode> {
+  ThemeModeNotifier() : super(ThemeMode.system) {
+    _loadThemeMode();
+  }
+
+  Future<void> _loadThemeMode() async {
+    final prefs = await SharedPreferences.getInstance();
+    final themeModeString = prefs.getString('themeMode');
+    if (themeModeString != null) {
+      state = ThemeMode.values.firstWhere(
+        (mode) => mode.toString() == themeModeString,
+        orElse: () => ThemeMode.system,
+      );
+    }
+  }
+
+  Future<void> setThemeMode(ThemeMode mode) async {
+    state = mode;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('themeMode', mode.toString());
+  }
+
+  Future<void> toggleTheme() async {
+    final newMode = state == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+    await setThemeMode(newMode);
+  }
+}
 
 class AuthNotifier extends StateNotifier<AsyncValue<model.User?>> {
   final AuthRepository _repository;

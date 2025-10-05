@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/widgets/bottom_navigation_item.dart';
@@ -8,15 +9,16 @@ import 'package:promoruta/presentation/advertiser/pages/advertiser_campaigns_pag
 import 'package:promoruta/presentation/advertiser/pages/advertiser_live_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/advertiser_history_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/advertiser_profile_page.dart';
+import 'package:promoruta/shared/providers/providers.dart';
 
-class AdvertiserHomeScreen extends StatefulWidget {
+class AdvertiserHomeScreen extends ConsumerStatefulWidget {
   const AdvertiserHomeScreen({super.key});
 
   @override
-  State<AdvertiserHomeScreen> createState() => _AdvertiserHomeScreenState();
+  ConsumerState<AdvertiserHomeScreen> createState() => _AdvertiserHomeScreenState();
 }
 
-class _AdvertiserHomeScreenState extends State<AdvertiserHomeScreen> {
+class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
   int _currentIndex = 0;
 
   @override
@@ -108,7 +110,14 @@ class _AdvertiserHomeScreenState extends State<AdvertiserHomeScreen> {
       case 3:
         return const AdvertiserHistoryPage();
       case 4:
-        return const AdvertiserProfilePage();
+        return AdvertiserProfilePage(
+          isDarkMode: Theme.of(context).brightness == Brightness.dark,
+          onToggleDarkMode: (isDark) {
+            ref.read(themeModeProvider.notifier).setThemeMode(
+              isDark ? ThemeMode.dark : ThemeMode.light,
+            );
+          },
+        );
       default:
         return const AdvertiserHomePage();
     }
