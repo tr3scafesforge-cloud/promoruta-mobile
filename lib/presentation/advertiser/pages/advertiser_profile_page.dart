@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:promoruta/shared/shared.dart';
 
 class AdvertiserProfilePage extends StatefulWidget {
   const AdvertiserProfilePage({
@@ -121,9 +122,7 @@ class _ProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Material(
-      color: background,
-      borderRadius: BorderRadius.circular(12),
+    return AppCard(
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
