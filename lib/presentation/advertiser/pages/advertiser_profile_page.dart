@@ -175,9 +175,7 @@ class _SwitchTileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Material(
-      color: background,
-      borderRadius: BorderRadius.circular(12),
+    return AppCard(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         child: Row(
