@@ -73,17 +73,33 @@ class _PromorutaAppState extends State<PromorutaApp> {
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
+            colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary).copyWith(
+              // Customize specific colors for light theme
+              outline: AppColors.grayLightStroke, // Custom outline color for light theme
+              surfaceContainerHighest: AppColors.surface.withValues(alpha: 0.8),
+            ),
             useMaterial3: true,
             fontFamily: GoogleFonts.robotoFlex().fontFamily,
+            // You can customize specific colors here for light theme
+            // scaffoldBackgroundColor: AppColors.background,
+            // cardColor: AppColors.surface,
           ),
           darkTheme: ThemeData(
             colorScheme: ColorScheme.fromSeed(
               seedColor: AppColors.primary,
               brightness: Brightness.dark,
+            ).copyWith(
+              // Customize specific colors for dark theme
+              outline: AppColors.grayDarkStroke, // Custom outline color for dark theme
+              surface: AppColors.surfaceDark,
+              onSurface: AppColors.textPrimaryDark,
+              surfaceContainerHighest: AppColors.surfaceDark.withValues(alpha: 0.8),
             ),
             useMaterial3: true,
             fontFamily: GoogleFonts.robotoFlex().fontFamily,
+            // Additional dark theme customizations
+            scaffoldBackgroundColor: AppColors.backgroundDark,
+            cardColor: AppColors.surfaceDark,
           ),
           themeMode: themeMode,
           routerConfig: AppRouter.router,

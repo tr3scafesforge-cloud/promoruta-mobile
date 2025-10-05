@@ -140,13 +140,13 @@ class _LoginState extends State<Login> {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                   borderSide: BorderSide(
-                                    color: AppColors.grayLigthStroke,
+                                    color: AppColors.grayLightStroke,
                                   ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                   borderSide: BorderSide(
-                                    color: AppColors.grayLigthStroke,
+                                    color: AppColors.grayLightStroke,
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
@@ -202,13 +202,13 @@ class _LoginState extends State<Login> {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                   borderSide: BorderSide(
-                                    color: AppColors.grayLigthStroke,
+                                    color: AppColors.grayLightStroke,
                                   ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                   borderSide: BorderSide(
-                                    color: AppColors.grayLigthStroke,
+                                    color: AppColors.grayLightStroke,
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
