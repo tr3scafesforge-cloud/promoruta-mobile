@@ -4,13 +4,14 @@ import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
 
 const _kAccent = Color(0xFF0A9995); // stroke + check fill color
-const _kFillOpacity = 0.08;         // tweak if you want stronger/weaker fill
+const _kFillOpacity = 0.08; // tweak if you want stronger/weaker fill
 
 class LanguageSettingsPage extends ConsumerStatefulWidget {
   const LanguageSettingsPage({super.key});
 
   @override
-  ConsumerState<LanguageSettingsPage> createState() => _LanguageSettingsPageState();
+  ConsumerState<LanguageSettingsPage> createState() =>
+      _LanguageSettingsPageState();
 }
 
 class _LanguageSettingsPageState extends ConsumerState<LanguageSettingsPage> {
@@ -32,14 +33,14 @@ class _LanguageSettingsPageState extends ConsumerState<LanguageSettingsPage> {
             groupValue: currentLocale,
             onChanged: (locale) => _changeLanguage(locale, l10n.english),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 5),
           _LanguageOption(
             title: l10n.spanish,
             locale: const Locale('es'),
             groupValue: currentLocale,
             onChanged: (locale) => _changeLanguage(locale, l10n.spanish),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 5),
           _LanguageOption(
             title: l10n.portuguese,
             locale: const Locale('pt'),
@@ -98,12 +99,12 @@ class _LanguageOption extends StatelessWidget {
     return AppCard(
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: selected ? _kAccent.withOpacity(_kFillOpacity) : null,
+          color: selected ? _kAccent.withValues(alpha: _kFillOpacity) : null,
           border: Border.all(
             color: selected ? _kAccent : Colors.transparent,
             width: 1.5,
           ),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
         ),
         child: Material(
           type: MaterialType.transparency,
