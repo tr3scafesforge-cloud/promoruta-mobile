@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
-import 'language_settings_page.dart';
 
 class AdvertiserProfilePage extends StatefulWidget {
   const AdvertiserProfilePage({

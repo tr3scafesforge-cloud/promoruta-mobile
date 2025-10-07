@@ -75,8 +75,6 @@ class _PromoterHomeScreenState extends State<PromoterHomeScreen> {
 class _PromoterHomeContent extends StatelessWidget {
   const _PromoterHomeContent();
 
-  static const Color _accent = Color(0xFFFF7A1A);
-
   @override
   Widget build(BuildContext context) {
     return ListView(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:promoruta/core/constants/colors.dart';
 
 class AppCard extends StatelessWidget {
   final Widget child;

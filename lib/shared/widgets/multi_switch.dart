@@ -170,7 +170,6 @@ class _MultiSwitchExampleState extends State<MultiSwitchExample> {
                 setState(() {
                   _selectedIndex = index;
                 });
-                print('Selected: ${index}');
               },
             ),
             const SizedBox(height: 32),
