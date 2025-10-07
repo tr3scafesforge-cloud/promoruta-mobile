@@ -13,34 +13,35 @@ class LanguageSettingsPage extends ConsumerStatefulWidget {
 class _LanguageSettingsPageState extends ConsumerState<LanguageSettingsPage> {
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final currentLocale = ref.watch(localeProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Language'),
+        title: Text(l10n.language),
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
         children: [
           _LanguageOption(
-            title: 'English',
+            title: l10n.english,
             locale: const Locale('en'),
             groupValue: currentLocale,
-            onChanged: (locale) => _changeLanguage(locale, 'English'),
+            onChanged: (locale) => _changeLanguage(locale, l10n.english),
           ),
           const SizedBox(height: 12),
           _LanguageOption(
-            title: 'Spanish',
+            title: l10n.spanish,
             locale: const Locale('es'),
             groupValue: currentLocale,
-            onChanged: (locale) => _changeLanguage(locale, 'Spanish'),
+            onChanged: (locale) => _changeLanguage(locale, l10n.spanish),
           ),
           const SizedBox(height: 12),
           _LanguageOption(
-            title: 'Portuguese',
+            title: l10n.portuguese,
             locale: const Locale('pt'),
             groupValue: currentLocale,
-            onChanged: (locale) => _changeLanguage(locale, 'Portuguese'),
+            onChanged: (locale) => _changeLanguage(locale, l10n.portuguese),
           ),
         ],
       ),
@@ -48,19 +49,20 @@ class _LanguageSettingsPageState extends ConsumerState<LanguageSettingsPage> {
   }
 
   void _changeLanguage(Locale locale, String languageName) async {
+    final l10n = AppLocalizations.of(context);
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Change Language'),
-        content: Text('Are you sure you want to change the language to $languageName?'),
+        title: Text(l10n.changeLanguageTitle),
+        content: Text(l10n.changeLanguageMessage(languageName)),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: Text(l10n.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Confirm'),
+            child: Text(l10n.confirm),
           ),
         ],
       ),
