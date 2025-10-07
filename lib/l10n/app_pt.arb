@@ -391,5 +391,34 @@
   "language": "Idioma",
   "@language": {
     "description": "Label for language settings"
+  },
+  "english": "Inglês",
+  "@english": {
+    "description": "English language name"
+  },
+  "spanish": "Espanhol",
+  "@spanish": {
+    "description": "Spanish language name"
+  },
+  "portuguese": "Português",
+  "@portuguese": {
+    "description": "Portuguese language name"
+  },
+  "changeLanguageTitle": "Alterar Idioma",
+  "@changeLanguageTitle": {
+    "description": "Title for change language dialog"
+  },
+  "changeLanguageMessage": "Tem certeza de que deseja alterar o idioma para {language}?",
+  "@changeLanguageMessage": {
+    "description": "Message for change language dialog",
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "confirm": "Confirmar",
+  "@confirm": {
+    "description": "Confirm button text"
   }
 }

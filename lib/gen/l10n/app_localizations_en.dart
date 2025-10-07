@@ -299,4 +299,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get language => 'Language';
+
+  @override
+  String get english => 'English';
+
+  @override
+  String get spanish => 'Spanish';
+
+  @override
+  String get portuguese => 'Portuguese';
+
+  @override
+  String get changeLanguageTitle => 'Change Language';
+
+  @override
+  String changeLanguageMessage(String language) {
+    return 'Are you sure you want to change the language to $language?';
+  }
+
+  @override
+  String get confirm => 'Confirm';
 }

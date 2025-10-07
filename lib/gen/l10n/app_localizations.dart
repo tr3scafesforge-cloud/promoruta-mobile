@@ -684,6 +684,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Language'**
   String get language;
+
+  /// English language name
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get english;
+
+  /// Spanish language name
+  ///
+  /// In en, this message translates to:
+  /// **'Spanish'**
+  String get spanish;
+
+  /// Portuguese language name
+  ///
+  /// In en, this message translates to:
+  /// **'Portuguese'**
+  String get portuguese;
+
+  /// Title for change language dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Change Language'**
+  String get changeLanguageTitle;
+
+  /// Message for change language dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to change the language to {language}?'**
+  String changeLanguageMessage(String language);
+
+  /// Confirm button text
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

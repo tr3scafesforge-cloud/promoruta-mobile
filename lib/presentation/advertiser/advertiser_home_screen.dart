@@ -9,6 +9,7 @@ import 'package:promoruta/presentation/advertiser/pages/advertiser_campaigns_pag
 import 'package:promoruta/presentation/advertiser/pages/advertiser_live_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/advertiser_history_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/advertiser_profile_page.dart';
+import 'package:promoruta/presentation/advertiser/pages/language_settings_page.dart';
 import 'package:promoruta/shared/providers/providers.dart';
 
 class AdvertiserHomeScreen extends ConsumerStatefulWidget {
@@ -117,6 +118,7 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
               isDark ? ThemeMode.dark : ThemeMode.light,
             );
           },
+          onTapLanguage: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LanguageSettingsPage())),
         );
       default:
         return const AdvertiserHomePage();

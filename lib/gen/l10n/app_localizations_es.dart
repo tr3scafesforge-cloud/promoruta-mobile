@@ -299,4 +299,24 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get language => 'Idioma';
+
+  @override
+  String get english => 'Inglés';
+
+  @override
+  String get spanish => 'Español';
+
+  @override
+  String get portuguese => 'Portugués';
+
+  @override
+  String get changeLanguageTitle => 'Cambiar Idioma';
+
+  @override
+  String changeLanguageMessage(String language) {
+    return '¿Estás seguro de que quieres cambiar el idioma a $language?';
+  }
+
+  @override
+  String get confirm => 'Confirmar';
 }
