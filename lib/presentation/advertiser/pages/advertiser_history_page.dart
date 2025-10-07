@@ -70,7 +70,7 @@ class _AdvertiserHistoryPageState extends ConsumerState<AdvertiserHistoryPage> {
     final df = DateFormat('d MMMM yyyy HH:mm', 'es');
 
     return Container(
-      color: const Color(0xFFF3F5F7),
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: [
