@@ -3,6 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
 
+const _kAccent = Color(0xFF0A9995); // stroke + check fill color
+const _kFillOpacity = 0.08;         // tweak if you want stronger/weaker fill
+
 class LanguageSettingsPage extends ConsumerStatefulWidget {
   const LanguageSettingsPage({super.key});
 
@@ -89,33 +92,70 @@ class _LanguageOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final selected = locale == groupValue;
+
+    // We wrap the AppCard child with a DecoratedBox to control stroke/fill.
     return AppCard(
-      child: InkWell(
-        onTap: () => onChanged(locale),
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: selected ? _kAccent.withOpacity(_kFillOpacity) : null,
+          border: Border.all(
+            color: selected ? _kAccent : Colors.transparent,
+            width: 1.5,
+          ),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Material(
+          type: MaterialType.transparency,
+          child: InkWell(
+            onTap: () => onChanged(locale),
+            borderRadius: BorderRadius.circular(12),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
                   ),
-                ),
+                  _RoundCheck(selected: selected),
+                ],
               ),
-              Radio<Locale>(
-                value: locale,
-                groupValue: groupValue,
-                onChanged: (value) {
-                  if (value != null) onChanged(value);
-                },
-              ),
-            ],
+            ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class _RoundCheck extends StatelessWidget {
+  const _RoundCheck({required this.selected});
+
+  final bool selected;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 160),
+      curve: Curves.easeOut,
+      width: 24,
+      height: 24,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: selected ? _kAccent : Colors.transparent,
+        border: Border.all(
+          color: selected ? _kAccent : Theme.of(context).dividerColor,
+          width: 2,
+        ),
+      ),
+      child: selected
+          ? const Icon(Icons.check, size: 16, color: Colors.white)
+          : null,
     );
   }
 }
