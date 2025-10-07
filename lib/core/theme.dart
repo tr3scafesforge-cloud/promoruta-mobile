@@ -12,6 +12,7 @@ class AppTheme {
     ),
     useMaterial3: true,
     fontFamily: GoogleFonts.robotoFlex().fontFamily,
+    scaffoldBackgroundColor: AppColors.primary,
   );
 
   static ThemeData get darkTheme => ThemeData(

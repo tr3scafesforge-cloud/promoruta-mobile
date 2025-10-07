@@ -26,7 +26,6 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
-      backgroundColor: AppColors.primary,
       appBar: _buildAppBar(context, l10n),
       body: SafeArea(
         top: false,
