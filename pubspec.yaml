@@ -108,3 +108,18 @@ flutter_gen:
     lottie: true
   assets:
     enabled: true
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+
+  image_path_ios: "assets/launcher/icon_ios_1024.png"   # the 1024×1024 PNG (no alpha)
+  image_path_android: "assets/launcher/icon_android_legacy.png"
+
+  adaptive_icon_background: "assets/launcher/icon_android_background.png"  # or use a PNG path instead
+  adaptive_icon_foreground: "assets/launcher/icon_android_foreground.png"  # 432×432
+  adaptive_icon_foreground_inset: 16
+  adaptive_icon_monochrome: "assets/launcher/icon_android_monochrome.png"
+  min_sdk_android: 21
+  remove_alpha_ios: true
+  background_color_ios: "#0A9995"
