@@ -379,5 +379,17 @@
   "applyFilter": "Apply Filter",
   "@applyFilter": {
     "description": "Button text to apply filter"
+  },
+  "darkMode": "Dark Mode",
+  "@darkMode": {
+    "description": "Label for dark mode toggle"
+  },
+  "security": "Security",
+  "@security": {
+    "description": "Label for security settings"
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Label for language settings"
   }
 }

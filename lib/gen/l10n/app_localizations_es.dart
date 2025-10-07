@@ -290,4 +290,13 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get applyFilter => 'Aplicar Filtro';
+
+  @override
+  String get darkMode => 'Modo Oscuro';
+
+  @override
+  String get security => 'Seguridad';
+
+  @override
+  String get language => 'Idioma';
 }

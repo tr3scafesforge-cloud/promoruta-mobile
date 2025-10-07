@@ -290,4 +290,13 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get applyFilter => 'Aplicar Filtro';
+
+  @override
+  String get darkMode => 'Modo Escuro';
+
+  @override
+  String get security => 'Segurança';
+
+  @override
+  String get language => 'Idioma';
 }

@@ -666,6 +666,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Apply Filter'**
   String get applyFilter;
+
+  /// Label for dark mode toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Mode'**
+  String get darkMode;
+
+  /// Label for security settings
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get security;
+
+  /// Label for language settings
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

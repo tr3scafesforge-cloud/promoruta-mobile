@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
 
 class AdvertiserProfilePage extends StatefulWidget {
@@ -44,6 +45,7 @@ class _AdvertiserProfilePageState extends State<AdvertiserProfilePage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
 
     return Container(
       color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.2),
@@ -68,7 +70,7 @@ class _AdvertiserProfilePageState extends State<AdvertiserProfilePage> {
           // Dark mode switch
           _SwitchTileCard(
             icon: Icons.nightlight_round,
-            label: 'Modo Oscuro',
+            label: l10n.darkMode,
             value: _darkMode,
             onChanged: (v) {
               setState(() => _darkMode = v);
@@ -80,7 +82,7 @@ class _AdvertiserProfilePageState extends State<AdvertiserProfilePage> {
           // Security
           _ArrowTileCard(
             icon: Icons.shield_outlined,
-            label: 'Seguridad',
+            label: l10n.security,
             onTap: widget.onTapSecurity,
           ),
           const SizedBox(height: 12),
@@ -88,7 +90,7 @@ class _AdvertiserProfilePageState extends State<AdvertiserProfilePage> {
           // Language
           _ArrowTileCard(
             icon: Icons.language,
-            label: 'Language',
+            label: l10n.language,
             onTap: widget.onTapLanguage,
           ),
         ],
