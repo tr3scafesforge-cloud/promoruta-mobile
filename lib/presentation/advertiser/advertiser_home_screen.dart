@@ -32,6 +32,7 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
         child: _getPage(_currentIndex),
       ),
       floatingActionButton: FloatingActionButton(
+        elevation: 0.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50),
         ),
