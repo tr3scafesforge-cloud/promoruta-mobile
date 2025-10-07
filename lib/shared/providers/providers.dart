@@ -236,7 +236,7 @@ class LocaleNotifier extends StateNotifier<Locale> {
 
   Future<void> _loadLocale() async {
     final prefs = await SharedPreferences.getInstance();
-    final localeString = prefs.getString('locale');
+    final localeString = prefs.getString('languageCode');
     if (localeString != null) {
       state = Locale(localeString);
     }
@@ -245,7 +245,7 @@ class LocaleNotifier extends StateNotifier<Locale> {
   Future<void> setLocale(Locale locale) async {
     state = locale;
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('locale', locale.languageCode);
+    await prefs.setString('languageCode', locale.languageCode);
   }
 }
 

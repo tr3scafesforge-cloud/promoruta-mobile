@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/routes/app_router.dart';
 import 'core/theme.dart';
@@ -16,68 +15,24 @@ void main() {
   );
 }
 
-class PromorutaApp extends StatefulWidget {
+class PromorutaApp extends ConsumerWidget {
   const PromorutaApp({super.key});
 
   @override
-  State<PromorutaApp> createState() => _PromorutaAppState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeModeProvider);
+    final locale = ref.watch(localeProvider);
 
-class _PromorutaAppState extends State<PromorutaApp> {
-  Locale? _locale;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadLocale();
-  }
-
-  Future<void> _loadLocale() async {
-    final prefs = await SharedPreferences.getInstance();
-    final languageCode = prefs.getString('languageCode');
-    if (languageCode != null) {
-      _locale = Locale(languageCode);
-    } else {
-      // Get system locale
-      final deviceLocale = WidgetsBinding.instance.platformDispatcher.locale;
-      final langCode = deviceLocale.languageCode;
-      if (AppLocalizations.supportedLocales.any((locale) => locale.languageCode == langCode)) {
-        _locale = Locale(langCode);
-      } else {
-        _locale = const Locale('en');
-      }
-    }
-    setState(() {});
-  }
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    if (_locale == null) {
-      return const MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          body: Center(
-            child: CircularProgressIndicator(),
-          ),
-        ),
-      );
-    }
-    return Consumer(
-      builder: (context, ref, child) {
-        final themeMode = ref.watch(themeModeProvider);
-        return MaterialApp.router(
-          title: 'PromoRuta',
-          locale: _locale,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme,
-          themeMode: themeMode,
-          routerConfig: AppRouter.router,
-          debugShowCheckedModeBanner: false,
-        );
-      },
+    return MaterialApp.router(
+      title: 'PromoRuta',
+      locale: locale,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: themeMode,
+      routerConfig: AppRouter.router,
+      debugShowCheckedModeBanner: false,
     );
   }
 }
