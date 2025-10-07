@@ -31,7 +31,7 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
         top: false,
         child: _getPage(_currentIndex),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: _currentIndex == 4 ? null : FloatingActionButton(
         elevation: 0.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50),

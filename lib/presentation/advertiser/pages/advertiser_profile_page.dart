@@ -44,7 +44,6 @@ class _AdvertiserProfilePageState extends State<AdvertiserProfilePage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final cardColor = theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.4);
 
     return Container(
       color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.2),
@@ -53,7 +52,6 @@ class _AdvertiserProfilePageState extends State<AdvertiserProfilePage> {
         children: [
           // Account card
           _ProfileCard(
-            background: cardColor,
             onTap: widget.onTapAccount,
             leading: CircleAvatar(
               radius: 24,
@@ -69,7 +67,6 @@ class _AdvertiserProfilePageState extends State<AdvertiserProfilePage> {
 
           // Dark mode switch
           _SwitchTileCard(
-            background: cardColor,
             icon: Icons.nightlight_round,
             label: 'Modo Oscuro',
             value: _darkMode,
@@ -82,7 +79,6 @@ class _AdvertiserProfilePageState extends State<AdvertiserProfilePage> {
 
           // Security
           _ArrowTileCard(
-            background: cardColor,
             icon: Icons.shield_outlined,
             label: 'Seguridad',
             onTap: widget.onTapSecurity,
@@ -91,7 +87,6 @@ class _AdvertiserProfilePageState extends State<AdvertiserProfilePage> {
 
           // Language
           _ArrowTileCard(
-            background: cardColor,
             icon: Icons.language,
             label: 'Language',
             onTap: widget.onTapLanguage,
@@ -109,14 +104,12 @@ class _ProfileCard extends StatelessWidget {
     required this.leading,
     required this.title,
     required this.subtitle,
-    required this.background,
     this.onTap,
   });
 
   final Widget leading;
   final String title;
   final String subtitle;
-  final Color background;
   final VoidCallback? onTap;
 
   @override
@@ -163,14 +156,12 @@ class _SwitchTileCard extends StatelessWidget {
     required this.label,
     required this.value,
     required this.onChanged,
-    required this.background,
   });
 
   final IconData icon;
   final String label;
   final bool value;
   final ValueChanged<bool> onChanged;
-  final Color background;
 
   @override
   Widget build(BuildContext context) {
@@ -199,13 +190,11 @@ class _ArrowTileCard extends StatelessWidget {
   const _ArrowTileCard({
     required this.icon,
     required this.label,
-    required this.background,
     this.onTap,
   });
 
   final IconData icon;
   final String label;
-  final Color background;
   final VoidCallback? onTap;
 
   @override
