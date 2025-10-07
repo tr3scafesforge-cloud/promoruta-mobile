@@ -7,6 +7,7 @@ class AppTheme {
   static ThemeData get lightTheme => ThemeData(
     colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary).copyWith(
       outline: AppColors.grayLightStroke,
+      surface: AppColors.background,
       surfaceContainerHighest: AppColors.surface.withValues(alpha: 0.8),
     ),
     useMaterial3: true,
