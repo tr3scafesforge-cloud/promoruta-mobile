@@ -56,7 +56,9 @@ class _PromoterHomeScreenState extends State<PromoterHomeScreen> {
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
         selectedItemColor: _accent,
-        unselectedItemColor: Colors.grey[600],
+        unselectedItemColor: Theme.of(context).brightness == Brightness.dark
+            ? Colors.white.withOpacity(0.7)
+            : Theme.of(context).colorScheme.onSurfaceVariant,
         onTap: (i) => setState(() => _currentIndex = i),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home_rounded), label: 'Inicio'),

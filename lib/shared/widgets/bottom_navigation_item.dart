@@ -23,11 +23,17 @@ class BottomNavigationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final effectiveSelectedColor = selectedColor ?? theme.colorScheme.primary;
+    final effectiveUnselectedColor = unselectedColor ?? (theme.brightness == Brightness.dark
+        ? Colors.white.withOpacity(0.7)
+        : theme.colorScheme.onSurfaceVariant);
+
     return Expanded(
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          splashColor: splashColor ?? AppColors.primary.withValues(alpha: .10),
+          splashColor: splashColor ?? theme.colorScheme.primary.withValues(alpha: .10),
           highlightColor: Colors.transparent,
           splashFactory: InkRipple.splashFactory,
           customBorder:
@@ -41,13 +47,13 @@ class BottomNavigationItem extends StatelessWidget {
               children: [
                 Icon(
                   icon,
-                  color: isSelected ? selectedColor : unselectedColor,
+                  color: isSelected ? effectiveSelectedColor : effectiveUnselectedColor,
                 ),
                 const SizedBox(height: 2),
                 Text(
                   label,
                   style: TextStyle(
-                    color:  isSelected ? selectedColor : unselectedColor,
+                    color:  isSelected ? effectiveSelectedColor : effectiveUnselectedColor,
                     fontSize: 12,
                   ),
                 ),

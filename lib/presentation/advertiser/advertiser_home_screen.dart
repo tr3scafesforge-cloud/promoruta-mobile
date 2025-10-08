@@ -51,10 +51,10 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
       ),
       bottomNavigationBar: Container(
         height: kBottomNavigationBarHeight + MediaQuery.of(context).viewPadding.bottom,
-        decoration: const BoxDecoration(
-          color: Colors.white,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
           border:
-              Border(top: BorderSide(color: AppColors.grayStroke, width: 1)),
+              Border(top: BorderSide(color: Theme.of(context).colorScheme.outline, width: 1)),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -23,6 +23,7 @@ class AppTheme {
       outline: AppColors.grayDarkStroke,
       surface: AppColors.surfaceDark,
       onSurface: AppColors.textPrimaryDark,
+      onSurfaceVariant: AppColors.textSecondaryDark,
       surfaceContainerHighest: AppColors.surfaceDark.withValues(alpha: 0.8),
     ),
     useMaterial3: true,
