@@ -13,9 +13,10 @@ class _AdvertiserLivePageState extends State<AdvertiserLivePage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF3F5F7),
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
@@ -62,11 +63,12 @@ class _LiveCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final borderRadius = BorderRadius.circular(12);
     return Card(
       margin: EdgeInsets.zero,
       elevation: 0,
-      color: Colors.white,
+      color: theme.colorScheme.surface,
       shape: RoundedRectangleBorder(borderRadius: borderRadius),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(12, 12, 12, 16),
@@ -76,14 +78,14 @@ class _LiveCard extends StatelessWidget {
             // Title
             Row(
               children: [
-                const Icon(Icons.place_outlined,
-                    size: 18, color: Colors.black87),
+                Icon(Icons.place_outlined,
+                    size: 18, color: theme.colorScheme.onSurface),
                 const SizedBox(width: 6),
                 Text(
                   title,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w600,
-                        color: Colors.black87,
+                        color: theme.colorScheme.onSurface,
                       ),
                 ),
               ],
@@ -95,8 +97,8 @@ class _LiveCard extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: const Color(0xFFF6F8FA),
-                  border: Border.all(color: const Color(0xFFE2E8F0)),
+                  color: theme.colorScheme.surfaceContainerHighest,
+                  border: Border.all(color: theme.colorScheme.outline),
                 ),
                 child: const _MapPlaceholder(),
               ),
@@ -113,17 +115,18 @@ class _MapPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.location_on_outlined,
-              size: 44, color: Colors.black54),
+          Icon(Icons.location_on_outlined,
+              size: 44, color: theme.colorScheme.onSurfaceVariant),
           const SizedBox(height: 8),
           Text(
             'Map Location in real time',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.black54,
+            style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
                   fontWeight: FontWeight.w500,
                 ),
           ),
@@ -136,6 +139,7 @@ class _MapPlaceholder extends StatelessWidget {
 class _ActivePromotersTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return ListView(
       children: [
         _LiveCard(title: '👥 Promotores Activos'),
@@ -144,7 +148,7 @@ class _ActivePromotersTab extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Column(
@@ -152,15 +156,15 @@ class _ActivePromotersTab extends StatelessWidget {
             children: [
               Text(
                 'Promotores en actividad',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
               ),
               const SizedBox(height: 8),
               Text(
                 'Aquí se mostrarán los promotores que están actualmente activos en tus campañas.',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.black54,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
                     ),
               ),
             ],
@@ -174,6 +178,7 @@ class _ActivePromotersTab extends StatelessWidget {
 class _LiveMapTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return ListView(
       children: [
         _LiveCard(title: '📍 Localización en tiempo real'),
@@ -182,7 +187,7 @@ class _LiveMapTab extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Column(
@@ -190,15 +195,15 @@ class _LiveMapTab extends StatelessWidget {
             children: [
               Text(
                 'Mapa en vivo',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
               ),
               const SizedBox(height: 8),
               Text(
                 'Visualiza la ubicación en tiempo real de tus promotores en el mapa.',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.black54,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
                     ),
               ),
             ],
@@ -212,12 +217,13 @@ class _LiveMapTab extends StatelessWidget {
 class _AlertsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return ListView(
       children: [
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Column(
@@ -225,14 +231,14 @@ class _AlertsTab extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const Icon(Icons.notifications_outlined,
-                      size: 18, color: Colors.black87),
+                  Icon(Icons.notifications_outlined,
+                      size: 18, color: theme.colorScheme.onSurface),
                   const SizedBox(width: 6),
                   Text(
                     'Alertas y Notificaciones',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
-                          color: Colors.black87,
+                          color: theme.colorScheme.onSurface,
                         ),
                   ),
                 ],
@@ -240,8 +246,8 @@ class _AlertsTab extends StatelessWidget {
               const SizedBox(height: 12),
               Text(
                 'Aquí recibirás alertas importantes sobre tus campañas y promotores.',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.black54,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
                     ),
               ),
               const SizedBox(height: 16),
@@ -286,6 +292,7 @@ class _AlertItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -304,7 +311,7 @@ class _AlertItem extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  style: theme.textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w600,
                         color: color,
                       ),
@@ -312,15 +319,15 @@ class _AlertItem extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   message,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.black87,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurface,
                       ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   time,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.black54,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
                       ),
                 ),
               ],
