@@ -156,7 +156,7 @@ class _AdvertiserCampaignsPageState extends State<AdvertiserCampaignsPage> {
               padding: const EdgeInsets.only(top: 48),
               child: Center(
                 child: Text(
-                  'No hay campañas para los filtros seleccionados.',
+                  AppLocalizations.of(context).noCampaignsForSelectedFilters,
                   style: theme.textTheme.bodyMedium
                       ?.copyWith(color: Colors.grey[700]),
                 ),

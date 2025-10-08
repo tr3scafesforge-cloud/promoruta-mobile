@@ -247,6 +247,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get noCampaignsFound => 'Nenhuma campanha encontrada';
 
   @override
+  String get noCampaignsForSelectedFilters => 'Não há campanhas para os filtros selecionados.';
+
+  @override
   String get applyFilters => 'Aplicar filtros';
 
   @override

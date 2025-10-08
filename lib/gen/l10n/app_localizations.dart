@@ -577,6 +577,12 @@ abstract class AppLocalizations {
   /// **'No campaigns found'**
   String get noCampaignsFound;
 
+  /// Message when no campaigns are found for the selected filters
+  ///
+  /// In en, this message translates to:
+  /// **'There are no campaigns for the selected filters.'**
+  String get noCampaignsForSelectedFilters;
+
   /// Button text to apply filters
   ///
   /// In en, this message translates to:

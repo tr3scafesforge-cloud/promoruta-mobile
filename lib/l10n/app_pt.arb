@@ -320,6 +320,10 @@
   "@noCampaignsFound": {
     "description": "Message when no campaigns are found"
   },
+  "noCampaignsForSelectedFilters": "Não há campanhas para os filtros selecionados.",
+  "@noCampaignsForSelectedFilters": {
+    "description": "Message when no campaigns are found for the selected filters"
+  },
   "applyFilters": "Aplicar filtros",
   "@applyFilters": {
     "description": "Button text to apply filters"
