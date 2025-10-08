@@ -319,4 +319,16 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get confirm => 'Confirmar';
+
+  @override
+  String get campaignFilterAll => 'Todas';
+
+  @override
+  String get campaignFilterActive => 'Ativas';
+
+  @override
+  String get campaignFilterPending => 'Pendentes';
+
+  @override
+  String get campaignFilterCompleted => 'Concluídas';
 }

@@ -720,6 +720,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Confirm'**
   String get confirm;
+
+  /// Filter option for all campaigns
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get campaignFilterAll;
+
+  /// Filter option for active campaigns
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get campaignFilterActive;
+
+  /// Filter option for pending campaigns
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get campaignFilterPending;
+
+  /// Filter option for completed campaigns
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get campaignFilterCompleted;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

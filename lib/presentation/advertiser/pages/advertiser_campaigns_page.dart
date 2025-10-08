@@ -108,7 +108,12 @@ class _AdvertiserCampaignsPageState extends State<AdvertiserCampaignsPage> {
           ),
           const SizedBox(height: 12),
           MultiSwitch(
-            options: const ['Todas', 'Activas', 'Pendientes', 'Completadas'],
+            options: [
+              AppLocalizations.of(context).campaignFilterAll,
+              AppLocalizations.of(context).campaignFilterActive,
+              AppLocalizations.of(context).campaignFilterPending,
+              AppLocalizations.of(context).campaignFilterCompleted,
+            ],
             initialIndex: _statuses.indexOf(_selected),
             backgroundColor: AppColors.grayDarkStroke.withValues(alpha: .70),
             onChanged: (index) => setState(() => _selected = _statuses[index]),

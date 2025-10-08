@@ -420,5 +420,21 @@
   "confirm": "Confirm",
   "@confirm": {
     "description": "Confirm button text"
+  },
+  "campaignFilterAll": "All",
+  "@campaignFilterAll": {
+    "description": "Filter option for all campaigns"
+  },
+  "campaignFilterActive": "Active",
+  "@campaignFilterActive": {
+    "description": "Filter option for active campaigns"
+  },
+  "campaignFilterPending": "Pending",
+  "@campaignFilterPending": {
+    "description": "Filter option for pending campaigns"
+  },
+  "campaignFilterCompleted": "Completed",
+  "@campaignFilterCompleted": {
+    "description": "Filter option for completed campaigns"
   }
 }
