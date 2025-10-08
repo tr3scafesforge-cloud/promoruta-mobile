@@ -64,6 +64,9 @@ class _MultiSwitchState extends State<MultiSwitch> {
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(widget.borderRadius!),
+        border: theme.brightness == Brightness.dark
+            ? Border.all(color: AppColors.secondaryLight, width: 1)
+            : null,
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
