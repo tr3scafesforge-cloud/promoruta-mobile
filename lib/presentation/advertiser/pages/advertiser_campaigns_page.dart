@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:promoruta/core/core.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
 import 'package:promoruta/shared/models/campaign_ui.dart' as ui;
@@ -256,6 +255,7 @@ class _CampaignCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final badge = switch (campaign.status) {
       ui.CampaignStatus.active =>
         _StatusBadge(text: 'Activa', color: const Color(0xFF11A192)),
@@ -269,12 +269,12 @@ class _CampaignCard extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: const Color(0xFFE7EBF0)),
+        color: theme.colorScheme.surface,
+        border: Border.all(color: theme.colorScheme.outline),
         borderRadius: BorderRadius.circular(16),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
-              blurRadius: 6, color: Color(0x0F000000), offset: Offset(0, 2))
+              blurRadius: 6, color: theme.shadowColor.withValues(alpha: 0.06), offset: const Offset(0, 2))
         ],
       ),
       child: Padding(
@@ -300,35 +300,29 @@ class _CampaignCard extends StatelessWidget {
             const SizedBox(height: 2),
             Text(
               campaign.subtitle ?? '',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(color: Colors.grey[700]),
+              style: theme.textTheme.bodySmall
+                  ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
             ),
             const SizedBox(height: 8),
             Row(
               children: [
-                const Icon(Icons.place, size: 16, color: Colors.black54),
+                Icon(Icons.place, size: 16, color: theme.colorScheme.onSurfaceVariant),
                 const SizedBox(width: 6),
                 Expanded(
                   child: Text(
                     campaign.location,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(color: Colors.black87),
+                    style: theme.textTheme.bodySmall
+                        ?.copyWith(color: theme.colorScheme.onSurface),
                   ),
                 ),
                 const SizedBox(width: 8),
-                const Icon(Icons.calendar_today,
-                    size: 16, color: Colors.black54),
+                Icon(Icons.calendar_today,
+                    size: 16, color: theme.colorScheme.onSurfaceVariant),
                 const SizedBox(width: 6),
                 Text(
                   campaign.dateRange ?? '',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.copyWith(color: Colors.black87),
+                  style: theme.textTheme.bodySmall
+                      ?.copyWith(color: theme.colorScheme.onSurface),
                 ),
               ],
             ),
@@ -361,14 +355,15 @@ class _StatTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return SizedBox(
       width: 74,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(value, style: const TextStyle(fontWeight: FontWeight.w700)),
+          Text(value, style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w700)),
           const SizedBox(height: 2),
-          Text(label, style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+          Text(label, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
         ],
       ),
     );
