@@ -18,19 +18,20 @@ class AdvertiserSearchFilterBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Row(
       children: [
         Expanded(
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: const Color(0xFFE7EBF0)),
+              border: Border.all(color: theme.colorScheme.outline),
             ),
             child: Row(
               children: [
                 const SizedBox(width: 12),
-                const Icon(Icons.search, size: 20, color: Colors.black54),
+                Icon(Icons.search, size: 20, color: theme.colorScheme.onSurfaceVariant),
                 const SizedBox(width: 8),
                 Expanded(
                   child: TextField(
@@ -44,7 +45,7 @@ class AdvertiserSearchFilterBar extends StatelessWidget {
                 ),
                 if (onClear != null && controller.text.isNotEmpty)
                   IconButton(
-                    icon: const Icon(Icons.close, size: 18),
+                    icon: Icon(Icons.close, size: 18, color: theme.colorScheme.onSurfaceVariant),
                     onPressed: onClear,
                   ),
               ],
@@ -55,10 +56,10 @@ class AdvertiserSearchFilterBar extends StatelessWidget {
         IconButton.filled(
           onPressed: onFilterTap,
           style: IconButton.styleFrom(
-            backgroundColor: Colors.white,
-            side: const BorderSide(color: Color(0xFFE7EBF0)),
+            backgroundColor: theme.colorScheme.surface,
+            side: BorderSide(color: theme.colorScheme.outline),
           ),
-          icon: const Icon(Icons.tune, color: Colors.black87),
+          icon: Icon(Icons.tune, color: theme.colorScheme.onSurface),
           tooltip: 'Filtros',
         ),
       ],
