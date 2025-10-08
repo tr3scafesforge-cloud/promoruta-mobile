@@ -47,9 +47,10 @@ class _MultiSwitchState extends State<MultiSwitch> {
 
   @override
   Widget build(BuildContext context) {
-    final activeColor = widget.activeColor ?? Colors.white;
-    final inactiveColor = widget.inactiveColor ?? Colors.black54;
-    final backgroundColor = widget.backgroundColor ?? Colors.grey[300];
+    final theme = Theme.of(context);
+    final activeColor = widget.activeColor ?? (theme.brightness == Brightness.light ? Colors.white : const Color(0xFF0A9995));
+    final inactiveColor = widget.inactiveColor ?? theme.colorScheme.onSurface;
+    final backgroundColor = widget.backgroundColor ?? theme.colorScheme.surfaceContainerHighest;
 
     return Container(
       height: widget.height,
