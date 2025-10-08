@@ -95,10 +95,8 @@ class _AdvertiserHistoryPageState extends ConsumerState<AdvertiserHistoryPage> {
               child: Center(
                 child: Text(
                   AppLocalizations.of(context).noCampaignsFound,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: Colors.black54),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant),
                 ),
               ),
             ),
@@ -245,14 +243,16 @@ class _CampaignCard extends StatelessWidget {
   final ui.Campaign campaign;
   final String dateFormatted;
 
-  Color get _statusColor {
+  Color _statusColor(ThemeData theme) {
     switch (campaign.status) {
       case ui.CampaignStatus.completed:
         return AppColors.completedGreenColor;
       case ui.CampaignStatus.canceled:
         return AppColors.canceledRedColor;
       case ui.CampaignStatus.expired:
-        return AppColors.expiredColor;
+        return theme.brightness == Brightness.light
+            ? AppColors.expiredColor
+            : Colors.white;
       default:
         return Colors.grey;
     }
@@ -273,17 +273,18 @@ class _CampaignCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(14),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
             blurRadius: 10,
             spreadRadius: -3,
-            offset: Offset(0, 2),
-            color: Color(0x22000000),
+            offset: const Offset(0, 2),
+            color: theme.shadowColor.withValues(alpha: 0.13),
           ),
         ],
       ),
@@ -295,132 +296,139 @@ class _CampaignCard extends StatelessWidget {
             Container(
               width: 6,
               decoration: BoxDecoration(
-                color: _statusColor,
+                color: _statusColor(theme),
                 borderRadius: const BorderRadius.horizontal(
                   left: Radius.circular(14),
                 ),
               ),
             ),
             Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Title + status chip
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          campaign.title,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: _statusColor.withValues(
-                            alpha: .12,
-                          ),
-                          borderRadius: BorderRadius.circular(999),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(Icons.check_circle, size: 14),
-                            const SizedBox(width: 4),
-                            Text(
-                              _statusLabel(context),
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: _statusColor,
-                              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Title + status chip
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            campaign.title,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16,
                             ),
-                          ],
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 6),
-                  // Date + location
-                  Row(
-                    children: [
-                      const Icon(Icons.event, size: 16, color: Colors.black54),
-                      const SizedBox(width: 6),
-                      Text(dateFormatted,
-                          style: const TextStyle(color: Colors.black54)),
-                      const SizedBox(width: 12),
-                      const Icon(Icons.place_outlined,
-                          size: 16, color: Colors.black54),
-                      const SizedBox(width: 4),
-                      Expanded(
-                        child: Text(
-                          campaign.location,
-                          style: const TextStyle(color: Colors.black54),
-                          overflow: TextOverflow.ellipsis,
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: _statusColor(theme).withValues(
+                              alpha: .12,
+                            ),
+                            borderRadius: BorderRadius.circular(999),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.check_circle, size: 14),
+                              const SizedBox(width: 4),
+                              Text(
+                                _statusLabel(context),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: _statusColor(theme),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  // Metrics row
-                  Row(
-                    children: [
-                      _Pill(
-                          icon: Icons.near_me_outlined,
-                          text: '${campaign.distanceKm}km'),
-                      const SizedBox(width: 8),
-                      _Pill(
-                          icon: Icons.schedule,
-                          text: '${campaign.durationSec}s'),
-                      const SizedBox(width: 8),
-                      _Pill(
-                          icon: Icons.attach_money,
-                          text: '\$${campaign.payUsd}'),
-                      const SizedBox(width: 8),
-                      _Pill(
-                          icon: Icons.groups_outlined,
-                          text: '${campaign.peopleNeeded}'),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  // Actions
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: switch (campaign.status) {
-                      ui.CampaignStatus.completed => _ActionButton(
-                          label: AppLocalizations.of(context).viewReport,
-                          color: const Color(0xFF31C48D),
-                          onTap: () {},
+                      ],
+                    ),
+                    const SizedBox(height: 6),
+                    // Date + location
+                    Row(
+                      children: [
+                        Icon(Icons.event,
+                            size: 16,
+                            color: theme.colorScheme.onSurfaceVariant),
+                        const SizedBox(width: 6),
+                        Text(dateFormatted,
+                            style: TextStyle(
+                                color: theme.colorScheme.onSurfaceVariant)),
+                        const SizedBox(width: 12),
+                        Icon(Icons.place_outlined,
+                            size: 16,
+                            color: theme.colorScheme.onSurfaceVariant),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
+                            campaign.location,
+                            style: TextStyle(
+                                color: theme.colorScheme.onSurfaceVariant),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      ui.CampaignStatus.canceled => _ActionButton(
-                          label: AppLocalizations.of(context).duplicate,
-                          color: const Color(0xFFE11D48),
-                          onTap: () {},
-                        ),
-                      ui.CampaignStatus.expired => _ActionButton(
-                          label: AppLocalizations.of(context).reactivate,
-                          color: const Color(0xFF111827),
-                          onTap: () {},
-                        ),
-                      _ => const SizedBox.shrink(),
-                    },
-                  ),
-                ],
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    // Metrics row
+                    Row(
+                      children: [
+                        _Pill(
+                            icon: Icons.near_me_outlined,
+                            text: '${campaign.distanceKm}km'),
+                        const SizedBox(width: 8),
+                        _Pill(
+                            icon: Icons.schedule,
+                            text: '${campaign.durationSec}s'),
+                        const SizedBox(width: 8),
+                        _Pill(
+                            icon: Icons.attach_money,
+                            text: '\$${campaign.payUsd}'),
+                        const SizedBox(width: 8),
+                        _Pill(
+                            icon: Icons.groups_outlined,
+                            text: '${campaign.peopleNeeded}'),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    // Actions
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: switch (campaign.status) {
+                        ui.CampaignStatus.completed => _ActionButton(
+                            label: AppLocalizations.of(context).viewReport,
+                            color: const Color(0xFF31C48D),
+                            onTap: () {},
+                          ),
+                        ui.CampaignStatus.canceled => _ActionButton(
+                            label: AppLocalizations.of(context).duplicate,
+                            color: const Color(0xFFE11D48),
+                            onTap: () {},
+                          ),
+                        ui.CampaignStatus.expired => _ActionButton(
+                            label: AppLocalizations.of(context).reactivate,
+                            color: theme.brightness == Brightness.light
+                                ? AppColors.expiredColor
+                                : Colors.white,
+                            onTap: () {},
+                          ),
+                        _ => const SizedBox.shrink(),
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
+    );
   }
 }
 
@@ -432,16 +440,17 @@ class _Pill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: const Color(0xFFF3F4F6),
+        color: theme.colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(999),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 14, color: Colors.black87),
+          Icon(icon, size: 14, color: theme.colorScheme.onSurface),
           const SizedBox(width: 4),
           Text(text, style: const TextStyle(fontWeight: FontWeight.w600)),
         ],
