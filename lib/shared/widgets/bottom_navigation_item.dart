@@ -18,7 +18,7 @@ class BottomNavigationItem extends StatelessWidget {
     required this.onTap,
     this.splashColor,
     this.selectedColor = AppColors.secondary,
-    this.unselectedColor = AppColors.textPrimary,
+    this.unselectedColor,
   });
 
   @override
@@ -26,7 +26,7 @@ class BottomNavigationItem extends StatelessWidget {
     final theme = Theme.of(context);
     final effectiveSelectedColor = selectedColor ?? theme.colorScheme.primary;
     final effectiveUnselectedColor = unselectedColor ?? (theme.brightness == Brightness.dark
-        ? Colors.white.withOpacity(0.7)
+        ? Colors.white.withValues(alpha: .70)
         : theme.colorScheme.onSurfaceVariant);
 
     return Expanded(
