@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:promoruta/core/constants/colors.dart';
 
 class MultiSwitch extends StatefulWidget {
   final List<String> options;
@@ -48,9 +49,15 @@ class _MultiSwitchState extends State<MultiSwitch> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final activeColor = widget.activeColor ?? (theme.brightness == Brightness.light ? Colors.white : const Color(0xFF0A9995));
+    final activeColor = widget.activeColor ??
+        (theme.brightness == Brightness.light
+            ? Colors.white
+            : const Color(0xFF0A9995));
     final inactiveColor = widget.inactiveColor ?? theme.colorScheme.onSurface;
-    final backgroundColor = widget.backgroundColor ?? theme.colorScheme.surfaceContainerHighest;
+    final backgroundColor = widget.backgroundColor ??
+        (theme.brightness == Brightness.light
+            ? AppColors.grayDarkStroke.withValues(alpha: .60)
+            : AppColors.secondaryLight.withValues(alpha: .25));
 
     return Container(
       height: widget.height,
@@ -75,7 +82,8 @@ class _MultiSwitchState extends State<MultiSwitch> {
                 child: Container(
                   decoration: BoxDecoration(
                     color: activeColor,
-                    borderRadius: BorderRadius.circular(widget.borderRadius! - 4),
+                    borderRadius:
+                        BorderRadius.circular(widget.borderRadius! - 4),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withValues(alpha: .1),
@@ -175,7 +183,12 @@ class _MultiSwitchExampleState extends State<MultiSwitchExample> {
             ),
             const SizedBox(height: 32),
             Text(
-              'Selected: ${['Todas', 'Activas', 'Pendientes', 'Completadas'][_selectedIndex]}',
+              'Selected: ${[
+                'Todas',
+                'Activas',
+                'Pendientes',
+                'Completadas'
+              ][_selectedIndex]}',
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,

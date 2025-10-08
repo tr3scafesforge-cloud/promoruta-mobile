@@ -115,7 +115,6 @@ class _AdvertiserCampaignsPageState extends State<AdvertiserCampaignsPage> {
               AppLocalizations.of(context).campaignFilterCompleted,
             ],
             initialIndex: _statuses.indexOf(_selected),
-            backgroundColor: AppColors.grayDarkStroke.withValues(alpha: .70),
             onChanged: (index) => setState(() => _selected = _statuses[index]),
           ),
           if (_hasAnyExtraFilter)
