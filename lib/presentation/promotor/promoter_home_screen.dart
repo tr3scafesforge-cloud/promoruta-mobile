@@ -18,12 +18,10 @@ class _PromoterHomeScreenState extends State<PromoterHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF3F5F7),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         elevation: 0,
         centerTitle: false,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -37,7 +35,7 @@ class _PromoterHomeScreenState extends State<PromoterHomeScreen> {
               style: Theme.of(context)
                   .textTheme
                   .bodySmall
-                  ?.copyWith(color: Colors.grey[600]),
+                  ?.copyWith(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
             ),
           ],
         ),

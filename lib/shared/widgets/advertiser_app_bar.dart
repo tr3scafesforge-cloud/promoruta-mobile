@@ -18,7 +18,6 @@ class AdvertiserAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     return AppBar(
       elevation: 0,
-      backgroundColor: Colors.white,
       scrolledUnderElevation: 0,
       titleSpacing: 16,
       title: subtitle != null
@@ -35,7 +34,7 @@ class AdvertiserAppBar extends StatelessWidget implements PreferredSizeWidget {
                 Text(
                   subtitle!,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: Colors.grey[600],
+                    color: theme.colorScheme.onSurface.withOpacity(0.6),
                   ),
                 ),
               ],
@@ -45,7 +44,6 @@ class AdvertiserAppBar extends StatelessWidget implements PreferredSizeWidget {
                   title!,
                   style: theme.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.w800,
-                    color: Colors.black,
                   ),
                 )
               : null,
