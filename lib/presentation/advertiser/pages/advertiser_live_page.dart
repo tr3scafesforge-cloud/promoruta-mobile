@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
 
 class AdvertiserLivePage extends StatefulWidget {
@@ -25,9 +26,9 @@ class _AdvertiserLivePageState extends State<AdvertiserLivePage> {
             children: [
               MultiSwitch(
                 options: [
-                  'Promotores Activos', // "Promotores Activos"
-                  'Live Map',
-                  'Alertas',
+                  AppLocalizations.of(context).activePromoters,
+                  AppLocalizations.of(context).liveMap,
+                  AppLocalizations.of(context).alerts,
                 ],
                 initialIndex: _selectedTab,
                 onChanged: (index) => setState(() => _selectedTab = index),
@@ -116,6 +117,7 @@ class _MapPlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -124,7 +126,7 @@ class _MapPlaceholder extends StatelessWidget {
               size: 44, color: theme.colorScheme.onSurfaceVariant),
           const SizedBox(height: 8),
           Text(
-            'Map Location in real time',
+            l10n.mapLocationRealTime,
             style: theme.textTheme.bodyMedium?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                   fontWeight: FontWeight.w500,
@@ -140,9 +142,10 @@ class _ActivePromotersTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return ListView(
       children: [
-        _LiveCard(title: '👥 Promotores Activos'),
+        _LiveCard(title: l10n.activePromotersTitle),
         const SizedBox(height: 16),
         // Add more content for active promoters
         Container(
@@ -155,14 +158,14 @@ class _ActivePromotersTab extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Promotores en actividad',
+                l10n.activePromotersSection,
                 style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
               ),
               const SizedBox(height: 8),
               Text(
-                'Aquí se mostrarán los promotores que están actualmente activos en tus campañas.',
+                l10n.activePromotersDescription,
                 style: theme.textTheme.bodyMedium?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
@@ -179,9 +182,10 @@ class _LiveMapTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return ListView(
       children: [
-        _LiveCard(title: '📍 Localización en tiempo real'),
+        _LiveCard(title: l10n.realTimeLocation),
         const SizedBox(height: 16),
         // Add more content for live map
         Container(
@@ -194,14 +198,14 @@ class _LiveMapTab extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Mapa en vivo',
+                l10n.liveMapSection,
                 style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
               ),
               const SizedBox(height: 8),
               Text(
-                'Visualiza la ubicación en tiempo real de tus promotores en el mapa.',
+                l10n.liveMapDescription,
                 style: theme.textTheme.bodyMedium?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
@@ -218,6 +222,7 @@ class _AlertsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return ListView(
       children: [
         Container(
@@ -235,7 +240,7 @@ class _AlertsTab extends StatelessWidget {
                       size: 18, color: theme.colorScheme.onSurface),
                   const SizedBox(width: 6),
                   Text(
-                    'Alertas y Notificaciones',
+                    l10n.alertsAndNotifications,
                     style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: theme.colorScheme.onSurface,
@@ -245,7 +250,7 @@ class _AlertsTab extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                'Aquí recibirás alertas importantes sobre tus campañas y promotores.',
+                l10n.alertsDescription,
                 style: theme.textTheme.bodyMedium?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
@@ -254,17 +259,17 @@ class _AlertsTab extends StatelessWidget {
               // Sample alerts
               _AlertItem(
                 icon: Icons.warning_amber_rounded,
-                title: 'Promotor fuera de zona',
-                message: 'Juan Pérez está fuera de la zona asignada',
-                time: 'Hace 5 min',
+                title: l10n.promoterOutOfZone,
+                message: l10n.promoterOutOfZoneMessage,
+                time: l10n.minutesAgo(5),
                 color: Colors.orange,
               ),
               const SizedBox(height: 12),
               _AlertItem(
                 icon: Icons.check_circle,
-                title: 'Campaña completada',
-                message: 'La campaña "Promoción Cafetería" ha finalizado',
-                time: 'Hace 1 hora',
+                title: l10n.campaignCompleted,
+                message: l10n.campaignCompletedMessage,
+                time: l10n.hoursAgo(1),
                 color: Colors.green,
               ),
             ],

@@ -334,4 +334,62 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get campaignFilterCompleted => 'Concluídas';
+
+  @override
+  String get activePromoters => 'Promotores Ativos';
+
+  @override
+  String get liveMap => 'Mapa ao Vivo';
+
+  @override
+  String get alerts => 'Alertas';
+
+  @override
+  String get activePromotersTitle => '👥 Promotores Ativos';
+
+  @override
+  String get realTimeLocation => '📍 Localização em tempo real';
+
+  @override
+  String get activePromotersSection => 'Promotores em atividade';
+
+  @override
+  String get activePromotersDescription => 'Aqui serão mostrados os promotores que estão atualmente ativos em suas campanhas.';
+
+  @override
+  String get liveMapSection => 'Mapa ao vivo';
+
+  @override
+  String get liveMapDescription => 'Visualize a localização em tempo real de seus promotores no mapa.';
+
+  @override
+  String get alertsAndNotifications => 'Alertas e Notificações';
+
+  @override
+  String get alertsDescription => 'Aqui você receberá alertas importantes sobre suas campanhas e promotores.';
+
+  @override
+  String get promoterOutOfZone => 'Promotor fora da zona';
+
+  @override
+  String get promoterOutOfZoneMessage => 'João Pereira está fora da zona atribuída';
+
+  @override
+  String get campaignCompleted => 'Campanha concluída';
+
+  @override
+  String get campaignCompletedMessage => 'A campanha \"Promoção Cafeteria\" foi finalizada';
+
+  @override
+  String minutesAgo(int minutes) {
+    return '$minutes min atrás';
+  }
+
+  @override
+  String hoursAgo(int hours) {
+    return '$hours hora atrás';
+  }
+
+  @override
+  String get mapLocationRealTime => 'Localização no mapa em tempo real';
 }

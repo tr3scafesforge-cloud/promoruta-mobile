@@ -750,6 +750,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Completed'**
   String get campaignFilterCompleted;
+
+  /// Tab label for active promoters
+  ///
+  /// In en, this message translates to:
+  /// **'Active Promoters'**
+  String get activePromoters;
+
+  /// Tab label for live map
+  ///
+  /// In en, this message translates to:
+  /// **'Live Map'**
+  String get liveMap;
+
+  /// Tab label for alerts
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts'**
+  String get alerts;
+
+  /// Title for active promoters section
+  ///
+  /// In en, this message translates to:
+  /// **'👥 Active Promoters'**
+  String get activePromotersTitle;
+
+  /// Title for real-time location section
+  ///
+  /// In en, this message translates to:
+  /// **'📍 Real-time Location'**
+  String get realTimeLocation;
+
+  /// Section header for active promoters
+  ///
+  /// In en, this message translates to:
+  /// **'Active promoters'**
+  String get activePromotersSection;
+
+  /// Description for active promoters section
+  ///
+  /// In en, this message translates to:
+  /// **'Here you will see the promoters who are currently active in your campaigns.'**
+  String get activePromotersDescription;
+
+  /// Section header for live map
+  ///
+  /// In en, this message translates to:
+  /// **'Live map'**
+  String get liveMapSection;
+
+  /// Description for live map section
+  ///
+  /// In en, this message translates to:
+  /// **'View the real-time location of your promoters on the map.'**
+  String get liveMapDescription;
+
+  /// Section header for alerts and notifications
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts and Notifications'**
+  String get alertsAndNotifications;
+
+  /// Description for alerts section
+  ///
+  /// In en, this message translates to:
+  /// **'Here you will receive important alerts about your campaigns and promoters.'**
+  String get alertsDescription;
+
+  /// Alert title for promoter out of zone
+  ///
+  /// In en, this message translates to:
+  /// **'Promoter out of zone'**
+  String get promoterOutOfZone;
+
+  /// Alert message for promoter out of zone
+  ///
+  /// In en, this message translates to:
+  /// **'Juan Pérez is outside the assigned zone'**
+  String get promoterOutOfZoneMessage;
+
+  /// Alert title for campaign completed
+  ///
+  /// In en, this message translates to:
+  /// **'Campaign completed'**
+  String get campaignCompleted;
+
+  /// Alert message for campaign completed
+  ///
+  /// In en, this message translates to:
+  /// **'The campaign \"Coffee Shop Promotion\" has finished'**
+  String get campaignCompletedMessage;
+
+  /// Time format for minutes ago
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min ago'**
+  String minutesAgo(int minutes);
+
+  /// Time format for hours ago
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} hour ago'**
+  String hoursAgo(int hours);
+
+  /// Placeholder text for map location
+  ///
+  /// In en, this message translates to:
+  /// **'Map Location in real time'**
+  String get mapLocationRealTime;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

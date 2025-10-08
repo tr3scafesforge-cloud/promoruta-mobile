@@ -440,5 +440,87 @@
   "campaignFilterCompleted": "Concluídas",
   "@campaignFilterCompleted": {
     "description": "Filter option for completed campaigns"
+  },
+  "activePromoters": "Promotores Ativos",
+  "@activePromoters": {
+    "description": "Tab label for active promoters"
+  },
+  "liveMap": "Mapa ao Vivo",
+  "@liveMap": {
+    "description": "Tab label for live map"
+  },
+  "alerts": "Alertas",
+  "@alerts": {
+    "description": "Tab label for alerts"
+  },
+  "activePromotersTitle": "👥 Promotores Ativos",
+  "@activePromotersTitle": {
+    "description": "Title for active promoters section"
+  },
+  "realTimeLocation": "📍 Localização em tempo real",
+  "@realTimeLocation": {
+    "description": "Title for real-time location section"
+  },
+  "activePromotersSection": "Promotores em atividade",
+  "@activePromotersSection": {
+    "description": "Section header for active promoters"
+  },
+  "activePromotersDescription": "Aqui serão mostrados os promotores que estão atualmente ativos em suas campanhas.",
+  "@activePromotersDescription": {
+    "description": "Description for active promoters section"
+  },
+  "liveMapSection": "Mapa ao vivo",
+  "@liveMapSection": {
+    "description": "Section header for live map"
+  },
+  "liveMapDescription": "Visualize a localização em tempo real de seus promotores no mapa.",
+  "@liveMapDescription": {
+    "description": "Description for live map section"
+  },
+  "alertsAndNotifications": "Alertas e Notificações",
+  "@alertsAndNotifications": {
+    "description": "Section header for alerts and notifications"
+  },
+  "alertsDescription": "Aqui você receberá alertas importantes sobre suas campanhas e promotores.",
+  "@alertsDescription": {
+    "description": "Description for alerts section"
+  },
+  "promoterOutOfZone": "Promotor fora da zona",
+  "@promoterOutOfZone": {
+    "description": "Alert title for promoter out of zone"
+  },
+  "promoterOutOfZoneMessage": "João Pereira está fora da zona atribuída",
+  "@promoterOutOfZoneMessage": {
+    "description": "Alert message for promoter out of zone"
+  },
+  "campaignCompleted": "Campanha concluída",
+  "@campaignCompleted": {
+    "description": "Alert title for campaign completed"
+  },
+  "campaignCompletedMessage": "A campanha \"Promoção Cafeteria\" foi finalizada",
+  "@campaignCompletedMessage": {
+    "description": "Alert message for campaign completed"
+  },
+  "minutesAgo": "{minutes} min atrás",
+  "@minutesAgo": {
+    "description": "Time format for minutes ago",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "{hours} hora atrás",
+  "@hoursAgo": {
+    "description": "Time format for hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "mapLocationRealTime": "Localização no mapa em tempo real",
+  "@mapLocationRealTime": {
+    "description": "Placeholder text for map location"
   }
 }
