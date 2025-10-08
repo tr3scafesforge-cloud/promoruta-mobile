@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:promoruta/gen/l10n/app_localizations.dart';
+import 'package:promoruta/shared/shared.dart';
 
-class AdvertiserLivePage extends StatelessWidget {
+class AdvertiserLivePage extends StatefulWidget {
   const AdvertiserLivePage({super.key});
 
   @override
+  State<AdvertiserLivePage> createState() => _AdvertiserLivePageState();
+}
+
+class _AdvertiserLivePageState extends State<AdvertiserLivePage> {
+  @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF3F5F7),
@@ -16,17 +20,14 @@ class AdvertiserLivePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _TopTabs(
-                currentIndex: 1, // 0: Promotores Activos, 1: Live Map, 2: Alertas
-                onTap: (i) {
-                  // hook these up to your navigation / router
-                  // e.g. context.go('/advertiser/active_promoters');
-                },
-                labels: [
+              MultiSwitch(
+                options: [
                   'Promotores Activos', // “Promotores Activos”
                   'Live Map',
-                  '“Alertas”', // “Alertas”
+                  'Alertas',
                 ],
+                initialIndex: 0,
+                onChanged: (index) => setState(() => {}),
               ),
               const SizedBox(height: 16),
               _LiveCard(title: '📍 Localización en tiempo real'),
@@ -34,63 +35,6 @@ class AdvertiserLivePage extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _TopTabs extends StatelessWidget {
-  const _TopTabs({
-    required this.currentIndex,
-    required this.labels,
-    this.onTap,
-  });
-
-  final int currentIndex;
-  final List<String> labels;
-  final ValueChanged<int>? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: List.generate(labels.length, (i) {
-        final selected = i == currentIndex;
-        return Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(right: i < labels.length - 1 ? 8 : 0),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(12),
-              onTap: () => onTap?.call(i),
-              child: Container(
-                height: 38,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: selected ? Colors.white : const Color(0xFFE9EDF1),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: selected ? const Color(0xFFCBD5E1) : Colors.transparent,
-                  ),
-                  boxShadow: selected
-                      ? [
-                          BoxShadow(
-                            blurRadius: 10,
-                            offset: const Offset(0, 2),
-                            color: Colors.black.withOpacity(0.04),
-                          )
-                        ]
-                      : null,
-                ),
-                child: Text(
-                  labels[i],
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black87,
-                      ),
-                ),
-              ),
-            ),
-          ),
-        );
-      }),
     );
   }
 }
@@ -115,7 +59,8 @@ class _LiveCard extends StatelessWidget {
             // Title
             Row(
               children: [
-                const Icon(Icons.place_outlined, size: 18, color: Colors.black87),
+                const Icon(Icons.place_outlined,
+                    size: 18, color: Colors.black87),
                 const SizedBox(width: 6),
                 Text(
                   title,
@@ -155,7 +100,8 @@ class _MapPlaceholder extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.location_on_outlined, size: 44, color: Colors.black54),
+          const Icon(Icons.location_on_outlined,
+              size: 44, color: Colors.black54),
           const SizedBox(height: 8),
           Text(
             'Map Location in real time',
