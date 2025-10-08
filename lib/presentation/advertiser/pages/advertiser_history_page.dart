@@ -334,7 +334,7 @@ class _CampaignCard extends StatelessWidget {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Icon(Icons.check_circle, size: 14),
+                              Icon(Icons.check_circle, size: 14, color: _statusColor(theme)),
                               const SizedBox(width: 4),
                               Text(
                                 _statusLabel(context),
