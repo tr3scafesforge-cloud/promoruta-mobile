@@ -29,7 +29,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -61,7 +61,7 @@ class _LoginState extends State<Login> {
                           Theme.of(context).textTheme.headlineLarge?.copyWith(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 32,
-                                color: Colors.black,
+                                color: Theme.of(context).colorScheme.onSurface,
                                 letterSpacing: 1.2,
                               ),
                     ),
@@ -69,14 +69,14 @@ class _LoginState extends State<Login> {
                     Text(
                       AppLocalizations.of(context).welcomeBack,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: Colors.grey[600],
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                             fontSize: 16,
                           ),
                     ),
                     Text(
                       AppLocalizations.of(context).loginToContinue,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: Colors.grey[600],
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                             fontSize: 16,
                           ),
                     ),
@@ -88,13 +88,11 @@ class _LoginState extends State<Login> {
                 Container(
                   padding: const EdgeInsets.all(32.0),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withValues(
-                          alpha: .1,
-                        ),
+                        color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.1),
                         spreadRadius: 1,
                         blurRadius: 10,
                         offset: const Offset(0, 2),
@@ -127,7 +125,7 @@ class _LoginState extends State<Login> {
                                   .titleMedium
                                   ?.copyWith(
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+                                    color: Theme.of(context).colorScheme.onSurface,
                                   ),
                             ),
                             const SizedBox(height: 8),
@@ -136,23 +134,23 @@ class _LoginState extends State<Login> {
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: AppColors.primary,
+                                fillColor: Theme.of(context).colorScheme.surface,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                   borderSide: BorderSide(
-                                    color: AppColors.grayLightStroke,
+                                    color: Theme.of(context).colorScheme.outline,
                                   ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                   borderSide: BorderSide(
-                                    color: AppColors.grayLightStroke,
+                                    color: Theme.of(context).colorScheme.outline,
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.secondary,
+                                  borderSide: BorderSide(
+                                    color: Theme.of(context).colorScheme.primary,
                                     width: 2,
                                   ),
                                 ),
@@ -189,7 +187,7 @@ class _LoginState extends State<Login> {
                                   .titleMedium
                                   ?.copyWith(
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+                                    color: Theme.of(context).colorScheme.onSurface,
                                   ),
                             ),
                             const SizedBox(height: 8),
@@ -198,23 +196,23 @@ class _LoginState extends State<Login> {
                               obscureText: _obscurePassword,
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: AppColors.primary,
+                                fillColor: Theme.of(context).colorScheme.surface,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                   borderSide: BorderSide(
-                                    color: AppColors.grayLightStroke,
+                                    color: Theme.of(context).colorScheme.outline,
                                   ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                   borderSide: BorderSide(
-                                    color: AppColors.grayLightStroke,
+                                    color: Theme.of(context).colorScheme.outline,
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.secondary,
+                                  borderSide: BorderSide(
+                                    color: Theme.of(context).colorScheme.primary,
                                     width: 2,
                                   ),
                                 ),
@@ -223,7 +221,7 @@ class _LoginState extends State<Login> {
                                     _obscurePassword
                                         ? Icons.visibility
                                         : Icons.visibility_off,
-                                    color: AppColors.textSecondary,
+                                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                                   ),
                                   onPressed: () {
                                     setState(() {
@@ -270,7 +268,7 @@ class _LoginState extends State<Login> {
                                   .textTheme
                                   .bodyMedium
                                   ?.copyWith(
-                                    color: Colors.teal,
+                                    color: Theme.of(context).colorScheme.primary,
                                   ),
                             ),
                           ),
@@ -281,10 +279,10 @@ class _LoginState extends State<Login> {
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton.icon(
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.login,
                               size: 24,
-                              color: Colors.white,
+                              color: Theme.of(context).colorScheme.onPrimary,
                             ),
                             iconAlignment: IconAlignment.start,
                             onPressed: () {
@@ -298,8 +296,8 @@ class _LoginState extends State<Login> {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.secondary,
-                              foregroundColor: Colors.white,
+                              backgroundColor: Theme.of(context).colorScheme.primary,
+                              foregroundColor: Theme.of(context).colorScheme.onPrimary,
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
@@ -313,7 +311,7 @@ class _LoginState extends State<Login> {
                                   .bodyLarge
                                   ?.copyWith(
                                     fontWeight: FontWeight.w600,
-                                    color: Colors.white,
+                                    color: Theme.of(context).colorScheme.onPrimary,
                                   ),
                             ),
                           ),
@@ -323,7 +321,7 @@ class _LoginState extends State<Login> {
                         // Divider
                         Row(
                           children: [
-                            Expanded(child: Divider(color: Colors.grey[300])),
+                            Expanded(child: Divider(color: Theme.of(context).dividerColor)),
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 16),
@@ -333,12 +331,12 @@ class _LoginState extends State<Login> {
                                     .textTheme
                                     .bodySmall
                                     ?.copyWith(
-                                      color: Colors.grey[600],
+                                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                                       fontWeight: FontWeight.w500,
                                     ),
                               ),
                             ),
-                            Expanded(child: Divider(color: Colors.grey[300])),
+                            Expanded(child: Divider(color: Theme.of(context).dividerColor)),
                           ],
                         ),
                         const SizedBox(height: 24),
@@ -379,7 +377,7 @@ class _LoginState extends State<Login> {
                                   .textTheme
                                   .bodyMedium
                                   ?.copyWith(
-                                    color: Colors.grey[600],
+                                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                                   ),
                             ),
                             TextButton(
@@ -397,7 +395,7 @@ class _LoginState extends State<Login> {
                                     .textTheme
                                     .bodyMedium
                                     ?.copyWith(
-                                      color: Colors.teal,
+                                      color: Theme.of(context).colorScheme.primary,
                                       fontWeight: FontWeight.w600,
                                     ),
                               ),
@@ -432,7 +430,7 @@ class _SocialLoginButton extends StatelessWidget {
       width: 56,
       height: 56,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[300]!),
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
         borderRadius: BorderRadius.circular(28),
       ),
       child: IconButton(
@@ -440,7 +438,7 @@ class _SocialLoginButton extends StatelessWidget {
         icon: Icon(
           icon,
           size: 24,
-          color: Colors.grey[700],
+          color: Theme.of(context).colorScheme.onSurface,
         ),
       ),
     );
