@@ -45,17 +45,17 @@ class _AdvertiserLivePageState extends State<AdvertiserLivePage>
                   Expanded(
                     child: Row(
                       children: [
-                        _LiveDot(label: 'LIVE'),
+                        _LiveDot(label: l10n.liveLabel),
                         const Spacer(),
                         _ChipButton(
                           icon: Icons.layers_outlined,
-                          label: 'Capas',
+                          label: l10n.layers,
                           onTap: () {}, // TODO: open layers menu
                         ),
                         const SizedBox(width: 8),
                         _ChipButton(
                           icon: Icons.access_time,
-                          label: 'Ahora',
+                          label: l10n.now,
                           onTap: () {}, // TODO: time/historic playback
                         ),
                       ],
@@ -72,10 +72,13 @@ class _AdvertiserLivePageState extends State<AdvertiserLivePage>
             bottom: 110,
             child: Column(
               children: [
-                _RoundFab(icon: Icons.my_location, onPressed: () {/* recenter */}),
+                _RoundFab(
+                    icon: Icons.my_location, onPressed: () {/* recenter */}),
                 const SizedBox(height: 8),
                 _RoundFab(
-                  icon: _following ? Icons.center_focus_strong : Icons.center_focus_weak,
+                  icon: _following
+                      ? Icons.center_focus_strong
+                      : Icons.center_focus_weak,
                   onPressed: () => setState(() => _following = !_following),
                 ),
                 const SizedBox(height: 8),
@@ -97,7 +100,8 @@ class _AdvertiserLivePageState extends State<AdvertiserLivePage>
               return Material(
                 color: theme.colorScheme.surface,
                 elevation: 16,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(16)),
                 child: Column(
                   children: [
                     const SizedBox(height: 8),
@@ -145,7 +149,7 @@ class _MapFullscreenPlaceholder extends StatelessWidget {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
     return Container(
-      color: theme.colorScheme.surfaceVariant.withOpacity(.25),
+      color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: .25),
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -192,9 +196,9 @@ class _PromotersList extends StatelessWidget {
           spacing: 8,
           runSpacing: 8,
           children: [
-            _FilterChip(label: l10n.active ?? 'Activo', selected: true),
-            _FilterChip(label: l10n.pending ?? 'Pendiente'),
-            _FilterChip(label: 'Sin señal'),
+            _FilterChip(label: l10n.active, selected: true),
+            _FilterChip(label: l10n.pending),
+            _FilterChip(label: l10n.noSignal),
             const SizedBox(width: 8),
           ],
         ),
@@ -225,7 +229,7 @@ class _PromotersList extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         Text(
-          'Last updated ${DateTime.now().hour}:${DateTime.now().minute.toString().padLeft(2, '0')}',
+          '${l10n.lastUpdated} ${DateTime.now().hour}:${DateTime.now().minute.toString().padLeft(2, '0')}',
           style: theme.textTheme.bodySmall?.copyWith(
             color: theme.colorScheme.onSurfaceVariant,
           ),
@@ -241,7 +245,6 @@ class _AlertsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
 
     return ListView(
@@ -250,13 +253,13 @@ class _AlertsList extends StatelessWidget {
       children: [
         _AlertCard(
           title: 'Mati C',
-          subtitle: 'Empezó el recorrido',
+          subtitle: l10n.startedRoute,
           icon: Icons.campaign_outlined,
         ),
         const SizedBox(height: 8),
         _AlertCard(
           title: 'Carlos R',
-          subtitle: 'Preparándose para el recorrido',
+          subtitle: l10n.preparingForRoute,
           icon: Icons.directions_car_filled_outlined,
         ),
         const SizedBox(height: 8),
@@ -404,9 +407,13 @@ class _LiveDot extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.green.withOpacity(.12),
+        color: Colors.green.withValues(alpha: .12),
         borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: Colors.green.withOpacity(.4)),
+        border: Border.all(
+          color: Colors.green.withValues(
+            alpha: .4,
+          ),
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -531,12 +538,16 @@ class _FilterChip extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
         color: selected
-            ? theme.colorScheme.primary.withOpacity(.08)
+            ? theme.colorScheme.primary.withValues(
+                alpha: .08,
+              )
             : theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(999),
         border: Border.all(
           color: selected
-              ? theme.colorScheme.primary.withOpacity(.3)
+              ? theme.colorScheme.primary.withValues(
+                  alpha: .3,
+                )
               : theme.colorScheme.outlineVariant,
         ),
       ),

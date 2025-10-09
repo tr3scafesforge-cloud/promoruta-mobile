@@ -392,4 +392,25 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get mapLocationRealTime => 'Localização no mapa em tempo real';
+
+  @override
+  String get liveLabel => 'AO VIVO';
+
+  @override
+  String get layers => 'Camadas';
+
+  @override
+  String get now => 'Agora';
+
+  @override
+  String get noSignal => 'Sem sinal';
+
+  @override
+  String get lastUpdated => 'Última atualização';
+
+  @override
+  String get startedRoute => 'Começou a rota';
+
+  @override
+  String get preparingForRoute => 'Preparando para a rota';
 }

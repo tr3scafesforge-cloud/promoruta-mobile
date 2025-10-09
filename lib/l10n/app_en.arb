@@ -522,5 +522,33 @@
   "mapLocationRealTime": "Map Location in real time",
   "@mapLocationRealTime": {
     "description": "Placeholder text for map location"
+  },
+  "liveLabel": "LIVE",
+  "@liveLabel": {
+    "description": "Label for live indicator"
+  },
+  "layers": "Layers",
+  "@layers": {
+    "description": "Button label for layers"
+  },
+  "now": "Now",
+  "@now": {
+    "description": "Button label for now/time"
+  },
+  "noSignal": "No signal",
+  "@noSignal": {
+    "description": "Filter label for no signal"
+  },
+  "lastUpdated": "Last updated",
+  "@lastUpdated": {
+    "description": "Text for last updated timestamp"
+  },
+  "startedRoute": "Started the route",
+  "@startedRoute": {
+    "description": "Alert message for promoter starting route"
+  },
+  "preparingForRoute": "Preparing for the route",
+  "@preparingForRoute": {
+    "description": "Alert message for promoter preparing for route"
   }
 }

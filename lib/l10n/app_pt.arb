@@ -522,5 +522,33 @@
   "mapLocationRealTime": "Localização no mapa em tempo real",
   "@mapLocationRealTime": {
     "description": "Placeholder text for map location"
+  },
+  "liveLabel": "AO VIVO",
+  "@liveLabel": {
+    "description": "Label for live indicator"
+  },
+  "layers": "Camadas",
+  "@layers": {
+    "description": "Button label for layers"
+  },
+  "now": "Agora",
+  "@now": {
+    "description": "Button label for now/time"
+  },
+  "noSignal": "Sem sinal",
+  "@noSignal": {
+    "description": "Filter label for no signal"
+  },
+  "lastUpdated": "Última atualização",
+  "@lastUpdated": {
+    "description": "Text for last updated timestamp"
+  },
+  "startedRoute": "Começou a rota",
+  "@startedRoute": {
+    "description": "Alert message for promoter starting route"
+  },
+  "preparingForRoute": "Preparando para a rota",
+  "@preparingForRoute": {
+    "description": "Alert message for promoter preparing for route"
   }
 }

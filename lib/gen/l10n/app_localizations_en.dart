@@ -392,4 +392,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mapLocationRealTime => 'Map Location in real time';
+
+  @override
+  String get liveLabel => 'LIVE';
+
+  @override
+  String get layers => 'Layers';
+
+  @override
+  String get now => 'Now';
+
+  @override
+  String get noSignal => 'No signal';
+
+  @override
+  String get lastUpdated => 'Last updated';
+
+  @override
+  String get startedRoute => 'Started the route';
+
+  @override
+  String get preparingForRoute => 'Preparing for the route';
 }

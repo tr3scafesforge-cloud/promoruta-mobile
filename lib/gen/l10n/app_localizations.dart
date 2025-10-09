@@ -858,6 +858,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Map Location in real time'**
   String get mapLocationRealTime;
+
+  /// Label for live indicator
+  ///
+  /// In en, this message translates to:
+  /// **'LIVE'**
+  String get liveLabel;
+
+  /// Button label for layers
+  ///
+  /// In en, this message translates to:
+  /// **'Layers'**
+  String get layers;
+
+  /// Button label for now/time
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get now;
+
+  /// Filter label for no signal
+  ///
+  /// In en, this message translates to:
+  /// **'No signal'**
+  String get noSignal;
+
+  /// Text for last updated timestamp
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated'**
+  String get lastUpdated;
+
+  /// Alert message for promoter starting route
+  ///
+  /// In en, this message translates to:
+  /// **'Started the route'**
+  String get startedRoute;
+
+  /// Alert message for promoter preparing for route
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing for the route'**
+  String get preparingForRoute;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
