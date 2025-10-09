@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 
 class PermissionCard extends StatelessWidget {
@@ -24,18 +23,22 @@ class PermissionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
     return InkWell(
       onTap: isGranted ? null : onTap,
       borderRadius: BorderRadius.circular(12),
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isGranted ? Colors.green[50] : AppColors.background,
+          color: isGranted ? colorScheme.primaryContainer : colorScheme.surface,
           borderRadius: BorderRadius.circular(12),
           border: !isGranted
-              ? Border.all(color: AppColors.grayStroke, width: 1)
+              ? Border.all(color: colorScheme.outline, width: 1)
               : isGranted
-                  ? Border.all(color: Colors.green, width: 1)
+                  ? Border.all(color: colorScheme.primary, width: 1)
                   : null,
         ),
         child: Row(
@@ -45,12 +48,12 @@ class PermissionCard extends StatelessWidget {
               width: 56,
               height: 56,
               decoration: BoxDecoration(
-                color: isGranted ? Colors.green[100] : backgroundColor,
+                color: isGranted ? colorScheme.primaryContainer : backgroundColor,
                 borderRadius: BorderRadius.circular(28),
               ),
               child: Icon(
                 isGranted ? Icons.check_circle : icon,
-                color: isGranted ? Colors.green : iconColor,
+                color: isGranted ? colorScheme.primary : iconColor,
                 size: 28,
               ),
             ),
@@ -66,10 +69,9 @@ class PermissionCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           title,
-                          style: TextStyle(
-                            fontSize: 16,
+                          style: textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w600,
-                            color: isGranted ? Colors.green[800] : Colors.black,
+                            color: isGranted ? colorScheme.onPrimaryContainer : colorScheme.onSurface,
                           ),
                         ),
                       ),
@@ -77,20 +79,20 @@ class PermissionCard extends StatelessWidget {
                         Container(
                           width: 20,
                           height: 20,
-                          decoration: const BoxDecoration(
-                            color: Color(0xFFFFA726),
+                          decoration: BoxDecoration(
+                            color: colorScheme.error,
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.warning,
-                            color: Colors.white,
+                            color: colorScheme.onError,
                             size: 12,
                           ),
                         ),
                       if (isGranted)
-                        const Icon(
+                        Icon(
                           Icons.check_circle,
-                          color: Colors.green,
+                          color: colorScheme.primary,
                           size: 20,
                         ),
                     ],
@@ -100,9 +102,8 @@ class PermissionCard extends StatelessWidget {
                     isGranted
                         ? AppLocalizations.of(context).permissionGranted
                         : subtitle,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: isGranted ? Colors.green[600] : AppColors.textSecondary,
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: isGranted ? colorScheme.primary : colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ],
