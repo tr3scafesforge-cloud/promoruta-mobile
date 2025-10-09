@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/core/utils/image_helper.dart';
 import 'package:promoruta/gen/assets.gen.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
@@ -10,6 +9,10 @@ class ChooseRole extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -20,22 +23,21 @@ class ChooseRole extends StatelessWidget {
               const SizedBox(height: 20),
               Text(
                 AppLocalizations.of(context).chooseRoleTitle,
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
-                      fontSize: 28
-                      ,
-                    ),
+                style: textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: colorScheme.onSurface,
+                  fontSize: 28,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),
               Text(
                 AppLocalizations.of(context).chooseRoleSubtitle,
-                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: AppColors.textPrimary,
-                      fontWeight: FontWeight.w100,
-                      fontSize: 20,
-                    ),
+                style: textTheme.bodyLarge?.copyWith(
+                  color: colorScheme.onSurface,
+                  fontWeight: FontWeight.w100,
+                  fontSize: 20,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 40),
@@ -44,8 +46,8 @@ class ChooseRole extends StatelessWidget {
                 title: AppLocalizations.of(context).advertiserTitle,
                 description: AppLocalizations.of(context).advertiserDescription,
                 image: AssetImage(Assets.images.advertiserSelection.path),
-                cardColor: AppColors.background,
-                titleColor: AppColors.secondary,
+                cardColor: colorScheme.surface,
+                titleColor: colorScheme.primary,
                 onTap: () => context.go('/login?role=advertiser'),
                 heroTag: 'advertiser_image',
               ),
@@ -55,8 +57,8 @@ class ChooseRole extends StatelessWidget {
                 title: AppLocalizations.of(context).promoterTitle,
                 description: AppLocalizations.of(context).promoterDescription,
                 image: AssetImage(Assets.images.promoterSelection.path),
-                cardColor: Colors.white,
-                titleColor: Colors.deepOrange,
+                cardColor: colorScheme.surface,
+                titleColor: colorScheme.secondary,
                 onTap: () => context.go('/login?role=promoter'),
                 heroTag: 'promoter_image',
               ),
@@ -98,6 +100,10 @@ class _RoleCardState extends State<RoleCard> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
     return GestureDetector(
       onTapDown: (_) => setState(() => _isPressed = true),
       onTapUp: (_) {
@@ -115,7 +121,7 @@ class _RoleCardState extends State<RoleCard> {
             color: widget.cardColor,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
+                color: colorScheme.shadow.withValues(alpha: 0.05),
                 blurRadius: 8,
                 offset: const Offset(0, 4),
               ),
@@ -143,23 +149,17 @@ class _RoleCardState extends State<RoleCard> {
                   children: [
                     Text(
                       widget.title,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium
-                          ?.copyWith(
-                            color: widget.titleColor,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      style: textTheme.titleMedium?.copyWith(
+                        color: widget.titleColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       widget.description,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(
-                            color: AppColors.textSecondary,
-                          ),
+                      style: textTheme.bodyMedium?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
                     ),
                   ],
                 ),
