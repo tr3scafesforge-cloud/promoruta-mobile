@@ -30,6 +30,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           email: data['email'],
           role: data['role'],
           token: data['token'],
+          username: data['username'],
+          photoUrl: data['photoUrl'],
+          createdAt: data['createdAt'] != null ? DateTime.parse(data['createdAt']) : null,
         );
       } else {
         throw Exception('Login failed: ${response.statusMessage}');

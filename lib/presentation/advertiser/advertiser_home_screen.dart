@@ -133,11 +133,7 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
           onTapAccount: () => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => const UserProfilePage(
-                uid: '0191',
-                username: 'username',
-                email: 'user@email.com',
-              ),
+              builder: (_) => const UserProfilePage(),
             ),
           ),
         );

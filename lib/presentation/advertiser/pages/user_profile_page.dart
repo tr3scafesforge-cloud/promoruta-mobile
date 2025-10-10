@@ -1,27 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:promoruta/shared/providers/providers.dart';
 
-class UserProfilePage extends StatelessWidget {
+class UserProfilePage extends ConsumerWidget {
   const UserProfilePage({
     super.key,
-    required this.uid,
-    required this.username,
-    required this.email,
-    this.photoUrl,
     this.onDeleteAccount,
     this.onSignOut,
   });
-
-  final String uid;
-  final String username;
-  final String email;
-  final String? photoUrl;
 
   /// Optional callbacks you can hook to your auth logic.
   final Future<void> Function()? onDeleteAccount;
   final Future<void> Function()? onSignOut;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userAsync = ref.watch(authStateProvider);
     final theme = Theme.of(context);
     final destructive = const Color(0xFFCC0033); // deep red like your mock
     final cardRadius = 12.0;
@@ -37,108 +31,116 @@ class UserProfilePage extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
-          children: [
-            // Avatar
-            Center(
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.18),
-                      blurRadius: 18,
-                      offset: const Offset(0, 8),
+        child: userAsync.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stack) => Center(child: Text('Error: $error')),
+          data: (user) => user == null
+              ? const Center(child: Text('No user logged in'))
+              : ListView(
+                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+                  children: [
+                    // Avatar
+                    Center(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: .18),
+                              blurRadius: 18,
+                              offset: const Offset(0, 8),
+                            ),
+                          ],
+                        ),
+                        child: CircleAvatar(
+                          radius: 70,
+                          backgroundColor: Colors.white,
+                          backgroundImage: user.photoUrl != null && user.photoUrl!.isNotEmpty
+                              ? NetworkImage(user.photoUrl!)
+                              : null,
+                          child: (user.photoUrl == null || user.photoUrl!.isEmpty)
+                              ? Icon(Icons.person, size: 64, color: Colors.grey[400])
+                              : null,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Use the real values:
+                    // (Replace the placeholder card above with this exact widget.)
+                    _ProfileInfoCard(
+                      radius: cardRadius,
+                      rows: [
+                        _InfoRowData(label: 'UID', value: user.id, valueAlignEnd: true),
+                        _InfoRowData(label: 'Usuario', value: user.username ?? user.email),
+                        _InfoRowData(label: 'Email', value: user.email),
+                        if (user.createdAt != null)
+                          _InfoRowData(label: 'Fecha de registro', value: user.createdAt!.toLocal().toString().split(' ')[0]),
+                      ],
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    // Eliminar cuenta (destructive)
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton(
+                        style: FilledButton.styleFrom(
+                          backgroundColor: destructive,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        onPressed: () async {
+                          final confirmed = await _confirm(
+                            context,
+                            title: 'Eliminar cuenta',
+                            message:
+                                'Esta acción es permanente. ¿Seguro que deseas continuar?',
+                            confirmText: 'Eliminar',
+                            confirmColor: destructive,
+                          );
+                          if (confirmed && onDeleteAccount != null) {
+                            await onDeleteAccount!();
+                          }
+                        },
+                        child: const Text('Eliminar cuenta'),
+                      ),
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    // Salir (sign out)
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black87,
+                          side: const BorderSide(color: Color(0xFFE7E8EA)),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        onPressed: () async {
+                          final confirmed = await _confirm(
+                            context,
+                            title: 'Salir',
+                            message: '¿Deseas cerrar sesión?',
+                            confirmText: 'Salir',
+                          );
+                          if (confirmed && onSignOut != null) {
+                            await onSignOut!();
+                          }
+                        },
+                        child: const Text('Salir'),
+                      ),
                     ),
                   ],
                 ),
-                child: CircleAvatar(
-                  radius: 70,
-                  backgroundColor: Colors.white,
-                  backgroundImage: photoUrl != null && photoUrl!.isNotEmpty
-                      ? NetworkImage(photoUrl!)
-                      : null,
-                  child: (photoUrl == null || photoUrl!.isEmpty)
-                      ? Icon(Icons.person, size: 64, color: Colors.grey[400])
-                      : null,
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            // Use the real values:
-            // (Replace the placeholder card above with this exact widget.)
-            _ProfileInfoCard(
-              radius: cardRadius,
-              rows: [
-                _InfoRowData(label: 'UID', value: uid, valueAlignEnd: true),
-                _InfoRowData(label: 'Usuario', value: username),
-                _InfoRowData(label: 'Email', value: email),
-              ],
-            ),
-
-            const SizedBox(height: 24),
-
-            // Eliminar cuenta (destructive)
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                style: FilledButton.styleFrom(
-                  backgroundColor: destructive,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                onPressed: () async {
-                  final confirmed = await _confirm(
-                    context,
-                    title: 'Eliminar cuenta',
-                    message:
-                        'Esta acción es permanente. ¿Seguro que deseas continuar?',
-                    confirmText: 'Eliminar',
-                    confirmColor: destructive,
-                  );
-                  if (confirmed && onDeleteAccount != null) {
-                    await onDeleteAccount!();
-                  }
-                },
-                child: const Text('Eliminar cuenta'),
-              ),
-            ),
-
-            const SizedBox(height: 12),
-
-            // Salir (sign out)
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black87,
-                  side: const BorderSide(color: Color(0xFFE7E8EA)),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                onPressed: () async {
-                  final confirmed = await _confirm(
-                    context,
-                    title: 'Salir',
-                    message: '¿Deseas cerrar sesión?',
-                    confirmText: 'Salir',
-                  );
-                  if (confirmed && onSignOut != null) {
-                    await onSignOut!();
-                  }
-                },
-                child: const Text('Salir'),
-              ),
-            ),
-          ],
         ),
       ),
     );
@@ -224,7 +226,6 @@ class _InfoRowData {
 
 class _InfoRow extends StatelessWidget {
   const _InfoRow({
-    super.key,
     required this.label,
     this.value,
     this.valueAlignEnd = false,

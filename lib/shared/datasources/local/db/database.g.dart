@@ -28,8 +28,27 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   late final GeneratedColumn<String> token = GeneratedColumn<String>(
       'token', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _usernameMeta =
+      const VerificationMeta('username');
   @override
-  List<GeneratedColumn> get $columns => [id, email, role, token];
+  late final GeneratedColumn<String> username = GeneratedColumn<String>(
+      'username', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _photoUrlMeta =
+      const VerificationMeta('photoUrl');
+  @override
+  late final GeneratedColumn<String> photoUrl = GeneratedColumn<String>(
+      'photo_url', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, email, role, token, username, photoUrl, createdAt];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -61,6 +80,18 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
       context.handle(
           _tokenMeta, token.isAcceptableOrUnknown(data['token']!, _tokenMeta));
     }
+    if (data.containsKey('username')) {
+      context.handle(_usernameMeta,
+          username.isAcceptableOrUnknown(data['username']!, _usernameMeta));
+    }
+    if (data.containsKey('photo_url')) {
+      context.handle(_photoUrlMeta,
+          photoUrl.isAcceptableOrUnknown(data['photo_url']!, _photoUrlMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
     return context;
   }
 
@@ -78,6 +109,12 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
           .read(DriftSqlType.string, data['${effectivePrefix}role'])!,
       token: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}token']),
+      username: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}username']),
+      photoUrl: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}photo_url']),
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at']),
     );
   }
 
@@ -92,8 +129,17 @@ class User extends DataClass implements Insertable<User> {
   final String email;
   final String role;
   final String? token;
+  final String? username;
+  final String? photoUrl;
+  final DateTime? createdAt;
   const User(
-      {required this.id, required this.email, required this.role, this.token});
+      {required this.id,
+      required this.email,
+      required this.role,
+      this.token,
+      this.username,
+      this.photoUrl,
+      this.createdAt});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -102,6 +148,15 @@ class User extends DataClass implements Insertable<User> {
     map['role'] = Variable<String>(role);
     if (!nullToAbsent || token != null) {
       map['token'] = Variable<String>(token);
+    }
+    if (!nullToAbsent || username != null) {
+      map['username'] = Variable<String>(username);
+    }
+    if (!nullToAbsent || photoUrl != null) {
+      map['photo_url'] = Variable<String>(photoUrl);
+    }
+    if (!nullToAbsent || createdAt != null) {
+      map['created_at'] = Variable<DateTime>(createdAt);
     }
     return map;
   }
@@ -113,6 +168,15 @@ class User extends DataClass implements Insertable<User> {
       role: Value(role),
       token:
           token == null && nullToAbsent ? const Value.absent() : Value(token),
+      username: username == null && nullToAbsent
+          ? const Value.absent()
+          : Value(username),
+      photoUrl: photoUrl == null && nullToAbsent
+          ? const Value.absent()
+          : Value(photoUrl),
+      createdAt: createdAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdAt),
     );
   }
 
@@ -124,6 +188,9 @@ class User extends DataClass implements Insertable<User> {
       email: serializer.fromJson<String>(json['email']),
       role: serializer.fromJson<String>(json['role']),
       token: serializer.fromJson<String?>(json['token']),
+      username: serializer.fromJson<String?>(json['username']),
+      photoUrl: serializer.fromJson<String?>(json['photoUrl']),
+      createdAt: serializer.fromJson<DateTime?>(json['createdAt']),
     );
   }
   @override
@@ -134,6 +201,9 @@ class User extends DataClass implements Insertable<User> {
       'email': serializer.toJson<String>(email),
       'role': serializer.toJson<String>(role),
       'token': serializer.toJson<String?>(token),
+      'username': serializer.toJson<String?>(username),
+      'photoUrl': serializer.toJson<String?>(photoUrl),
+      'createdAt': serializer.toJson<DateTime?>(createdAt),
     };
   }
 
@@ -141,12 +211,18 @@ class User extends DataClass implements Insertable<User> {
           {String? id,
           String? email,
           String? role,
-          Value<String?> token = const Value.absent()}) =>
+          Value<String?> token = const Value.absent(),
+          Value<String?> username = const Value.absent(),
+          Value<String?> photoUrl = const Value.absent(),
+          Value<DateTime?> createdAt = const Value.absent()}) =>
       User(
         id: id ?? this.id,
         email: email ?? this.email,
         role: role ?? this.role,
         token: token.present ? token.value : this.token,
+        username: username.present ? username.value : this.username,
+        photoUrl: photoUrl.present ? photoUrl.value : this.photoUrl,
+        createdAt: createdAt.present ? createdAt.value : this.createdAt,
       );
   User copyWithCompanion(UsersCompanion data) {
     return User(
@@ -154,6 +230,9 @@ class User extends DataClass implements Insertable<User> {
       email: data.email.present ? data.email.value : this.email,
       role: data.role.present ? data.role.value : this.role,
       token: data.token.present ? data.token.value : this.token,
+      username: data.username.present ? data.username.value : this.username,
+      photoUrl: data.photoUrl.present ? data.photoUrl.value : this.photoUrl,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
   }
 
@@ -163,13 +242,17 @@ class User extends DataClass implements Insertable<User> {
           ..write('id: $id, ')
           ..write('email: $email, ')
           ..write('role: $role, ')
-          ..write('token: $token')
+          ..write('token: $token, ')
+          ..write('username: $username, ')
+          ..write('photoUrl: $photoUrl, ')
+          ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, email, role, token);
+  int get hashCode =>
+      Object.hash(id, email, role, token, username, photoUrl, createdAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -177,7 +260,10 @@ class User extends DataClass implements Insertable<User> {
           other.id == this.id &&
           other.email == this.email &&
           other.role == this.role &&
-          other.token == this.token);
+          other.token == this.token &&
+          other.username == this.username &&
+          other.photoUrl == this.photoUrl &&
+          other.createdAt == this.createdAt);
 }
 
 class UsersCompanion extends UpdateCompanion<User> {
@@ -185,12 +271,18 @@ class UsersCompanion extends UpdateCompanion<User> {
   final Value<String> email;
   final Value<String> role;
   final Value<String?> token;
+  final Value<String?> username;
+  final Value<String?> photoUrl;
+  final Value<DateTime?> createdAt;
   final Value<int> rowid;
   const UsersCompanion({
     this.id = const Value.absent(),
     this.email = const Value.absent(),
     this.role = const Value.absent(),
     this.token = const Value.absent(),
+    this.username = const Value.absent(),
+    this.photoUrl = const Value.absent(),
+    this.createdAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   UsersCompanion.insert({
@@ -198,6 +290,9 @@ class UsersCompanion extends UpdateCompanion<User> {
     required String email,
     required String role,
     this.token = const Value.absent(),
+    this.username = const Value.absent(),
+    this.photoUrl = const Value.absent(),
+    this.createdAt = const Value.absent(),
     this.rowid = const Value.absent(),
   })  : id = Value(id),
         email = Value(email),
@@ -207,6 +302,9 @@ class UsersCompanion extends UpdateCompanion<User> {
     Expression<String>? email,
     Expression<String>? role,
     Expression<String>? token,
+    Expression<String>? username,
+    Expression<String>? photoUrl,
+    Expression<DateTime>? createdAt,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -214,6 +312,9 @@ class UsersCompanion extends UpdateCompanion<User> {
       if (email != null) 'email': email,
       if (role != null) 'role': role,
       if (token != null) 'token': token,
+      if (username != null) 'username': username,
+      if (photoUrl != null) 'photo_url': photoUrl,
+      if (createdAt != null) 'created_at': createdAt,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -223,12 +324,18 @@ class UsersCompanion extends UpdateCompanion<User> {
       Value<String>? email,
       Value<String>? role,
       Value<String?>? token,
+      Value<String?>? username,
+      Value<String?>? photoUrl,
+      Value<DateTime?>? createdAt,
       Value<int>? rowid}) {
     return UsersCompanion(
       id: id ?? this.id,
       email: email ?? this.email,
       role: role ?? this.role,
       token: token ?? this.token,
+      username: username ?? this.username,
+      photoUrl: photoUrl ?? this.photoUrl,
+      createdAt: createdAt ?? this.createdAt,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -248,6 +355,15 @@ class UsersCompanion extends UpdateCompanion<User> {
     if (token.present) {
       map['token'] = Variable<String>(token.value);
     }
+    if (username.present) {
+      map['username'] = Variable<String>(username.value);
+    }
+    if (photoUrl.present) {
+      map['photo_url'] = Variable<String>(photoUrl.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -261,18 +377,21 @@ class UsersCompanion extends UpdateCompanion<User> {
           ..write('email: $email, ')
           ..write('role: $role, ')
           ..write('token: $token, ')
+          ..write('username: $username, ')
+          ..write('photoUrl: $photoUrl, ')
+          ..write('createdAt: $createdAt, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
 }
 
-class $CampaignsTable extends CampaignsEntity
-    with TableInfo<$CampaignsTable, Campaign> {
+class $CampaignsEntityTable extends CampaignsEntity
+    with TableInfo<$CampaignsEntityTable, CampaignsEntityData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $CampaignsTable(this.attachedDatabase, [this._alias]);
+  $CampaignsEntityTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
@@ -307,8 +426,7 @@ class $CampaignsTable extends CampaignsEntity
   late final GeneratedColumn<DateTime> endDate = GeneratedColumn<DateTime>(
       'end_date', aliasedName, false,
       type: DriftSqlType.dateTime, requiredDuringInsert: true);
-  static const VerificationMeta _statusMeta =
-      const VerificationMeta('status');
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
   @override
   late final GeneratedColumn<String> status = GeneratedColumn<String>(
       'status', aliasedName, false,
@@ -322,9 +440,10 @@ class $CampaignsTable extends CampaignsEntity
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'campaigns';
+  static const String $name = 'campaigns_entity';
   @override
-  VerificationContext validateIntegrity(Insertable<Campaign> instance,
+  VerificationContext validateIntegrity(
+      Insertable<CampaignsEntityData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -377,9 +496,9 @@ class $CampaignsTable extends CampaignsEntity
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Campaign map(Map<String, dynamic> data, {String? tablePrefix}) {
+  CampaignsEntityData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Campaign(
+    return CampaignsEntityData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
       title: attachedDatabase.typeMapping
@@ -398,12 +517,13 @@ class $CampaignsTable extends CampaignsEntity
   }
 
   @override
-  $CampaignsTable createAlias(String alias) {
-    return $CampaignsTable(attachedDatabase, alias);
+  $CampaignsEntityTable createAlias(String alias) {
+    return $CampaignsEntityTable(attachedDatabase, alias);
   }
 }
 
-class Campaign extends DataClass implements Insertable<Campaign> {
+class CampaignsEntityData extends DataClass
+    implements Insertable<CampaignsEntityData> {
   final String id;
   final String title;
   final String description;
@@ -411,7 +531,7 @@ class Campaign extends DataClass implements Insertable<Campaign> {
   final DateTime startDate;
   final DateTime endDate;
   final String status;
-  const Campaign(
+  const CampaignsEntityData(
       {required this.id,
       required this.title,
       required this.description,
@@ -432,8 +552,8 @@ class Campaign extends DataClass implements Insertable<Campaign> {
     return map;
   }
 
-  CampaignsCompanion toCompanion(bool nullToAbsent) {
-    return CampaignsCompanion(
+  CampaignsEntityCompanion toCompanion(bool nullToAbsent) {
+    return CampaignsEntityCompanion(
       id: Value(id),
       title: Value(title),
       description: Value(description),
@@ -444,10 +564,10 @@ class Campaign extends DataClass implements Insertable<Campaign> {
     );
   }
 
-  factory Campaign.fromJson(Map<String, dynamic> json,
+  factory CampaignsEntityData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Campaign(
+    return CampaignsEntityData(
       id: serializer.fromJson<String>(json['id']),
       title: serializer.fromJson<String>(json['title']),
       description: serializer.fromJson<String>(json['description']),
@@ -471,7 +591,7 @@ class Campaign extends DataClass implements Insertable<Campaign> {
     };
   }
 
-  Campaign copyWith(
+  CampaignsEntityData copyWith(
           {String? id,
           String? title,
           String? description,
@@ -479,7 +599,7 @@ class Campaign extends DataClass implements Insertable<Campaign> {
           DateTime? startDate,
           DateTime? endDate,
           String? status}) =>
-      Campaign(
+      CampaignsEntityData(
         id: id ?? this.id,
         title: title ?? this.title,
         description: description ?? this.description,
@@ -488,8 +608,8 @@ class Campaign extends DataClass implements Insertable<Campaign> {
         endDate: endDate ?? this.endDate,
         status: status ?? this.status,
       );
-  Campaign copyWithCompanion(CampaignsCompanion data) {
-    return Campaign(
+  CampaignsEntityData copyWithCompanion(CampaignsEntityCompanion data) {
+    return CampaignsEntityData(
       id: data.id.present ? data.id.value : this.id,
       title: data.title.present ? data.title.value : this.title,
       description:
@@ -505,7 +625,7 @@ class Campaign extends DataClass implements Insertable<Campaign> {
 
   @override
   String toString() {
-    return (StringBuffer('Campaign(')
+    return (StringBuffer('CampaignsEntityData(')
           ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('description: $description, ')
@@ -523,7 +643,7 @@ class Campaign extends DataClass implements Insertable<Campaign> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Campaign &&
+      (other is CampaignsEntityData &&
           other.id == this.id &&
           other.title == this.title &&
           other.description == this.description &&
@@ -533,7 +653,7 @@ class Campaign extends DataClass implements Insertable<Campaign> {
           other.status == this.status);
 }
 
-class CampaignsCompanion extends UpdateCompanion<Campaign> {
+class CampaignsEntityCompanion extends UpdateCompanion<CampaignsEntityData> {
   final Value<String> id;
   final Value<String> title;
   final Value<String> description;
@@ -542,7 +662,7 @@ class CampaignsCompanion extends UpdateCompanion<Campaign> {
   final Value<DateTime> endDate;
   final Value<String> status;
   final Value<int> rowid;
-  const CampaignsCompanion({
+  const CampaignsEntityCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
     this.description = const Value.absent(),
@@ -552,7 +672,7 @@ class CampaignsCompanion extends UpdateCompanion<Campaign> {
     this.status = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  CampaignsCompanion.insert({
+  CampaignsEntityCompanion.insert({
     required String id,
     required String title,
     required String description,
@@ -567,14 +687,14 @@ class CampaignsCompanion extends UpdateCompanion<Campaign> {
         advertiserId = Value(advertiserId),
         startDate = Value(startDate),
         endDate = Value(endDate);
-  static Insertable<Campaign> custom({
+  static Insertable<CampaignsEntityData> custom({
     Expression<String>? id,
     Expression<String>? title,
     Expression<String>? description,
     Expression<String>? advertiserId,
     Expression<DateTime>? startDate,
     Expression<DateTime>? endDate,
-    Expression<bool>? isActive,
+    Expression<String>? status,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -584,12 +704,12 @@ class CampaignsCompanion extends UpdateCompanion<Campaign> {
       if (advertiserId != null) 'advertiser_id': advertiserId,
       if (startDate != null) 'start_date': startDate,
       if (endDate != null) 'end_date': endDate,
-      if (isActive != null) 'is_active': isActive,
+      if (status != null) 'status': status,
       if (rowid != null) 'rowid': rowid,
     });
   }
 
-  CampaignsCompanion copyWith(
+  CampaignsEntityCompanion copyWith(
       {Value<String>? id,
       Value<String>? title,
       Value<String>? description,
@@ -598,7 +718,7 @@ class CampaignsCompanion extends UpdateCompanion<Campaign> {
       Value<DateTime>? endDate,
       Value<String>? status,
       Value<int>? rowid}) {
-    return CampaignsCompanion(
+    return CampaignsEntityCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
       description: description ?? this.description,
@@ -642,7 +762,7 @@ class CampaignsCompanion extends UpdateCompanion<Campaign> {
 
   @override
   String toString() {
-    return (StringBuffer('CampaignsCompanion(')
+    return (StringBuffer('CampaignsEntityCompanion(')
           ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('description: $description, ')
@@ -1404,7 +1524,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $UsersTable users = $UsersTable(this);
-  late final $CampaignsTable campaigns = $CampaignsTable(this);
+  late final $CampaignsEntityTable campaignsEntity =
+      $CampaignsEntityTable(this);
   late final $RoutesTable routes = $RoutesTable(this);
   late final $GpsPointsTable gpsPoints = $GpsPointsTable(this);
   @override
@@ -1412,7 +1533,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [users, campaigns, routes, gpsPoints];
+      [users, campaignsEntity, routes, gpsPoints];
 }
 
 typedef $$UsersTableCreateCompanionBuilder = UsersCompanion Function({
@@ -1420,6 +1541,9 @@ typedef $$UsersTableCreateCompanionBuilder = UsersCompanion Function({
   required String email,
   required String role,
   Value<String?> token,
+  Value<String?> username,
+  Value<String?> photoUrl,
+  Value<DateTime?> createdAt,
   Value<int> rowid,
 });
 typedef $$UsersTableUpdateCompanionBuilder = UsersCompanion Function({
@@ -1427,6 +1551,9 @@ typedef $$UsersTableUpdateCompanionBuilder = UsersCompanion Function({
   Value<String> email,
   Value<String> role,
   Value<String?> token,
+  Value<String?> username,
+  Value<String?> photoUrl,
+  Value<DateTime?> createdAt,
   Value<int> rowid,
 });
 
@@ -1449,6 +1576,15 @@ class $$UsersTableFilterComposer extends Composer<_$AppDatabase, $UsersTable> {
 
   ColumnFilters<String> get token => $composableBuilder(
       column: $table.token, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get username => $composableBuilder(
+      column: $table.username, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get photoUrl => $composableBuilder(
+      column: $table.photoUrl, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
 }
 
 class $$UsersTableOrderingComposer
@@ -1471,6 +1607,15 @@ class $$UsersTableOrderingComposer
 
   ColumnOrderings<String> get token => $composableBuilder(
       column: $table.token, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get username => $composableBuilder(
+      column: $table.username, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get photoUrl => $composableBuilder(
+      column: $table.photoUrl, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
 }
 
 class $$UsersTableAnnotationComposer
@@ -1493,6 +1638,15 @@ class $$UsersTableAnnotationComposer
 
   GeneratedColumn<String> get token =>
       $composableBuilder(column: $table.token, builder: (column) => column);
+
+  GeneratedColumn<String> get username =>
+      $composableBuilder(column: $table.username, builder: (column) => column);
+
+  GeneratedColumn<String> get photoUrl =>
+      $composableBuilder(column: $table.photoUrl, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 }
 
 class $$UsersTableTableManager extends RootTableManager<
@@ -1522,6 +1676,9 @@ class $$UsersTableTableManager extends RootTableManager<
             Value<String> email = const Value.absent(),
             Value<String> role = const Value.absent(),
             Value<String?> token = const Value.absent(),
+            Value<String?> username = const Value.absent(),
+            Value<String?> photoUrl = const Value.absent(),
+            Value<DateTime?> createdAt = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               UsersCompanion(
@@ -1529,6 +1686,9 @@ class $$UsersTableTableManager extends RootTableManager<
             email: email,
             role: role,
             token: token,
+            username: username,
+            photoUrl: photoUrl,
+            createdAt: createdAt,
             rowid: rowid,
           ),
           createCompanionCallback: ({
@@ -1536,6 +1696,9 @@ class $$UsersTableTableManager extends RootTableManager<
             required String email,
             required String role,
             Value<String?> token = const Value.absent(),
+            Value<String?> username = const Value.absent(),
+            Value<String?> photoUrl = const Value.absent(),
+            Value<DateTime?> createdAt = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               UsersCompanion.insert(
@@ -1543,6 +1706,9 @@ class $$UsersTableTableManager extends RootTableManager<
             email: email,
             role: role,
             token: token,
+            username: username,
+            photoUrl: photoUrl,
+            createdAt: createdAt,
             rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0
@@ -1564,7 +1730,8 @@ typedef $$UsersTableProcessedTableManager = ProcessedTableManager<
     (User, BaseReferences<_$AppDatabase, $UsersTable, User>),
     User,
     PrefetchHooks Function()>;
-typedef $$CampaignsTableCreateCompanionBuilder = CampaignsCompanion Function({
+typedef $$CampaignsEntityTableCreateCompanionBuilder = CampaignsEntityCompanion
+    Function({
   required String id,
   required String title,
   required String description,
@@ -1574,7 +1741,8 @@ typedef $$CampaignsTableCreateCompanionBuilder = CampaignsCompanion Function({
   Value<String> status,
   Value<int> rowid,
 });
-typedef $$CampaignsTableUpdateCompanionBuilder = CampaignsCompanion Function({
+typedef $$CampaignsEntityTableUpdateCompanionBuilder = CampaignsEntityCompanion
+    Function({
   Value<String> id,
   Value<String> title,
   Value<String> description,
@@ -1585,9 +1753,9 @@ typedef $$CampaignsTableUpdateCompanionBuilder = CampaignsCompanion Function({
   Value<int> rowid,
 });
 
-class $$CampaignsTableFilterComposer
-    extends Composer<_$AppDatabase, $CampaignsTable> {
-  $$CampaignsTableFilterComposer({
+class $$CampaignsEntityTableFilterComposer
+    extends Composer<_$AppDatabase, $CampaignsEntityTable> {
+  $$CampaignsEntityTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -1616,9 +1784,9 @@ class $$CampaignsTableFilterComposer
       column: $table.status, builder: (column) => ColumnFilters(column));
 }
 
-class $$CampaignsTableOrderingComposer
-    extends Composer<_$AppDatabase, $CampaignsTable> {
-  $$CampaignsTableOrderingComposer({
+class $$CampaignsEntityTableOrderingComposer
+    extends Composer<_$AppDatabase, $CampaignsEntityTable> {
+  $$CampaignsEntityTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -1648,9 +1816,9 @@ class $$CampaignsTableOrderingComposer
       column: $table.status, builder: (column) => ColumnOrderings(column));
 }
 
-class $$CampaignsTableAnnotationComposer
-    extends Composer<_$AppDatabase, $CampaignsTable> {
-  $$CampaignsTableAnnotationComposer({
+class $$CampaignsEntityTableAnnotationComposer
+    extends Composer<_$AppDatabase, $CampaignsEntityTable> {
+  $$CampaignsEntityTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -1679,28 +1847,32 @@ class $$CampaignsTableAnnotationComposer
       $composableBuilder(column: $table.status, builder: (column) => column);
 }
 
-class $$CampaignsTableTableManager extends RootTableManager<
+class $$CampaignsEntityTableTableManager extends RootTableManager<
     _$AppDatabase,
-    $CampaignsTable,
-    Campaign,
-    $$CampaignsTableFilterComposer,
-    $$CampaignsTableOrderingComposer,
-    $$CampaignsTableAnnotationComposer,
-    $$CampaignsTableCreateCompanionBuilder,
-    $$CampaignsTableUpdateCompanionBuilder,
-    (Campaign, BaseReferences<_$AppDatabase, $CampaignsTable, Campaign>),
-    Campaign,
+    $CampaignsEntityTable,
+    CampaignsEntityData,
+    $$CampaignsEntityTableFilterComposer,
+    $$CampaignsEntityTableOrderingComposer,
+    $$CampaignsEntityTableAnnotationComposer,
+    $$CampaignsEntityTableCreateCompanionBuilder,
+    $$CampaignsEntityTableUpdateCompanionBuilder,
+    (
+      CampaignsEntityData,
+      BaseReferences<_$AppDatabase, $CampaignsEntityTable, CampaignsEntityData>
+    ),
+    CampaignsEntityData,
     PrefetchHooks Function()> {
-  $$CampaignsTableTableManager(_$AppDatabase db, $CampaignsTable table)
+  $$CampaignsEntityTableTableManager(
+      _$AppDatabase db, $CampaignsEntityTable table)
       : super(TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $$CampaignsTableFilterComposer($db: db, $table: table),
+              $$CampaignsEntityTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
-              $$CampaignsTableOrderingComposer($db: db, $table: table),
+              $$CampaignsEntityTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
-              $$CampaignsTableAnnotationComposer($db: db, $table: table),
+              $$CampaignsEntityTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<String> id = const Value.absent(),
             Value<String> title = const Value.absent(),
@@ -1711,7 +1883,7 @@ class $$CampaignsTableTableManager extends RootTableManager<
             Value<String> status = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
-              CampaignsCompanion(
+              CampaignsEntityCompanion(
             id: id,
             title: title,
             description: description,
@@ -1731,7 +1903,7 @@ class $$CampaignsTableTableManager extends RootTableManager<
             Value<String> status = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
-              CampaignsCompanion.insert(
+              CampaignsEntityCompanion.insert(
             id: id,
             title: title,
             description: description,
@@ -1748,17 +1920,20 @@ class $$CampaignsTableTableManager extends RootTableManager<
         ));
 }
 
-typedef $$CampaignsTableProcessedTableManager = ProcessedTableManager<
+typedef $$CampaignsEntityTableProcessedTableManager = ProcessedTableManager<
     _$AppDatabase,
-    $CampaignsTable,
-    Campaign,
-    $$CampaignsTableFilterComposer,
-    $$CampaignsTableOrderingComposer,
-    $$CampaignsTableAnnotationComposer,
-    $$CampaignsTableCreateCompanionBuilder,
-    $$CampaignsTableUpdateCompanionBuilder,
-    (Campaign, BaseReferences<_$AppDatabase, $CampaignsTable, Campaign>),
-    Campaign,
+    $CampaignsEntityTable,
+    CampaignsEntityData,
+    $$CampaignsEntityTableFilterComposer,
+    $$CampaignsEntityTableOrderingComposer,
+    $$CampaignsEntityTableAnnotationComposer,
+    $$CampaignsEntityTableCreateCompanionBuilder,
+    $$CampaignsEntityTableUpdateCompanionBuilder,
+    (
+      CampaignsEntityData,
+      BaseReferences<_$AppDatabase, $CampaignsEntityTable, CampaignsEntityData>
+    ),
+    CampaignsEntityData,
     PrefetchHooks Function()>;
 typedef $$RoutesTableCreateCompanionBuilder = RoutesCompanion Function({
   required String id,
@@ -2332,8 +2507,8 @@ class $AppDatabaseManager {
   $AppDatabaseManager(this._db);
   $$UsersTableTableManager get users =>
       $$UsersTableTableManager(_db, _db.users);
-  $$CampaignsTableTableManager get campaigns =>
-      $$CampaignsTableTableManager(_db, _db.campaigns);
+  $$CampaignsEntityTableTableManager get campaignsEntity =>
+      $$CampaignsEntityTableTableManager(_db, _db.campaignsEntity);
   $$RoutesTableTableManager get routes =>
       $$RoutesTableTableManager(_db, _db.routes);
   $$GpsPointsTableTableManager get gpsPoints =>

@@ -61,8 +61,8 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
     await db.batch((batch) {
       for (final campaign in campaigns) {
         batch.insert(
-          db.campaigns,
-          CampaignsCompanion(
+          db.campaignsEntity,
+          CampaignsEntityCompanion(
             id: Value(campaign.id),
             title: Value(campaign.title),
             description: Value(campaign.description),
@@ -72,7 +72,7 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
             status: Value(campaign.status.name),
           ),
           onConflict: DoUpdate(
-            (_) => CampaignsCompanion(
+            (_) => CampaignsEntityCompanion(
               title: Value(campaign.title),
               description: Value(campaign.description),
               advertiserId: Value(campaign.advertiserId),
@@ -88,7 +88,7 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
 
   @override
   Future<List<model.Campaign>> getCampaigns() async {
-    final campaignRows = await db.select(db.campaigns).get();
+    final campaignRows = await db.select(db.campaignsEntity).get();
 
     // If no data in database, return mock data for offline scenarios
     if (campaignRows.isEmpty) {
@@ -110,8 +110,8 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
 
   @override
   Future<void> saveCampaign(model.Campaign campaign) async {
-    await db.into(db.campaigns).insertOnConflictUpdate(
-      CampaignsCompanion(
+    await db.into(db.campaignsEntity).insertOnConflictUpdate(
+      CampaignsEntityCompanion(
         id: Value(campaign.id),
         title: Value(campaign.title),
         description: Value(campaign.description),
@@ -125,7 +125,7 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
 
   @override
   Future<model.Campaign?> getCampaign(String id) async {
-    final campaignRow = await (db.select(db.campaigns)
+    final campaignRow = await (db.select(db.campaignsEntity)
       ..where((tbl) => tbl.id.equals(id)))
       .getSingleOrNull();
 
@@ -144,7 +144,7 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
 
   @override
   Future<void> deleteCampaign(String id) async {
-    await (db.delete(db.campaigns)
+    await (db.delete(db.campaignsEntity)
       ..where((tbl) => tbl.id.equals(id)))
       .go();
   }

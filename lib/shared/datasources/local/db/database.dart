@@ -15,6 +15,9 @@ class Users extends Table {
   TextColumn get email => text()();
   TextColumn get role => text()();
   TextColumn get token => text().nullable()();
+  TextColumn get username => text().nullable()();
+  TextColumn get photoUrl => text().nullable()();
+  DateTimeColumn get createdAt => dateTime().nullable()();
 
   @override
   Set<Column> get primaryKey => {id};
