@@ -5,11 +5,9 @@ import '../../repositories/campaign_repository.dart';
 
 class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
   final Dio dio;
-  final String baseUrl;
 
   CampaignRemoteDataSourceImpl({
     required this.dio,
-    this.baseUrl = 'https://api.promoruta.com', // Replace with actual API URL
   });
 
   CampaignStatus _parseStatus(String statusString) {
@@ -32,7 +30,7 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
   @override
   Future<List<Campaign>> getCampaigns() async {
     try {
-      final response = await dio.get('$baseUrl/campaigns');
+      final response = await dio.get('campaigns');
 
       if (response.statusCode == 200) {
         final data = response.data as List;
@@ -56,7 +54,7 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
   @override
   Future<Campaign> getCampaign(String id) async {
     try {
-      final response = await dio.get('$baseUrl/campaigns/$id');
+      final response = await dio.get('campaigns/$id');
 
       if (response.statusCode == 200) {
         final json = response.data;
@@ -81,7 +79,7 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
   Future<Campaign> createCampaign(Campaign campaign) async {
     try {
       final response = await dio.post(
-        '$baseUrl/campaigns',
+        'campaigns',
         data: {
           'title': campaign.title,
           'description': campaign.description,
@@ -115,7 +113,7 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
   Future<Campaign> updateCampaign(Campaign campaign) async {
     try {
       final response = await dio.put(
-        '$baseUrl/campaigns/${campaign.id}',
+        'campaigns/${campaign.id}',
         data: {
           'title': campaign.title,
           'description': campaign.description,
@@ -148,7 +146,7 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
   @override
   Future<void> deleteCampaign(String id) async {
     try {
-      final response = await dio.delete('$baseUrl/campaigns/$id');
+      final response = await dio.delete('campaigns/$id');
 
       if (response.statusCode != 204 && response.statusCode != 200) {
         throw Exception('Failed to delete campaign: ${response.statusMessage}');

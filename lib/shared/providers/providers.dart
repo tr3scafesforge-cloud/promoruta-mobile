@@ -6,6 +6,7 @@ import 'package:promoruta/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:promoruta/core/core.dart' as model;
+import 'package:promoruta/core/models/config.dart';
 
 
 // Database provider
@@ -15,10 +16,30 @@ final databaseProvider = Provider<AppDatabase>((ref) {
   return database;
 });
 
+// Config service provider
+final configServiceProvider = Provider<ConfigService>((ref) {
+  // For now, no remote config URL - will use assets fallback
+  // In production, you can set: remoteConfigUrl: 'https://your-config-server.com/config'
+  return ConfigServiceImpl();
+});
+
+// Config provider
+final configProvider = FutureProvider<AppConfig>((ref) async {
+  final configService = ref.watch(configServiceProvider);
+  return await configService.getConfig();
+});
+
 // Dio provider
 final dioProvider = Provider<Dio>((ref) {
+  // Wait for config to be loaded
+  final configAsync = ref.watch(configProvider);
+  final config = configAsync.maybeWhen(
+    data: (config) => config,
+    orElse: () => const AppConfig(baseUrl: 'http://172.81.177.85/'), // Fallback
+  );
+
   final dio = Dio(BaseOptions(
-    baseUrl: 'https://api.promoruta.com', // Replace with actual API URL
+    baseUrl: config.baseUrl,
     connectTimeout: const Duration(seconds: 10),
     receiveTimeout: const Duration(seconds: 10),
   ));

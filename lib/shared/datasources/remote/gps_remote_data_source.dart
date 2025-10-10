@@ -6,18 +6,16 @@ import '../../repositories/gps_repository.dart';
 
 class GpsRemoteDataSourceImpl implements GpsRemoteDataSource {
   final Dio dio;
-  final String baseUrl;
 
   GpsRemoteDataSourceImpl({
     required this.dio,
-    this.baseUrl = 'https://api.promoruta.com', // Replace with actual API URL
   });
 
   @override
   Future<void> uploadRoute(Route route) async {
     try {
       final response = await dio.post(
-        '$baseUrl/routes',
+        'routes',
         data: {
           'id': route.id,
           'promoterId': route.promoterId,
@@ -50,7 +48,7 @@ class GpsRemoteDataSourceImpl implements GpsRemoteDataSource {
       }).toList();
 
       final response = await dio.post(
-        '$baseUrl/routes/$routeId/points',
+        'routes/$routeId/points',
         data: {'points': pointsData},
       );
 
@@ -65,7 +63,7 @@ class GpsRemoteDataSourceImpl implements GpsRemoteDataSource {
   @override
   Future<List<Route>> getRoutes() async {
     try {
-      final response = await dio.get('$baseUrl/routes');
+      final response = await dio.get('routes');
 
       if (response.statusCode == 200) {
         final data = response.data as List;
@@ -89,7 +87,7 @@ class GpsRemoteDataSourceImpl implements GpsRemoteDataSource {
   @override
   Future<List<GpsPoint>> getRoutePoints(String routeId) async {
     try {
-      final response = await dio.get('$baseUrl/routes/$routeId/points');
+      final response = await dio.get('routes/$routeId/points');
 
       if (response.statusCode == 200) {
         final data = response.data as List;

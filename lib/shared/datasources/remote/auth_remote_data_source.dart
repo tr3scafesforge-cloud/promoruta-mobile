@@ -5,18 +5,16 @@ import '../../repositories/auth_repository.dart';
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final Dio dio;
-  final String baseUrl;
 
   AuthRemoteDataSourceImpl({
     required this.dio,
-    this.baseUrl = 'https://api.promoruta.com', // Replace with actual API URL
   });
 
   @override
   Future<User> login(String email, String password) async {
     try {
       final response = await dio.post(
-        '$baseUrl/auth/login',
+        '/auth/login',
         data: {
           'email': email,
           'password': password,
@@ -45,7 +43,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<void> logout() async {
     try {
-      await dio.post('$baseUrl/auth/logout');
+      await dio.post('/auth/logout');
     } on DioException catch (e) {
       throw Exception('Network error: ${e.message}');
     }
