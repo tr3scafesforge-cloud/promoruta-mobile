@@ -12,12 +12,13 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   @override
   Future<void> saveUser(model.User user) async {
     await db.into(db.users).insertOnConflictUpdate(
-      UsersCompanion(
-        id: Value(user.id),
-        email: Value(user.email),
-        role: Value(user.role),
-        token: Value(user.token),
-      ),
+      RawValuesInsertable({
+        'id': Variable<String>(user.id),
+        'email': Variable<String>(user.email),
+        'role': Variable<String>(user.role),
+        'access_token': Variable<String>(user.accessToken),
+        'token_expiry': Variable<DateTime>(user.tokenExpiry),
+      }),
     );
   }
 
@@ -26,12 +27,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     final userRow = await db.select(db.users).getSingleOrNull();
     if (userRow == null) return null;
 
-    return model.User(
-      id: userRow.id,
-      email: userRow.email,
-      role: userRow.role,
-      token: userRow.token,
-    );
+    return model.User.fromJson(userRow.toJson());
   }
 
   @override

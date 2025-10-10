@@ -7,6 +7,13 @@ abstract class AuthRepository {
   /// Returns User if successful, throws exception if failed.
   Future<User> login(String email, String password);
 
+  /// Refreshes the access token.
+  Future<User> refreshToken(String accessToken);
+
+  /// Checks if the current token is expired and refreshes it if needed.
+  /// Returns the user with a valid token.
+  Future<User?> ensureValidToken();
+
   /// Logs out the current user.
   Future<void> logout();
 
@@ -35,6 +42,9 @@ abstract class AuthLocalDataSource {
 abstract class AuthRemoteDataSource {
   /// Logs in via API.
   Future<User> login(String email, String password);
+
+  /// Refreshes the access token.
+  Future<User> refreshToken(String accessToken);
 
   /// Logs out via API (if needed).
   Future<void> logout();

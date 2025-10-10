@@ -35,7 +35,7 @@ final dioProvider = Provider<Dio>((ref) {
   final configAsync = ref.watch(configProvider);
   final config = configAsync.maybeWhen(
     data: (config) => config,
-    orElse: () => const AppConfig(baseUrl: 'http://172.81.177.85/'), // Fallback
+    orElse: () => const AppConfig(baseUrl: 'http://172.81.177.85/api/'), // Fallback
   );
 
   final dio = Dio(BaseOptions(
@@ -44,7 +44,7 @@ final dioProvider = Provider<Dio>((ref) {
     receiveTimeout: const Duration(seconds: 10),
   ));
 
-  // Add interceptors if needed
+  // Add logging interceptor
   dio.interceptors.add(LogInterceptor(
     request: true,
     requestHeader: true,
@@ -78,7 +78,8 @@ final authLocalDataSourceProvider = Provider<AuthLocalDataSource>((ref) {
 
 final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {
   final dio = ref.watch(dioProvider);
-  return AuthRemoteDataSourceImpl(dio: dio);
+  final localDataSource = ref.watch(authLocalDataSourceProvider);
+  return AuthRemoteDataSourceImpl(dio: dio, localDataSource: localDataSource);
 });
 
 final campaignLocalDataSourceProvider = Provider<CampaignLocalDataSource>((ref) {

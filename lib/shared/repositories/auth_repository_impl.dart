@@ -42,6 +42,50 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<model.User> refreshToken(String accessToken) async {
+    final isConnected = await _connectivityService.isConnected;
+
+    if (isConnected) {
+      try {
+        final user = await _remoteDataSource.refreshToken(accessToken);
+        await _localDataSource.saveUser(user);
+        return user;
+      } catch (e) {
+        rethrow;
+      }
+    } else {
+      throw Exception('No internet connection for token refresh');
+    }
+  }
+
+  @override
+  Future<model.User?> ensureValidToken() async {
+    final user = await _localDataSource.getUser();
+    if (user == null) return null;
+
+    // Check if token is expired or will expire soon (within 5 minutes)
+    final now = DateTime.now();
+    final bufferTime = Duration(minutes: 5);
+
+    if (user.tokenExpiry != null && user.tokenExpiry!.subtract(bufferTime).isBefore(now)) {
+      // Token is expired or will expire soon, try to refresh
+      final isConnected = await _connectivityService.isConnected;
+      if (isConnected && user.accessToken != null) {
+        try {
+          final refreshedUser = await _remoteDataSource.refreshToken(user.accessToken!);
+          await _localDataSource.saveUser(refreshedUser);
+          return refreshedUser;
+        } catch (e) {
+          // Refresh failed, return current user (might still work for some requests)
+          return user;
+        }
+      }
+    }
+
+    return user;
+  }
+
+  @override
   Future<void> logout() async {
     final isConnected = await _connectivityService.isConnected;
 

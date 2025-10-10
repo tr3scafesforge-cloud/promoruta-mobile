@@ -31,9 +31,15 @@ App Startup → ConfigService.getConfig()
 - Default config bundled with app
 - Located: `assets/config/app_config.json`
 
+### 4. API URL Structure
+- **Base URL includes API prefix**: The baseUrl should include the `/api/` path segment
+- **Example**: `"baseUrl": "https://api.example.com/api/"`
+- **Endpoint paths**: Relative paths like `/auth/login` become `https://api.example.com/api/auth/login`
+- **Decision**: `/api/` is part of baseUrl (not endpoint paths) to match backend API structure
+
 ### 4. Remote Config API (Future)
 - Optional endpoint to fetch config dynamically
-- Should return JSON: `{"baseUrl": "https://api.example.com", "configVersion": "1.0.0"}`
+- Should return JSON: `{"baseUrl": "https://api.example.com/api/", "configVersion": "1.0.0"}`
 
 ## Usage
 
@@ -46,6 +52,14 @@ final configServiceProvider = Provider<ConfigService>((ref) {
     remoteConfigUrl: 'https://your-config-server.com/api/config',
   );
 });
+```
+
+**Note**: The remote config response should include `/api/` in the baseUrl:
+```json
+{
+  "baseUrl": "https://api.example.com/api/",
+  "configVersion": "1.0.0"
+}
 ```
 
 ### Updating Production URL

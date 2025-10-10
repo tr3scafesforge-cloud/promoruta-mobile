@@ -73,8 +73,13 @@ class SyncServiceImpl implements SyncService {
     // For auth, we might need to refresh token or sync user data
     // This is a placeholder - implement based on your auth requirements
     final user = await _authLocalDataSource.getUser();
-    if (user != null && user.token != null) {
-      // Optionally validate token with server
+    if (user != null && user.accessToken != null) {
+      // Optionally validate token with server or refresh if near expiry
+      final now = DateTime.now();
+      if (user.tokenExpiry != null && user.tokenExpiry!.isBefore(now.add(Duration(minutes: 5)))) {
+        // Token expires soon, could refresh here
+        AppLogger.sync.i('Token expires soon, consider refreshing');
+      }
     }
   }
 

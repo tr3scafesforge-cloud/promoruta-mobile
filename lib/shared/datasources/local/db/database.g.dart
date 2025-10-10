@@ -23,11 +23,18 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   late final GeneratedColumn<String> role = GeneratedColumn<String>(
       'role', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _tokenMeta = const VerificationMeta('token');
+  static const VerificationMeta _accessTokenMeta =
+      const VerificationMeta('accessToken');
   @override
-  late final GeneratedColumn<String> token = GeneratedColumn<String>(
-      'token', aliasedName, true,
+  late final GeneratedColumn<String> accessToken = GeneratedColumn<String>(
+      'access_token', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _tokenExpiryMeta =
+      const VerificationMeta('tokenExpiry');
+  @override
+  late final GeneratedColumn<DateTime> tokenExpiry = GeneratedColumn<DateTime>(
+      'token_expiry', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
   static const VerificationMeta _usernameMeta =
       const VerificationMeta('username');
   @override
@@ -47,8 +54,16 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
       'created_at', aliasedName, true,
       type: DriftSqlType.dateTime, requiredDuringInsert: false);
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, email, role, token, username, photoUrl, createdAt];
+  List<GeneratedColumn> get $columns => [
+        id,
+        email,
+        role,
+        accessToken,
+        tokenExpiry,
+        username,
+        photoUrl,
+        createdAt
+      ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -76,9 +91,17 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
     } else if (isInserting) {
       context.missing(_roleMeta);
     }
-    if (data.containsKey('token')) {
+    if (data.containsKey('access_token')) {
       context.handle(
-          _tokenMeta, token.isAcceptableOrUnknown(data['token']!, _tokenMeta));
+          _accessTokenMeta,
+          accessToken.isAcceptableOrUnknown(
+              data['access_token']!, _accessTokenMeta));
+    }
+    if (data.containsKey('token_expiry')) {
+      context.handle(
+          _tokenExpiryMeta,
+          tokenExpiry.isAcceptableOrUnknown(
+              data['token_expiry']!, _tokenExpiryMeta));
     }
     if (data.containsKey('username')) {
       context.handle(_usernameMeta,
@@ -107,8 +130,10 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
           .read(DriftSqlType.string, data['${effectivePrefix}email'])!,
       role: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}role'])!,
-      token: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}token']),
+      accessToken: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}access_token']),
+      tokenExpiry: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}token_expiry']),
       username: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}username']),
       photoUrl: attachedDatabase.typeMapping
@@ -128,7 +153,8 @@ class User extends DataClass implements Insertable<User> {
   final String id;
   final String email;
   final String role;
-  final String? token;
+  final String? accessToken;
+  final DateTime? tokenExpiry;
   final String? username;
   final String? photoUrl;
   final DateTime? createdAt;
@@ -136,7 +162,8 @@ class User extends DataClass implements Insertable<User> {
       {required this.id,
       required this.email,
       required this.role,
-      this.token,
+      this.accessToken,
+      this.tokenExpiry,
       this.username,
       this.photoUrl,
       this.createdAt});
@@ -146,8 +173,11 @@ class User extends DataClass implements Insertable<User> {
     map['id'] = Variable<String>(id);
     map['email'] = Variable<String>(email);
     map['role'] = Variable<String>(role);
-    if (!nullToAbsent || token != null) {
-      map['token'] = Variable<String>(token);
+    if (!nullToAbsent || accessToken != null) {
+      map['access_token'] = Variable<String>(accessToken);
+    }
+    if (!nullToAbsent || tokenExpiry != null) {
+      map['token_expiry'] = Variable<DateTime>(tokenExpiry);
     }
     if (!nullToAbsent || username != null) {
       map['username'] = Variable<String>(username);
@@ -166,8 +196,12 @@ class User extends DataClass implements Insertable<User> {
       id: Value(id),
       email: Value(email),
       role: Value(role),
-      token:
-          token == null && nullToAbsent ? const Value.absent() : Value(token),
+      accessToken: accessToken == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accessToken),
+      tokenExpiry: tokenExpiry == null && nullToAbsent
+          ? const Value.absent()
+          : Value(tokenExpiry),
       username: username == null && nullToAbsent
           ? const Value.absent()
           : Value(username),
@@ -187,7 +221,8 @@ class User extends DataClass implements Insertable<User> {
       id: serializer.fromJson<String>(json['id']),
       email: serializer.fromJson<String>(json['email']),
       role: serializer.fromJson<String>(json['role']),
-      token: serializer.fromJson<String?>(json['token']),
+      accessToken: serializer.fromJson<String?>(json['accessToken']),
+      tokenExpiry: serializer.fromJson<DateTime?>(json['tokenExpiry']),
       username: serializer.fromJson<String?>(json['username']),
       photoUrl: serializer.fromJson<String?>(json['photoUrl']),
       createdAt: serializer.fromJson<DateTime?>(json['createdAt']),
@@ -200,7 +235,8 @@ class User extends DataClass implements Insertable<User> {
       'id': serializer.toJson<String>(id),
       'email': serializer.toJson<String>(email),
       'role': serializer.toJson<String>(role),
-      'token': serializer.toJson<String?>(token),
+      'accessToken': serializer.toJson<String?>(accessToken),
+      'tokenExpiry': serializer.toJson<DateTime?>(tokenExpiry),
       'username': serializer.toJson<String?>(username),
       'photoUrl': serializer.toJson<String?>(photoUrl),
       'createdAt': serializer.toJson<DateTime?>(createdAt),
@@ -211,7 +247,8 @@ class User extends DataClass implements Insertable<User> {
           {String? id,
           String? email,
           String? role,
-          Value<String?> token = const Value.absent(),
+          Value<String?> accessToken = const Value.absent(),
+          Value<DateTime?> tokenExpiry = const Value.absent(),
           Value<String?> username = const Value.absent(),
           Value<String?> photoUrl = const Value.absent(),
           Value<DateTime?> createdAt = const Value.absent()}) =>
@@ -219,7 +256,8 @@ class User extends DataClass implements Insertable<User> {
         id: id ?? this.id,
         email: email ?? this.email,
         role: role ?? this.role,
-        token: token.present ? token.value : this.token,
+        accessToken: accessToken.present ? accessToken.value : this.accessToken,
+        tokenExpiry: tokenExpiry.present ? tokenExpiry.value : this.tokenExpiry,
         username: username.present ? username.value : this.username,
         photoUrl: photoUrl.present ? photoUrl.value : this.photoUrl,
         createdAt: createdAt.present ? createdAt.value : this.createdAt,
@@ -229,7 +267,10 @@ class User extends DataClass implements Insertable<User> {
       id: data.id.present ? data.id.value : this.id,
       email: data.email.present ? data.email.value : this.email,
       role: data.role.present ? data.role.value : this.role,
-      token: data.token.present ? data.token.value : this.token,
+      accessToken:
+          data.accessToken.present ? data.accessToken.value : this.accessToken,
+      tokenExpiry:
+          data.tokenExpiry.present ? data.tokenExpiry.value : this.tokenExpiry,
       username: data.username.present ? data.username.value : this.username,
       photoUrl: data.photoUrl.present ? data.photoUrl.value : this.photoUrl,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
@@ -242,7 +283,8 @@ class User extends DataClass implements Insertable<User> {
           ..write('id: $id, ')
           ..write('email: $email, ')
           ..write('role: $role, ')
-          ..write('token: $token, ')
+          ..write('accessToken: $accessToken, ')
+          ..write('tokenExpiry: $tokenExpiry, ')
           ..write('username: $username, ')
           ..write('photoUrl: $photoUrl, ')
           ..write('createdAt: $createdAt')
@@ -251,8 +293,8 @@ class User extends DataClass implements Insertable<User> {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, email, role, token, username, photoUrl, createdAt);
+  int get hashCode => Object.hash(
+      id, email, role, accessToken, tokenExpiry, username, photoUrl, createdAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -260,7 +302,8 @@ class User extends DataClass implements Insertable<User> {
           other.id == this.id &&
           other.email == this.email &&
           other.role == this.role &&
-          other.token == this.token &&
+          other.accessToken == this.accessToken &&
+          other.tokenExpiry == this.tokenExpiry &&
           other.username == this.username &&
           other.photoUrl == this.photoUrl &&
           other.createdAt == this.createdAt);
@@ -270,7 +313,8 @@ class UsersCompanion extends UpdateCompanion<User> {
   final Value<String> id;
   final Value<String> email;
   final Value<String> role;
-  final Value<String?> token;
+  final Value<String?> accessToken;
+  final Value<DateTime?> tokenExpiry;
   final Value<String?> username;
   final Value<String?> photoUrl;
   final Value<DateTime?> createdAt;
@@ -279,7 +323,8 @@ class UsersCompanion extends UpdateCompanion<User> {
     this.id = const Value.absent(),
     this.email = const Value.absent(),
     this.role = const Value.absent(),
-    this.token = const Value.absent(),
+    this.accessToken = const Value.absent(),
+    this.tokenExpiry = const Value.absent(),
     this.username = const Value.absent(),
     this.photoUrl = const Value.absent(),
     this.createdAt = const Value.absent(),
@@ -289,19 +334,27 @@ class UsersCompanion extends UpdateCompanion<User> {
     required String id,
     required String email,
     required String role,
-    this.token = const Value.absent(),
-    this.username = const Value.absent(),
-    this.photoUrl = const Value.absent(),
-    this.createdAt = const Value.absent(),
-    this.rowid = const Value.absent(),
+    Value<String?> accessToken = const Value.absent(),
+    Value<DateTime?> tokenExpiry = const Value.absent(),
+    Value<String?> username = const Value.absent(),
+    Value<String?> photoUrl = const Value.absent(),
+    Value<DateTime?> createdAt = const Value.absent(),
+    Value<int> rowid = const Value.absent(),
   })  : id = Value(id),
         email = Value(email),
-        role = Value(role);
+        role = Value(role),
+        accessToken = accessToken,
+        tokenExpiry = tokenExpiry,
+        username = username,
+        photoUrl = photoUrl,
+        createdAt = createdAt,
+        rowid = rowid;
   static Insertable<User> custom({
     Expression<String>? id,
     Expression<String>? email,
     Expression<String>? role,
-    Expression<String>? token,
+    Expression<String>? accessToken,
+    Expression<DateTime>? tokenExpiry,
     Expression<String>? username,
     Expression<String>? photoUrl,
     Expression<DateTime>? createdAt,
@@ -311,7 +364,8 @@ class UsersCompanion extends UpdateCompanion<User> {
       if (id != null) 'id': id,
       if (email != null) 'email': email,
       if (role != null) 'role': role,
-      if (token != null) 'token': token,
+      if (accessToken != null) 'access_token': accessToken,
+      if (tokenExpiry != null) 'token_expiry': tokenExpiry,
       if (username != null) 'username': username,
       if (photoUrl != null) 'photo_url': photoUrl,
       if (createdAt != null) 'created_at': createdAt,
@@ -323,7 +377,8 @@ class UsersCompanion extends UpdateCompanion<User> {
       {Value<String>? id,
       Value<String>? email,
       Value<String>? role,
-      Value<String?>? token,
+      Value<String?>? accessToken,
+      Value<DateTime?>? tokenExpiry,
       Value<String?>? username,
       Value<String?>? photoUrl,
       Value<DateTime?>? createdAt,
@@ -332,7 +387,8 @@ class UsersCompanion extends UpdateCompanion<User> {
       id: id ?? this.id,
       email: email ?? this.email,
       role: role ?? this.role,
-      token: token ?? this.token,
+      accessToken: accessToken ?? this.accessToken,
+      tokenExpiry: tokenExpiry ?? this.tokenExpiry,
       username: username ?? this.username,
       photoUrl: photoUrl ?? this.photoUrl,
       createdAt: createdAt ?? this.createdAt,
@@ -352,8 +408,11 @@ class UsersCompanion extends UpdateCompanion<User> {
     if (role.present) {
       map['role'] = Variable<String>(role.value);
     }
-    if (token.present) {
-      map['token'] = Variable<String>(token.value);
+    if (accessToken.present) {
+      map['access_token'] = Variable<String>(accessToken.value);
+    }
+    if (tokenExpiry.present) {
+      map['token_expiry'] = Variable<DateTime>(tokenExpiry.value);
     }
     if (username.present) {
       map['username'] = Variable<String>(username.value);
@@ -376,7 +435,8 @@ class UsersCompanion extends UpdateCompanion<User> {
           ..write('id: $id, ')
           ..write('email: $email, ')
           ..write('role: $role, ')
-          ..write('token: $token, ')
+          ..write('accessToken: $accessToken, ')
+          ..write('tokenExpiry: $tokenExpiry, ')
           ..write('username: $username, ')
           ..write('photoUrl: $photoUrl, ')
           ..write('createdAt: $createdAt, ')
@@ -1540,7 +1600,8 @@ typedef $$UsersTableCreateCompanionBuilder = UsersCompanion Function({
   required String id,
   required String email,
   required String role,
-  Value<String?> token,
+  Value<String?> accessToken,
+  Value<DateTime?> tokenExpiry,
   Value<String?> username,
   Value<String?> photoUrl,
   Value<DateTime?> createdAt,
@@ -1550,7 +1611,8 @@ typedef $$UsersTableUpdateCompanionBuilder = UsersCompanion Function({
   Value<String> id,
   Value<String> email,
   Value<String> role,
-  Value<String?> token,
+  Value<String?> accessToken,
+  Value<DateTime?> tokenExpiry,
   Value<String?> username,
   Value<String?> photoUrl,
   Value<DateTime?> createdAt,
@@ -1574,8 +1636,11 @@ class $$UsersTableFilterComposer extends Composer<_$AppDatabase, $UsersTable> {
   ColumnFilters<String> get role => $composableBuilder(
       column: $table.role, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get token => $composableBuilder(
-      column: $table.token, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get accessToken => $composableBuilder(
+      column: $table.accessToken, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get tokenExpiry => $composableBuilder(
+      column: $table.tokenExpiry, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get username => $composableBuilder(
       column: $table.username, builder: (column) => ColumnFilters(column));
@@ -1605,8 +1670,11 @@ class $$UsersTableOrderingComposer
   ColumnOrderings<String> get role => $composableBuilder(
       column: $table.role, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get token => $composableBuilder(
-      column: $table.token, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get accessToken => $composableBuilder(
+      column: $table.accessToken, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get tokenExpiry => $composableBuilder(
+      column: $table.tokenExpiry, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get username => $composableBuilder(
       column: $table.username, builder: (column) => ColumnOrderings(column));
@@ -1636,8 +1704,11 @@ class $$UsersTableAnnotationComposer
   GeneratedColumn<String> get role =>
       $composableBuilder(column: $table.role, builder: (column) => column);
 
-  GeneratedColumn<String> get token =>
-      $composableBuilder(column: $table.token, builder: (column) => column);
+  GeneratedColumn<String> get accessToken => $composableBuilder(
+      column: $table.accessToken, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get tokenExpiry => $composableBuilder(
+      column: $table.tokenExpiry, builder: (column) => column);
 
   GeneratedColumn<String> get username =>
       $composableBuilder(column: $table.username, builder: (column) => column);
@@ -1675,7 +1746,8 @@ class $$UsersTableTableManager extends RootTableManager<
             Value<String> id = const Value.absent(),
             Value<String> email = const Value.absent(),
             Value<String> role = const Value.absent(),
-            Value<String?> token = const Value.absent(),
+            Value<String?> accessToken = const Value.absent(),
+            Value<DateTime?> tokenExpiry = const Value.absent(),
             Value<String?> username = const Value.absent(),
             Value<String?> photoUrl = const Value.absent(),
             Value<DateTime?> createdAt = const Value.absent(),
@@ -1685,7 +1757,8 @@ class $$UsersTableTableManager extends RootTableManager<
             id: id,
             email: email,
             role: role,
-            token: token,
+            accessToken: accessToken,
+            tokenExpiry: tokenExpiry,
             username: username,
             photoUrl: photoUrl,
             createdAt: createdAt,
@@ -1695,7 +1768,8 @@ class $$UsersTableTableManager extends RootTableManager<
             required String id,
             required String email,
             required String role,
-            Value<String?> token = const Value.absent(),
+            Value<String?> accessToken = const Value.absent(),
+            Value<DateTime?> tokenExpiry = const Value.absent(),
             Value<String?> username = const Value.absent(),
             Value<String?> photoUrl = const Value.absent(),
             Value<DateTime?> createdAt = const Value.absent(),
@@ -1705,7 +1779,8 @@ class $$UsersTableTableManager extends RootTableManager<
             id: id,
             email: email,
             role: role,
-            token: token,
+            accessToken: accessToken,
+            tokenExpiry: tokenExpiry,
             username: username,
             photoUrl: photoUrl,
             createdAt: createdAt,

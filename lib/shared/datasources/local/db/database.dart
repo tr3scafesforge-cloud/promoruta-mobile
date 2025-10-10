@@ -14,7 +14,8 @@ class Users extends Table {
   TextColumn get id => text()();
   TextColumn get email => text()();
   TextColumn get role => text()();
-  TextColumn get token => text().nullable()();
+  TextColumn get accessToken => text().nullable()();
+  DateTimeColumn get tokenExpiry => dateTime().nullable()();
   TextColumn get username => text().nullable()();
   TextColumn get photoUrl => text().nullable()();
   DateTimeColumn get createdAt => dateTime().nullable()();
@@ -55,7 +56,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   static LazyDatabase _openConnection() {
     return LazyDatabase(() async {
