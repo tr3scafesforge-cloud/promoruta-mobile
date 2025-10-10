@@ -45,10 +45,9 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
   Future<void> _completeOnboarding() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboardingDone', true);
-    // Navigate to login or home
-    // For now, just navigate to home
+    // Navigate back to app startup to check authentication state
     if (mounted) {
-      context.go('/home');
+      context.go('/');
     }
   }
 

@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/core/core.dart';
 import 'package:promoruta/gen/assets.gen.dart';
 import 'package:promoruta/app/routes/app_router.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
+import 'package:promoruta/shared/shared.dart';
 
-class Login extends StatefulWidget {
+class Login extends ConsumerStatefulWidget {
   const Login({super.key, required this.role});
 
   final String role;
 
   @override
-  State<Login> createState() => _LoginState();
+  ConsumerState<Login> createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends ConsumerState<Login> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -285,13 +287,37 @@ class _LoginState extends State<Login> {
                               color: Theme.of(context).colorScheme.onPrimary,
                             ),
                             iconAlignment: IconAlignment.start,
-                            onPressed: () {
+                            onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                // Mock login logic - navigate based on role
-                                if (widget.role == 'promoter') {
-                                  const PromoterHomeRoute().go(context);
-                                } else if (widget.role == 'advertiser') {
-                                  const AdvertiserHomeRoute().go(context);
+                                try {
+                                  // Real login logic using auth repository
+                                  final authRepository = ref.read(authRepositoryProvider);
+                                  final user = await authRepository.login(
+                                    _emailController.text.trim(),
+                                    _passwordController.text,
+                                  );
+
+                                  // Navigate based on user's actual role from API response
+                                  if (!mounted) return;
+
+                                  if (user.role == 'promoter') {
+                                    const PromoterHomeRoute().go(context);
+                                  } else if (user.role == 'advertiser') {
+                                    const AdvertiserHomeRoute().go(context);
+                                  } else {
+                                    // Unknown role, go to home
+                                    const HomeRoute().go(context);
+                                  }
+                                } catch (e) {
+                                  // Show error message
+                                  if (!mounted) return;
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Login failed: ${e.toString()}'),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
                                 }
                               }
                             },
