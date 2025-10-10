@@ -58,6 +58,19 @@ class AppDatabase extends _$AppDatabase {
   @override
   int get schemaVersion => 2;
 
+  @override
+  MigrationStrategy get migration {
+    return MigrationStrategy(
+      onUpgrade: (migrator, from, to) async {
+        if (from == 1) {
+          // Migration from version 1 to 2: Add accessToken and tokenExpiry columns to Users table
+          await migrator.addColumn(users, users.accessToken);
+          await migrator.addColumn(users, users.tokenExpiry);
+        }
+      },
+    );
+  }
+
   static LazyDatabase _openConnection() {
     return LazyDatabase(() async {
       final dbFolder = await getApplicationDocumentsDirectory();

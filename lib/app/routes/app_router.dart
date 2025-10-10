@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:promoruta/features/auth/choose_role.dart';
 import 'package:promoruta/features/auth/login.dart';
@@ -9,6 +10,7 @@ import 'package:promoruta/features/auth/start_page.dart';
 import 'package:promoruta/presentation/home_screen.dart';
 import 'package:promoruta/presentation/promotor/promoter_home_screen.dart';
 import 'package:promoruta/presentation/advertiser/advertiser_home_screen.dart';
+import 'package:promoruta/shared/shared.dart';
 
 part 'app_router.g.dart';
 
@@ -130,14 +132,14 @@ class AppRouter {
   );
 }
 
-class AppStartup extends StatefulWidget {
+class AppStartup extends ConsumerStatefulWidget {
   const AppStartup({super.key});
 
   @override
-  State<AppStartup> createState() => _AppStartupState();
+  ConsumerState<AppStartup> createState() => _AppStartupState();
 }
 
-class _AppStartupState extends State<AppStartup> {
+class _AppStartupState extends ConsumerState<AppStartup> {
   @override
   void initState() {
     super.initState();
@@ -148,17 +150,33 @@ class _AppStartupState extends State<AppStartup> {
     final prefs = await SharedPreferences.getInstance();
     final onboardingDone = prefs.getBool('onboardingDone') ?? false;
     // final onboardingDone = false; // todo: set to false for testing
-    final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
 
-    if (mounted) {
-      if (!onboardingDone) {
-        const OnboardingRoute().go(context);
-      } else if (isLoggedIn) {
-        const HomeRoute().go(context);
+    if (!mounted) return;
+
+    if (!onboardingDone) {
+      const OnboardingRoute().go(context);
+      return;
+    }
+
+    // Check authentication state using auth repository
+    final authRepository = ref.read(authRepositoryProvider);
+    final user = await authRepository.getCurrentUser();
+
+    if (!mounted) return;
+
+    if (user != null) {
+      // User is authenticated, route based on role
+      if (user.role == 'promoter') {
+        const PromoterHomeRoute().go(context);
+      } else if (user.role == 'advertiser') {
+        const AdvertiserHomeRoute().go(context);
       } else {
-        // For now, go to home, but in real app, go to login
+        // Unknown role, go to home
         const HomeRoute().go(context);
       }
+    } else {
+      // User not authenticated, go to login
+      const LoginRoute().go(context);
     }
   }
 
