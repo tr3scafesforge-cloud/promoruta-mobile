@@ -149,7 +149,7 @@ class _AppStartupState extends ConsumerState<AppStartup> {
   Future<void> _checkAppState() async {
     final prefs = await SharedPreferences.getInstance();
     final onboardingDone = prefs.getBool('onboardingDone') ?? false;
-    // final onboardingDone = false; // todo: set to false for testing
+    // final onboardingDone = false; // Uncomment for testing onboarding
 
     if (!mounted) return;
 
