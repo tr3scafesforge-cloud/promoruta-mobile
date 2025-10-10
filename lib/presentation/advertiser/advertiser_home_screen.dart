@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
+import 'package:promoruta/presentation/advertiser/pages/user_profile_page.dart';
 import 'package:promoruta/shared/widgets/bottom_navigation_item.dart';
 import 'package:promoruta/shared/widgets/advertiser_app_bar.dart';
 import 'package:promoruta/presentation/advertiser/pages/advertiser_home_page.dart';
@@ -16,7 +17,8 @@ class AdvertiserHomeScreen extends ConsumerStatefulWidget {
   const AdvertiserHomeScreen({super.key});
 
   @override
-  ConsumerState<AdvertiserHomeScreen> createState() => _AdvertiserHomeScreenState();
+  ConsumerState<AdvertiserHomeScreen> createState() =>
+      _AdvertiserHomeScreenState();
 }
 
 class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
@@ -32,29 +34,33 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
         top: false,
         child: _getPage(_currentIndex),
       ),
-      floatingActionButton: _currentIndex == 4 ? null : FloatingActionButton(
-        elevation: 0.0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(50),
-        ),
-        backgroundColor: AppColors.secondary,
-        onPressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(l10n.createCampaignWip)),
-          );
-        },
-        child: const Icon(
-          Icons.add_rounded,
-          color: Colors.white,
-          size: 38,
-        ),
-      ),
+      floatingActionButton: _currentIndex == 4
+          ? null
+          : FloatingActionButton(
+              elevation: 0.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50),
+              ),
+              backgroundColor: AppColors.secondary,
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(l10n.createCampaignWip)),
+                );
+              },
+              child: const Icon(
+                Icons.add_rounded,
+                color: Colors.white,
+                size: 38,
+              ),
+            ),
       bottomNavigationBar: Container(
-        height: kBottomNavigationBarHeight + MediaQuery.of(context).viewPadding.bottom,
+        height: kBottomNavigationBarHeight +
+            MediaQuery.of(context).viewPadding.bottom,
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
-          border:
-              Border(top: BorderSide(color: Theme.of(context).colorScheme.outline, width: 1)),
+          border: Border(
+              top: BorderSide(
+                  color: Theme.of(context).colorScheme.outline, width: 1)),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -115,17 +121,33 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
           isDarkMode: Theme.of(context).brightness == Brightness.dark,
           onToggleDarkMode: (isDark) {
             ref.read(themeModeProvider.notifier).setThemeMode(
-              isDark ? ThemeMode.dark : ThemeMode.light,
-            );
+                  isDark ? ThemeMode.dark : ThemeMode.light,
+                );
           },
-          onTapLanguage: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LanguageSettingsPage())),
+          onTapLanguage: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const LanguageSettingsPage(),
+            ),
+          ),
+          onTapAccount: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const UserProfilePage(
+                uid: '0191',
+                username: 'username',
+                email: 'user@email.com',
+              ),
+            ),
+          ),
         );
       default:
         return const AdvertiserHomePage();
     }
   }
 
-  PreferredSizeWidget _buildAppBar(BuildContext context, AppLocalizations l10n) {
+  PreferredSizeWidget _buildAppBar(
+      BuildContext context, AppLocalizations l10n) {
     switch (_currentIndex) {
       case 0: // Home
         return AdvertiserAppBar(
@@ -137,7 +159,8 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
           title: l10n.campaigns,
           actions: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
               child: FilledButton.icon(
                 onPressed: () {
                   // TODO: navigate to create flow
@@ -147,7 +170,8 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
                 style: FilledButton.styleFrom(
                   backgroundColor: const Color(0xFF11A192),
                   foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                   textStyle: const TextStyle(fontWeight: FontWeight.w600),
                 ),
               ),
