@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:promoruta/core/utils/image_helper.dart';
+import 'package:promoruta/core/core.dart';
 import 'package:promoruta/gen/assets.gen.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';  // Add this import
@@ -65,7 +65,7 @@ class ChooseRole extends StatelessWidget {
                 description: AppLocalizations.of(context).promoterDescription,
                 image: AssetImage(Assets.images.promoterSelection.path),
                 cardColor: colorScheme.surface,
-                titleColor: colorScheme.secondary,
+                titleColor: AppColors.deepOrange,
                 onTap: () async {  // Make async
                   final prefs = await SharedPreferences.getInstance();
                   await prefs.setBool('onboardingDone', true);
