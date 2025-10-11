@@ -7,6 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:promoruta/core/core.dart' as model;
 import 'package:promoruta/core/models/config.dart';
+import 'package:promoruta/core/constants/colors.dart';
+import 'package:promoruta/core/theme.dart';
 
 
 // Database provider
@@ -215,6 +217,25 @@ final connectivityStatusProvider = StreamProvider<bool>((ref) {
 // Theme provider
 final themeModeProvider = StateNotifierProvider<ThemeModeNotifier, ThemeMode>((ref) {
   return ThemeModeNotifier();
+});
+
+// Role-based theme providers
+final lightThemeProvider = Provider<ThemeData>((ref) {
+  final authState = ref.watch(authStateProvider);
+  final seedColor = authState.maybeWhen(
+    data: (user) => user?.role == 'promoter' ? AppColors.deepOrange : AppColors.primary,
+    orElse: () => AppColors.primary,
+  );
+  return AppTheme.lightTheme(seedColor);
+});
+
+final darkThemeProvider = Provider<ThemeData>((ref) {
+  final authState = ref.watch(authStateProvider);
+  final seedColor = authState.maybeWhen(
+    data: (user) => user?.role == 'promoter' ? AppColors.deepOrange : AppColors.primary,
+    orElse: () => AppColors.primary,
+  );
+  return AppTheme.darkTheme(seedColor);
 });
 
 // Locale provider
