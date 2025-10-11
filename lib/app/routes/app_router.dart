@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:promoruta/core/core.dart' as model;
 import 'package:promoruta/features/auth/choose_role.dart';
 import 'package:promoruta/features/auth/login.dart';
 import 'package:promoruta/features/auth/onboarding_page_view.dart';
@@ -160,7 +161,13 @@ class _AppStartupState extends ConsumerState<AppStartup> {
 
     // Check authentication state using auth repository
     final authRepository = ref.read(authRepositoryProvider);
-    final user = await authRepository.getCurrentUser();
+    model.User? user;
+    try {
+      user = await authRepository.getCurrentUser();
+    } catch (e) {
+      // If error getting user, assume not logged in
+      print('Error getting current user: $e');
+    }
 
     if (!mounted) return;
 
