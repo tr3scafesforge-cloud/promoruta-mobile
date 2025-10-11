@@ -302,9 +302,13 @@ class AuthNotifier extends StateNotifier<AsyncValue<model.User?>> {
     state = const AsyncValue.loading();
     try {
       final user = await _repository.getCurrentUser();
-      state = AsyncValue.data(user);
+      if (mounted) {
+        state = AsyncValue.data(user);
+      }
     } catch (e, stack) {
-      state = AsyncValue.error(e, stack);
+      if (mounted) {
+        state = AsyncValue.error(e, stack);
+      }
     }
   }
 
@@ -312,18 +316,26 @@ class AuthNotifier extends StateNotifier<AsyncValue<model.User?>> {
     state = const AsyncValue.loading();
     try {
       final user = await _repository.login(email, password);
-      state = AsyncValue.data(user);
+      if (mounted) {
+        state = AsyncValue.data(user);
+      }
     } catch (e, stack) {
-      state = AsyncValue.error(e, stack);
+      if (mounted) {
+        state = AsyncValue.error(e, stack);
+      }
     }
   }
 
   Future<void> logout() async {
     try {
       await _repository.logout();
-      state = const AsyncValue.data(null);
+      if (mounted) {
+        state = const AsyncValue.data(null);
+      }
     } catch (e, stack) {
-      state = AsyncValue.error(e, stack);
+      if (mounted) {
+        state = AsyncValue.error(e, stack);
+      }
     }
   }
 }
@@ -347,49 +359,65 @@ class CampaignsNotifier extends StateNotifier<AsyncValue<List<model.Campaign>>> 
     state = const AsyncValue.loading();
     try {
       final campaigns = await _getCampaignsUseCase();
-      state = AsyncValue.data(campaigns);
+      if (mounted) {
+        state = AsyncValue.data(campaigns);
+      }
     } catch (e, stack) {
-      state = AsyncValue.error(e, stack);
+      if (mounted) {
+        state = AsyncValue.error(e, stack);
+      }
     }
   }
 
   Future<void> createCampaign(model.Campaign campaign) async {
     try {
       final created = await _createCampaignUseCase(campaign);
-      state = state.maybeWhen(
-        data: (campaigns) => AsyncValue.data([...campaigns, created]),
-        orElse: () => AsyncValue.data([created]),
-      );
+      if (mounted) {
+        state = state.maybeWhen(
+          data: (campaigns) => AsyncValue.data([...campaigns, created]),
+          orElse: () => AsyncValue.data([created]),
+        );
+      }
     } catch (e, stack) {
-      state = AsyncValue.error(e, stack);
+      if (mounted) {
+        state = AsyncValue.error(e, stack);
+      }
     }
   }
 
   Future<void> updateCampaign(model.Campaign campaign) async {
     try {
       final updated = await _updateCampaignUseCase(campaign);
-      state = state.maybeWhen(
-        data: (campaigns) => AsyncValue.data(
-          campaigns.map((c) => c.id == updated.id ? updated : c).toList(),
-        ),
-        orElse: () => AsyncValue.data([updated]),
-      );
+      if (mounted) {
+        state = state.maybeWhen(
+          data: (campaigns) => AsyncValue.data(
+            campaigns.map((c) => c.id == updated.id ? updated : c).toList(),
+          ),
+          orElse: () => AsyncValue.data([updated]),
+        );
+      }
     } catch (e, stack) {
-      state = AsyncValue.error(e, stack);
+      if (mounted) {
+        state = AsyncValue.error(e, stack);
+      }
     }
   }
 
   Future<void> deleteCampaign(String campaignId) async {
     try {
       await _deleteCampaignUseCase(campaignId);
-      state = state.maybeWhen(
-        data: (campaigns) => AsyncValue.data(
-          campaigns.where((c) => c.id != campaignId).toList(),
-        ),
-        orElse: () => const AsyncValue.data([]),
-      );
+      if (mounted) {
+        state = state.maybeWhen(
+          data: (campaigns) => AsyncValue.data(
+            campaigns.where((c) => c.id != campaignId).toList(),
+          ),
+          orElse: () => const AsyncValue.data([]),
+        );
+      }
     } catch (e, stack) {
-      state = AsyncValue.error(e, stack);
+      if (mounted) {
+        state = AsyncValue.error(e, stack);
+      }
     }
   }
 }
