@@ -108,7 +108,8 @@ RouteBase get $loginRoute => GoRouteData.$route(
 
 mixin _$LoginRoute on GoRouteData {
   static LoginRoute _fromState(GoRouterState state) => LoginRoute(
-        role: state.uri.queryParameters['role'],
+        role: _$convertMapValue(
+            'role', state.uri.queryParameters, _$UserRoleEnumMap._$fromName),
       );
 
   LoginRoute get _self => this as LoginRoute;
@@ -117,7 +118,7 @@ mixin _$LoginRoute on GoRouteData {
   String get location => GoRouteData.$location(
         '/login',
         queryParams: {
-          if (_self.role != null) 'role': _self.role,
+          if (_self.role != null) 'role': _$UserRoleEnumMap[_self.role!],
         },
       );
 
@@ -133,6 +134,25 @@ mixin _$LoginRoute on GoRouteData {
 
   @override
   void replace(BuildContext context) => context.replace(location);
+}
+
+const _$UserRoleEnumMap = {
+  UserRole.promoter: 'promoter',
+  UserRole.advertiser: 'advertiser',
+};
+
+T? _$convertMapValue<T>(
+  String key,
+  Map<String, String> map,
+  T? Function(String) converter,
+) {
+  final value = map[key];
+  return value == null ? null : converter(value);
+}
+
+extension<T extends Enum> on Map<T, String> {
+  T? _$fromName(String? value) =>
+      entries.where((element) => element.value == value).firstOrNull?.key;
 }
 
 RouteBase get $chooseRoleRoute => GoRouteData.$route(

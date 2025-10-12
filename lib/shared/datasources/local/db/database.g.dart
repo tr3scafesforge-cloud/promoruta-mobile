@@ -18,11 +18,11 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   late final GeneratedColumn<String> email = GeneratedColumn<String>(
       'email', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _roleMeta = const VerificationMeta('role');
   @override
-  late final GeneratedColumn<String> role = GeneratedColumn<String>(
-      'role', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+  late final GeneratedColumnWithTypeConverter<UserRole, String> role =
+      GeneratedColumn<String>('role', aliasedName, false,
+              type: DriftSqlType.string, requiredDuringInsert: true)
+          .withConverter<UserRole>($UsersTable.$converterrole);
   static const VerificationMeta _accessTokenMeta =
       const VerificationMeta('accessToken');
   @override
@@ -85,12 +85,6 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
     } else if (isInserting) {
       context.missing(_emailMeta);
     }
-    if (data.containsKey('role')) {
-      context.handle(
-          _roleMeta, role.isAcceptableOrUnknown(data['role']!, _roleMeta));
-    } else if (isInserting) {
-      context.missing(_roleMeta);
-    }
     if (data.containsKey('access_token')) {
       context.handle(
           _accessTokenMeta,
@@ -128,8 +122,8 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
           .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
       email: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}email'])!,
-      role: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}role'])!,
+      role: $UsersTable.$converterrole.fromSql(attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}role'])!),
       accessToken: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}access_token']),
       tokenExpiry: attachedDatabase.typeMapping
@@ -147,12 +141,15 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   $UsersTable createAlias(String alias) {
     return $UsersTable(attachedDatabase, alias);
   }
+
+  static TypeConverter<UserRole, String> $converterrole =
+      const UserRoleConverter();
 }
 
 class User extends DataClass implements Insertable<User> {
   final String id;
   final String email;
-  final String role;
+  final UserRole role;
   final String? accessToken;
   final DateTime? tokenExpiry;
   final String? username;
@@ -172,7 +169,9 @@ class User extends DataClass implements Insertable<User> {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['email'] = Variable<String>(email);
-    map['role'] = Variable<String>(role);
+    {
+      map['role'] = Variable<String>($UsersTable.$converterrole.toSql(role));
+    }
     if (!nullToAbsent || accessToken != null) {
       map['access_token'] = Variable<String>(accessToken);
     }
@@ -220,7 +219,7 @@ class User extends DataClass implements Insertable<User> {
     return User(
       id: serializer.fromJson<String>(json['id']),
       email: serializer.fromJson<String>(json['email']),
-      role: serializer.fromJson<String>(json['role']),
+      role: serializer.fromJson<UserRole>(json['role']),
       accessToken: serializer.fromJson<String?>(json['accessToken']),
       tokenExpiry: serializer.fromJson<DateTime?>(json['tokenExpiry']),
       username: serializer.fromJson<String?>(json['username']),
@@ -234,7 +233,7 @@ class User extends DataClass implements Insertable<User> {
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'email': serializer.toJson<String>(email),
-      'role': serializer.toJson<String>(role),
+      'role': serializer.toJson<UserRole>(role),
       'accessToken': serializer.toJson<String?>(accessToken),
       'tokenExpiry': serializer.toJson<DateTime?>(tokenExpiry),
       'username': serializer.toJson<String?>(username),
@@ -246,7 +245,7 @@ class User extends DataClass implements Insertable<User> {
   User copyWith(
           {String? id,
           String? email,
-          String? role,
+          UserRole? role,
           Value<String?> accessToken = const Value.absent(),
           Value<DateTime?> tokenExpiry = const Value.absent(),
           Value<String?> username = const Value.absent(),
@@ -312,7 +311,7 @@ class User extends DataClass implements Insertable<User> {
 class UsersCompanion extends UpdateCompanion<User> {
   final Value<String> id;
   final Value<String> email;
-  final Value<String> role;
+  final Value<UserRole> role;
   final Value<String?> accessToken;
   final Value<DateTime?> tokenExpiry;
   final Value<String?> username;
@@ -333,7 +332,7 @@ class UsersCompanion extends UpdateCompanion<User> {
   UsersCompanion.insert({
     required String id,
     required String email,
-    required String role,
+    required UserRole role,
     this.accessToken = const Value.absent(),
     this.tokenExpiry = const Value.absent(),
     this.username = const Value.absent(),
@@ -370,7 +369,7 @@ class UsersCompanion extends UpdateCompanion<User> {
   UsersCompanion copyWith(
       {Value<String>? id,
       Value<String>? email,
-      Value<String>? role,
+      Value<UserRole>? role,
       Value<String?>? accessToken,
       Value<DateTime?>? tokenExpiry,
       Value<String?>? username,
@@ -400,7 +399,8 @@ class UsersCompanion extends UpdateCompanion<User> {
       map['email'] = Variable<String>(email.value);
     }
     if (role.present) {
-      map['role'] = Variable<String>(role.value);
+      map['role'] =
+          Variable<String>($UsersTable.$converterrole.toSql(role.value));
     }
     if (accessToken.present) {
       map['access_token'] = Variable<String>(accessToken.value);
@@ -1593,7 +1593,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
 typedef $$UsersTableCreateCompanionBuilder = UsersCompanion Function({
   required String id,
   required String email,
-  required String role,
+  required UserRole role,
   Value<String?> accessToken,
   Value<DateTime?> tokenExpiry,
   Value<String?> username,
@@ -1604,7 +1604,7 @@ typedef $$UsersTableCreateCompanionBuilder = UsersCompanion Function({
 typedef $$UsersTableUpdateCompanionBuilder = UsersCompanion Function({
   Value<String> id,
   Value<String> email,
-  Value<String> role,
+  Value<UserRole> role,
   Value<String?> accessToken,
   Value<DateTime?> tokenExpiry,
   Value<String?> username,
@@ -1627,8 +1627,10 @@ class $$UsersTableFilterComposer extends Composer<_$AppDatabase, $UsersTable> {
   ColumnFilters<String> get email => $composableBuilder(
       column: $table.email, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get role => $composableBuilder(
-      column: $table.role, builder: (column) => ColumnFilters(column));
+  ColumnWithTypeConverterFilters<UserRole, UserRole, String> get role =>
+      $composableBuilder(
+          column: $table.role,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
 
   ColumnFilters<String> get accessToken => $composableBuilder(
       column: $table.accessToken, builder: (column) => ColumnFilters(column));
@@ -1695,7 +1697,7 @@ class $$UsersTableAnnotationComposer
   GeneratedColumn<String> get email =>
       $composableBuilder(column: $table.email, builder: (column) => column);
 
-  GeneratedColumn<String> get role =>
+  GeneratedColumnWithTypeConverter<UserRole, String> get role =>
       $composableBuilder(column: $table.role, builder: (column) => column);
 
   GeneratedColumn<String> get accessToken => $composableBuilder(
@@ -1739,7 +1741,7 @@ class $$UsersTableTableManager extends RootTableManager<
           updateCompanionCallback: ({
             Value<String> id = const Value.absent(),
             Value<String> email = const Value.absent(),
-            Value<String> role = const Value.absent(),
+            Value<UserRole> role = const Value.absent(),
             Value<String?> accessToken = const Value.absent(),
             Value<DateTime?> tokenExpiry = const Value.absent(),
             Value<String?> username = const Value.absent(),
@@ -1761,7 +1763,7 @@ class $$UsersTableTableManager extends RootTableManager<
           createCompanionCallback: ({
             required String id,
             required String email,
-            required String role,
+            required UserRole role,
             Value<String?> accessToken = const Value.absent(),
             Value<DateTime?> tokenExpiry = const Value.absent(),
             Value<String?> username = const Value.absent(),

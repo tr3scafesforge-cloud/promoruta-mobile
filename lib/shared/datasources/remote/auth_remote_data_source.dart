@@ -32,7 +32,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         return User(
           id: userData['id'],
           email: userData['email'],
-          role: userData['role'],
+          role: UserRole.fromString(userData['role']),
           accessToken: data['access_token'],
           tokenExpiry: tokenExpiry,
           username: userData['name'],
@@ -68,7 +68,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         final user = User(
           id: userData['id'],
           email: userData['email'],
-          role: userData['role'],
+          role: UserRole.fromString(userData['role']),
           accessToken: data['access_token'],
           tokenExpiry: tokenExpiry,
           username: userData['name'],

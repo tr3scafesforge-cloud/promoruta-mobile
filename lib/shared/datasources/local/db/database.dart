@@ -4,16 +4,32 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:promoruta/core/core.dart';
 
 import 'entities/campaigns_entity.dart';
 
 part 'database.g.dart';
 
+// Type converters
+class UserRoleConverter extends TypeConverter<UserRole, String> {
+  const UserRoleConverter();
+
+  @override
+  UserRole fromSql(String fromDb) {
+    return UserRole.fromString(fromDb);
+  }
+
+  @override
+  String toSql(UserRole value) {
+    return value.toStringValue();
+  }
+}
+
 // Tables
 class Users extends Table {
   TextColumn get id => text()();
   TextColumn get email => text()();
-  TextColumn get role => text()();
+  TextColumn get role => text().map(const UserRoleConverter())();
   TextColumn get accessToken => text().nullable()();
   DateTimeColumn get tokenExpiry => dateTime().nullable()();
   TextColumn get username => text().nullable()();
@@ -63,9 +79,12 @@ class AppDatabase extends _$AppDatabase {
     return MigrationStrategy(
       onUpgrade: (migrator, from, to) async {
         if (from == 1) {
-          // Migration from version 1 to 2: Add accessToken and tokenExpiry columns to Users table
+          // Migration from version 1 to 2: Add missing columns to Users table
           await migrator.addColumn(users, users.accessToken);
           await migrator.addColumn(users, users.tokenExpiry);
+          await migrator.addColumn(users, users.username);
+          await migrator.addColumn(users, users.photoUrl);
+          await migrator.addColumn(users, users.createdAt);
         }
       },
     );

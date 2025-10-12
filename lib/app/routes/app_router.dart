@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:promoruta/core/core.dart' as model;
+import 'package:promoruta/core/models/user.dart';
 import 'package:promoruta/features/auth/choose_role.dart';
 import 'package:promoruta/features/auth/login.dart';
 import 'package:promoruta/features/auth/onboarding_page_view.dart';
@@ -57,12 +58,13 @@ class HomeRoute extends GoRouteData with _$HomeRoute {
 class LoginRoute extends GoRouteData with _$LoginRoute {
   const LoginRoute({this.role});
 
-  final String? role;
+  final model.UserRole? role;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    final roleParam = state.uri.queryParameters['role'] ?? 'unknown';
-    return Login(role: roleParam);
+    final roleParam = state.uri.queryParameters['role'];
+    final userRole = roleParam != null ? model.UserRole.fromString(roleParam) : model.UserRole.promoter;
+    return Login(role: userRole);
   }
 }
 
@@ -173,9 +175,9 @@ class _AppStartupState extends ConsumerState<AppStartup> {
 
     if (user != null) {
       // User is authenticated, route based on role
-      if (user.role == 'promoter') {
+      if (user.role == model.UserRole.promoter) {
         const PromoterHomeRoute().go(context);
-      } else if (user.role == 'advertiser') {
+      } else if (user.role == model.UserRole.advertiser) {
         const AdvertiserHomeRoute().go(context);
       } else {
         // Unknown role, go to home

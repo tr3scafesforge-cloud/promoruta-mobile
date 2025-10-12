@@ -9,7 +9,7 @@ import 'package:promoruta/shared/shared.dart';
 class Login extends ConsumerStatefulWidget {
   const Login({super.key, required this.role});
 
-  final String role;
+  final UserRole role;
 
   @override
   ConsumerState<Login> createState() => _LoginState();
@@ -45,7 +45,7 @@ class _LoginState extends ConsumerState<Login> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: Image(
-                        image: widget.role == 'advertiser'
+                        image: widget.role == UserRole.advertiser
                             ? AssetImage(Assets.images.advertiserSelection.path)
                             : AssetImage(Assets.images.promoterSelection.path),
                         height: 80,
@@ -299,9 +299,9 @@ class _LoginState extends ConsumerState<Login> {
 
                                   // Navigate based on user's actual role from API response
                                   if (context.mounted) {
-                                    if (user.role == 'promoter') {
+                                    if (user.role == UserRole.promoter) {
                                       const PromoterHomeRoute().go(context);
-                                    } else if (user.role == 'advertiser') {
+                                    } else if (user.role == UserRole.advertiser) {
                                       const AdvertiserHomeRoute().go(context);
                                     } else {
                                       // Unknown role, go to home
