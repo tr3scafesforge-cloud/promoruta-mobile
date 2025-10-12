@@ -35,7 +35,7 @@ class _PromoterHomeScreenState extends State<PromoterHomeScreen> {
               style: Theme.of(context)
                   .textTheme
                   .bodySmall
-                  ?.copyWith(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
+                  ?.copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: .6)),
             ),
           ],
         ),
@@ -57,7 +57,7 @@ class _PromoterHomeScreenState extends State<PromoterHomeScreen> {
         type: BottomNavigationBarType.fixed,
         selectedItemColor: _accent,
         unselectedItemColor: Theme.of(context).brightness == Brightness.dark
-            ? Colors.white.withOpacity(0.7)
+            ? Colors.white.withValues(alpha: .7)
             : Theme.of(context).colorScheme.onSurfaceVariant,
         onTap: (i) => setState(() => _currentIndex = i),
         items: const [

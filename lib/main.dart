@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 
 import 'app/routes/app_router.dart';
-import 'core/theme.dart';
 import 'shared/providers/providers.dart';
 
 void main() {

@@ -298,26 +298,26 @@ class _LoginState extends ConsumerState<Login> {
                                   );
 
                                   // Navigate based on user's actual role from API response
-                                  if (!mounted) return;
-
-                                  if (user.role == 'promoter') {
-                                    const PromoterHomeRoute().go(context);
-                                  } else if (user.role == 'advertiser') {
-                                    const AdvertiserHomeRoute().go(context);
-                                  } else {
-                                    // Unknown role, go to home
-                                    const HomeRoute().go(context);
+                                  if (context.mounted) {
+                                    if (user.role == 'promoter') {
+                                      const PromoterHomeRoute().go(context);
+                                    } else if (user.role == 'advertiser') {
+                                      const AdvertiserHomeRoute().go(context);
+                                    } else {
+                                      // Unknown role, go to home
+                                      const HomeRoute().go(context);
+                                    }
                                   }
                                 } catch (e) {
                                   // Show error message
-                                  if (!mounted) return;
-
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text('Login failed: ${e.toString()}'),
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  );
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('Login failed: ${e.toString()}'),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  }
                                 }
                               }
                             },

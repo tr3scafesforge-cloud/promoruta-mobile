@@ -16,7 +16,6 @@ class UserProfilePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userAsync = ref.watch(authStateProvider);
-    final theme = Theme.of(context);
     final destructive = const Color(0xFFCC0033); // deep red like your mock
     final cardRadius = 12.0;
 
