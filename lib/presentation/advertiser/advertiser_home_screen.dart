@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/presentation/advertiser/pages/user_profile_page.dart';
@@ -133,7 +134,12 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
           onTapAccount: () => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => const UserProfilePage(),
+              builder: (_) => UserProfilePage(
+                onSignOut: () async {
+                  await ref.read(authStateProvider.notifier).logout();
+                  GoRouter.of(context).go('/');
+                },
+              ),
             ),
           ),
         );

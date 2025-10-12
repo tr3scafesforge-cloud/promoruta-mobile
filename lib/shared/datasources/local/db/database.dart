@@ -72,7 +72,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration {
@@ -82,6 +82,11 @@ class AppDatabase extends _$AppDatabase {
           // Migration from version 1 to 2: Add missing columns to Users table
           await migrator.addColumn(users, users.accessToken);
           await migrator.addColumn(users, users.tokenExpiry);
+          await migrator.addColumn(users, users.username);
+          await migrator.addColumn(users, users.photoUrl);
+          await migrator.addColumn(users, users.createdAt);
+        }
+        if (from == 2) {
           await migrator.addColumn(users, users.username);
           await migrator.addColumn(users, users.photoUrl);
           await migrator.addColumn(users, users.createdAt);

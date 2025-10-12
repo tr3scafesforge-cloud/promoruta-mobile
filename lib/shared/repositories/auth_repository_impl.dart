@@ -1,5 +1,6 @@
 
 import 'package:promoruta/core/core.dart' as model;
+import 'package:promoruta/core/utils/logger.dart';
 import 'package:promoruta/shared/shared.dart';
 
 
@@ -24,6 +25,7 @@ class AuthRepositoryImpl implements AuthRepository {
         await _localDataSource.saveUser(user);
         return user;
       } catch (e) {
+        AppLogger.auth.e('Remote Auth failed: $e');
         // If remote fails, try local if user exists
         final localUser = await _localDataSource.getUser();
         if (localUser != null) {
