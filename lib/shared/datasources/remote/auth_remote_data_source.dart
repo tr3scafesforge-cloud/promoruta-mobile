@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:promoruta/core/core.dart';
 
-import '../../../core/models/user.dart';
 import '../../repositories/auth_repository.dart';
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
