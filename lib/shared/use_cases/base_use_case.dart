@@ -1,12 +1,12 @@
 /// Base class for use cases.
 /// Use cases represent business logic operations.
-abstract class UseCase<Type, Params> {
-  Future<Type> call(Params params);
+abstract class UseCase<T, Params> {
+  Future<T> call(Params params);
 }
 
 /// Base class for use cases that don't require parameters.
-abstract class UseCaseNoParams<Type> {
-  Future<Type> call();
+abstract class UseCaseNoParams<T> {
+  Future<T> call();
 }
 
 /// Base class for use cases that don't return a value.
