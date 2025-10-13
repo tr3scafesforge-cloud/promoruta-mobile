@@ -14,7 +14,7 @@ import 'package:promoruta/core/theme.dart';
 // Database provider
 final databaseProvider = Provider<AppDatabase>((ref) {
   final database = AppDatabase();
-  ref.onDispose(() => database.close());
+  // Don't dispose in provider to avoid multiple database instances
   return database;
 });
 
