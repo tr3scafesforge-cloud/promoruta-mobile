@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
+import 'package:promoruta/presentation/promotor/pages/promoter_user_profile_page.dart';
 import 'package:promoruta/shared/widgets/profile_widgets.dart';
 
 class PromoterProfilePage extends StatefulWidget {
@@ -54,7 +55,14 @@ class _PromoterProfilePageState extends State<PromoterProfilePage> {
           children: [
             // Account card
             ProfileCard(
-              onTap: widget.onTapAccount,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const PromoterUserProfilePage(),
+                  ),
+                );
+              },
               leading: CircleAvatar(
                 radius: 24,
                 backgroundImage: widget.avatarImage,
