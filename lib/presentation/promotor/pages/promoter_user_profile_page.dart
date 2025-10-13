@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/shared/providers/providers.dart';
+import 'package:promoruta/app/routes/app_router.dart';
 
 class PromoterUserProfilePage extends ConsumerWidget {
   const PromoterUserProfilePage({
@@ -131,8 +132,12 @@ class PromoterUserProfilePage extends ConsumerWidget {
                             message: '¿Deseas cerrar sesión?',
                             confirmText: 'Salir',
                           );
-                          if (confirmed && onSignOut != null) {
-                            await onSignOut!();
+                          if (confirmed) {
+                            final authNotifier = ref.read(authStateProvider.notifier);
+                            await authNotifier.logout();
+                            if (context.mounted) {
+                              const LoginRoute().go(context);
+                            }
                           }
                         },
                         child: const Text('Salir'),
