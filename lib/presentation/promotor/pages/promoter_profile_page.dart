@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/widgets/profile_widgets.dart';
 
-class AdvertiserProfilePage extends StatefulWidget {
-  const AdvertiserProfilePage({
+class PromoterProfilePage extends StatefulWidget {
+  const PromoterProfilePage({
     super.key,
-    this.name = 'Melissa Domehr',
-    this.email = 'melissa.domehr@mail.com',
+    this.name = 'Promoter Name',
+    this.email = 'promoter@example.com',
     this.avatarImage,
     this.isDarkMode = false,
     this.onToggleDarkMode,
@@ -30,10 +30,10 @@ class AdvertiserProfilePage extends StatefulWidget {
   final VoidCallback? onTapAccount;
 
   @override
-  State<AdvertiserProfilePage> createState() => _AdvertiserProfilePageState();
+  State<PromoterProfilePage> createState() => _PromoterProfilePageState();
 }
 
-class _AdvertiserProfilePageState extends State<AdvertiserProfilePage> {
+class _PromoterProfilePageState extends State<PromoterProfilePage> {
   late bool _darkMode;
 
   @override
@@ -96,4 +96,3 @@ class _AdvertiserProfilePageState extends State<AdvertiserProfilePage> {
         ));
   }
 }
-

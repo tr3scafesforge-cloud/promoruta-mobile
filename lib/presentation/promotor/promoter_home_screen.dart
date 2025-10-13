@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/core/constants/colors.dart';
+import 'package:promoruta/presentation/promotor/pages/promoter_profile_page.dart';
 
 class PromoterHomeScreen extends StatefulWidget {
   const PromoterHomeScreen({super.key});
@@ -42,7 +43,9 @@ class _PromoterHomeScreenState extends State<PromoterHomeScreen> {
       ),
       body: _currentIndex == 0
           ? const _PromoterHomeContent()
-          : _PlaceholderTab(index: _currentIndex),
+          : _currentIndex == 4
+              ? const PromoterProfilePage()
+              : _PlaceholderTab(index: _currentIndex),
       floatingActionButton: FloatingActionButton(
         backgroundColor: _accent,
         onPressed: () {
