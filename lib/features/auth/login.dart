@@ -290,23 +290,37 @@ class _LoginState extends ConsumerState<Login> {
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 try {
-                                  // Real login logic using auth repository
-                                  final authRepository = ref.read(authRepositoryProvider);
-                                  final user = await authRepository.login(
+                                  // Use the auth notifier to login, which updates the auth state
+                                  await ref.read(authStateProvider.notifier).login(
                                     _emailController.text.trim(),
                                     _passwordController.text,
                                   );
 
-                                  // Navigate based on user's actual role from API response
+                                  // Navigate based on the updated auth state
                                   if (context.mounted) {
-                                    if (user.role == UserRole.promoter) {
-                                      const PromoterHomeRoute().go(context);
-                                    } else if (user.role == UserRole.advertiser) {
-                                      const AdvertiserHomeRoute().go(context);
-                                    } else {
-                                      // Unknown role, go to home
-                                      const HomeRoute().go(context);
-                                    }
+                                    final authState = ref.read(authStateProvider);
+                                    authState.maybeWhen(
+                                      data: (user) {
+                                        if (user != null) {
+                                          if (user.role == UserRole.promoter) {
+                                            const PromoterHomeRoute().go(context);
+                                          } else if (user.role == UserRole.advertiser) {
+                                            const AdvertiserHomeRoute().go(context);
+                                          } else {
+                                            const HomeRoute().go(context);
+                                          }
+                                        }
+                                      },
+                                      orElse: () {
+                                        // If login failed or state not updated, show error
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            content: Text('Login failed: Unable to determine user role'),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                      },
+                                    );
                                   }
                                 } catch (e) {
                                   // Show error message

@@ -136,7 +136,8 @@ class PromoterUserProfilePage extends ConsumerWidget {
                             final authNotifier = ref.read(authStateProvider.notifier);
                             await authNotifier.logout();
                             if (context.mounted) {
-                              const LoginRoute().go(context);
+                              // Navigate to app startup to reinitialize everything
+                              const AppStartupRoute().go(context);
                             }
                           }
                         },
