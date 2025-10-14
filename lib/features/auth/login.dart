@@ -39,20 +39,20 @@ class _LoginState extends ConsumerState<Login> {
             child: Column(
               children: [
                 // Role Image Hero
-                Center(
-                  child: Hero(
-                    tag: '${widget.role}_image',
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image(
-                        image: widget.role == UserRole.advertiser
-                            ? AssetImage(Assets.images.advertiserSelection.path)
-                            : AssetImage(Assets.images.promoterSelection.path),
-                        height: 80,
-                      ),
-                    ),
-                  ),
-                ),
+                // Center(
+                //   child: Hero(
+                //     tag: '${widget.role}_image',
+                //     child: ClipRRect(
+                //       borderRadius: BorderRadius.circular(12),
+                //       child: Image(
+                //         image: widget.role == UserRole.advertiser
+                //             ? AssetImage(Assets.images.advertiserSelection.path)
+                //             : AssetImage(Assets.images.promoterSelection.path),
+                //         height: 80,
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 const SizedBox(height: 20),
                 // Header Section
                 Column(
