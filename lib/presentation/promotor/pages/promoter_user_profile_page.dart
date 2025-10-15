@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/shared/providers/providers.dart';
 import 'package:promoruta/app/routes/app_router.dart';
+import 'package:promoruta/shared/widgets/promoter_app_bar.dart';
 
 class PromoterUserProfilePage extends ConsumerWidget {
   const PromoterUserProfilePage({
@@ -22,13 +23,12 @@ class PromoterUserProfilePage extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF3F5F7),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFF3F5F7),
-        elevation: 0,
+      appBar: PromoterAppBar(
         leading: IconButton(
           onPressed: () => Navigator.maybePop(context),
           icon: const Icon(Icons.arrow_back, color: Colors.black87),
         ),
+        title: 'Perfil de Usuario',
       ),
       body: SafeArea(
         child: userAsync.when(

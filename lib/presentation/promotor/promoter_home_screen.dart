@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/presentation/promotor/pages/promoter_profile_page.dart';
+import 'package:promoruta/shared/widgets/promoter_app_bar.dart';
 
 class PromoterHomeScreen extends StatefulWidget {
   const PromoterHomeScreen({super.key});
@@ -20,26 +21,9 @@ class _PromoterHomeScreenState extends State<PromoterHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: false,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('¿Listo para sumar ingresos?',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    )),
-            const SizedBox(height: 2),
-            Text(
-              'Tomá campañas cercanas y empezá la promo.',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: .6)),
-            ),
-          ],
-        ),
+      appBar: PromoterAppBar(
+        title: '¿Listo para sumar ingresos?',
+        subtitle: 'Tomá campañas cercanas y empezá la promo.',
       ),
       body: _currentIndex == 0
           ? const _PromoterHomeContent()

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/presentation/promotor/pages/promoter_user_profile_page.dart';
 import 'package:promoruta/shared/widgets/profile_widgets.dart';
+import 'package:promoruta/shared/widgets/promoter_app_bar.dart';
 
 class PromoterProfilePage extends StatefulWidget {
   const PromoterProfilePage({
@@ -48,7 +49,11 @@ class _PromoterProfilePageState extends State<PromoterProfilePage> {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
 
-    return Container(
+    return Scaffold(
+      appBar: PromoterAppBar(
+        title: 'Perfil',
+      ),
+      body: Container(
         color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.2),
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
@@ -101,6 +106,8 @@ class _PromoterProfilePageState extends State<PromoterProfilePage> {
               onTap: widget.onTapLanguage,
             ),
           ],
-        ));
+        ),
+      ),
+    );
   }
 }
