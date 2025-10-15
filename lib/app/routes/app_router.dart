@@ -2,7 +2,6 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:ui';
 import 'package:promoruta/core/core.dart' as model;
 import 'package:promoruta/core/models/user.dart';
 import 'package:promoruta/features/auth/choose_role.dart';
@@ -125,8 +124,30 @@ class AdvertiserHomeRoute extends GoRouteData with _$AdvertiserHomeRoute {
   const AdvertiserHomeRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const AdvertiserHomeScreen();
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage(
+      key: state.pageKey,
+      child: const AdvertiserHomeScreen(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        // Handle reverse animation when coming back from security settings
+        if (secondaryAnimation.status == AnimationStatus.reverse) {
+          const begin = Offset(-1.0, 0.0);
+          const end = Offset.zero;
+          const curve = Curves.easeInOut;
+
+          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          var offsetAnimation = secondaryAnimation.drive(tween);
+
+          return SlideTransition(
+            position: offsetAnimation,
+            child: child,
+          );
+        }
+
+        // Default transition
+        return child;
+      },
+    );
   }
 }
 
