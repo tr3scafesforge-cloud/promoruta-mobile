@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
 
@@ -22,6 +23,10 @@ class _LanguageSettingsPageState extends ConsumerState<LanguageSettingsPage> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => context.canPop() ? context.pop() : context.go('/advertiser-home?tab=profile'),
+          icon: const Icon(Icons.arrow_back, color: Colors.black87),
+        ),
         title: Text(l10n.language),
       ),
       body: ListView(
@@ -61,11 +66,11 @@ class _LanguageSettingsPageState extends ConsumerState<LanguageSettingsPage> {
         content: Text(l10n.changeLanguageMessage(languageName)),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
+            onPressed: () => context.pop(false),
             child: Text(l10n.cancel),
           ),
           TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
+            onPressed: () => context.pop(true),
             child: Text(l10n.confirm),
           ),
         ],

@@ -13,6 +13,8 @@ import 'package:promoruta/presentation/home_screen.dart';
 import 'package:promoruta/presentation/promotor/promoter_home_screen.dart';
 import 'package:promoruta/presentation/advertiser/advertiser_home_screen.dart';
 import 'package:promoruta/presentation/advertiser/pages/advertiser_security_settings_page.dart';
+import 'package:promoruta/presentation/advertiser/pages/language_settings_page.dart';
+import 'package:promoruta/presentation/advertiser/pages/user_profile_page.dart';
 import 'package:promoruta/shared/shared.dart';
 
 part 'app_router.g.dart';
@@ -90,6 +92,30 @@ class PermissionsRoute extends GoRouteData with _$PermissionsRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const Permissions();
+  }
+}
+
+@TypedGoRoute<LanguageSettingsRoute>(
+  path: '/language-settings',
+)
+class LanguageSettingsRoute extends GoRouteData with _$LanguageSettingsRoute {
+  const LanguageSettingsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const LanguageSettingsPage();
+  }
+}
+
+@TypedGoRoute<UserProfileRoute>(
+  path: '/user-profile',
+)
+class UserProfileRoute extends GoRouteData with _$UserProfileRoute {
+  const UserProfileRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const UserProfilePage();
   }
 }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:promoruta/shared/providers/providers.dart';
 
 class UserProfilePage extends ConsumerWidget {
@@ -25,7 +26,7 @@ class UserProfilePage extends ConsumerWidget {
         backgroundColor: const Color(0xFFF3F5F7),
         elevation: 0,
         leading: IconButton(
-          onPressed: () => Navigator.maybePop(context),
+          onPressed: () => context.canPop() ? context.pop() : context.go('/advertiser-home?tab=profile'),
           icon: const Icon(Icons.arrow_back, color: Colors.black87),
         ),
       ),
@@ -131,8 +132,9 @@ class UserProfilePage extends ConsumerWidget {
                             message: '¿Deseas cerrar sesión?',
                             confirmText: 'Salir',
                           );
-                          if (confirmed && onSignOut != null) {
-                            await onSignOut!();
+                          if (confirmed) {
+                            await ref.read(authStateProvider.notifier).logout();
+                            GoRouter.of(context).go('/');
                           }
                         },
                         child: const Text('Salir'),

@@ -13,6 +13,8 @@ List<RouteBase> get $appRoutes => [
       $loginRoute,
       $chooseRoleRoute,
       $permissionsRoute,
+      $languageSettingsRoute,
+      $userProfileRoute,
       $startPageRoute,
       $promoterHomeRoute,
       $advertiserHomeRoute,
@@ -196,6 +198,62 @@ mixin _$PermissionsRoute on GoRouteData {
   @override
   String get location => GoRouteData.$location(
         '/permissions',
+      );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $languageSettingsRoute => GoRouteData.$route(
+      path: '/language-settings',
+      factory: _$LanguageSettingsRoute._fromState,
+    );
+
+mixin _$LanguageSettingsRoute on GoRouteData {
+  static LanguageSettingsRoute _fromState(GoRouterState state) =>
+      const LanguageSettingsRoute();
+
+  @override
+  String get location => GoRouteData.$location(
+        '/language-settings',
+      );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $userProfileRoute => GoRouteData.$route(
+      path: '/user-profile',
+      factory: _$UserProfileRoute._fromState,
+    );
+
+mixin _$UserProfileRoute on GoRouteData {
+  static UserProfileRoute _fromState(GoRouterState state) =>
+      const UserProfileRoute();
+
+  @override
+  String get location => GoRouteData.$location(
+        '/user-profile',
       );
 
   @override

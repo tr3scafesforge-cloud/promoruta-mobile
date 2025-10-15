@@ -138,23 +138,8 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
                 );
           },
           onTapSecurity: () => const AdvertiserSecuritySettingsRoute().go(context),
-          onTapLanguage: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => const LanguageSettingsPage(),
-            ),
-          ),
-          onTapAccount: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => UserProfilePage(
-                onSignOut: () async {
-                  await ref.read(authStateProvider.notifier).logout();
-                  GoRouter.of(context).go('/');
-                },
-              ),
-            ),
-          ),
+          onTapLanguage: () => const LanguageSettingsRoute().go(context),
+          onTapAccount: () => const UserProfileRoute().go(context),
         );
       default:
         return const AdvertiserHomePage();
