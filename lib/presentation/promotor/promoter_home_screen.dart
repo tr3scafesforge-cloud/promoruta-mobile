@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/presentation/promotor/pages/promoter_profile_page.dart';
 import 'package:promoruta/presentation/promotor/pages/promoter_home_page.dart';
 import 'package:promoruta/presentation/promotor/pages/promoter_nearby_page.dart';
 import 'package:promoruta/presentation/promotor/pages/promoter_active_page.dart';
 import 'package:promoruta/presentation/promotor/pages/promoter_earnings_page.dart';
 import 'package:promoruta/shared/widgets/promoter_app_bar.dart';
+import 'package:promoruta/shared/providers/providers.dart';
 
-class PromoterHomeScreen extends StatefulWidget {
+class PromoterHomeScreen extends ConsumerStatefulWidget {
   const PromoterHomeScreen({super.key});
 
   @override
-  State<PromoterHomeScreen> createState() => _PromoterHomeScreenState();
+  ConsumerState<PromoterHomeScreen> createState() => _PromoterHomeScreenState();
 }
 
-class _PromoterHomeScreenState extends State<PromoterHomeScreen> {
+class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
   int _currentIndex = 0;
 
   // If your design uses a specific orange for promoter, set it here.
@@ -102,7 +104,14 @@ class _PromoterHomeScreenState extends State<PromoterHomeScreen> {
       case 3:
         return const PromoterEarningsPage();
       case 4:
-        return const PromoterProfilePage();
+        return PromoterProfilePage(
+          isDarkMode: Theme.of(context).brightness == Brightness.dark,
+          onToggleDarkMode: (isDark) {
+            ref.read(themeModeProvider.notifier).setThemeMode(
+                  isDark ? ThemeMode.dark : ThemeMode.light,
+                );
+          },
+        );
       default:
         return const PromoterHomePage();
     }
