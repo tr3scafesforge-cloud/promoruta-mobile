@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class SecuritySettingsPage extends StatelessWidget {
   const SecuritySettingsPage({
@@ -23,7 +24,7 @@ class SecuritySettingsPage extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black87),
-          onPressed: () => Navigator.maybePop(context),
+          onPressed: () => context.canPop() ? context.pop() : context.go('/advertiser-home?tab=profile'),
         ),
         title: const SizedBox.shrink(),
       ),

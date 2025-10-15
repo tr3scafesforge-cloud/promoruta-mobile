@@ -27,6 +27,17 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
   int _currentIndex = 0;
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Check if we need to navigate to profile tab
+    final uri = GoRouterState.of(context).uri;
+    final tab = uri.queryParameters['tab'];
+    if (tab == 'profile') {
+      setState(() => _currentIndex = 4);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
 
