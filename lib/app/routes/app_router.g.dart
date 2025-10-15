@@ -15,6 +15,9 @@ List<RouteBase> get $appRoutes => [
       $permissionsRoute,
       $languageSettingsRoute,
       $userProfileRoute,
+      $paymentMethodsRoute,
+      $changePasswordRoute,
+      $twoFactorAuthRoute,
       $startPageRoute,
       $promoterHomeRoute,
       $advertiserHomeRoute,
@@ -254,6 +257,90 @@ mixin _$UserProfileRoute on GoRouteData {
   @override
   String get location => GoRouteData.$location(
         '/user-profile',
+      );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $paymentMethodsRoute => GoRouteData.$route(
+      path: '/payment-methods',
+      factory: _$PaymentMethodsRoute._fromState,
+    );
+
+mixin _$PaymentMethodsRoute on GoRouteData {
+  static PaymentMethodsRoute _fromState(GoRouterState state) =>
+      const PaymentMethodsRoute();
+
+  @override
+  String get location => GoRouteData.$location(
+        '/payment-methods',
+      );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $changePasswordRoute => GoRouteData.$route(
+      path: '/change-password',
+      factory: _$ChangePasswordRoute._fromState,
+    );
+
+mixin _$ChangePasswordRoute on GoRouteData {
+  static ChangePasswordRoute _fromState(GoRouterState state) =>
+      const ChangePasswordRoute();
+
+  @override
+  String get location => GoRouteData.$location(
+        '/change-password',
+      );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $twoFactorAuthRoute => GoRouteData.$route(
+      path: '/two-factor-auth',
+      factory: _$TwoFactorAuthRoute._fromState,
+    );
+
+mixin _$TwoFactorAuthRoute on GoRouteData {
+  static TwoFactorAuthRoute _fromState(GoRouterState state) =>
+      const TwoFactorAuthRoute();
+
+  @override
+  String get location => GoRouteData.$location(
+        '/two-factor-auth',
       );
 
   @override

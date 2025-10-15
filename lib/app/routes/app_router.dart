@@ -15,6 +15,9 @@ import 'package:promoruta/presentation/advertiser/advertiser_home_screen.dart';
 import 'package:promoruta/presentation/advertiser/pages/advertiser_security_settings_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/language_settings_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/user_profile_page.dart';
+import 'package:promoruta/presentation/advertiser/pages/payment_methods_page.dart';
+import 'package:promoruta/presentation/advertiser/pages/change_password_page.dart';
+import 'package:promoruta/presentation/advertiser/pages/two_factor_auth_page.dart';
 import 'package:promoruta/shared/shared.dart';
 
 part 'app_router.g.dart';
@@ -116,6 +119,42 @@ class UserProfileRoute extends GoRouteData with _$UserProfileRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const UserProfilePage();
+  }
+}
+
+@TypedGoRoute<PaymentMethodsRoute>(
+  path: '/payment-methods',
+)
+class PaymentMethodsRoute extends GoRouteData with _$PaymentMethodsRoute {
+  const PaymentMethodsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const PaymentMethodsPage();
+  }
+}
+
+@TypedGoRoute<ChangePasswordRoute>(
+  path: '/change-password',
+)
+class ChangePasswordRoute extends GoRouteData with _$ChangePasswordRoute {
+  const ChangePasswordRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ChangePasswordPage();
+  }
+}
+
+@TypedGoRoute<TwoFactorAuthRoute>(
+  path: '/two-factor-auth',
+)
+class TwoFactorAuthRoute extends GoRouteData with _$TwoFactorAuthRoute {
+  const TwoFactorAuthRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const TwoFactorAuthPage();
   }
 }
 
