@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:ui';
 import 'package:promoruta/core/core.dart' as model;
 import 'package:promoruta/core/models/user.dart';
 import 'package:promoruta/features/auth/choose_role.dart';
@@ -136,8 +137,24 @@ class AdvertiserSecuritySettingsRoute extends GoRouteData with _$AdvertiserSecur
   const AdvertiserSecuritySettingsRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const SecuritySettingsPage();
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage(
+      key: state.pageKey,
+      child: const SecuritySettingsPage(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(1.0, 0.0);
+        const end = Offset.zero;
+        const curve = Curves.easeInOut;
+
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var offsetAnimation = animation.drive(tween);
+
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
+      },
+    );
   }
 }
 
