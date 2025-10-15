@@ -12,6 +12,7 @@ import 'package:promoruta/features/auth/start_page.dart';
 import 'package:promoruta/presentation/home_screen.dart';
 import 'package:promoruta/presentation/promotor/promoter_home_screen.dart';
 import 'package:promoruta/presentation/advertiser/advertiser_home_screen.dart';
+import 'package:promoruta/presentation/advertiser/pages/advertiser_security_settings_page.dart';
 import 'package:promoruta/shared/shared.dart';
 
 part 'app_router.g.dart';
@@ -125,6 +126,18 @@ class AdvertiserHomeRoute extends GoRouteData with _$AdvertiserHomeRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const AdvertiserHomeScreen();
+  }
+}
+
+@TypedGoRoute<AdvertiserSecuritySettingsRoute>(
+  path: '/advertiser-security-settings',
+)
+class AdvertiserSecuritySettingsRoute extends GoRouteData with _$AdvertiserSecuritySettingsRoute {
+  const AdvertiserSecuritySettingsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const SecuritySettingsPage();
   }
 }
 

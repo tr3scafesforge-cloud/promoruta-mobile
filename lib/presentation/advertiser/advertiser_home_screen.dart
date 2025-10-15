@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:promoruta/app/routes/app_router.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/presentation/advertiser/pages/user_profile_page.dart';
@@ -125,6 +126,7 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
                   isDark ? ThemeMode.dark : ThemeMode.light,
                 );
           },
+          onTapSecurity: () => const AdvertiserSecuritySettingsRoute().go(context),
           onTapLanguage: () => Navigator.push(
             context,
             MaterialPageRoute(
