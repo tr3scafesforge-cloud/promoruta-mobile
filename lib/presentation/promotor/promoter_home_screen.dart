@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/presentation/promotor/pages/promoter_profile_page.dart';
 import 'package:promoruta/presentation/promotor/pages/promoter_home_page.dart';
 import 'package:promoruta/presentation/promotor/pages/promoter_nearby_page.dart';
@@ -20,7 +21,7 @@ class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
 
   // If your design uses a specific orange for promoter, set it here.
   // Swap this for a constant in your theme if you have one.
-  static const Color _accent = Color(0xFFFF7A1A);
+  static const Color _accent = AppColors.deepOrange;
 
   @override
   Widget build(BuildContext context) {

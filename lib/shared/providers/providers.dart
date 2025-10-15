@@ -223,7 +223,7 @@ final themeModeProvider = StateNotifierProvider<ThemeModeNotifier, ThemeMode>((r
 final lightThemeProvider = Provider<ThemeData>((ref) {
   final authState = ref.watch(authStateProvider);
   final seedColor = authState.maybeWhen(
-    data: (user) => user?.role == model.UserRole.promoter ? AppColors.deepOrange : AppColors.primary,
+    data: (user) => user?.role == model.UserRole.promoter ? AppColors.primary : AppColors.primary,
     orElse: () => AppColors.primary,
   );
   return AppTheme.lightTheme(seedColor);
@@ -232,7 +232,7 @@ final lightThemeProvider = Provider<ThemeData>((ref) {
 final darkThemeProvider = Provider<ThemeData>((ref) {
   final authState = ref.watch(authStateProvider);
   final seedColor = authState.maybeWhen(
-    data: (user) => user?.role == model.UserRole.promoter ? AppColors.deepOrange : AppColors.primary,
+    data: (user) => user?.role == model.UserRole.promoter ? AppColors.primary : AppColors.primary,
     orElse: () => AppColors.primary,
   );
   return AppTheme.darkTheme(seedColor);
