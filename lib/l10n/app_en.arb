@@ -614,5 +614,21 @@
   "errorChangingPassword": "Error changing password",
   "@errorChangingPassword": {
     "description": "Error message prefix when password change fails"
+  },
+  "currentPasswordIncorrect": "Current password is incorrect. Please try again.",
+  "@currentPasswordIncorrect": {
+    "description": "Error message when current password is wrong (401)"
+  },
+  "invalidPasswordFormat": "Invalid password format. Please check your input.",
+  "@invalidPasswordFormat": {
+    "description": "Error message for validation errors (422)"
+  },
+  "unableToChangePassword": "Unable to change password. Please try again later.",
+  "@unableToChangePassword": {
+    "description": "Generic error message for password change failures"
+  },
+  "networkErrorPasswordChange": "Network error. Please check your connection and try again.",
+  "@networkErrorPasswordChange": {
+    "description": "Error message for network issues during password change"
   }
 }

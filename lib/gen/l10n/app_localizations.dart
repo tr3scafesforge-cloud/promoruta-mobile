@@ -987,6 +987,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error changing password'**
   String get errorChangingPassword;
+
+  /// Error message when current password is wrong (401)
+  ///
+  /// In en, this message translates to:
+  /// **'Current password is incorrect. Please try again.'**
+  String get currentPasswordIncorrect;
+
+  /// Error message for validation errors (422)
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid password format. Please check your input.'**
+  String get invalidPasswordFormat;
+
+  /// Generic error message for password change failures
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to change password. Please try again later.'**
+  String get unableToChangePassword;
+
+  /// Error message for network issues during password change
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Please check your connection and try again.'**
+  String get networkErrorPasswordChange;
 }
 
 class _AppLocalizationsDelegate

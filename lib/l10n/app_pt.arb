@@ -614,5 +614,21 @@
   "errorChangingPassword": "Erro ao alterar senha",
   "@errorChangingPassword": {
     "description": "Error message prefix when password change fails"
+  },
+  "currentPasswordIncorrect": "A senha atual está incorreta. Por favor, tente novamente.",
+  "@currentPasswordIncorrect": {
+    "description": "Error message when current password is wrong (401)"
+  },
+  "invalidPasswordFormat": "Formato de senha inválido. Por favor, verifique sua entrada.",
+  "@invalidPasswordFormat": {
+    "description": "Error message for validation errors (422)"
+  },
+  "unableToChangePassword": "Não foi possível alterar a senha. Por favor, tente novamente mais tarde.",
+  "@unableToChangePassword": {
+    "description": "Generic error message for password change failures"
+  },
+  "networkErrorPasswordChange": "Erro de rede. Por favor, verifique sua conexão e tente novamente.",
+  "@networkErrorPasswordChange": {
+    "description": "Error message for network issues during password change"
   }
 }

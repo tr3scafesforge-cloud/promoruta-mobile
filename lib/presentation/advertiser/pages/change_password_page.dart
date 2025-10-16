@@ -207,8 +207,27 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
     } catch (e) {
       if (mounted) {
         final notificationService = ref.read(notificationServiceProvider);
+        // Extract user-friendly message from exception
+        String errorMessage = l10n.errorChangingPassword;
+        if (e is Exception && e.toString().contains('Exception: ')) {
+          final message = e.toString().split('Exception: ').last;
+          if (message.isNotEmpty && !message.contains('Network error:') && !message.contains('DioException')) {
+            // Check if it's a localization key
+            if (message == 'currentPasswordIncorrect') {
+              errorMessage = l10n.currentPasswordIncorrect;
+            } else if (message == 'invalidPasswordFormat') {
+              errorMessage = l10n.invalidPasswordFormat;
+            } else if (message == 'unableToChangePassword') {
+              errorMessage = l10n.unableToChangePassword;
+            } else if (message == 'networkErrorPasswordChange') {
+              errorMessage = l10n.networkErrorPasswordChange;
+            } else {
+              errorMessage = message;
+            }
+          }
+        }
         notificationService.showToast(
-          '${l10n.errorChangingPassword} $e',
+          errorMessage,
           type: ToastType.error,
           context: context,
         );

@@ -85,7 +85,7 @@ final authLocalDataSourceProvider = Provider<AuthLocalDataSource>((ref) {
 final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {
   final dio = ref.watch(dioProvider);
   final localDataSource = ref.watch(authLocalDataSourceProvider);
-  return AuthRemoteDataSourceImpl(dio: dio, localDataSource: localDataSource);
+  return AuthRemoteDataSourceImpl(dio: dio, localDataSource: localDataSource, context: AppRouter.navigatorKey.currentContext!);
 });
 
 final campaignLocalDataSourceProvider = Provider<CampaignLocalDataSource>((ref) {

@@ -475,4 +475,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorChangingPassword => 'Error changing password';
+
+  @override
+  String get currentPasswordIncorrect =>
+      'Current password is incorrect. Please try again.';
+
+  @override
+  String get invalidPasswordFormat =>
+      'Invalid password format. Please check your input.';
+
+  @override
+  String get unableToChangePassword =>
+      'Unable to change password. Please try again later.';
+
+  @override
+  String get networkErrorPasswordChange =>
+      'Network error. Please check your connection and try again.';
 }

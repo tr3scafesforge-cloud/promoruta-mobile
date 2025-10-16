@@ -477,4 +477,20 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get errorChangingPassword => 'Erro ao alterar senha';
+
+  @override
+  String get currentPasswordIncorrect =>
+      'A senha atual está incorreta. Por favor, tente novamente.';
+
+  @override
+  String get invalidPasswordFormat =>
+      'Formato de senha inválido. Por favor, verifique sua entrada.';
+
+  @override
+  String get unableToChangePassword =>
+      'Não foi possível alterar a senha. Por favor, tente novamente mais tarde.';
+
+  @override
+  String get networkErrorPasswordChange =>
+      'Erro de rede. Por favor, verifique sua conexão e tente novamente.';
 }

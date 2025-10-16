@@ -1,15 +1,19 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:promoruta/core/core.dart';
+import 'package:promoruta/core/utils/logger.dart';
 
 import '../../repositories/auth_repository.dart';
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final Dio dio;
   final AuthLocalDataSource _localDataSource;
+  final BuildContext context;
 
   AuthRemoteDataSourceImpl({
     required this.dio,
     required AuthLocalDataSource localDataSource,
+    required this.context,
   }) : _localDataSource = localDataSource;
 
   @override
@@ -125,7 +129,35 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         options: Options(headers: headers),
       );
     } on DioException catch (e) {
-      throw Exception('Network error: ${e.message}');
+      AppLogger.auth.e('Change password failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+
+      // Handle different error codes with user-friendly messages
+      if (e.response != null) {
+        final statusCode = e.response!.statusCode;
+        final responseData = e.response!.data;
+
+        switch (statusCode) {
+          case 401:
+            throw Exception('currentPasswordIncorrect');
+          case 422:
+            // Handle validation errors
+            if (responseData is Map && responseData.containsKey('errors')) {
+              final errors = responseData['errors'] as Map?;
+              if (errors != null && errors.isNotEmpty) {
+                final firstError = errors.values.first;
+                if (firstError is List && firstError.isNotEmpty) {
+                  throw Exception(firstError.first.toString());
+                }
+              }
+            }
+            throw Exception('invalidPasswordFormat');
+          default:
+            throw Exception('unableToChangePassword');
+        }
+      } else {
+        // Network or other Dio errors
+        throw Exception('networkErrorPasswordChange');
+      }
     }
   }
 }
