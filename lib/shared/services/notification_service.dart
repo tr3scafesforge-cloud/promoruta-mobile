@@ -26,7 +26,7 @@ abstract class NotificationService {
   /// Shows a toast notification
   void showToast(String message, {
     ToastType type = ToastType.info,
-    BuildContext? context,
+    required BuildContext context,
   });
 
   /// Shows a dialog notification
@@ -34,6 +34,6 @@ abstract class NotificationService {
     String title,
     String message, {
     List<DialogAction> actions = const [],
-    BuildContext? context,
+    required BuildContext context,
   });
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/shared/services/notification_service.dart';
+import 'package:toastification/toastification.dart';
 
 /// Implementation of NotificationService using overlay entries
 class OverlayNotificationService implements NotificationService {
@@ -11,55 +12,34 @@ class OverlayNotificationService implements NotificationService {
   void showToast(
     String message, {
     ToastType type = ToastType.info,
-    BuildContext? context,
+    required BuildContext context,
   }) {
-    final targetContext = context ?? navigatorKey.currentContext;
-    if (targetContext == null) return;
-
-    // Use ScaffoldMessenger for toasts as it's more reliable
-    ScaffoldMessenger.of(targetContext).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            Icon(_getIconForType(type), color: Colors.white),
-            const SizedBox(width: 8),
-            Expanded(child: Text(message)),
-          ],
-        ),
-        backgroundColor: _getColorForType(type, targetContext),
-        duration: const Duration(seconds: 3),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
+    // Use toastification for enhanced toast notifications
+    toastification.show(
+      context: context,
+      type: _getToastificationType(type),
+      style: ToastificationStyle.flat,
+      title: Text(message),
+      alignment: Alignment.topCenter,
+      autoCloseDuration: const Duration(seconds: 3),
+      borderRadius: BorderRadius.circular(8),
+      showProgressBar: false,
+      closeButtonShowType: CloseButtonShowType.none,
+      dragToClose: true,
     );
   }
 
-  IconData _getIconForType(ToastType type) {
+  ToastificationType _getToastificationType(ToastType type) {
     switch (type) {
       case ToastType.success:
-        return Icons.check_circle;
+        return ToastificationType.success;
       case ToastType.error:
-        return Icons.error;
+        return ToastificationType.error;
       case ToastType.warning:
-        return Icons.warning;
+        return ToastificationType.warning;
       case ToastType.info:
-        return Icons.info;
-    }
-  }
-
-  Color _getColorForType(ToastType type, BuildContext context) {
-    final theme = Theme.of(context);
-    switch (type) {
-      case ToastType.success:
-        return Colors.green;
-      case ToastType.error:
-        return theme.colorScheme.error;
-      case ToastType.warning:
-        return Colors.orange;
-      case ToastType.info:
-        return theme.colorScheme.primary;
+      default:
+        return ToastificationType.info;
     }
   }
 
@@ -68,13 +48,10 @@ class OverlayNotificationService implements NotificationService {
     String title,
     String message, {
     List<DialogAction> actions = const [],
-    BuildContext? context,
+    required BuildContext context,
   }) async {
-    final targetContext = context ?? navigatorKey.currentContext;
-    if (targetContext == null) return;
-
     await showAdaptiveDialog(
-      context: targetContext,
+      context: context,
       builder: (context) => AlertDialog.adaptive(
         title: Text(title),
         content: Text(message),

@@ -200,6 +200,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
         notificationService.showToast(
           l10n.passwordChangedSuccessfully,
           type: ToastType.success,
+          context: context,
         );
         context.pop();
       }
@@ -209,6 +210,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
         notificationService.showToast(
           '${l10n.errorChangingPassword} $e',
           type: ToastType.error,
+          context: context,
         );
       }
     } finally {

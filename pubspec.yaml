@@ -52,6 +52,7 @@ dependencies:
   path: ^1.9.0
   logger: ^2.0.2
   flutter_launcher_icons: ^0.14.4
+  toastification: ^3.0.3
 
 dev_dependencies:
   flutter_test:
