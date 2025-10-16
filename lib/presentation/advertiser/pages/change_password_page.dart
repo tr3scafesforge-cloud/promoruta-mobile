@@ -5,6 +5,7 @@ import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
 import 'package:promoruta/shared/use_cases/auth_use_cases.dart';
+import 'package:promoruta/shared/services/notification_service.dart';
 
 class ChangePasswordPage extends ConsumerStatefulWidget {
   const ChangePasswordPage({super.key});
@@ -195,15 +196,19 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
       ));
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.passwordChangedSuccessfully)),
+        final notificationService = ref.read(notificationServiceProvider);
+        notificationService.showToast(
+          l10n.passwordChangedSuccessfully,
+          type: ToastType.success,
         );
         context.pop();
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${l10n.errorChangingPassword} $e')),
+        final notificationService = ref.read(notificationServiceProvider);
+        notificationService.showToast(
+          '${l10n.errorChangingPassword} $e',
+          type: ToastType.error,
         );
       }
     } finally {

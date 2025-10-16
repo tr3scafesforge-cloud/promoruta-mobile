@@ -10,6 +10,9 @@ import 'package:promoruta/core/models/config.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/core/theme.dart';
 import 'package:promoruta/shared/use_cases/auth_use_cases.dart';
+import 'package:promoruta/app/routes/app_router.dart';
+import 'package:promoruta/shared/services/notification_service.dart';
+import 'package:promoruta/shared/services/overlay_notification_service.dart';
 
 
 // Database provider
@@ -247,6 +250,11 @@ final darkThemeProvider = Provider<ThemeData>((ref) {
 // Locale provider
 final localeProvider = StateNotifierProvider<LocaleNotifier, Locale>((ref) {
   return LocaleNotifier();
+});
+
+// Notification service provider
+final notificationServiceProvider = Provider<NotificationService>((ref) {
+  return OverlayNotificationService(AppRouter.navigatorKey);
 });
 
 class ThemeModeNotifier extends StateNotifier<ThemeMode> {

@@ -245,8 +245,11 @@ class AdvertiserSecuritySettingsRoute extends GoRouteData with _$AdvertiserSecur
 }
 
 class AppRouter {
+  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
   static final GoRouter router = GoRouter(
     initialLocation: '/',
+    navigatorKey: navigatorKey,
     routes: $appRoutes, // This will be generated
   );
 }
