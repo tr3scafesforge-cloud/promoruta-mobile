@@ -150,7 +150,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get passwordMinLength =>
-      'La contraseña debe tener al menos 6 caracteres';
+      'La contraseña debe tener al menos 8 caracteres';
 
   @override
   String get forgotPassword => '¿Olvidaste tu contraseña?';
@@ -443,4 +443,39 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get twoFactorAuth => 'Autenticación de dos factores';
+
+  @override
+  String get currentPassword => 'Contraseña actual';
+
+  @override
+  String get newPassword => 'Nueva contraseña';
+
+  @override
+  String get confirmNewPassword => 'Confirmar nueva contraseña';
+
+  @override
+  String get currentPasswordRequired => 'La contraseña actual es requerida';
+
+  @override
+  String get newPasswordRequired => 'La nueva contraseña es requerida';
+
+  @override
+  String get confirmPasswordRequired =>
+      'La confirmación de contraseña es requerida';
+
+  @override
+  String get passwordsDoNotMatch => 'Las contraseñas no coinciden';
+
+  @override
+  String get confirmPasswordChange => 'Confirmar cambio de contraseña';
+
+  @override
+  String get confirmPasswordChangeMessage =>
+      '¿Estás seguro de que deseas cambiar tu contraseña? Esta acción no se puede deshacer.';
+
+  @override
+  String get passwordChangedSuccessfully => 'Contraseña cambiada exitosamente';
+
+  @override
+  String get errorChangingPassword => 'Error al cambiar contraseña';
 }

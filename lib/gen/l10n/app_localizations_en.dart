@@ -148,7 +148,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseEnterPassword => 'Please enter your password';
 
   @override
-  String get passwordMinLength => 'Password must be at least 6 characters';
+  String get passwordMinLength => 'Password must be at least 8 characters';
 
   @override
   String get forgotPassword => 'Forgot your password?';
@@ -441,4 +441,38 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get twoFactorAuth => 'Two-Factor Authentication';
+
+  @override
+  String get currentPassword => 'Current password';
+
+  @override
+  String get newPassword => 'New password';
+
+  @override
+  String get confirmNewPassword => 'Confirm new password';
+
+  @override
+  String get currentPasswordRequired => 'Current password is required';
+
+  @override
+  String get newPasswordRequired => 'New password is required';
+
+  @override
+  String get confirmPasswordRequired => 'Password confirmation is required';
+
+  @override
+  String get passwordsDoNotMatch => 'Passwords do not match';
+
+  @override
+  String get confirmPasswordChange => 'Confirm password change';
+
+  @override
+  String get confirmPasswordChangeMessage =>
+      'Are you sure you want to change your password? This action cannot be undone.';
+
+  @override
+  String get passwordChangedSuccessfully => 'Password changed successfully';
+
+  @override
+  String get errorChangingPassword => 'Error changing password';
 }

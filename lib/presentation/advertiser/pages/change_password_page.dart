@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
 import 'package:promoruta/shared/use_cases/auth_use_cases.dart';
 
@@ -32,6 +33,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     const bg = Color(0xFFF3F5F7);
 
     return Scaffold(
@@ -60,13 +62,13 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                       children: [
                         _PasswordField(
                           controller: _currentPasswordController,
-                          label: 'Contraseña actual',
+                          label: l10n.currentPassword,
                           obscureText: _obscureCurrent,
                           onToggleVisibility: () => setState(
                               () => _obscureCurrent = !_obscureCurrent),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'La contraseña actual es requerida';
+                              return l10n.currentPasswordRequired;
                             }
                             return null;
                           },
@@ -74,16 +76,16 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                         const _RowDivider(),
                         _PasswordField(
                           controller: _newPasswordController,
-                          label: 'Nueva contraseña',
+                          label: l10n.newPassword,
                           obscureText: _obscureNew,
                           onToggleVisibility: () =>
                               setState(() => _obscureNew = !_obscureNew),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'La nueva contraseña es requerida';
+                              return l10n.newPasswordRequired;
                             }
                             if (value.length < 8) {
-                              return 'La contraseña debe tener al menos 8 caracteres';
+                              return l10n.passwordMinLength;
                             }
                             return null;
                           },
@@ -91,16 +93,16 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                         const _RowDivider(),
                         _PasswordField(
                           controller: _confirmPasswordController,
-                          label: 'Confirmar nueva contraseña',
+                          label: l10n.confirmNewPassword,
                           obscureText: _obscureConfirm,
                           onToggleVisibility: () => setState(
                               () => _obscureConfirm = !_obscureConfirm),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'La confirmación de contraseña es requerida';
+                              return l10n.confirmPasswordRequired;
                             }
                             if (value != _newPasswordController.text) {
-                              return 'Las contraseñas no coinciden';
+                              return l10n.passwordsDoNotMatch;
                             }
                             return null;
                           },
@@ -135,7 +137,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                                 AlwaysStoppedAnimation<Color>(Colors.white),
                           ),
                         )
-                      : const Text('Cambiar Contraseña'),
+                      : Text(l10n.changePassword),
                 ),
               ),
             ),
@@ -146,64 +148,66 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
   }
 
   Future<void> _showConfirmationDialog() async {
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Confirmar cambio de contraseña'),
-          content: const Text(
-            '¿Estás seguro de que deseas cambiar tu contraseña? Esta acción no se puede deshacer.',
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Cancelar'),
-            ),
-            FilledButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              style: FilledButton.styleFrom(
-                backgroundColor: const Color(0xFF11A192),
+    // Validate form before showing dialog
+    if (_formKey.currentState?.validate() ?? false) {
+      final l10n = AppLocalizations.of(context);
+      final result = await showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(l10n.confirmPasswordChange),
+            content: Text(l10n.confirmPasswordChangeMessage),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text(l10n.cancel),
               ),
-              child: const Text('Confirmar'),
-            ),
-          ],
-        );
-      },
-    );
+              FilledButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                style: FilledButton.styleFrom(
+                  backgroundColor: const Color(0xFF11A192),
+                ),
+                child: Text(l10n.confirm),
+              ),
+            ],
+          );
+        },
+      );
 
-    if (result == true) {
-      await _changePassword();
+      if (result == true) {
+        await _changePassword();
+      }
     }
   }
 
   Future<void> _changePassword() async {
-    if (_formKey.currentState?.validate() ?? false) {
-      setState(() => _isLoading = true);
+    final l10n = AppLocalizations.of(context);
+    // Form validation is already done in _showConfirmationDialog
+    setState(() => _isLoading = true);
 
-      try {
-        final changePasswordUseCase = ref.read(changePasswordUseCaseProvider);
-        await changePasswordUseCase(ChangePasswordParams(
-          currentPassword: _currentPasswordController.text,
-          newPassword: _newPasswordController.text,
-          newPasswordConfirmation: _confirmPasswordController.text,
-        ));
+    try {
+      final changePasswordUseCase = ref.read(changePasswordUseCaseProvider);
+      await changePasswordUseCase(ChangePasswordParams(
+        currentPassword: _currentPasswordController.text,
+        newPassword: _newPasswordController.text,
+        newPasswordConfirmation: _confirmPasswordController.text,
+      ));
 
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Contraseña cambiada exitosamente')),
-          );
-          context.pop();
-        }
-      } catch (e) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error al cambiar contraseña: $e')),
-          );
-        }
-      } finally {
-        if (mounted) {
-          setState(() => _isLoading = false);
-        }
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.passwordChangedSuccessfully)),
+        );
+        context.pop();
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${l10n.errorChangingPassword} $e')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
       }
     }
   }

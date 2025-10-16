@@ -361,7 +361,7 @@ abstract class AppLocalizations {
   /// Validation message for short password
   ///
   /// In en, this message translates to:
-  /// **'Password must be at least 6 characters'**
+  /// **'Password must be at least 8 characters'**
   String get passwordMinLength;
 
   /// Forgot password link text
@@ -910,7 +910,7 @@ abstract class AppLocalizations {
   /// **'Payment Methods'**
   String get paymentMethods;
 
-  /// Label for change password option in security settings
+  /// Button text to change password
   ///
   /// In en, this message translates to:
   /// **'Change Password'**
@@ -921,6 +921,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Two-Factor Authentication'**
   String get twoFactorAuth;
+
+  /// Label for current password field
+  ///
+  /// In en, this message translates to:
+  /// **'Current password'**
+  String get currentPassword;
+
+  /// Label for new password field
+  ///
+  /// In en, this message translates to:
+  /// **'New password'**
+  String get newPassword;
+
+  /// Label for confirm new password field
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm new password'**
+  String get confirmNewPassword;
+
+  /// Validation message for empty current password
+  ///
+  /// In en, this message translates to:
+  /// **'Current password is required'**
+  String get currentPasswordRequired;
+
+  /// Validation message for empty new password
+  ///
+  /// In en, this message translates to:
+  /// **'New password is required'**
+  String get newPasswordRequired;
+
+  /// Validation message for empty password confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Password confirmation is required'**
+  String get confirmPasswordRequired;
+
+  /// Validation message when passwords don't match
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwordsDoNotMatch;
+
+  /// Title for password change confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm password change'**
+  String get confirmPasswordChange;
+
+  /// Message for password change confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to change your password? This action cannot be undone.'**
+  String get confirmPasswordChangeMessage;
+
+  /// Success message when password is changed
+  ///
+  /// In en, this message translates to:
+  /// **'Password changed successfully'**
+  String get passwordChangedSuccessfully;
+
+  /// Error message prefix when password change fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error changing password'**
+  String get errorChangingPassword;
 }
 
 class _AppLocalizationsDelegate

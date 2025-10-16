@@ -562,5 +562,57 @@
   "twoFactorAuth": "Two-Factor Authentication",
   "@twoFactorAuth": {
     "description": "Label for two-factor authentication option in security settings"
+  },
+  "currentPassword": "Current password",
+  "@currentPassword": {
+    "description": "Label for current password field"
+  },
+  "newPassword": "New password",
+  "@newPassword": {
+    "description": "Label for new password field"
+  },
+  "confirmNewPassword": "Confirm new password",
+  "@confirmNewPassword": {
+    "description": "Label for confirm new password field"
+  },
+  "currentPasswordRequired": "Current password is required",
+  "@currentPasswordRequired": {
+    "description": "Validation message for empty current password"
+  },
+  "newPasswordRequired": "New password is required",
+  "@newPasswordRequired": {
+    "description": "Validation message for empty new password"
+  },
+  "passwordMinLength": "Password must be at least 8 characters",
+  "@passwordMinLength": {
+    "description": "Validation message for short password"
+  },
+  "confirmPasswordRequired": "Password confirmation is required",
+  "@confirmPasswordRequired": {
+    "description": "Validation message for empty password confirmation"
+  },
+  "passwordsDoNotMatch": "Passwords do not match",
+  "@passwordsDoNotMatch": {
+    "description": "Validation message when passwords don't match"
+  },
+  "changePassword": "Change Password",
+  "@changePassword": {
+    "description": "Button text to change password"
+  },
+  "confirmPasswordChange": "Confirm password change",
+  "@confirmPasswordChange": {
+    "description": "Title for password change confirmation dialog"
+  },
+  "confirmPasswordChangeMessage": "Are you sure you want to change your password? This action cannot be undone.",
+  "@confirmPasswordChangeMessage": {
+    "description": "Message for password change confirmation dialog"
+  },
+  "passwordChangedSuccessfully": "Password changed successfully",
+  "@passwordChangedSuccessfully": {
+    "description": "Success message when password is changed"
+  },
+  "errorChangingPassword": "Error changing password",
+  "@errorChangingPassword": {
+    "description": "Error message prefix when password change fails"
   }
 }

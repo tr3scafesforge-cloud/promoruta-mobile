@@ -149,7 +149,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get pleaseEnterPassword => 'Por favor, digite sua senha';
 
   @override
-  String get passwordMinLength => 'A senha deve ter pelo menos 6 caracteres';
+  String get passwordMinLength => 'A senha deve ter pelo menos 8 caracteres';
 
   @override
   String get forgotPassword => 'Esqueceu sua senha?';
@@ -443,4 +443,38 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get twoFactorAuth => 'Autenticação de Dois Fatores';
+
+  @override
+  String get currentPassword => 'Senha atual';
+
+  @override
+  String get newPassword => 'Nova senha';
+
+  @override
+  String get confirmNewPassword => 'Confirmar nova senha';
+
+  @override
+  String get currentPasswordRequired => 'A senha atual é obrigatória';
+
+  @override
+  String get newPasswordRequired => 'A nova senha é obrigatória';
+
+  @override
+  String get confirmPasswordRequired => 'A confirmação da senha é obrigatória';
+
+  @override
+  String get passwordsDoNotMatch => 'As senhas não coincidem';
+
+  @override
+  String get confirmPasswordChange => 'Confirmar alteração de senha';
+
+  @override
+  String get confirmPasswordChangeMessage =>
+      'Tem certeza de que deseja alterar sua senha? Esta ação não pode ser desfeita.';
+
+  @override
+  String get passwordChangedSuccessfully => 'Senha alterada com sucesso';
+
+  @override
+  String get errorChangingPassword => 'Erro ao alterar senha';
 }

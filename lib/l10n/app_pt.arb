@@ -562,5 +562,57 @@
   "twoFactorAuth": "Autenticação de Dois Fatores",
   "@twoFactorAuth": {
     "description": "Label for two-factor authentication option in security settings"
+  },
+  "currentPassword": "Senha atual",
+  "@currentPassword": {
+    "description": "Label for current password field"
+  },
+  "newPassword": "Nova senha",
+  "@newPassword": {
+    "description": "Label for new password field"
+  },
+  "confirmNewPassword": "Confirmar nova senha",
+  "@confirmNewPassword": {
+    "description": "Label for confirm new password field"
+  },
+  "currentPasswordRequired": "A senha atual é obrigatória",
+  "@currentPasswordRequired": {
+    "description": "Validation message for empty current password"
+  },
+  "newPasswordRequired": "A nova senha é obrigatória",
+  "@newPasswordRequired": {
+    "description": "Validation message for empty new password"
+  },
+  "passwordMinLength": "A senha deve ter pelo menos 8 caracteres",
+  "@passwordMinLength": {
+    "description": "Validation message for short password"
+  },
+  "confirmPasswordRequired": "A confirmação da senha é obrigatória",
+  "@confirmPasswordRequired": {
+    "description": "Validation message for empty password confirmation"
+  },
+  "passwordsDoNotMatch": "As senhas não coincidem",
+  "@passwordsDoNotMatch": {
+    "description": "Validation message when passwords don't match"
+  },
+  "changePassword": "Alterar Senha",
+  "@changePassword": {
+    "description": "Button text to change password"
+  },
+  "confirmPasswordChange": "Confirmar alteração de senha",
+  "@confirmPasswordChange": {
+    "description": "Title for password change confirmation dialog"
+  },
+  "confirmPasswordChangeMessage": "Tem certeza de que deseja alterar sua senha? Esta ação não pode ser desfeita.",
+  "@confirmPasswordChangeMessage": {
+    "description": "Message for password change confirmation dialog"
+  },
+  "passwordChangedSuccessfully": "Senha alterada com sucesso",
+  "@passwordChangedSuccessfully": {
+    "description": "Success message when password is changed"
+  },
+  "errorChangingPassword": "Erro ao alterar senha",
+  "@errorChangingPassword": {
+    "description": "Error message prefix when password change fails"
   }
 }
