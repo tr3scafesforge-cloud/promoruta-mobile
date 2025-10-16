@@ -105,4 +105,27 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       throw Exception('Network error: ${e.message}');
     }
   }
+
+  @override
+  Future<void> changePassword(String currentPassword, String newPassword, String newPasswordConfirmation) async {
+    try {
+      final user = await _localDataSource.getUser();
+      final headers = <String, String>{};
+      if (user?.accessToken != null) {
+        headers['Authorization'] = 'Bearer ${user!.accessToken}';
+      }
+
+      await dio.post(
+        '/auth/change-password',
+        data: {
+          'current_password': currentPassword,
+          'new_password': newPassword,
+          'new_password_confirmation': newPasswordConfirmation,
+        },
+        options: Options(headers: headers),
+      );
+    } on DioException catch (e) {
+      throw Exception('Network error: ${e.message}');
+    }
+  }
 }

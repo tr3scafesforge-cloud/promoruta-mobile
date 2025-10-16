@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:promoruta/shared/shared.dart';
+import 'package:promoruta/shared/use_cases/auth_use_cases.dart';
 
-class ChangePasswordPage extends StatefulWidget {
+class ChangePasswordPage extends ConsumerStatefulWidget {
   const ChangePasswordPage({super.key});
 
   @override
-  State<ChangePasswordPage> createState() => _ChangePasswordPageState();
+  ConsumerState<ChangePasswordPage> createState() => _ChangePasswordPageState();
 }
 
-class _ChangePasswordPageState extends State<ChangePasswordPage> {
+class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
   final _formKey = GlobalKey<FormState>();
   final _currentPasswordController = TextEditingController();
   final _newPasswordController = TextEditingController();
@@ -17,6 +20,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   bool _obscureCurrent = true;
   bool _obscureNew = true;
   bool _obscureConfirm = true;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -99,7 +103,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               SizedBox(
                 width: double.infinity,
                 child: FilledButton(
-                  onPressed: _changePassword,
+                  onPressed: _isLoading ? null : _changePassword,
                   style: FilledButton.styleFrom(
                     backgroundColor: const Color(0xFF11A192),
                     foregroundColor: Colors.white,
@@ -108,7 +112,16 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text('Cambiar Contraseña'),
+                  child: _isLoading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
+                        )
+                      : const Text('Cambiar Contraseña'),
                 ),
               ),
             ],
@@ -118,13 +131,35 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     );
   }
 
-  void _changePassword() {
+  Future<void> _changePassword() async {
     if (_formKey.currentState?.validate() ?? false) {
-      // TODO: Implement password change logic
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Contraseña cambiada exitosamente')),
-      );
-      context.pop();
+      setState(() => _isLoading = true);
+
+      try {
+        final changePasswordUseCase = ref.read(changePasswordUseCaseProvider);
+        await changePasswordUseCase(ChangePasswordParams(
+          currentPassword: _currentPasswordController.text,
+          newPassword: _newPasswordController.text,
+          newPasswordConfirmation: _confirmPasswordController.text,
+        ));
+
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Contraseña cambiada exitosamente')),
+          );
+          context.pop();
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error al cambiar contraseña: $e')),
+          );
+        }
+      } finally {
+        if (mounted) {
+          setState(() => _isLoading = false);
+        }
+      }
     }
   }
 }

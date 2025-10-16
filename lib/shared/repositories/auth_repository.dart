@@ -22,6 +22,9 @@ abstract class AuthRepository {
 
   /// Checks if user is logged in.
   Future<bool> isLoggedIn();
+
+  /// Changes the user's password.
+  Future<void> changePassword(String currentPassword, String newPassword, String newPasswordConfirmation);
 }
 
 /// Abstract local data source for authentication.
@@ -48,4 +51,7 @@ abstract class AuthRemoteDataSource {
 
   /// Logs out via API (if needed).
   Future<void> logout();
+
+  /// Changes the user's password.
+  Future<void> changePassword(String currentPassword, String newPassword, String newPasswordConfirmation);
 }

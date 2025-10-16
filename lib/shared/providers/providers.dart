@@ -9,6 +9,7 @@ import 'package:promoruta/core/core.dart' as model;
 import 'package:promoruta/core/models/config.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/core/theme.dart';
+import 'package:promoruta/shared/use_cases/auth_use_cases.dart';
 
 
 // Database provider
@@ -165,6 +166,11 @@ final gpsRepositoryProvider = Provider<GpsRepository>((ref) {
 });
 
 // Use Cases
+final changePasswordUseCaseProvider = Provider<ChangePasswordUseCase>((ref) {
+  final repository = ref.watch(authRepositoryProvider);
+  return ChangePasswordUseCase(repository);
+});
+
 final getCampaignsUseCaseProvider = Provider<GetCampaignsUseCase>((ref) {
   final repository = ref.watch(campaignRepositoryProvider);
   return GetCampaignsUseCase(repository);

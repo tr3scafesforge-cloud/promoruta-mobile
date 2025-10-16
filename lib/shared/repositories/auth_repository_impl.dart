@@ -112,4 +112,19 @@ class AuthRepositoryImpl implements AuthRepository {
     final user = await _localDataSource.getUser();
     return user != null;
   }
+
+  @override
+  Future<void> changePassword(String currentPassword, String newPassword, String newPasswordConfirmation) async {
+    final isConnected = await _connectivityService.isConnected;
+
+    if (isConnected) {
+      try {
+        await _remoteDataSource.changePassword(currentPassword, newPassword, newPasswordConfirmation);
+      } catch (e) {
+        rethrow;
+      }
+    } else {
+      throw Exception('No internet connection for password change');
+    }
+  }
 }
