@@ -1,18 +1,24 @@
+import 'package:promoruta/core/result.dart';
 import 'package:promoruta/shared/shared.dart';
 
 /// Use case for changing password
-class ChangePasswordUseCase implements UseCaseVoid<ChangePasswordParams> {
+class ChangePasswordUseCase implements UseCaseResultVoid<ChangePasswordParams> {
   final AuthRepository _repository;
 
   ChangePasswordUseCase(this._repository);
 
   @override
-  Future<void> call(ChangePasswordParams params) async {
-    return await _repository.changePassword(
-      params.currentPassword,
-      params.newPassword,
-      params.newPasswordConfirmation,
-    );
+  Future<Result<void>> call(ChangePasswordParams params) async {
+    try {
+      await _repository.changePassword(
+        params.currentPassword,
+        params.newPassword,
+        params.newPasswordConfirmation,
+      );
+      return const Result.ok(null);
+    } catch (e) {
+      return Result.error(e as Exception);
+    }
   }
 }
 

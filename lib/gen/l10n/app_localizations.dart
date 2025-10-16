@@ -1011,6 +1011,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Network error. Please check your connection and try again.'**
   String get networkErrorPasswordChange;
+
+  /// Error message for server errors (500) during password change
+  ///
+  /// In en, this message translates to:
+  /// **'Server error occurred. Please try again later.'**
+  String get serverErrorPasswordChange;
 }
 
 class _AppLocalizationsDelegate

@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:promoruta/core/core.dart';
 import 'package:promoruta/core/utils/logger.dart';
 
@@ -8,12 +7,10 @@ import '../../repositories/auth_repository.dart';
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final Dio dio;
   final AuthLocalDataSource _localDataSource;
-  final BuildContext context;
 
   AuthRemoteDataSourceImpl({
     required this.dio,
     required AuthLocalDataSource localDataSource,
-    required this.context,
   }) : _localDataSource = localDataSource;
 
   @override
@@ -126,7 +123,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           'new_password': newPassword,
           'new_password_confirmation': newPasswordConfirmation,
         },
-        options: Options(headers: headers),
+        options: Options(
+          headers: {
+            ...headers,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        ),
       );
     } on DioException catch (e) {
       AppLogger.auth.e('Change password failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
@@ -138,7 +141,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
         switch (statusCode) {
           case 401:
-            throw Exception('currentPasswordIncorrect');
+            throw Exception('Current password is incorrect. Please try again.');
           case 422:
             // Handle validation errors
             if (responseData is Map && responseData.containsKey('errors')) {
@@ -150,13 +153,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
                 }
               }
             }
-            throw Exception('invalidPasswordFormat');
+            throw Exception('Invalid password format. Please check your input.');
+          case 500:
+            throw Exception('serverErrorPasswordChange');
           default:
-            throw Exception('unableToChangePassword');
+            throw Exception('Unable to change password. Please try again later.');
         }
       } else {
         // Network or other Dio errors
-        throw Exception('networkErrorPasswordChange');
+        throw Exception('Network error. Please check your connection and try again.');
       }
     }
   }

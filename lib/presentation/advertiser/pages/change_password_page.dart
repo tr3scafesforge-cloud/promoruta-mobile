@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:promoruta/core/constants/colors.dart';
+import 'package:promoruta/core/result.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
 import 'package:promoruta/shared/use_cases/auth_use_cases.dart';
@@ -187,55 +188,54 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
     // Form validation is already done in _showConfirmationDialog
     setState(() => _isLoading = true);
 
-    try {
-      final changePasswordUseCase = ref.read(changePasswordUseCaseProvider);
-      await changePasswordUseCase(ChangePasswordParams(
-        currentPassword: _currentPasswordController.text,
-        newPassword: _newPasswordController.text,
-        newPasswordConfirmation: _confirmPasswordController.text,
-      ));
+    final changePasswordUseCase = ref.read(changePasswordUseCaseProvider);
+    final result = await changePasswordUseCase(ChangePasswordParams(
+      currentPassword: _currentPasswordController.text,
+      newPassword: _newPasswordController.text,
+      newPasswordConfirmation: _confirmPasswordController.text,
+    ));
 
-      if (mounted) {
-        final notificationService = ref.read(notificationServiceProvider);
-        notificationService.showToast(
-          l10n.passwordChangedSuccessfully,
-          type: ToastType.success,
-          context: context,
-        );
-        context.pop();
-      }
-    } catch (e) {
-      if (mounted) {
-        final notificationService = ref.read(notificationServiceProvider);
-        // Extract user-friendly message from exception
-        String errorMessage = l10n.errorChangingPassword;
-        if (e is Exception && e.toString().contains('Exception: ')) {
-          final message = e.toString().split('Exception: ').last;
-          if (message.isNotEmpty && !message.contains('Network error:') && !message.contains('DioException')) {
-            // Check if it's a localization key
-            if (message == 'currentPasswordIncorrect') {
-              errorMessage = l10n.currentPasswordIncorrect;
-            } else if (message == 'invalidPasswordFormat') {
-              errorMessage = l10n.invalidPasswordFormat;
-            } else if (message == 'unableToChangePassword') {
-              errorMessage = l10n.unableToChangePassword;
-            } else if (message == 'networkErrorPasswordChange') {
-              errorMessage = l10n.networkErrorPasswordChange;
-            } else {
-              errorMessage = message;
+    if (mounted) {
+      final notificationService = ref.read(notificationServiceProvider);
+
+      switch (result) {
+        case Ok():
+          notificationService.showToast(
+            l10n.passwordChangedSuccessfully,
+            type: ToastType.success,
+            context: context,
+          );
+          context.pop();
+        case Error():
+          String errorMessage = l10n.errorChangingPassword;
+          final exception = result.error;
+          if (exception.toString().contains('Exception: ')) {
+            final message = exception.toString().split('Exception: ').last;
+            if (message.isNotEmpty && !message.contains('Network error:') && !message.contains('DioException')) {
+              // Check if it's a hardcoded error message
+              if (message == 'Current password is incorrect. Please try again.') {
+                errorMessage = l10n.currentPasswordIncorrect;
+              } else if (message == 'Invalid password format. Please check your input.') {
+                errorMessage = l10n.invalidPasswordFormat;
+              } else if (message == 'Unable to change password. Please try again later.') {
+                errorMessage = l10n.unableToChangePassword;
+              } else if (message == 'Network error. Please check your connection and try again.') {
+                errorMessage = l10n.networkErrorPasswordChange;
+              } else if (message == 'serverErrorPasswordChange') {
+                errorMessage = l10n.serverErrorPasswordChange;
+              } else {
+                errorMessage = message;
+              }
             }
           }
-        }
-        notificationService.showToast(
-          errorMessage,
-          type: ToastType.error,
-          context: context,
-        );
+          notificationService.showToast(
+            errorMessage,
+            type: ToastType.error,
+            context: context,
+          );
       }
-    } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
+
+      setState(() => _isLoading = false);
     }
   }
 }

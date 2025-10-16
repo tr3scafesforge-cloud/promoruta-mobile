@@ -622,5 +622,9 @@
   "networkErrorPasswordChange": "Erro de rede. Por favor, verifique sua conexão e tente novamente.",
   "@networkErrorPasswordChange": {
     "description": "Error message for network issues during password change"
+  },
+  "serverErrorPasswordChange": "Ocorreu um erro do servidor. Por favor, tente novamente mais tarde.",
+  "@serverErrorPasswordChange": {
+    "description": "Error message for server errors (500) during password change"
   }
 }

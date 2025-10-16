@@ -493,4 +493,8 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get networkErrorPasswordChange =>
       'Erro de rede. Por favor, verifique sua conexão e tente novamente.';
+
+  @override
+  String get serverErrorPasswordChange =>
+      'Ocorreu um erro do servidor. Por favor, tente novamente mais tarde.';
 }

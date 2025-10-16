@@ -494,4 +494,8 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get networkErrorPasswordChange =>
       'Error de red. Por favor, verifica tu conexión e inténtalo de nuevo.';
+
+  @override
+  String get serverErrorPasswordChange =>
+      'Ocurrió un error del servidor. Por favor, inténtalo de nuevo más tarde.';
 }
