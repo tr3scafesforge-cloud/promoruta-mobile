@@ -41,69 +41,82 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black87),
-          onPressed: () => context.canPop() ? context.pop() : context.go('/advertiser-security-settings'),
+          onPressed: () => context.canPop()
+              ? context.pop()
+              : context.go('/advertiser-security-settings'),
         ),
         title: const SizedBox.shrink(),
       ),
       body: SafeArea(
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
-            children: [
-              _SettingsCard(
-                children: [
-                  _PasswordField(
-                    controller: _currentPasswordController,
-                    label: 'Contraseña actual',
-                    obscureText: _obscureCurrent,
-                    onToggleVisibility: () => setState(() => _obscureCurrent = !_obscureCurrent),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'La contraseña actual es requerida';
-                      }
-                      return null;
-                    },
-                  ),
-                  const _RowDivider(),
-                  _PasswordField(
-                    controller: _newPasswordController,
-                    label: 'Nueva contraseña',
-                    obscureText: _obscureNew,
-                    onToggleVisibility: () => setState(() => _obscureNew = !_obscureNew),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'La nueva contraseña es requerida';
-                      }
-                      if (value.length < 8) {
-                        return 'La contraseña debe tener al menos 8 caracteres';
-                      }
-                      return null;
-                    },
-                  ),
-                  const _RowDivider(),
-                  _PasswordField(
-                    controller: _confirmPasswordController,
-                    label: 'Confirmar nueva contraseña',
-                    obscureText: _obscureConfirm,
-                    onToggleVisibility: () => setState(() => _obscureConfirm = !_obscureConfirm),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'La confirmación de contraseña es requerida';
-                      }
-                      if (value != _newPasswordController.text) {
-                        return 'Las contraseñas no coinciden';
-                      }
-                      return null;
-                    },
-                  ),
-                ],
+        child: Column(
+          children: [
+            Expanded(
+              child: Form(
+                key: _formKey,
+                child: ListView(
+                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+                  children: [
+                    _SettingsCard(
+                      children: [
+                        _PasswordField(
+                          controller: _currentPasswordController,
+                          label: 'Contraseña actual',
+                          obscureText: _obscureCurrent,
+                          onToggleVisibility: () => setState(
+                              () => _obscureCurrent = !_obscureCurrent),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'La contraseña actual es requerida';
+                            }
+                            return null;
+                          },
+                        ),
+                        const _RowDivider(),
+                        _PasswordField(
+                          controller: _newPasswordController,
+                          label: 'Nueva contraseña',
+                          obscureText: _obscureNew,
+                          onToggleVisibility: () =>
+                              setState(() => _obscureNew = !_obscureNew),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'La nueva contraseña es requerida';
+                            }
+                            if (value.length < 8) {
+                              return 'La contraseña debe tener al menos 8 caracteres';
+                            }
+                            return null;
+                          },
+                        ),
+                        const _RowDivider(),
+                        _PasswordField(
+                          controller: _confirmPasswordController,
+                          label: 'Confirmar nueva contraseña',
+                          obscureText: _obscureConfirm,
+                          onToggleVisibility: () => setState(
+                              () => _obscureConfirm = !_obscureConfirm),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'La confirmación de contraseña es requerida';
+                            }
+                            if (value != _newPasswordController.text) {
+                              return 'Las contraseñas no coinciden';
+                            }
+                            return null;
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 24),
-              SizedBox(
+            ),
+            Container(
+              padding: const EdgeInsets.all(16),
+              child: SizedBox(
                 width: double.infinity,
                 child: FilledButton(
-                  onPressed: _isLoading ? null : _changePassword,
+                  onPressed: _isLoading ? null : _showConfirmationDialog,
                   style: FilledButton.styleFrom(
                     backgroundColor: const Color(0xFF11A192),
                     foregroundColor: Colors.white,
@@ -118,17 +131,49 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                           width: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.white),
                           ),
                         )
                       : const Text('Cambiar Contraseña'),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  Future<void> _showConfirmationDialog() async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirmar cambio de contraseña'),
+          content: const Text(
+            '¿Estás seguro de que deseas cambiar tu contraseña? Esta acción no se puede deshacer.',
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Cancelar'),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: FilledButton.styleFrom(
+                backgroundColor: const Color(0xFF11A192),
+              ),
+              child: const Text('Confirmar'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (result == true) {
+      await _changePassword();
+    }
   }
 
   Future<void> _changePassword() async {
