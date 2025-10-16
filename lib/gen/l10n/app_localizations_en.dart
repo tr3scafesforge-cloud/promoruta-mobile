@@ -432,4 +432,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get preparingForRoute => 'Preparing for the route';
+
+  @override
+  String get paymentMethods => 'Payment Methods';
+
+  @override
+  String get changePassword => 'Change Password';
+
+  @override
+  String get twoFactorAuth => 'Two-Factor Authentication';
 }

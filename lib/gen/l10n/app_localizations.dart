@@ -903,6 +903,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Preparing for the route'**
   String get preparingForRoute;
+
+  /// Label for payment methods option in security settings
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Methods'**
+  String get paymentMethods;
+
+  /// Label for change password option in security settings
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get changePassword;
+
+  /// Label for two-factor authentication option in security settings
+  ///
+  /// In en, this message translates to:
+  /// **'Two-Factor Authentication'**
+  String get twoFactorAuth;
 }
 
 class _AppLocalizationsDelegate

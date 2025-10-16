@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:promoruta/app/routes/app_router.dart';
+import 'package:promoruta/gen/l10n/app_localizations.dart';
 
 class SecuritySettingsPage extends StatelessWidget {
   const SecuritySettingsPage({super.key});
@@ -8,6 +9,7 @@ class SecuritySettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const bg = Color(0xFFF3F5F7);
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: bg,
@@ -28,20 +30,20 @@ class SecuritySettingsPage extends StatelessWidget {
               children: [
                 _SettingsTile(
                   icon: Icons.credit_card,
-                  title: 'Métodos de pago',
+                  title: l10n.paymentMethods,
                   onTap: () => const PaymentMethodsRoute().go(context),
                 ),
                 const _RowDivider(),
                 _SettingsTile(
                   // three asterisks look from mock; password icon also fine
                   icon: Icons.password_outlined,
-                  title: 'Cambiar Contraseña',
+                  title: l10n.changePassword,
                   onTap: () => const ChangePasswordRoute().go(context),
                 ),
                 const _RowDivider(),
                 _SettingsTile(
                   icon: Icons.lock_outline,
-                  title: 'Autenticación de dos factores',
+                  title: l10n.twoFactorAuth,
                   onTap: () => const TwoFactorAuthRoute().go(context),
                 ),
               ],

@@ -550,5 +550,17 @@
   "preparingForRoute": "Preparing for the route",
   "@preparingForRoute": {
     "description": "Alert message for promoter preparing for route"
+  },
+  "paymentMethods": "Payment Methods",
+  "@paymentMethods": {
+    "description": "Label for payment methods option in security settings"
+  },
+  "changePassword": "Change Password",
+  "@changePassword": {
+    "description": "Label for change password option in security settings"
+  },
+  "twoFactorAuth": "Two-Factor Authentication",
+  "@twoFactorAuth": {
+    "description": "Label for two-factor authentication option in security settings"
   }
 }
