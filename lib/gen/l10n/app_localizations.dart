@@ -358,12 +358,6 @@ abstract class AppLocalizations {
   /// **'Please enter your password'**
   String get pleaseEnterPassword;
 
-  /// Validation message for short password
-  ///
-  /// In en, this message translates to:
-  /// **'Password must be at least 8 characters'**
-  String get passwordMinLength;
-
   /// Forgot password link text
   ///
   /// In en, this message translates to:
@@ -951,6 +945,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New password is required'**
   String get newPasswordRequired;
+
+  /// Validation message for short password
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 8 characters'**
+  String get passwordMinLength;
 
   /// Validation message for empty password confirmation
   ///

@@ -149,9 +149,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get pleaseEnterPassword => 'Por favor, digite sua senha';
 
   @override
-  String get passwordMinLength => 'A senha deve ter pelo menos 8 caracteres';
-
-  @override
   String get forgotPassword => 'Esqueceu sua senha?';
 
   @override
@@ -458,6 +455,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get newPasswordRequired => 'A nova senha é obrigatória';
+
+  @override
+  String get passwordMinLength => 'A senha deve ter pelo menos 8 caracteres';
 
   @override
   String get confirmPasswordRequired => 'A confirmação da senha é obrigatória';

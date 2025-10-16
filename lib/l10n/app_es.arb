@@ -172,10 +172,6 @@
   "@pleaseEnterPassword": {
     "description": "Validation message for empty password"
   },
-  "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
-  "@passwordMinLength": {
-    "description": "Validation message for short password"
-  },
   "forgotPassword": "¿Olvidaste tu contraseña?",
   "@forgotPassword": {
     "description": "Forgot password link text"
