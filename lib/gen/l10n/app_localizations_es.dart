@@ -435,9 +435,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get paymentMethods => 'Métodos de pago';
 
   @override
-  String get changePassword => 'Cambiar Contraseña';
-
-  @override
   String get twoFactorAuth => 'Autenticación de dos factores';
 
   @override
@@ -465,6 +462,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get passwordsDoNotMatch => 'Las contraseñas no coinciden';
+
+  @override
+  String get changePassword => 'Cambiar Contraseña';
 
   @override
   String get confirmPasswordChange => 'Confirmar cambio de contraseña';

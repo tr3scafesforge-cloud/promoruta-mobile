@@ -904,12 +904,6 @@ abstract class AppLocalizations {
   /// **'Payment Methods'**
   String get paymentMethods;
 
-  /// Button text to change password
-  ///
-  /// In en, this message translates to:
-  /// **'Change Password'**
-  String get changePassword;
-
   /// Label for two-factor authentication option in security settings
   ///
   /// In en, this message translates to:
@@ -963,6 +957,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Passwords do not match'**
   String get passwordsDoNotMatch;
+
+  /// Button text to change password
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get changePassword;
 
   /// Title for password change confirmation dialog
   ///

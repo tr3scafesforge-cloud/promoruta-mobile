@@ -551,10 +551,6 @@
   "@paymentMethods": {
     "description": "Label for payment methods option in security settings"
   },
-  "changePassword": "Alterar Senha",
-  "@changePassword": {
-    "description": "Label for change password option in security settings"
-  },
   "twoFactorAuth": "Autenticação de Dois Fatores",
   "@twoFactorAuth": {
     "description": "Label for two-factor authentication option in security settings"

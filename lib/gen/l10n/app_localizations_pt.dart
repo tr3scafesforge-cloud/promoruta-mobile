@@ -436,9 +436,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get paymentMethods => 'Métodos de Pagamento';
 
   @override
-  String get changePassword => 'Alterar Senha';
-
-  @override
   String get twoFactorAuth => 'Autenticação de Dois Fatores';
 
   @override
@@ -464,6 +461,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get passwordsDoNotMatch => 'As senhas não coincidem';
+
+  @override
+  String get changePassword => 'Alterar Senha';
 
   @override
   String get confirmPasswordChange => 'Confirmar alteração de senha';
