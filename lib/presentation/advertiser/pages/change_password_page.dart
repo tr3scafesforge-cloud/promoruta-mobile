@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
 import 'package:promoruta/shared/use_cases/auth_use_cases.dart';
@@ -34,7 +35,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    const bg = Color(0xFFF3F5F7);
+    const bg = AppColors.primary;
 
     return Scaffold(
       backgroundColor: bg,
