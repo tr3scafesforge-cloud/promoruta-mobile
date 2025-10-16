@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:promoruta/app/routes/app_router.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
-import 'package:promoruta/presentation/advertiser/pages/user_profile_page.dart';
 import 'package:promoruta/shared/widgets/bottom_navigation_item.dart';
 import 'package:promoruta/shared/widgets/advertiser_app_bar.dart';
 import 'package:promoruta/presentation/advertiser/pages/advertiser_home_page.dart';
@@ -12,7 +11,6 @@ import 'package:promoruta/presentation/advertiser/pages/advertiser_campaigns_pag
 import 'package:promoruta/presentation/advertiser/pages/advertiser_live_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/advertiser_history_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/advertiser_profile_page.dart';
-import 'package:promoruta/presentation/advertiser/pages/language_settings_page.dart';
 import 'package:promoruta/shared/providers/providers.dart';
 
 class AdvertiserHomeScreen extends ConsumerStatefulWidget {

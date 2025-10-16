@@ -24,7 +24,9 @@ class OverlayNotificationService implements NotificationService {
       autoCloseDuration: const Duration(seconds: 3),
       borderRadius: BorderRadius.circular(8),
       showProgressBar: false,
-      closeButtonShowType: CloseButtonShowType.none,
+      closeButton: ToastCloseButton(
+        showType: CloseButtonShowType.always,
+      ),
       dragToClose: true,
     );
   }
@@ -38,7 +40,6 @@ class OverlayNotificationService implements NotificationService {
       case ToastType.warning:
         return ToastificationType.warning;
       case ToastType.info:
-      default:
         return ToastificationType.info;
     }
   }

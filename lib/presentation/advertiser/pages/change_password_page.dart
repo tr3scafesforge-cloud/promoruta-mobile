@@ -167,7 +167,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
               FilledButton(
                 onPressed: () => Navigator.of(context).pop(true),
                 style: FilledButton.styleFrom(
-                  backgroundColor: const Color(0xFF11A192),
+                  backgroundColor: AppColors.secondary,
                 ),
                 child: Text(l10n.confirm),
               ),
