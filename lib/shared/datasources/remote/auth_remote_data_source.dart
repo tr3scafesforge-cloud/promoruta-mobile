@@ -26,7 +26,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     } on DioException catch (e) {
       if (e.response?.statusCode == 401) {
         try {
-          final refreshedUser = await refreshToken(user.accessToken!);
+          final refreshedUser = await refreshToken(user.refreshToken!);
           final newHeaders = {'Authorization': 'Bearer ${refreshedUser.accessToken}'};
           return await request(newHeaders);
         } catch (refreshError) {
@@ -80,43 +80,48 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<User> refreshToken(String accessToken) async {
+  Future<User> refreshToken(String refreshToken) async {
     try {
       final response = await dio.post(
         '/auth/refresh',
+        data: {
+          'refresh_token': refreshToken,
+        },
         options: Options(
           headers: {
-            'Authorization': 'Bearer $accessToken',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
           },
         ),
       );
 
       if (response.statusCode == 200) {
         final data = response.data;
-        final userData = data['user'];
+        final user = await _localDataSource.getUser();
+        if (user == null) throw Exception('No user logged in');
         final expiresIn = data['expires_in'] as int;
         final tokenExpiry = DateTime.now().add(Duration(seconds: expiresIn));
         final refreshExpiresIn = data['refresh_expires_in'] != null
             ? DateTime.now().add(Duration(seconds: data['refresh_expires_in'] as int))
             : null;
 
-        final user = User(
-          id: userData['id'],
-          email: userData['email'],
-          role: UserRole.fromString(userData['role']),
+        final refreshedUser = User(
+          id: user.id,
+          email: user.email,
+          role: user.role,
           accessToken: data['access_token'],
           tokenExpiry: tokenExpiry,
           refreshToken: data['refresh_token'],
           refreshExpiresIn: refreshExpiresIn,
-          username: userData['name'],
-          photoUrl: null, // API doesn't provide photoUrl
-          createdAt: userData['created_at'] != null ? DateTime.parse(userData['created_at']) : null,
+          username: user.username,
+          photoUrl: user.photoUrl,
+          createdAt: user.createdAt,
         );
 
         // Update local storage with new token
-        await _localDataSource.saveUser(user);
+        await _localDataSource.saveUser(refreshedUser);
 
-        return user;
+        return refreshedUser;
       } else {
         throw Exception('Token refresh failed: ${response.statusMessage}');
       }
