@@ -55,6 +55,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         final userData = data['user'];
         final expiresIn = data['expires_in'] as int;
         final tokenExpiry = DateTime.now().add(Duration(seconds: expiresIn));
+        final refreshExpiresIn = data['refresh_expires_in'] != null
+            ? DateTime.now().add(Duration(seconds: data['refresh_expires_in'] as int))
+            : null;
 
         return User(
           id: userData['id'],
@@ -62,6 +65,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           role: UserRole.fromString(userData['role']),
           accessToken: data['access_token'],
           tokenExpiry: tokenExpiry,
+          refreshToken: data['refresh_token'],
+          refreshExpiresIn: refreshExpiresIn,
           username: userData['name'],
           photoUrl: null, // API doesn't provide photoUrl
           createdAt: userData['created_at'] != null ? DateTime.parse(userData['created_at']) : null,
@@ -91,6 +96,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         final userData = data['user'];
         final expiresIn = data['expires_in'] as int;
         final tokenExpiry = DateTime.now().add(Duration(seconds: expiresIn));
+        final refreshExpiresIn = data['refresh_expires_in'] != null
+            ? DateTime.now().add(Duration(seconds: data['refresh_expires_in'] as int))
+            : null;
 
         final user = User(
           id: userData['id'],
@@ -98,6 +106,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           role: UserRole.fromString(userData['role']),
           accessToken: data['access_token'],
           tokenExpiry: tokenExpiry,
+          refreshToken: data['refresh_token'],
+          refreshExpiresIn: refreshExpiresIn,
           username: userData['name'],
           photoUrl: null, // API doesn't provide photoUrl
           createdAt: userData['created_at'] != null ? DateTime.parse(userData['created_at']) : null,

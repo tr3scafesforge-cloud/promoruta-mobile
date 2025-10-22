@@ -33,6 +33,8 @@ class User {
   final UserRole role;
   final String? accessToken;
   final DateTime? tokenExpiry;
+  final String? refreshToken;
+  final DateTime? refreshExpiresIn;
   final String? username;
   final String? photoUrl;
   final DateTime? createdAt;
@@ -43,6 +45,8 @@ class User {
     required this.role,
     this.accessToken,
     this.tokenExpiry,
+    this.refreshToken,
+    this.refreshExpiresIn,
     this.username,
     this.photoUrl,
     this.createdAt,
@@ -55,6 +59,8 @@ class User {
       role: UserRole.fromString(json['role'] as String),
       accessToken: json['accessToken'] as String?,
       tokenExpiry: json['tokenExpiry'] != null ? DateTime.parse(json['tokenExpiry'] as String) : null,
+      refreshToken: json['refreshToken'] as String?,
+      refreshExpiresIn: json['refreshExpiresIn'] != null ? DateTime.parse(json['refreshExpiresIn'] as String) : null,
       username: json['username'] as String?,
       photoUrl: json['photoUrl'] as String?,
       createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt'] as String) : null,
@@ -68,6 +74,8 @@ class User {
       'role': role.toStringValue(),
       'accessToken': accessToken,
       'tokenExpiry': tokenExpiry?.toIso8601String(),
+      'refreshToken': refreshToken,
+      'refreshExpiresIn': refreshExpiresIn?.toIso8601String(),
       'username': username,
       'photoUrl': photoUrl,
       'createdAt': createdAt?.toIso8601String(),
