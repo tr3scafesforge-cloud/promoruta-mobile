@@ -254,7 +254,7 @@ class _CreateFirstCampaignCard extends StatelessWidget {
               child: Text(
                 l10n.startCampaign,
                 style: const TextStyle(
-                  fontSize: 12,
+                  fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
                 ),
