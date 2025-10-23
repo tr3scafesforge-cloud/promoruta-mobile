@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/providers/providers.dart';
+import 'package:promoruta/shared/shared.dart';
 
 class UserProfilePage extends ConsumerWidget {
   const UserProfilePage({
@@ -28,7 +30,9 @@ class UserProfilePage extends ConsumerWidget {
         backgroundColor: const Color(0xFFF3F5F7),
         elevation: 0,
         leading: IconButton(
-          onPressed: () => context.canPop() ? context.pop() : context.go('/advertiser-home?tab=profile'),
+          onPressed: () => context.canPop()
+              ? context.pop()
+              : context.go('/advertiser-home?tab=profile'),
           icon: const Icon(Icons.arrow_back, color: Colors.black87),
         ),
       ),
@@ -57,12 +61,15 @@ class UserProfilePage extends ConsumerWidget {
                         child: CircleAvatar(
                           radius: 70,
                           backgroundColor: Colors.white,
-                          backgroundImage: user.photoUrl != null && user.photoUrl!.isNotEmpty
-                              ? NetworkImage(user.photoUrl!)
-                              : null,
-                          child: (user.photoUrl == null || user.photoUrl!.isEmpty)
-                              ? Icon(Icons.person, size: 64, color: Colors.grey[400])
-                              : null,
+                          backgroundImage:
+                              user.photoUrl != null && user.photoUrl!.isNotEmpty
+                                  ? NetworkImage(user.photoUrl!)
+                                  : null,
+                          child:
+                              (user.photoUrl == null || user.photoUrl!.isEmpty)
+                                  ? Icon(Icons.person,
+                                      size: 64, color: Colors.grey[400])
+                                  : null,
                         ),
                       ),
                     ),
@@ -73,74 +80,80 @@ class UserProfilePage extends ConsumerWidget {
                     _ProfileInfoCard(
                       radius: cardRadius,
                       rows: [
-                        _InfoRowData(label: l10n.uid, value: user.id, valueAlignEnd: true),
-                        _InfoRowData(label: l10n.username, value: user.username ?? user.email),
+                        _InfoRowData(
+                            label: l10n.uid,
+                            value: user.id,
+                            valueAlignEnd: true),
+                        _InfoRowData(
+                            label: l10n.username,
+                            value: user.username ?? user.email),
                         _InfoRowData(label: l10n.email, value: user.email),
                         if (user.createdAt != null)
-                          _InfoRowData(label: l10n.registrationDate, value: user.createdAt!.toLocal().toString().split(' ')[0]),
+                          _InfoRowData(
+                              label: l10n.registrationDate,
+                              value: user.createdAt!
+                                  .toLocal()
+                                  .toString()
+                                  .split(' ')[0]),
                       ],
                     ),
 
                     const SizedBox(height: 24),
 
                     // Eliminar cuenta (destructive)
-                    SizedBox(
-                      width: double.infinity,
-                      child: FilledButton(
-                        style: FilledButton.styleFrom(
-                          backgroundColor: destructive,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        onPressed: () async {
-                          final confirmed = await _confirm(
-                            context,
-                            title: l10n.deleteAccount,
-                            message: l10n.deleteAccountConfirmation,
-                            confirmText: l10n.delete,
-                            confirmColor: destructive,
-                          );
-                          if (confirmed && onDeleteAccount != null) {
-                            await onDeleteAccount!();
-                          }
-                        },
-                        child: Text(l10n.deleteAccount),
-                      ),
+                    CustomButton(
+                      text: l10n.deleteAccount,
+                      backgroundColor: destructive,
+                      onPressed: () async {
+                        final confirmed = await _confirm(
+                          context,
+                          title: l10n.deleteAccount,
+                          message: l10n.deleteAccountConfirmation,
+                          confirmText: l10n.delete,
+                          confirmColor: destructive,
+                        );
+                        if (confirmed && onDeleteAccount != null) {
+                          await onDeleteAccount!();
+                        }
+                      },
                     ),
 
                     const SizedBox(height: 12),
 
                     // Salir (sign out)
-                    SizedBox(
-                      width: double.infinity,
-                      child: OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.black87,
-                          side: const BorderSide(color: Color(0xFFE7E8EA)),
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        onPressed: () async {
-                          final confirmed = await _confirm(
-                            context,
-                            title: l10n.signOut,
-                            message: l10n.signOutConfirmation,
-                            confirmText: l10n.signOut,
-                          );
-                          if (confirmed) {
-                            await ref.read(authStateProvider.notifier).logout();
-                            GoRouter.of(context).go('/');
-                          }
-                        },
-                        child: Text(l10n.signOut),
-                      ),
+                    CustomButton(
+                      text: l10n.signOut,
+                      backgroundColor: Colors.white,
+                      textColor: AppColors.textPrimary,
+                      onPressed: () async {
+                        final confirmed = await _confirm(
+                          context,
+                          title: l10n.signOut,
+                          message: l10n.signOutConfirmation,
+                          confirmText: l10n.signOut,
+                        );
+                        if (confirmed) {
+                          await ref.read(authStateProvider.notifier).logout();
+                          GoRouter.of(context).go('/');
+                        }
+                      },
                     ),
+                    // SizedBox(
+                    //   width: double.infinity,
+                    //   child: OutlinedButton(
+                    //     style: OutlinedButton.styleFrom(
+                    //       backgroundColor: Colors.white,
+                    //       foregroundColor: Colors.black87,
+                    //       side: const BorderSide(color: Color(0xFFE7E8EA)),
+                    //       padding: const EdgeInsets.symmetric(vertical: 16),
+                    //       shape: RoundedRectangleBorder(
+                    //         borderRadius: BorderRadius.circular(12),
+                    //       ),
+                    //     ),
+                    //     onPressed:
+                    //     child: Text(l10n.signOut),
+                    //   ),
+                    // ),
                   ],
                 ),
         ),
