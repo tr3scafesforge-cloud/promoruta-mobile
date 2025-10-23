@@ -90,6 +90,9 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                             if (value.length < 8) {
                               return l10n.passwordMinLength;
                             }
+                            if (value == _currentPasswordController.text) {
+                              return l10n.newPasswordCannotBeSameAsCurrent;
+                            }
                             return null;
                           },
                         ),

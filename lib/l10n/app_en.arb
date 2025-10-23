@@ -587,6 +587,10 @@
   "@passwordsDoNotMatch": {
     "description": "Validation message when passwords don't match"
   },
+  "newPasswordCannotBeSameAsCurrent": "New password cannot be the same as the current password",
+  "@newPasswordCannotBeSameAsCurrent": {
+    "description": "Validation message when new password is the same as current"
+  },
   "changePassword": "Change Password",
   "@changePassword": {
     "description": "Button text to change password"

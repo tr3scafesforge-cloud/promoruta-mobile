@@ -958,6 +958,12 @@ abstract class AppLocalizations {
   /// **'Passwords do not match'**
   String get passwordsDoNotMatch;
 
+  /// Validation message when new password is the same as current
+  ///
+  /// In en, this message translates to:
+  /// **'New password cannot be the same as the current password'**
+  String get newPasswordCannotBeSameAsCurrent;
+
   /// Button text to change password
   ///
   /// In en, this message translates to:

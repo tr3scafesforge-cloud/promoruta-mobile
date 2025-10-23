@@ -463,6 +463,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get passwordsDoNotMatch => 'As senhas não coincidem';
 
   @override
+  String get newPasswordCannotBeSameAsCurrent =>
+      'A nova senha não pode ser a mesma que a senha atual';
+
+  @override
   String get changePassword => 'Alterar Senha';
 
   @override

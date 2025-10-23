@@ -461,6 +461,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get passwordsDoNotMatch => 'Passwords do not match';
 
   @override
+  String get newPasswordCannotBeSameAsCurrent =>
+      'New password cannot be the same as the current password';
+
+  @override
   String get changePassword => 'Change Password';
 
   @override
