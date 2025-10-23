@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:promoruta/app/routes/app_router.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
-import 'package:promoruta/shared/providers/providers.dart';
 import 'package:promoruta/shared/shared.dart';
 
 class UserProfilePage extends ConsumerWidget {
@@ -135,26 +135,12 @@ class UserProfilePage extends ConsumerWidget {
                         );
                         if (confirmed) {
                           await ref.read(authStateProvider.notifier).logout();
-                          GoRouter.of(context).go('/');
+                          if (context.mounted) {
+                            const LoginRoute().go(context);
+                          }
                         }
                       },
                     ),
-                    // SizedBox(
-                    //   width: double.infinity,
-                    //   child: OutlinedButton(
-                    //     style: OutlinedButton.styleFrom(
-                    //       backgroundColor: Colors.white,
-                    //       foregroundColor: Colors.black87,
-                    //       side: const BorderSide(color: Color(0xFFE7E8EA)),
-                    //       padding: const EdgeInsets.symmetric(vertical: 16),
-                    //       shape: RoundedRectangleBorder(
-                    //         borderRadius: BorderRadius.circular(12),
-                    //       ),
-                    //     ),
-                    //     onPressed:
-                    //     child: Text(l10n.signOut),
-                    //   ),
-                    // ),
                   ],
                 ),
         ),
@@ -170,7 +156,7 @@ class UserProfilePage extends ConsumerWidget {
     Color? confirmColor,
   }) async {
     final theme = Theme.of(context);
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
