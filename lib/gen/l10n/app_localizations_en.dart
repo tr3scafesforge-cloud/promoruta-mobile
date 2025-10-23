@@ -499,4 +499,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get serverErrorPasswordChange =>
       'Server error occurred. Please try again later.';
+
+  @override
+  String get newCampaign => 'New Campaign';
 }

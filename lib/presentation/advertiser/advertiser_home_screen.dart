@@ -135,7 +135,8 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
                   isDark ? ThemeMode.dark : ThemeMode.light,
                 );
           },
-          onTapSecurity: () => const AdvertiserSecuritySettingsRoute().go(context),
+          onTapSecurity: () =>
+              const AdvertiserSecuritySettingsRoute().go(context),
           onTapLanguage: () => const LanguageSettingsRoute().go(context),
           onTapAccount: () => const UserProfileRoute().go(context),
         );
@@ -164,7 +165,7 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
                   // TODO: navigate to create flow
                 },
                 icon: const Icon(Icons.add),
-                label: const Text('Nueva campaña'),
+                label: Text(l10n.newCampaign),
                 style: FilledButton.styleFrom(
                   backgroundColor: const Color(0xFF11A192),
                   foregroundColor: Colors.white,

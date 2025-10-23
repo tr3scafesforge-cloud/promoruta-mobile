@@ -501,4 +501,7 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get serverErrorPasswordChange =>
       'Ocorreu um erro do servidor. Por favor, tente novamente mais tarde.';
+
+  @override
+  String get newCampaign => 'Nova Campanha';
 }

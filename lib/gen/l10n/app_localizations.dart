@@ -1023,6 +1023,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Server error occurred. Please try again later.'**
   String get serverErrorPasswordChange;
+
+  /// Label for new campaign
+  ///
+  /// In en, this message translates to:
+  /// **'New Campaign'**
+  String get newCampaign;
 }
 
 class _AppLocalizationsDelegate

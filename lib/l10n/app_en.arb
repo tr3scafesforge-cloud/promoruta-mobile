@@ -630,5 +630,9 @@
   "serverErrorPasswordChange": "Server error occurred. Please try again later.",
   "@serverErrorPasswordChange": {
     "description": "Error message for server errors (500) during password change"
+  },
+  "newCampaign": "New Campaign",
+  "@newCampaign": {
+    "description": "Label for new campaign"
   }
 }
