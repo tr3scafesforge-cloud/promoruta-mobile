@@ -126,7 +126,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                 child: FilledButton(
                   onPressed: _isLoading ? null : _showConfirmationDialog,
                   style: FilledButton.styleFrom(
-                    backgroundColor: const Color(0xFF11A192),
+                    backgroundColor: AppColors.secondary,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
