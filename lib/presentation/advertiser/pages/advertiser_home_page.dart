@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
+import 'package:promoruta/shared/shared.dart';
 import 'package:promoruta/shared/widgets/app_card.dart';
 
 class AdvertiserHomePage extends StatelessWidget {
@@ -236,31 +237,15 @@ class _CreateFirstCampaignCard extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(
-            height: 35,
-            width: double.infinity,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.secondary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(l10n.startCampaignWip)),
-                );
-              },
-              child: Text(
-                l10n.startCampaign,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          )
+          CustomButton(
+            text: l10n.startCampaign,
+            backgroundColor: AppColors.secondary,
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(l10n.startCampaignWip)),
+              );
+            },
+          ),
         ],
       ),
     );
