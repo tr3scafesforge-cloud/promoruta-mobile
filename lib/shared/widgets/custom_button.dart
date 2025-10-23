@@ -5,6 +5,8 @@ class CustomButton extends StatelessWidget {
   final Color backgroundColor;
   final VoidCallback onPressed;
   final Color textColor;
+  final bool isOutlined;
+  final Color? outlineColor;
 
   const CustomButton({
     super.key,
@@ -12,7 +14,26 @@ class CustomButton extends StatelessWidget {
     required this.backgroundColor,
     required this.onPressed,
     this.textColor = Colors.white,
+    this.isOutlined = false,
+    this.outlineColor,
   });
+
+  static CustomButton outlined({
+    required String text,
+    required Color backgroundColor,
+    required Color outlineColor,
+    required VoidCallback onPressed,
+    required Color textColor,
+  }) {
+    return CustomButton(
+      text: text,
+      backgroundColor: backgroundColor,
+      onPressed: onPressed,
+      textColor: textColor,
+      isOutlined: true,
+      outlineColor: outlineColor,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +47,9 @@ class CustomButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
             color: backgroundColor,
+            border: isOutlined
+                ? Border.all(color: outlineColor ?? backgroundColor, width: 1)
+                : null,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Text(

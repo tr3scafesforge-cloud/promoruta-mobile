@@ -121,9 +121,10 @@ class UserProfilePage extends ConsumerWidget {
                     const SizedBox(height: 12),
 
                     // Salir (sign out)
-                    CustomButton(
+                    CustomButton.outlined(
                       text: l10n.signOut,
                       backgroundColor: Colors.white,
+                      outlineColor: AppColors.grayDarkStroke,
                       textColor: AppColors.textPrimary,
                       onPressed: () async {
                         final confirmed = await _confirm(
