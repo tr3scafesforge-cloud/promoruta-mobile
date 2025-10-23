@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/providers/providers.dart';
 
 class UserProfilePage extends ConsumerWidget {
@@ -19,6 +20,7 @@ class UserProfilePage extends ConsumerWidget {
     final userAsync = ref.watch(authStateProvider);
     final destructive = const Color(0xFFCC0033); // deep red like your mock
     final cardRadius = 12.0;
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF3F5F7),
@@ -35,7 +37,7 @@ class UserProfilePage extends ConsumerWidget {
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, stack) => Center(child: Text('Error: $error')),
           data: (user) => user == null
-              ? const Center(child: Text('No user logged in'))
+              ? Center(child: Text(l10n.noUserLoggedIn))
               : ListView(
                   padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
                   children: [
@@ -71,11 +73,11 @@ class UserProfilePage extends ConsumerWidget {
                     _ProfileInfoCard(
                       radius: cardRadius,
                       rows: [
-                        _InfoRowData(label: 'UID', value: user.id, valueAlignEnd: true),
-                        _InfoRowData(label: 'Usuario', value: user.username ?? user.email),
-                        _InfoRowData(label: 'Email', value: user.email),
+                        _InfoRowData(label: l10n.uid, value: user.id, valueAlignEnd: true),
+                        _InfoRowData(label: l10n.username, value: user.username ?? user.email),
+                        _InfoRowData(label: l10n.email, value: user.email),
                         if (user.createdAt != null)
-                          _InfoRowData(label: 'Fecha de registro', value: user.createdAt!.toLocal().toString().split(' ')[0]),
+                          _InfoRowData(label: l10n.registrationDate, value: user.createdAt!.toLocal().toString().split(' ')[0]),
                       ],
                     ),
 
@@ -96,17 +98,16 @@ class UserProfilePage extends ConsumerWidget {
                         onPressed: () async {
                           final confirmed = await _confirm(
                             context,
-                            title: 'Eliminar cuenta',
-                            message:
-                                'Esta acción es permanente. ¿Seguro que deseas continuar?',
-                            confirmText: 'Eliminar',
+                            title: l10n.deleteAccount,
+                            message: l10n.deleteAccountConfirmation,
+                            confirmText: l10n.delete,
                             confirmColor: destructive,
                           );
                           if (confirmed && onDeleteAccount != null) {
                             await onDeleteAccount!();
                           }
                         },
-                        child: const Text('Eliminar cuenta'),
+                        child: Text(l10n.deleteAccount),
                       ),
                     ),
 
@@ -128,16 +129,16 @@ class UserProfilePage extends ConsumerWidget {
                         onPressed: () async {
                           final confirmed = await _confirm(
                             context,
-                            title: 'Salir',
-                            message: '¿Deseas cerrar sesión?',
-                            confirmText: 'Salir',
+                            title: l10n.signOut,
+                            message: l10n.signOutConfirmation,
+                            confirmText: l10n.signOut,
                           );
                           if (confirmed) {
                             await ref.read(authStateProvider.notifier).logout();
                             GoRouter.of(context).go('/');
                           }
                         },
-                        child: const Text('Salir'),
+                        child: Text(l10n.signOut),
                       ),
                     ),
                   ],
@@ -155,6 +156,7 @@ class UserProfilePage extends ConsumerWidget {
     Color? confirmColor,
   }) async {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -163,7 +165,7 @@ class UserProfilePage extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancelar'),
+            child: Text(l10n.cancel),
           ),
           FilledButton(
             style: FilledButton.styleFrom(

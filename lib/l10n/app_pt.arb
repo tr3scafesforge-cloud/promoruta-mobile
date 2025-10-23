@@ -634,5 +634,49 @@
   "newCampaign": "Nova Campanha",
   "@newCampaign": {
     "description": "Label for new campaign"
+  },
+  "uid": "UID",
+  "@uid": {
+    "description": "Label for user ID"
+  },
+  "username": "Usuário",
+  "@username": {
+    "description": "Label for username"
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Label for email"
+  },
+  "registrationDate": "Data de registro",
+  "@registrationDate": {
+    "description": "Label for registration date"
+  },
+  "deleteAccount": "Excluir conta",
+  "@deleteAccount": {
+    "description": "Button text to delete account"
+  },
+  "deleteAccountConfirmation": "Esta ação é permanente. Tem certeza de que deseja continuar?",
+  "@deleteAccountConfirmation": {
+    "description": "Confirmation message for deleting account"
+  },
+  "delete": "Excluir",
+  "@delete": {
+    "description": "Button text to confirm deletion"
+  },
+  "signOut": "Sair",
+  "@signOut": {
+    "description": "Button text to sign out"
+  },
+  "signOutConfirmation": "Deseja sair?",
+  "@signOutConfirmation": {
+    "description": "Confirmation message for signing out"
+  },
+  "error": "Erro",
+  "@error": {
+    "description": "Generic error label"
+  },
+  "noUserLoggedIn": "Nenhum usuário conectado",
+  "@noUserLoggedIn": {
+    "description": "Message when no user is logged in"
   }
 }

@@ -1029,6 +1029,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New Campaign'**
   String get newCampaign;
+
+  /// Label for user ID
+  ///
+  /// In en, this message translates to:
+  /// **'UID'**
+  String get uid;
+
+  /// Label for username
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get username;
+
+  /// Label for email
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get email;
+
+  /// Label for registration date
+  ///
+  /// In en, this message translates to:
+  /// **'Registration Date'**
+  String get registrationDate;
+
+  /// Button text to delete account
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get deleteAccount;
+
+  /// Confirmation message for deleting account
+  ///
+  /// In en, this message translates to:
+  /// **'This action is permanent. Are you sure you want to continue?'**
+  String get deleteAccountConfirmation;
+
+  /// Button text to confirm deletion
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// Button text to sign out
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Out'**
+  String get signOut;
+
+  /// Confirmation message for signing out
+  ///
+  /// In en, this message translates to:
+  /// **'Do you want to sign out?'**
+  String get signOutConfirmation;
+
+  /// Generic error label
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+
+  /// Message when no user is logged in
+  ///
+  /// In en, this message translates to:
+  /// **'No user logged in'**
+  String get noUserLoggedIn;
 }
 
 class _AppLocalizationsDelegate

@@ -502,4 +502,38 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get newCampaign => 'New Campaign';
+
+  @override
+  String get uid => 'UID';
+
+  @override
+  String get username => 'Username';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get registrationDate => 'Registration Date';
+
+  @override
+  String get deleteAccount => 'Delete Account';
+
+  @override
+  String get deleteAccountConfirmation =>
+      'This action is permanent. Are you sure you want to continue?';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get signOut => 'Sign Out';
+
+  @override
+  String get signOutConfirmation => 'Do you want to sign out?';
+
+  @override
+  String get error => 'Error';
+
+  @override
+  String get noUserLoggedIn => 'No user logged in';
 }

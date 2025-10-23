@@ -504,4 +504,38 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get newCampaign => 'Nova Campanha';
+
+  @override
+  String get uid => 'UID';
+
+  @override
+  String get username => 'Usuário';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get registrationDate => 'Data de registro';
+
+  @override
+  String get deleteAccount => 'Excluir conta';
+
+  @override
+  String get deleteAccountConfirmation =>
+      'Esta ação é permanente. Tem certeza de que deseja continuar?';
+
+  @override
+  String get delete => 'Excluir';
+
+  @override
+  String get signOut => 'Sair';
+
+  @override
+  String get signOutConfirmation => 'Deseja sair?';
+
+  @override
+  String get error => 'Erro';
+
+  @override
+  String get noUserLoggedIn => 'Nenhum usuário conectado';
 }

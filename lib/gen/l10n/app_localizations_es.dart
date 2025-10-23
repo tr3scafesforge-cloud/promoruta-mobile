@@ -505,4 +505,38 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get newCampaign => 'Nueva Campaña';
+
+  @override
+  String get uid => 'UID';
+
+  @override
+  String get username => 'Usuario';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get registrationDate => 'Fecha de registro';
+
+  @override
+  String get deleteAccount => 'Eliminar cuenta';
+
+  @override
+  String get deleteAccountConfirmation =>
+      'Esta acción es permanente. ¿Seguro que deseas continuar?';
+
+  @override
+  String get delete => 'Eliminar';
+
+  @override
+  String get signOut => 'Salir';
+
+  @override
+  String get signOutConfirmation => '¿Deseas cerrar sesión?';
+
+  @override
+  String get error => 'Error';
+
+  @override
+  String get noUserLoggedIn => 'No hay usuario conectado';
 }
