@@ -70,7 +70,6 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
       if (e.response != null) {
         final statusCode = e.response!.statusCode;
-        final responseData = e.response!.data;
 
         switch (statusCode) {
           case 404:

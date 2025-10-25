@@ -39,7 +39,7 @@ class _TwoFactorAuthPageState extends State<TwoFactorAuthPage> {
                   trailing: Switch(
                     value: _isEnabled,
                     onChanged: (value) => setState(() => _isEnabled = value),
-                    activeColor: const Color(0xFF11A192),
+                    activeThumbColor: const Color(0xFF11A192),
                   ),
                 ),
               ],

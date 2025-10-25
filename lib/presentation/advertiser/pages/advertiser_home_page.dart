@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
-import 'package:promoruta/shared/widgets/app_card.dart';
 
 class AdvertiserHomePage extends StatelessWidget {
   const AdvertiserHomePage({super.key});
