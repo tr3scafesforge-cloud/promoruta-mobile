@@ -3,6 +3,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/shared/shared.dart';
+import 'package:promoruta/shared/datasources/local/user_local_data_source.dart';
+import 'package:promoruta/shared/datasources/remote/user_remote_data_source.dart';
+import 'package:promoruta/shared/repositories/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:promoruta/core/core.dart' as model;
@@ -108,6 +111,17 @@ final gpsRemoteDataSourceProvider = Provider<GpsRemoteDataSource>((ref) {
   return GpsRemoteDataSourceImpl(dio: dio);
 });
 
+final userLocalDataSourceProvider = Provider<UserLocalDataSource>((ref) {
+  final database = ref.watch(databaseProvider);
+  return UserLocalDataSourceImpl(database);
+});
+
+final userRemoteDataSourceProvider = Provider<UserRemoteDataSource>((ref) {
+  final dio = ref.watch(dioProvider);
+  final localDataSource = ref.watch(authLocalDataSourceProvider);
+  return UserRemoteDataSourceImpl(dio: dio, localDataSource: localDataSource);
+});
+
 // Sync Service
 final syncServiceProvider = Provider<SyncService>((ref) {
   final connectivityService = ref.watch(connectivityServiceProvider);
@@ -165,6 +179,16 @@ final gpsRepositoryProvider = Provider<GpsRepository>((ref) {
     localDataSource,
     connectivityService,
     syncService,
+  );
+});
+
+final userRepositoryProvider = Provider<UserRepository>((ref) {
+  final localDataSource = ref.watch(userLocalDataSourceProvider);
+  final remoteDataSource = ref.watch(userRemoteDataSourceProvider);
+
+  return UserRepositoryImpl(
+    remoteDataSource: remoteDataSource,
+    localDataSource: localDataSource,
   );
 });
 

@@ -13,16 +13,39 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
       'id', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _emailMeta = const VerificationMeta('email');
   @override
   late final GeneratedColumn<String> email = GeneratedColumn<String>(
       'email', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _emailVerifiedAtMeta =
+      const VerificationMeta('emailVerifiedAt');
+  @override
+  late final GeneratedColumn<DateTime> emailVerifiedAt =
+      GeneratedColumn<DateTime>('email_verified_at', aliasedName, true,
+          type: DriftSqlType.dateTime, requiredDuringInsert: false);
   @override
   late final GeneratedColumnWithTypeConverter<UserRole, String> role =
       GeneratedColumn<String>('role', aliasedName, false,
               type: DriftSqlType.string, requiredDuringInsert: true)
           .withConverter<UserRole>($UsersTable.$converterrole);
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _updatedAtMeta =
+      const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
   static const VerificationMeta _accessTokenMeta =
       const VerificationMeta('accessToken');
   @override
@@ -47,22 +70,19 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   late final GeneratedColumn<String> photoUrl = GeneratedColumn<String>(
       'photo_url', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _createdAtMeta =
-      const VerificationMeta('createdAt');
-  @override
-  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
-      'created_at', aliasedName, true,
-      type: DriftSqlType.dateTime, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         id,
+        name,
         email,
+        emailVerifiedAt,
         role,
+        createdAt,
+        updatedAt,
         accessToken,
         tokenExpiry,
         username,
-        photoUrl,
-        createdAt
+        photoUrl
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -79,11 +99,29 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
     } else if (isInserting) {
       context.missing(_idMeta);
     }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    }
     if (data.containsKey('email')) {
       context.handle(
           _emailMeta, email.isAcceptableOrUnknown(data['email']!, _emailMeta));
     } else if (isInserting) {
       context.missing(_emailMeta);
+    }
+    if (data.containsKey('email_verified_at')) {
+      context.handle(
+          _emailVerifiedAtMeta,
+          emailVerifiedAt.isAcceptableOrUnknown(
+              data['email_verified_at']!, _emailVerifiedAtMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
     }
     if (data.containsKey('access_token')) {
       context.handle(
@@ -105,10 +143,6 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
       context.handle(_photoUrlMeta,
           photoUrl.isAcceptableOrUnknown(data['photo_url']!, _photoUrlMeta));
     }
-    if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta,
-          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
-    }
     return context;
   }
 
@@ -120,10 +154,18 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
     return User(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name']),
       email: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}email'])!,
+      emailVerifiedAt: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}email_verified_at']),
       role: $UsersTable.$converterrole.fromSql(attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}role'])!),
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at']),
+      updatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at']),
       accessToken: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}access_token']),
       tokenExpiry: attachedDatabase.typeMapping
@@ -132,8 +174,6 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
           .read(DriftSqlType.string, data['${effectivePrefix}username']),
       photoUrl: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}photo_url']),
-      createdAt: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at']),
     );
   }
 
@@ -148,29 +188,47 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
 
 class User extends DataClass implements Insertable<User> {
   final String id;
+  final String? name;
   final String email;
+  final DateTime? emailVerifiedAt;
   final UserRole role;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
   final String? accessToken;
   final DateTime? tokenExpiry;
   final String? username;
   final String? photoUrl;
-  final DateTime? createdAt;
   const User(
       {required this.id,
+      this.name,
       required this.email,
+      this.emailVerifiedAt,
       required this.role,
+      this.createdAt,
+      this.updatedAt,
       this.accessToken,
       this.tokenExpiry,
       this.username,
-      this.photoUrl,
-      this.createdAt});
+      this.photoUrl});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
+    if (!nullToAbsent || name != null) {
+      map['name'] = Variable<String>(name);
+    }
     map['email'] = Variable<String>(email);
+    if (!nullToAbsent || emailVerifiedAt != null) {
+      map['email_verified_at'] = Variable<DateTime>(emailVerifiedAt);
+    }
     {
       map['role'] = Variable<String>($UsersTable.$converterrole.toSql(role));
+    }
+    if (!nullToAbsent || createdAt != null) {
+      map['created_at'] = Variable<DateTime>(createdAt);
+    }
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
     }
     if (!nullToAbsent || accessToken != null) {
       map['access_token'] = Variable<String>(accessToken);
@@ -184,17 +242,24 @@ class User extends DataClass implements Insertable<User> {
     if (!nullToAbsent || photoUrl != null) {
       map['photo_url'] = Variable<String>(photoUrl);
     }
-    if (!nullToAbsent || createdAt != null) {
-      map['created_at'] = Variable<DateTime>(createdAt);
-    }
     return map;
   }
 
   UsersCompanion toCompanion(bool nullToAbsent) {
     return UsersCompanion(
       id: Value(id),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
       email: Value(email),
+      emailVerifiedAt: emailVerifiedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(emailVerifiedAt),
       role: Value(role),
+      createdAt: createdAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
       accessToken: accessToken == null && nullToAbsent
           ? const Value.absent()
           : Value(accessToken),
@@ -207,9 +272,6 @@ class User extends DataClass implements Insertable<User> {
       photoUrl: photoUrl == null && nullToAbsent
           ? const Value.absent()
           : Value(photoUrl),
-      createdAt: createdAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(createdAt),
     );
   }
 
@@ -218,13 +280,16 @@ class User extends DataClass implements Insertable<User> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return User(
       id: serializer.fromJson<String>(json['id']),
+      name: serializer.fromJson<String?>(json['name']),
       email: serializer.fromJson<String>(json['email']),
+      emailVerifiedAt: serializer.fromJson<DateTime?>(json['emailVerifiedAt']),
       role: serializer.fromJson<UserRole>(json['role']),
+      createdAt: serializer.fromJson<DateTime?>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
       accessToken: serializer.fromJson<String?>(json['accessToken']),
       tokenExpiry: serializer.fromJson<DateTime?>(json['tokenExpiry']),
       username: serializer.fromJson<String?>(json['username']),
       photoUrl: serializer.fromJson<String?>(json['photoUrl']),
-      createdAt: serializer.fromJson<DateTime?>(json['createdAt']),
     );
   }
   @override
@@ -232,47 +297,63 @@ class User extends DataClass implements Insertable<User> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
+      'name': serializer.toJson<String?>(name),
       'email': serializer.toJson<String>(email),
+      'emailVerifiedAt': serializer.toJson<DateTime?>(emailVerifiedAt),
       'role': serializer.toJson<UserRole>(role),
+      'createdAt': serializer.toJson<DateTime?>(createdAt),
+      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
       'accessToken': serializer.toJson<String?>(accessToken),
       'tokenExpiry': serializer.toJson<DateTime?>(tokenExpiry),
       'username': serializer.toJson<String?>(username),
       'photoUrl': serializer.toJson<String?>(photoUrl),
-      'createdAt': serializer.toJson<DateTime?>(createdAt),
     };
   }
 
   User copyWith(
           {String? id,
+          Value<String?> name = const Value.absent(),
           String? email,
+          Value<DateTime?> emailVerifiedAt = const Value.absent(),
           UserRole? role,
+          Value<DateTime?> createdAt = const Value.absent(),
+          Value<DateTime?> updatedAt = const Value.absent(),
           Value<String?> accessToken = const Value.absent(),
           Value<DateTime?> tokenExpiry = const Value.absent(),
           Value<String?> username = const Value.absent(),
-          Value<String?> photoUrl = const Value.absent(),
-          Value<DateTime?> createdAt = const Value.absent()}) =>
+          Value<String?> photoUrl = const Value.absent()}) =>
       User(
         id: id ?? this.id,
+        name: name.present ? name.value : this.name,
         email: email ?? this.email,
+        emailVerifiedAt: emailVerifiedAt.present
+            ? emailVerifiedAt.value
+            : this.emailVerifiedAt,
         role: role ?? this.role,
+        createdAt: createdAt.present ? createdAt.value : this.createdAt,
+        updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
         accessToken: accessToken.present ? accessToken.value : this.accessToken,
         tokenExpiry: tokenExpiry.present ? tokenExpiry.value : this.tokenExpiry,
         username: username.present ? username.value : this.username,
         photoUrl: photoUrl.present ? photoUrl.value : this.photoUrl,
-        createdAt: createdAt.present ? createdAt.value : this.createdAt,
       );
   User copyWithCompanion(UsersCompanion data) {
     return User(
       id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
       email: data.email.present ? data.email.value : this.email,
+      emailVerifiedAt: data.emailVerifiedAt.present
+          ? data.emailVerifiedAt.value
+          : this.emailVerifiedAt,
       role: data.role.present ? data.role.value : this.role,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       accessToken:
           data.accessToken.present ? data.accessToken.value : this.accessToken,
       tokenExpiry:
           data.tokenExpiry.present ? data.tokenExpiry.value : this.tokenExpiry,
       username: data.username.present ? data.username.value : this.username,
       photoUrl: data.photoUrl.present ? data.photoUrl.value : this.photoUrl,
-      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
   }
 
@@ -280,111 +361,138 @@ class User extends DataClass implements Insertable<User> {
   String toString() {
     return (StringBuffer('User(')
           ..write('id: $id, ')
+          ..write('name: $name, ')
           ..write('email: $email, ')
+          ..write('emailVerifiedAt: $emailVerifiedAt, ')
           ..write('role: $role, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
           ..write('accessToken: $accessToken, ')
           ..write('tokenExpiry: $tokenExpiry, ')
           ..write('username: $username, ')
-          ..write('photoUrl: $photoUrl, ')
-          ..write('createdAt: $createdAt')
+          ..write('photoUrl: $photoUrl')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      id, email, role, accessToken, tokenExpiry, username, photoUrl, createdAt);
+  int get hashCode => Object.hash(id, name, email, emailVerifiedAt, role,
+      createdAt, updatedAt, accessToken, tokenExpiry, username, photoUrl);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is User &&
           other.id == this.id &&
+          other.name == this.name &&
           other.email == this.email &&
+          other.emailVerifiedAt == this.emailVerifiedAt &&
           other.role == this.role &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
           other.accessToken == this.accessToken &&
           other.tokenExpiry == this.tokenExpiry &&
           other.username == this.username &&
-          other.photoUrl == this.photoUrl &&
-          other.createdAt == this.createdAt);
+          other.photoUrl == this.photoUrl);
 }
 
 class UsersCompanion extends UpdateCompanion<User> {
   final Value<String> id;
+  final Value<String?> name;
   final Value<String> email;
+  final Value<DateTime?> emailVerifiedAt;
   final Value<UserRole> role;
+  final Value<DateTime?> createdAt;
+  final Value<DateTime?> updatedAt;
   final Value<String?> accessToken;
   final Value<DateTime?> tokenExpiry;
   final Value<String?> username;
   final Value<String?> photoUrl;
-  final Value<DateTime?> createdAt;
   final Value<int> rowid;
   const UsersCompanion({
     this.id = const Value.absent(),
+    this.name = const Value.absent(),
     this.email = const Value.absent(),
+    this.emailVerifiedAt = const Value.absent(),
     this.role = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
     this.accessToken = const Value.absent(),
     this.tokenExpiry = const Value.absent(),
     this.username = const Value.absent(),
     this.photoUrl = const Value.absent(),
-    this.createdAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   UsersCompanion.insert({
     required String id,
+    this.name = const Value.absent(),
     required String email,
+    this.emailVerifiedAt = const Value.absent(),
     required UserRole role,
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
     this.accessToken = const Value.absent(),
     this.tokenExpiry = const Value.absent(),
     this.username = const Value.absent(),
     this.photoUrl = const Value.absent(),
-    this.createdAt = const Value.absent(),
     this.rowid = const Value.absent(),
   })  : id = Value(id),
         email = Value(email),
         role = Value(role);
   static Insertable<User> custom({
     Expression<String>? id,
+    Expression<String>? name,
     Expression<String>? email,
+    Expression<DateTime>? emailVerifiedAt,
     Expression<String>? role,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
     Expression<String>? accessToken,
     Expression<DateTime>? tokenExpiry,
     Expression<String>? username,
     Expression<String>? photoUrl,
-    Expression<DateTime>? createdAt,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (name != null) 'name': name,
       if (email != null) 'email': email,
+      if (emailVerifiedAt != null) 'email_verified_at': emailVerifiedAt,
       if (role != null) 'role': role,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
       if (accessToken != null) 'access_token': accessToken,
       if (tokenExpiry != null) 'token_expiry': tokenExpiry,
       if (username != null) 'username': username,
       if (photoUrl != null) 'photo_url': photoUrl,
-      if (createdAt != null) 'created_at': createdAt,
       if (rowid != null) 'rowid': rowid,
     });
   }
 
   UsersCompanion copyWith(
       {Value<String>? id,
+      Value<String?>? name,
       Value<String>? email,
+      Value<DateTime?>? emailVerifiedAt,
       Value<UserRole>? role,
+      Value<DateTime?>? createdAt,
+      Value<DateTime?>? updatedAt,
       Value<String?>? accessToken,
       Value<DateTime?>? tokenExpiry,
       Value<String?>? username,
       Value<String?>? photoUrl,
-      Value<DateTime?>? createdAt,
       Value<int>? rowid}) {
     return UsersCompanion(
       id: id ?? this.id,
+      name: name ?? this.name,
       email: email ?? this.email,
+      emailVerifiedAt: emailVerifiedAt ?? this.emailVerifiedAt,
       role: role ?? this.role,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
       accessToken: accessToken ?? this.accessToken,
       tokenExpiry: tokenExpiry ?? this.tokenExpiry,
       username: username ?? this.username,
       photoUrl: photoUrl ?? this.photoUrl,
-      createdAt: createdAt ?? this.createdAt,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -395,12 +503,24 @@ class UsersCompanion extends UpdateCompanion<User> {
     if (id.present) {
       map['id'] = Variable<String>(id.value);
     }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
     if (email.present) {
       map['email'] = Variable<String>(email.value);
+    }
+    if (emailVerifiedAt.present) {
+      map['email_verified_at'] = Variable<DateTime>(emailVerifiedAt.value);
     }
     if (role.present) {
       map['role'] =
           Variable<String>($UsersTable.$converterrole.toSql(role.value));
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
     if (accessToken.present) {
       map['access_token'] = Variable<String>(accessToken.value);
@@ -414,9 +534,6 @@ class UsersCompanion extends UpdateCompanion<User> {
     if (photoUrl.present) {
       map['photo_url'] = Variable<String>(photoUrl.value);
     }
-    if (createdAt.present) {
-      map['created_at'] = Variable<DateTime>(createdAt.value);
-    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -427,13 +544,16 @@ class UsersCompanion extends UpdateCompanion<User> {
   String toString() {
     return (StringBuffer('UsersCompanion(')
           ..write('id: $id, ')
+          ..write('name: $name, ')
           ..write('email: $email, ')
+          ..write('emailVerifiedAt: $emailVerifiedAt, ')
           ..write('role: $role, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
           ..write('accessToken: $accessToken, ')
           ..write('tokenExpiry: $tokenExpiry, ')
           ..write('username: $username, ')
           ..write('photoUrl: $photoUrl, ')
-          ..write('createdAt: $createdAt, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1592,24 +1712,30 @@ abstract class _$AppDatabase extends GeneratedDatabase {
 
 typedef $$UsersTableCreateCompanionBuilder = UsersCompanion Function({
   required String id,
+  Value<String?> name,
   required String email,
+  Value<DateTime?> emailVerifiedAt,
   required UserRole role,
+  Value<DateTime?> createdAt,
+  Value<DateTime?> updatedAt,
   Value<String?> accessToken,
   Value<DateTime?> tokenExpiry,
   Value<String?> username,
   Value<String?> photoUrl,
-  Value<DateTime?> createdAt,
   Value<int> rowid,
 });
 typedef $$UsersTableUpdateCompanionBuilder = UsersCompanion Function({
   Value<String> id,
+  Value<String?> name,
   Value<String> email,
+  Value<DateTime?> emailVerifiedAt,
   Value<UserRole> role,
+  Value<DateTime?> createdAt,
+  Value<DateTime?> updatedAt,
   Value<String?> accessToken,
   Value<DateTime?> tokenExpiry,
   Value<String?> username,
   Value<String?> photoUrl,
-  Value<DateTime?> createdAt,
   Value<int> rowid,
 });
 
@@ -1624,13 +1750,26 @@ class $$UsersTableFilterComposer extends Composer<_$AppDatabase, $UsersTable> {
   ColumnFilters<String> get id => $composableBuilder(
       column: $table.id, builder: (column) => ColumnFilters(column));
 
+  ColumnFilters<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnFilters(column));
+
   ColumnFilters<String> get email => $composableBuilder(
       column: $table.email, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get emailVerifiedAt => $composableBuilder(
+      column: $table.emailVerifiedAt,
+      builder: (column) => ColumnFilters(column));
 
   ColumnWithTypeConverterFilters<UserRole, UserRole, String> get role =>
       $composableBuilder(
           column: $table.role,
           builder: (column) => ColumnWithTypeConverterFilters(column));
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get accessToken => $composableBuilder(
       column: $table.accessToken, builder: (column) => ColumnFilters(column));
@@ -1643,9 +1782,6 @@ class $$UsersTableFilterComposer extends Composer<_$AppDatabase, $UsersTable> {
 
   ColumnFilters<String> get photoUrl => $composableBuilder(
       column: $table.photoUrl, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<DateTime> get createdAt => $composableBuilder(
-      column: $table.createdAt, builder: (column) => ColumnFilters(column));
 }
 
 class $$UsersTableOrderingComposer
@@ -1660,11 +1796,24 @@ class $$UsersTableOrderingComposer
   ColumnOrderings<String> get id => $composableBuilder(
       column: $table.id, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<String> get email => $composableBuilder(
       column: $table.email, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<DateTime> get emailVerifiedAt => $composableBuilder(
+      column: $table.emailVerifiedAt,
+      builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<String> get role => $composableBuilder(
       column: $table.role, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get accessToken => $composableBuilder(
       column: $table.accessToken, builder: (column) => ColumnOrderings(column));
@@ -1677,9 +1826,6 @@ class $$UsersTableOrderingComposer
 
   ColumnOrderings<String> get photoUrl => $composableBuilder(
       column: $table.photoUrl, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
-      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
 }
 
 class $$UsersTableAnnotationComposer
@@ -1694,11 +1840,23 @@ class $$UsersTableAnnotationComposer
   GeneratedColumn<String> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
   GeneratedColumn<String> get email =>
       $composableBuilder(column: $table.email, builder: (column) => column);
 
+  GeneratedColumn<DateTime> get emailVerifiedAt => $composableBuilder(
+      column: $table.emailVerifiedAt, builder: (column) => column);
+
   GeneratedColumnWithTypeConverter<UserRole, String> get role =>
       $composableBuilder(column: $table.role, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 
   GeneratedColumn<String> get accessToken => $composableBuilder(
       column: $table.accessToken, builder: (column) => column);
@@ -1711,9 +1869,6 @@ class $$UsersTableAnnotationComposer
 
   GeneratedColumn<String> get photoUrl =>
       $composableBuilder(column: $table.photoUrl, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 }
 
 class $$UsersTableTableManager extends RootTableManager<
@@ -1740,46 +1895,58 @@ class $$UsersTableTableManager extends RootTableManager<
               $$UsersTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<String> id = const Value.absent(),
+            Value<String?> name = const Value.absent(),
             Value<String> email = const Value.absent(),
+            Value<DateTime?> emailVerifiedAt = const Value.absent(),
             Value<UserRole> role = const Value.absent(),
+            Value<DateTime?> createdAt = const Value.absent(),
+            Value<DateTime?> updatedAt = const Value.absent(),
             Value<String?> accessToken = const Value.absent(),
             Value<DateTime?> tokenExpiry = const Value.absent(),
             Value<String?> username = const Value.absent(),
             Value<String?> photoUrl = const Value.absent(),
-            Value<DateTime?> createdAt = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               UsersCompanion(
             id: id,
+            name: name,
             email: email,
+            emailVerifiedAt: emailVerifiedAt,
             role: role,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
             accessToken: accessToken,
             tokenExpiry: tokenExpiry,
             username: username,
             photoUrl: photoUrl,
-            createdAt: createdAt,
             rowid: rowid,
           ),
           createCompanionCallback: ({
             required String id,
+            Value<String?> name = const Value.absent(),
             required String email,
+            Value<DateTime?> emailVerifiedAt = const Value.absent(),
             required UserRole role,
+            Value<DateTime?> createdAt = const Value.absent(),
+            Value<DateTime?> updatedAt = const Value.absent(),
             Value<String?> accessToken = const Value.absent(),
             Value<DateTime?> tokenExpiry = const Value.absent(),
             Value<String?> username = const Value.absent(),
             Value<String?> photoUrl = const Value.absent(),
-            Value<DateTime?> createdAt = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               UsersCompanion.insert(
             id: id,
+            name: name,
             email: email,
+            emailVerifiedAt: emailVerifiedAt,
             role: role,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
             accessToken: accessToken,
             tokenExpiry: tokenExpiry,
             username: username,
             photoUrl: photoUrl,
-            createdAt: createdAt,
             rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0

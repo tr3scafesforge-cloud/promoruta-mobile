@@ -1,13 +1,18 @@
 import 'package:drift/drift.dart';
 
 import '../../../core/models/user.dart' as model;
-import '../../repositories/auth_repository.dart';
 import 'db/database.dart';
 
-class AuthLocalDataSourceImpl implements AuthLocalDataSource {
+abstract class UserLocalDataSource {
+  Future<void> saveUser(model.User user);
+  Future<model.User?> getUser(String userId);
+  Future<void> clearUser(String userId);
+}
+
+class UserLocalDataSourceImpl implements UserLocalDataSource {
   final AppDatabase db;
 
-  AuthLocalDataSourceImpl(this.db);
+  UserLocalDataSourceImpl(this.db);
 
   @override
   Future<void> saveUser(model.User user) async {
@@ -29,13 +34,13 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   }
 
   @override
-  Future<model.User?> getUser() async {
-    final userRow = await db.select(db.users).getSingleOrNull();
+  Future<model.User?> getUser(String userId) async {
+    final userRow = await (db.select(db.users)..where((tbl) => tbl.id.equals(userId))).getSingleOrNull();
     if (userRow == null) return null;
 
     return model.User(
       id: userRow.id,
-      name: userRow.name ?? '',
+      name: userRow.name!,
       email: userRow.email,
       emailVerifiedAt: userRow.emailVerifiedAt,
       role: userRow.role,
@@ -49,7 +54,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   }
 
   @override
-  Future<void> clearUser() async {
-    await db.delete(db.users).go();
+  Future<void> clearUser(String userId) async {
+    await (db.delete(db.users)..where((tbl) => tbl.id.equals(userId))).go();
   }
 }

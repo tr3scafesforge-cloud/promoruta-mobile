@@ -28,13 +28,16 @@ class UserRoleConverter extends TypeConverter<UserRole, String> {
 // Tables
 class Users extends Table {
   TextColumn get id => text()();
+  TextColumn get name => text()();
   TextColumn get email => text()();
+  DateTimeColumn get emailVerifiedAt => dateTime().nullable()();
   TextColumn get role => text().map(const UserRoleConverter())();
+  DateTimeColumn get createdAt => dateTime().nullable()();
+  DateTimeColumn get updatedAt => dateTime().nullable()();
   TextColumn get accessToken => text().nullable()();
   DateTimeColumn get tokenExpiry => dateTime().nullable()();
   TextColumn get username => text().nullable()();
   TextColumn get photoUrl => text().nullable()();
-  DateTimeColumn get createdAt => dateTime().nullable()();
 
   @override
   Set<Column> get primaryKey => {id};
@@ -72,7 +75,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration {
@@ -90,6 +93,12 @@ class AppDatabase extends _$AppDatabase {
           await migrator.addColumn(users, users.username);
           await migrator.addColumn(users, users.photoUrl);
           await migrator.addColumn(users, users.createdAt);
+        }
+        if (from == 3) {
+          // Migration from version 3 to 4: Add new user fields
+          await migrator.addColumn(users, users.name);
+          await migrator.addColumn(users, users.emailVerifiedAt);
+          await migrator.addColumn(users, users.updatedAt);
         }
       },
     );

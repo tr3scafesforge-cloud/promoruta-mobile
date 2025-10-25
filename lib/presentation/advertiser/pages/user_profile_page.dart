@@ -6,7 +6,7 @@ import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
 
-class UserProfilePage extends ConsumerWidget {
+class UserProfilePage extends ConsumerStatefulWidget {
   const UserProfilePage({
     super.key,
     this.onDeleteAccount,
@@ -18,7 +18,39 @@ class UserProfilePage extends ConsumerWidget {
   final Future<void> Function()? onSignOut;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<UserProfilePage> createState() => _UserProfilePageState();
+}
+
+class _UserProfilePageState extends ConsumerState<UserProfilePage> {
+  @override
+  void initState() {
+    super.initState();
+    // Fetch user data when the page loads
+    _fetchUserData();
+  }
+
+  Future<void> _fetchUserData() async {
+    final userAsync = ref.read(authStateProvider);
+    userAsync.whenData((user) async {
+      if (user != null) {
+        try {
+          final userRepository = ref.read(userRepositoryProvider);
+          await userRepository.getUserById(user.id, forceRefresh: true);
+        } catch (e) {
+          // Handle error silently or show a snackbar
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Failed to refresh user data: $e')),
+            );
+          }
+        }
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final currentUserAsync = ref.watch(authStateProvider);
     final userAsync = ref.watch(authStateProvider);
     final destructive = const Color(0xFFCC0033); // deep red like your mock
     final cardRadius = 12.0;
@@ -37,7 +69,7 @@ class UserProfilePage extends ConsumerWidget {
         ),
       ),
       body: SafeArea(
-        child: userAsync.when(
+        child: currentUserAsync.when(
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, stack) => Center(child: Text('Error: $error')),
           data: (user) => user == null
@@ -75,8 +107,7 @@ class UserProfilePage extends ConsumerWidget {
                     ),
                     const SizedBox(height: 24),
 
-                    // Use the real values:
-                    // (Replace the placeholder card above with this exact widget.)
+                    // Use the real values from API:
                     _ProfileInfoCard(
                       radius: cardRadius,
                       rows: [
@@ -86,12 +117,26 @@ class UserProfilePage extends ConsumerWidget {
                             valueAlignEnd: true),
                         _InfoRowData(
                             label: l10n.username,
-                            value: user.username ?? user.email),
+                            value: user.name), // Use name from API
                         _InfoRowData(label: l10n.email, value: user.email),
                         if (user.createdAt != null)
                           _InfoRowData(
                               label: l10n.registrationDate,
                               value: user.createdAt!
+                                  .toLocal()
+                                  .toString()
+                                  .split(' ')[0]),
+                        if (user.updatedAt != null)
+                          _InfoRowData(
+                              label: 'Last Updated',
+                              value: user.updatedAt!
+                                  .toLocal()
+                                  .toString()
+                                  .split(' ')[0]),
+                        if (user.emailVerifiedAt != null)
+                          _InfoRowData(
+                              label: 'Email Verified',
+                              value: user.emailVerifiedAt!
                                   .toLocal()
                                   .toString()
                                   .split(' ')[0]),
@@ -112,8 +157,8 @@ class UserProfilePage extends ConsumerWidget {
                           confirmText: l10n.delete,
                           confirmColor: destructive,
                         );
-                        if (confirmed && onDeleteAccount != null) {
-                          await onDeleteAccount!();
+                        if (confirmed && widget.onDeleteAccount != null) {
+                          await widget.onDeleteAccount!();
                         }
                       },
                     ),

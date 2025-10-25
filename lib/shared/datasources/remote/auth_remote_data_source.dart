@@ -61,15 +61,18 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
         return User(
           id: userData['id'],
+          name: userData['name'],
           email: userData['email'],
+          emailVerifiedAt: null, // API doesn't provide email_verified_at on login
           role: UserRole.fromString(userData['role']),
+          createdAt: userData['created_at'] != null ? DateTime.parse(userData['created_at']) : null,
+          updatedAt: null, // API doesn't provide updated_at on login
           accessToken: data['access_token'],
           tokenExpiry: tokenExpiry,
           refreshToken: data['refresh_token'],
           refreshExpiresIn: refreshExpiresIn,
           username: userData['name'],
           photoUrl: null, // API doesn't provide photoUrl
-          createdAt: userData['created_at'] != null ? DateTime.parse(userData['created_at']) : null,
         );
       } else {
         throw Exception('Login failed: ${response.statusMessage}');
@@ -107,15 +110,18 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
         final refreshedUser = User(
           id: user.id,
+          name: user.name,
           email: user.email,
+          emailVerifiedAt: user.emailVerifiedAt,
           role: user.role,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
           accessToken: data['access_token'],
           tokenExpiry: tokenExpiry,
           refreshToken: data['refresh_token'],
           refreshExpiresIn: refreshExpiresIn,
           username: user.username,
           photoUrl: user.photoUrl,
-          createdAt: user.createdAt,
         );
 
         // Update local storage with new token
