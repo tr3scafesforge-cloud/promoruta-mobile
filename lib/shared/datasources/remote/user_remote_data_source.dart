@@ -49,7 +49,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     try {
       final response = await _handleRequestWithTokenRefresh((headers) async {
         return await dio.get(
-          '/api/users/$userId',
+          '/users/$userId',
           options: Options(
             headers: {
               ...headers,
