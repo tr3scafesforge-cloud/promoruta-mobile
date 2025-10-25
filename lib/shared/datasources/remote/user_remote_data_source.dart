@@ -10,11 +10,14 @@ abstract class UserRemoteDataSource {
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   final Dio dio;
   final AuthLocalDataSource _localDataSource;
+  final AuthRemoteDataSource _authRemoteDataSource;
 
   UserRemoteDataSourceImpl({
     required this.dio,
     required AuthLocalDataSource localDataSource,
-  }) : _localDataSource = localDataSource;
+    required AuthRemoteDataSource authRemoteDataSource,
+  }) : _localDataSource = localDataSource,
+       _authRemoteDataSource = authRemoteDataSource;
 
   /// Helper method to handle token refresh on 401 errors and retry the request
   Future<T> _handleRequestWithTokenRefresh<T>(
@@ -29,11 +32,9 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     } on DioException catch (e) {
       if (e.response?.statusCode == 401) {
         try {
-          // Import and use the auth remote data source for token refresh
-          // This would need to be injected or accessed differently
-          // For now, we'll throw an exception to indicate token refresh is needed
-          AppLogger.auth.e('Token refresh failed: $e');
-          throw Exception('Authentication failed. Please log in again.');
+          final refreshedUser = await _authRemoteDataSource.refreshToken(user.refreshToken!);
+          final newHeaders = {'Authorization': 'Bearer ${refreshedUser.accessToken}'};
+          return await request(newHeaders);
         } catch (refreshError) {
           AppLogger.auth.e('Token refresh failed: $refreshError');
           throw Exception('Authentication failed. Please log in again.');

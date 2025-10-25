@@ -119,7 +119,8 @@ final userLocalDataSourceProvider = Provider<UserLocalDataSource>((ref) {
 final userRemoteDataSourceProvider = Provider<UserRemoteDataSource>((ref) {
   final dio = ref.watch(dioProvider);
   final localDataSource = ref.watch(authLocalDataSourceProvider);
-  return UserRemoteDataSourceImpl(dio: dio, localDataSource: localDataSource);
+  final authRemoteDataSource = ref.watch(authRemoteDataSourceProvider);
+  return UserRemoteDataSourceImpl(dio: dio, localDataSource: localDataSource, authRemoteDataSource: authRemoteDataSource);
 });
 
 // Sync Service
@@ -185,10 +186,12 @@ final gpsRepositoryProvider = Provider<GpsRepository>((ref) {
 final userRepositoryProvider = Provider<UserRepository>((ref) {
   final localDataSource = ref.watch(userLocalDataSourceProvider);
   final remoteDataSource = ref.watch(userRemoteDataSourceProvider);
+  final authLocalDataSource = ref.watch(authLocalDataSourceProvider);
 
   return UserRepositoryImpl(
     remoteDataSource: remoteDataSource,
     localDataSource: localDataSource,
+    authLocalDataSource: authLocalDataSource,
   );
 });
 

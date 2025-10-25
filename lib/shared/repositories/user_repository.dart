@@ -1,6 +1,7 @@
 import 'package:promoruta/core/core.dart';
 import 'package:promoruta/shared/datasources/local/user_local_data_source.dart';
 import 'package:promoruta/shared/datasources/remote/user_remote_data_source.dart';
+import 'package:promoruta/shared/repositories/auth_repository.dart';
 
 abstract class UserRepository {
   Future<User> getUserById(String userId, {bool forceRefresh = false});
@@ -9,10 +10,12 @@ abstract class UserRepository {
 class UserRepositoryImpl implements UserRepository {
   final UserRemoteDataSource remoteDataSource;
   final UserLocalDataSource localDataSource;
+  final AuthLocalDataSource authLocalDataSource;
 
   UserRepositoryImpl({
     required this.remoteDataSource,
     required this.localDataSource,
+    required this.authLocalDataSource,
   });
 
   @override
@@ -28,9 +31,29 @@ class UserRepositoryImpl implements UserRepository {
     // Fetch from remote API
     final remoteUser = await remoteDataSource.getUserById(userId);
 
-    // Save to local storage for future use
-    await localDataSource.saveUser(remoteUser);
+    // Get the current user to preserve auth data
+    final currentUser = await authLocalDataSource.getUser();
 
-    return remoteUser;
+    // Merge auth data from current user with remote user data
+    final mergedUser = User(
+      id: remoteUser.id,
+      name: remoteUser.name,
+      email: remoteUser.email,
+      emailVerifiedAt: remoteUser.emailVerifiedAt,
+      role: remoteUser.role,
+      createdAt: remoteUser.createdAt,
+      updatedAt: remoteUser.updatedAt,
+      accessToken: currentUser?.accessToken,
+      tokenExpiry: currentUser?.tokenExpiry,
+      refreshToken: currentUser?.refreshToken,
+      refreshExpiresIn: currentUser?.refreshExpiresIn,
+      username: remoteUser.username,
+      photoUrl: remoteUser.photoUrl,
+    );
+
+    // Save to local storage for future use
+    await localDataSource.saveUser(mergedUser);
+
+    return mergedUser;
   }
 }
