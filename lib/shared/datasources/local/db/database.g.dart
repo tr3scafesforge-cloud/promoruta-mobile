@@ -16,8 +16,8 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
-      'name', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _emailMeta = const VerificationMeta('email');
   @override
   late final GeneratedColumn<String> email = GeneratedColumn<String>(
@@ -70,6 +70,18 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   late final GeneratedColumn<String> photoUrl = GeneratedColumn<String>(
       'photo_url', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _refreshExpiresInMeta =
+      const VerificationMeta('refreshExpiresIn');
+  @override
+  late final GeneratedColumn<DateTime> refreshExpiresIn =
+      GeneratedColumn<DateTime>('refresh_expires_in', aliasedName, true,
+          type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _refreshTokenMeta =
+      const VerificationMeta('refreshToken');
+  @override
+  late final GeneratedColumn<String> refreshToken = GeneratedColumn<String>(
+      'refresh_token', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -82,7 +94,9 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
         accessToken,
         tokenExpiry,
         username,
-        photoUrl
+        photoUrl,
+        refreshExpiresIn,
+        refreshToken
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -102,6 +116,8 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
     if (data.containsKey('name')) {
       context.handle(
           _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
     }
     if (data.containsKey('email')) {
       context.handle(
@@ -143,6 +159,18 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
       context.handle(_photoUrlMeta,
           photoUrl.isAcceptableOrUnknown(data['photo_url']!, _photoUrlMeta));
     }
+    if (data.containsKey('refresh_expires_in')) {
+      context.handle(
+          _refreshExpiresInMeta,
+          refreshExpiresIn.isAcceptableOrUnknown(
+              data['refresh_expires_in']!, _refreshExpiresInMeta));
+    }
+    if (data.containsKey('refresh_token')) {
+      context.handle(
+          _refreshTokenMeta,
+          refreshToken.isAcceptableOrUnknown(
+              data['refresh_token']!, _refreshTokenMeta));
+    }
     return context;
   }
 
@@ -155,7 +183,7 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
       name: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}name']),
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
       email: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}email'])!,
       emailVerifiedAt: attachedDatabase.typeMapping.read(
@@ -174,6 +202,10 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
           .read(DriftSqlType.string, data['${effectivePrefix}username']),
       photoUrl: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}photo_url']),
+      refreshExpiresIn: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}refresh_expires_in']),
+      refreshToken: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}refresh_token']),
     );
   }
 
@@ -188,7 +220,7 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
 
 class User extends DataClass implements Insertable<User> {
   final String id;
-  final String? name;
+  final String name;
   final String email;
   final DateTime? emailVerifiedAt;
   final UserRole role;
@@ -198,9 +230,11 @@ class User extends DataClass implements Insertable<User> {
   final DateTime? tokenExpiry;
   final String? username;
   final String? photoUrl;
+  final DateTime? refreshExpiresIn;
+  final String? refreshToken;
   const User(
       {required this.id,
-      this.name,
+      required this.name,
       required this.email,
       this.emailVerifiedAt,
       required this.role,
@@ -209,14 +243,14 @@ class User extends DataClass implements Insertable<User> {
       this.accessToken,
       this.tokenExpiry,
       this.username,
-      this.photoUrl});
+      this.photoUrl,
+      this.refreshExpiresIn,
+      this.refreshToken});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
-    if (!nullToAbsent || name != null) {
-      map['name'] = Variable<String>(name);
-    }
+    map['name'] = Variable<String>(name);
     map['email'] = Variable<String>(email);
     if (!nullToAbsent || emailVerifiedAt != null) {
       map['email_verified_at'] = Variable<DateTime>(emailVerifiedAt);
@@ -242,13 +276,19 @@ class User extends DataClass implements Insertable<User> {
     if (!nullToAbsent || photoUrl != null) {
       map['photo_url'] = Variable<String>(photoUrl);
     }
+    if (!nullToAbsent || refreshExpiresIn != null) {
+      map['refresh_expires_in'] = Variable<DateTime>(refreshExpiresIn);
+    }
+    if (!nullToAbsent || refreshToken != null) {
+      map['refresh_token'] = Variable<String>(refreshToken);
+    }
     return map;
   }
 
   UsersCompanion toCompanion(bool nullToAbsent) {
     return UsersCompanion(
       id: Value(id),
-      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+      name: Value(name),
       email: Value(email),
       emailVerifiedAt: emailVerifiedAt == null && nullToAbsent
           ? const Value.absent()
@@ -272,6 +312,12 @@ class User extends DataClass implements Insertable<User> {
       photoUrl: photoUrl == null && nullToAbsent
           ? const Value.absent()
           : Value(photoUrl),
+      refreshExpiresIn: refreshExpiresIn == null && nullToAbsent
+          ? const Value.absent()
+          : Value(refreshExpiresIn),
+      refreshToken: refreshToken == null && nullToAbsent
+          ? const Value.absent()
+          : Value(refreshToken),
     );
   }
 
@@ -280,7 +326,7 @@ class User extends DataClass implements Insertable<User> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return User(
       id: serializer.fromJson<String>(json['id']),
-      name: serializer.fromJson<String?>(json['name']),
+      name: serializer.fromJson<String>(json['name']),
       email: serializer.fromJson<String>(json['email']),
       emailVerifiedAt: serializer.fromJson<DateTime?>(json['emailVerifiedAt']),
       role: serializer.fromJson<UserRole>(json['role']),
@@ -290,6 +336,9 @@ class User extends DataClass implements Insertable<User> {
       tokenExpiry: serializer.fromJson<DateTime?>(json['tokenExpiry']),
       username: serializer.fromJson<String?>(json['username']),
       photoUrl: serializer.fromJson<String?>(json['photoUrl']),
+      refreshExpiresIn:
+          serializer.fromJson<DateTime?>(json['refreshExpiresIn']),
+      refreshToken: serializer.fromJson<String?>(json['refreshToken']),
     );
   }
   @override
@@ -297,7 +346,7 @@ class User extends DataClass implements Insertable<User> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
-      'name': serializer.toJson<String?>(name),
+      'name': serializer.toJson<String>(name),
       'email': serializer.toJson<String>(email),
       'emailVerifiedAt': serializer.toJson<DateTime?>(emailVerifiedAt),
       'role': serializer.toJson<UserRole>(role),
@@ -307,12 +356,14 @@ class User extends DataClass implements Insertable<User> {
       'tokenExpiry': serializer.toJson<DateTime?>(tokenExpiry),
       'username': serializer.toJson<String?>(username),
       'photoUrl': serializer.toJson<String?>(photoUrl),
+      'refreshExpiresIn': serializer.toJson<DateTime?>(refreshExpiresIn),
+      'refreshToken': serializer.toJson<String?>(refreshToken),
     };
   }
 
   User copyWith(
           {String? id,
-          Value<String?> name = const Value.absent(),
+          String? name,
           String? email,
           Value<DateTime?> emailVerifiedAt = const Value.absent(),
           UserRole? role,
@@ -321,10 +372,12 @@ class User extends DataClass implements Insertable<User> {
           Value<String?> accessToken = const Value.absent(),
           Value<DateTime?> tokenExpiry = const Value.absent(),
           Value<String?> username = const Value.absent(),
-          Value<String?> photoUrl = const Value.absent()}) =>
+          Value<String?> photoUrl = const Value.absent(),
+          Value<DateTime?> refreshExpiresIn = const Value.absent(),
+          Value<String?> refreshToken = const Value.absent()}) =>
       User(
         id: id ?? this.id,
-        name: name.present ? name.value : this.name,
+        name: name ?? this.name,
         email: email ?? this.email,
         emailVerifiedAt: emailVerifiedAt.present
             ? emailVerifiedAt.value
@@ -336,6 +389,11 @@ class User extends DataClass implements Insertable<User> {
         tokenExpiry: tokenExpiry.present ? tokenExpiry.value : this.tokenExpiry,
         username: username.present ? username.value : this.username,
         photoUrl: photoUrl.present ? photoUrl.value : this.photoUrl,
+        refreshExpiresIn: refreshExpiresIn.present
+            ? refreshExpiresIn.value
+            : this.refreshExpiresIn,
+        refreshToken:
+            refreshToken.present ? refreshToken.value : this.refreshToken,
       );
   User copyWithCompanion(UsersCompanion data) {
     return User(
@@ -354,6 +412,12 @@ class User extends DataClass implements Insertable<User> {
           data.tokenExpiry.present ? data.tokenExpiry.value : this.tokenExpiry,
       username: data.username.present ? data.username.value : this.username,
       photoUrl: data.photoUrl.present ? data.photoUrl.value : this.photoUrl,
+      refreshExpiresIn: data.refreshExpiresIn.present
+          ? data.refreshExpiresIn.value
+          : this.refreshExpiresIn,
+      refreshToken: data.refreshToken.present
+          ? data.refreshToken.value
+          : this.refreshToken,
     );
   }
 
@@ -370,14 +434,28 @@ class User extends DataClass implements Insertable<User> {
           ..write('accessToken: $accessToken, ')
           ..write('tokenExpiry: $tokenExpiry, ')
           ..write('username: $username, ')
-          ..write('photoUrl: $photoUrl')
+          ..write('photoUrl: $photoUrl, ')
+          ..write('refreshExpiresIn: $refreshExpiresIn, ')
+          ..write('refreshToken: $refreshToken')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name, email, emailVerifiedAt, role,
-      createdAt, updatedAt, accessToken, tokenExpiry, username, photoUrl);
+  int get hashCode => Object.hash(
+      id,
+      name,
+      email,
+      emailVerifiedAt,
+      role,
+      createdAt,
+      updatedAt,
+      accessToken,
+      tokenExpiry,
+      username,
+      photoUrl,
+      refreshExpiresIn,
+      refreshToken);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -392,12 +470,14 @@ class User extends DataClass implements Insertable<User> {
           other.accessToken == this.accessToken &&
           other.tokenExpiry == this.tokenExpiry &&
           other.username == this.username &&
-          other.photoUrl == this.photoUrl);
+          other.photoUrl == this.photoUrl &&
+          other.refreshExpiresIn == this.refreshExpiresIn &&
+          other.refreshToken == this.refreshToken);
 }
 
 class UsersCompanion extends UpdateCompanion<User> {
   final Value<String> id;
-  final Value<String?> name;
+  final Value<String> name;
   final Value<String> email;
   final Value<DateTime?> emailVerifiedAt;
   final Value<UserRole> role;
@@ -407,6 +487,8 @@ class UsersCompanion extends UpdateCompanion<User> {
   final Value<DateTime?> tokenExpiry;
   final Value<String?> username;
   final Value<String?> photoUrl;
+  final Value<DateTime?> refreshExpiresIn;
+  final Value<String?> refreshToken;
   final Value<int> rowid;
   const UsersCompanion({
     this.id = const Value.absent(),
@@ -420,11 +502,13 @@ class UsersCompanion extends UpdateCompanion<User> {
     this.tokenExpiry = const Value.absent(),
     this.username = const Value.absent(),
     this.photoUrl = const Value.absent(),
+    this.refreshExpiresIn = const Value.absent(),
+    this.refreshToken = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   UsersCompanion.insert({
     required String id,
-    this.name = const Value.absent(),
+    required String name,
     required String email,
     this.emailVerifiedAt = const Value.absent(),
     required UserRole role,
@@ -434,8 +518,11 @@ class UsersCompanion extends UpdateCompanion<User> {
     this.tokenExpiry = const Value.absent(),
     this.username = const Value.absent(),
     this.photoUrl = const Value.absent(),
+    this.refreshExpiresIn = const Value.absent(),
+    this.refreshToken = const Value.absent(),
     this.rowid = const Value.absent(),
   })  : id = Value(id),
+        name = Value(name),
         email = Value(email),
         role = Value(role);
   static Insertable<User> custom({
@@ -450,6 +537,8 @@ class UsersCompanion extends UpdateCompanion<User> {
     Expression<DateTime>? tokenExpiry,
     Expression<String>? username,
     Expression<String>? photoUrl,
+    Expression<DateTime>? refreshExpiresIn,
+    Expression<String>? refreshToken,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -464,13 +553,15 @@ class UsersCompanion extends UpdateCompanion<User> {
       if (tokenExpiry != null) 'token_expiry': tokenExpiry,
       if (username != null) 'username': username,
       if (photoUrl != null) 'photo_url': photoUrl,
+      if (refreshExpiresIn != null) 'refresh_expires_in': refreshExpiresIn,
+      if (refreshToken != null) 'refresh_token': refreshToken,
       if (rowid != null) 'rowid': rowid,
     });
   }
 
   UsersCompanion copyWith(
       {Value<String>? id,
-      Value<String?>? name,
+      Value<String>? name,
       Value<String>? email,
       Value<DateTime?>? emailVerifiedAt,
       Value<UserRole>? role,
@@ -480,6 +571,8 @@ class UsersCompanion extends UpdateCompanion<User> {
       Value<DateTime?>? tokenExpiry,
       Value<String?>? username,
       Value<String?>? photoUrl,
+      Value<DateTime?>? refreshExpiresIn,
+      Value<String?>? refreshToken,
       Value<int>? rowid}) {
     return UsersCompanion(
       id: id ?? this.id,
@@ -493,6 +586,8 @@ class UsersCompanion extends UpdateCompanion<User> {
       tokenExpiry: tokenExpiry ?? this.tokenExpiry,
       username: username ?? this.username,
       photoUrl: photoUrl ?? this.photoUrl,
+      refreshExpiresIn: refreshExpiresIn ?? this.refreshExpiresIn,
+      refreshToken: refreshToken ?? this.refreshToken,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -534,6 +629,12 @@ class UsersCompanion extends UpdateCompanion<User> {
     if (photoUrl.present) {
       map['photo_url'] = Variable<String>(photoUrl.value);
     }
+    if (refreshExpiresIn.present) {
+      map['refresh_expires_in'] = Variable<DateTime>(refreshExpiresIn.value);
+    }
+    if (refreshToken.present) {
+      map['refresh_token'] = Variable<String>(refreshToken.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -554,6 +655,8 @@ class UsersCompanion extends UpdateCompanion<User> {
           ..write('tokenExpiry: $tokenExpiry, ')
           ..write('username: $username, ')
           ..write('photoUrl: $photoUrl, ')
+          ..write('refreshExpiresIn: $refreshExpiresIn, ')
+          ..write('refreshToken: $refreshToken, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1712,7 +1815,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
 
 typedef $$UsersTableCreateCompanionBuilder = UsersCompanion Function({
   required String id,
-  Value<String?> name,
+  required String name,
   required String email,
   Value<DateTime?> emailVerifiedAt,
   required UserRole role,
@@ -1722,11 +1825,13 @@ typedef $$UsersTableCreateCompanionBuilder = UsersCompanion Function({
   Value<DateTime?> tokenExpiry,
   Value<String?> username,
   Value<String?> photoUrl,
+  Value<DateTime?> refreshExpiresIn,
+  Value<String?> refreshToken,
   Value<int> rowid,
 });
 typedef $$UsersTableUpdateCompanionBuilder = UsersCompanion Function({
   Value<String> id,
-  Value<String?> name,
+  Value<String> name,
   Value<String> email,
   Value<DateTime?> emailVerifiedAt,
   Value<UserRole> role,
@@ -1736,6 +1841,8 @@ typedef $$UsersTableUpdateCompanionBuilder = UsersCompanion Function({
   Value<DateTime?> tokenExpiry,
   Value<String?> username,
   Value<String?> photoUrl,
+  Value<DateTime?> refreshExpiresIn,
+  Value<String?> refreshToken,
   Value<int> rowid,
 });
 
@@ -1782,6 +1889,13 @@ class $$UsersTableFilterComposer extends Composer<_$AppDatabase, $UsersTable> {
 
   ColumnFilters<String> get photoUrl => $composableBuilder(
       column: $table.photoUrl, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get refreshExpiresIn => $composableBuilder(
+      column: $table.refreshExpiresIn,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get refreshToken => $composableBuilder(
+      column: $table.refreshToken, builder: (column) => ColumnFilters(column));
 }
 
 class $$UsersTableOrderingComposer
@@ -1826,6 +1940,14 @@ class $$UsersTableOrderingComposer
 
   ColumnOrderings<String> get photoUrl => $composableBuilder(
       column: $table.photoUrl, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get refreshExpiresIn => $composableBuilder(
+      column: $table.refreshExpiresIn,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get refreshToken => $composableBuilder(
+      column: $table.refreshToken,
+      builder: (column) => ColumnOrderings(column));
 }
 
 class $$UsersTableAnnotationComposer
@@ -1869,6 +1991,12 @@ class $$UsersTableAnnotationComposer
 
   GeneratedColumn<String> get photoUrl =>
       $composableBuilder(column: $table.photoUrl, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get refreshExpiresIn => $composableBuilder(
+      column: $table.refreshExpiresIn, builder: (column) => column);
+
+  GeneratedColumn<String> get refreshToken => $composableBuilder(
+      column: $table.refreshToken, builder: (column) => column);
 }
 
 class $$UsersTableTableManager extends RootTableManager<
@@ -1895,7 +2023,7 @@ class $$UsersTableTableManager extends RootTableManager<
               $$UsersTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<String> id = const Value.absent(),
-            Value<String?> name = const Value.absent(),
+            Value<String> name = const Value.absent(),
             Value<String> email = const Value.absent(),
             Value<DateTime?> emailVerifiedAt = const Value.absent(),
             Value<UserRole> role = const Value.absent(),
@@ -1905,6 +2033,8 @@ class $$UsersTableTableManager extends RootTableManager<
             Value<DateTime?> tokenExpiry = const Value.absent(),
             Value<String?> username = const Value.absent(),
             Value<String?> photoUrl = const Value.absent(),
+            Value<DateTime?> refreshExpiresIn = const Value.absent(),
+            Value<String?> refreshToken = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               UsersCompanion(
@@ -1919,11 +2049,13 @@ class $$UsersTableTableManager extends RootTableManager<
             tokenExpiry: tokenExpiry,
             username: username,
             photoUrl: photoUrl,
+            refreshExpiresIn: refreshExpiresIn,
+            refreshToken: refreshToken,
             rowid: rowid,
           ),
           createCompanionCallback: ({
             required String id,
-            Value<String?> name = const Value.absent(),
+            required String name,
             required String email,
             Value<DateTime?> emailVerifiedAt = const Value.absent(),
             required UserRole role,
@@ -1933,6 +2065,8 @@ class $$UsersTableTableManager extends RootTableManager<
             Value<DateTime?> tokenExpiry = const Value.absent(),
             Value<String?> username = const Value.absent(),
             Value<String?> photoUrl = const Value.absent(),
+            Value<DateTime?> refreshExpiresIn = const Value.absent(),
+            Value<String?> refreshToken = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               UsersCompanion.insert(
@@ -1947,6 +2081,8 @@ class $$UsersTableTableManager extends RootTableManager<
             tokenExpiry: tokenExpiry,
             username: username,
             photoUrl: photoUrl,
+            refreshExpiresIn: refreshExpiresIn,
+            refreshToken: refreshToken,
             rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0

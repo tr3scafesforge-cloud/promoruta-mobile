@@ -24,6 +24,8 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
         tokenExpiry: Value(user.tokenExpiry),
         username: Value(user.username),
         photoUrl: Value(user.photoUrl),
+        refreshExpiresIn:  Value(user.refreshExpiresIn!),
+        refreshToken:  Value(user.refreshToken!)
       ),
     );
   }
