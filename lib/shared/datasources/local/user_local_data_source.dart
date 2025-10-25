@@ -29,6 +29,8 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
         tokenExpiry: Value(user.tokenExpiry),
         username: Value(user.username),
         photoUrl: Value(user.photoUrl),
+        refreshExpiresIn:  Value(user.refreshExpiresIn!),
+        refreshToken:  Value(user.refreshToken!),
       ),
     );
   }
@@ -40,7 +42,7 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
 
     return model.User(
       id: userRow.id,
-      name: userRow.name!,
+      name: userRow.name,
       email: userRow.email,
       emailVerifiedAt: userRow.emailVerifiedAt,
       role: userRow.role,
@@ -50,6 +52,8 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
       tokenExpiry: userRow.tokenExpiry,
       username: userRow.username,
       photoUrl: userRow.photoUrl,
+      refreshExpiresIn: userRow.refreshExpiresIn,
+      refreshToken: userRow.refreshToken,
     );
   }
 

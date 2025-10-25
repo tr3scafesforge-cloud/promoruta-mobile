@@ -37,7 +37,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
 
     return model.User(
       id: userRow.id,
-      name: userRow.name ?? '',
+      name: userRow.name,
       email: userRow.email,
       emailVerifiedAt: userRow.emailVerifiedAt,
       role: userRow.role,
@@ -47,6 +47,8 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       tokenExpiry: userRow.tokenExpiry,
       username: userRow.username,
       photoUrl: userRow.photoUrl,
+      refreshExpiresIn: userRow.refreshExpiresIn,
+      refreshToken: userRow.refreshToken,
     );
   }
 
