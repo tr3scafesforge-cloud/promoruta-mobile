@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:promoruta/core/utils/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:promoruta/core/core.dart' as model;
 import 'package:promoruta/core/models/user.dart';
@@ -286,8 +287,7 @@ class _AppStartupState extends ConsumerState<AppStartup> {
     try {
       user = await authRepository.getCurrentUser();
     } catch (e) {
-      // If error getting user, assume not logged in
-      print('Error getting current user: $e');
+      AppLogger.router.e('Error getting current user: $e');
     }
 
     if (!mounted) return;

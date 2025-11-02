@@ -1,5 +1,5 @@
 import 'package:promoruta/core/core.dart' as model;
-import 'package:promoruta/shared/shared.dart' hide Campaign;
+import 'package:promoruta/shared/shared.dart';
 
 class CampaignRepositoryImpl implements CampaignRepository {
   final CampaignLocalDataSource _localDataSource;
