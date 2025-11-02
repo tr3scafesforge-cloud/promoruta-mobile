@@ -69,6 +69,28 @@ class AppLogger {
     ), debug: '[PERMISSION] ', info: '[PERMISSION] ', warning: '[PERMISSION] ', error: '[PERMISSION] '),
   );
 
+  static final Logger location = Logger(
+    printer: PrefixPrinter(PrettyPrinter(
+      methodCount: 2,
+      errorMethodCount: 8,
+      lineLength: 120,
+      colors: true,
+      printEmojis: true,
+      dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
+    ), debug: '[LOCATION] ', info: '[LOCATION] ', warning: '[LOCATION] ', error: '[LOCATION] '),
+  );
+
+  static final Logger router = Logger(
+    printer: PrefixPrinter(PrettyPrinter(
+      methodCount: 2,
+      errorMethodCount: 8,
+      lineLength: 120,
+      colors: true,
+      printEmojis: true,
+      dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
+    ), debug: '[ROUTER] ', info: '[ROUTER] ', warning: '[ROUTER] ', error: '[ROUTER] '),
+  );
+
   // General logger for uncategorized logs
   static Logger get general => _logger;
 
