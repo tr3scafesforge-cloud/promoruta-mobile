@@ -22,6 +22,7 @@ List<RouteBase> get $appRoutes => [
       $promoterHomeRoute,
       $advertiserHomeRoute,
       $advertiserSecuritySettingsRoute,
+      $createCampaignRoute,
     ];
 
 RouteBase get $appStartupRoute => GoRouteData.$route(
@@ -453,6 +454,34 @@ mixin _$AdvertiserSecuritySettingsRoute on GoRouteData {
   @override
   String get location => GoRouteData.$location(
         '/advertiser-security-settings',
+      );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $createCampaignRoute => GoRouteData.$route(
+      path: '/create-campaign',
+      factory: _$CreateCampaignRoute._fromState,
+    );
+
+mixin _$CreateCampaignRoute on GoRouteData {
+  static CreateCampaignRoute _fromState(GoRouterState state) =>
+      const CreateCampaignRoute();
+
+  @override
+  String get location => GoRouteData.$location(
+        '/create-campaign',
       );
 
   @override

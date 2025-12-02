@@ -19,6 +19,7 @@ import 'package:promoruta/presentation/advertiser/pages/user_profile_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/payment_methods_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/change_password_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/two_factor_auth_page.dart';
+import 'package:promoruta/features/advertiser/campaign_creation/presentation/pages/create_campaign_page.dart';
 import 'package:promoruta/shared/shared.dart';
 
 part 'app_router.g.dart';
@@ -242,6 +243,18 @@ class AdvertiserSecuritySettingsRoute extends GoRouteData with _$AdvertiserSecur
         );
       },
     );
+  }
+}
+
+@TypedGoRoute<CreateCampaignRoute>(
+  path: '/create-campaign',
+)
+class CreateCampaignRoute extends GoRouteData with _$CreateCampaignRoute {
+  const CreateCampaignRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const CreateCampaignPage();
   }
 }
 
