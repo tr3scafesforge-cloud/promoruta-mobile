@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:promoruta/core/constants/colors.dart';
+import 'package:promoruta/core/models/campaign.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/widgets/custom_button.dart';
 import 'package:promoruta/shared/widgets/app_card.dart';
@@ -672,14 +673,66 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
     });
 
     try {
-      // TODO: First create the campaign via API and get the campaign ID
-      // For now, we'll use a temporary campaign ID for demonstration
-      const tempCampaignId = '019a4222-051c-7223-b72f-ac9c8b9c0fd3';
+      // STEP 1: Create the campaign first (without audio_url)
+      final campaignRepository = ref.read(campaignRepositoryProvider);
 
-      // Upload the audio file
+      // Combine date and time
+      final startDateTime = DateTime(
+        _selectedDate!.year,
+        _selectedDate!.month,
+        _selectedDate!.day,
+        _startTime!.hour,
+        _startTime!.minute,
+      );
+
+      final endDateTime = DateTime(
+        _selectedDate!.year,
+        _selectedDate!.month,
+        _selectedDate!.day,
+        _endTime!.hour,
+        _endTime!.minute,
+      );
+
+      // Bid deadline: 2 days before start time
+      final bidDeadline = startDateTime.subtract(const Duration(days: 2));
+
+      // Create campaign object
+      final newCampaign = Campaign(
+        title: _titleController.text.trim(),
+        description: _descriptionController.text.trim(),
+        zone: _locationController.text.trim().isEmpty
+            ? 'Default Zone'
+            : _locationController.text.trim(),
+        suggestedPrice: double.tryParse(_budgetController.text.trim()) ?? 0.0,
+        bidDeadline: bidDeadline,
+        audioDuration: 30, // Placeholder - should be calculated from audio file
+        distance: 10.0, // Placeholder - should come from map selection
+        routeCoordinates: [
+          // Placeholder coordinates - should come from map selection
+          const RouteCoordinate(lat: 40.7128, lng: -74.0060),
+          const RouteCoordinate(lat: 40.7138, lng: -74.0070),
+        ],
+        startTime: startDateTime,
+        endTime: endDateTime,
+      );
+
+      // Create campaign
+      final createdCampaign = await campaignRepository.createCampaign(newCampaign);
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Campaña creada. Subiendo audio...'),
+            backgroundColor: AppColors.secondary,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+
+      // STEP 2: Upload the audio file using the created campaign ID
       final mediaRepository = ref.read(mediaRepositoryProvider);
       final uploadResponse = await mediaRepository.uploadCampaignMedia(
-        campaignId: tempCampaignId,
+        campaignId: createdCampaign.id!,
         file: _audioFile!,
         role: MediaRole.audio,
       );
@@ -687,13 +740,20 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Campaña creada exitosamente\nAudio ID: ${uploadResponse.id}'),
+            content: Text(
+              'Campaña creada exitosamente\n'
+              'ID: ${createdCampaign.id}\n'
+              'Audio URL: ${uploadResponse.url}',
+            ),
             backgroundColor: AppColors.secondary,
-            duration: const Duration(seconds: 3),
+            duration: const Duration(seconds: 4),
           ),
         );
 
-        // Navigate back or to campaigns list
+        // Reload campaigns list
+        ref.read(campaignsProvider.notifier).loadCampaigns();
+
+        // Navigate back
         Navigator.pop(context);
       }
     } catch (e) {

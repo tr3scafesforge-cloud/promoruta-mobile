@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:promoruta/core/utils/logger.dart';
-import 'package:promoruta/shared/datasources/local/user_local_data_source.dart';
+import 'package:promoruta/shared/repositories/auth_repository.dart';
 
 /// Enum for model types
 enum ModelType {
@@ -102,11 +102,11 @@ abstract class MediaRemoteDataSource {
 
 class MediaRemoteDataSourceImpl implements MediaRemoteDataSource {
   final Dio dio;
-  final UserLocalDataSource _localDataSource;
+  final AuthLocalDataSource _localDataSource;
 
   MediaRemoteDataSourceImpl({
     required this.dio,
-    required UserLocalDataSource localDataSource,
+    required AuthLocalDataSource localDataSource,
   }) : _localDataSource = localDataSource;
 
   /// Helper method to get authorization headers

@@ -100,7 +100,8 @@ final campaignLocalDataSourceProvider = Provider<CampaignLocalDataSource>((ref) 
 
 final campaignRemoteDataSourceProvider = Provider<CampaignRemoteDataSource>((ref) {
   final dio = ref.watch(dioProvider);
-  return CampaignRemoteDataSourceImpl(dio: dio);
+  final authLocalDataSource = ref.watch(authLocalDataSourceProvider);
+  return CampaignRemoteDataSourceImpl(dio: dio, localDataSource: authLocalDataSource);
 });
 
 final gpsLocalDataSourceProvider = Provider<GpsLocalDataSource>((ref) {
@@ -127,8 +128,8 @@ final userRemoteDataSourceProvider = Provider<UserRemoteDataSource>((ref) {
 
 final mediaRemoteDataSourceProvider = Provider<MediaRemoteDataSource>((ref) {
   final dio = ref.watch(dioProvider);
-  final userLocalDataSource = ref.watch(userLocalDataSourceProvider);
-  return MediaRemoteDataSourceImpl(dio: dio, localDataSource: userLocalDataSource);
+  final authLocalDataSource = ref.watch(authLocalDataSourceProvider);
+  return MediaRemoteDataSourceImpl(dio: dio, localDataSource: authLocalDataSource);
 });
 
 // Sync Service
