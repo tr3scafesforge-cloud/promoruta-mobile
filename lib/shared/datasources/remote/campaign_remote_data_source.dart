@@ -194,47 +194,112 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
   @override
   Future<Campaign> updateCampaign(Campaign campaign) async {
     try {
+      final headers = await _getAuthHeaders();
+
+      AppLogger.auth.i('Updating campaign: ${campaign.id}');
+
       final response = await dio.put(
-        'campaigns/${campaign.id}',
-        data: {
-          'title': campaign.title,
-          'description': campaign.description,
-          'advertiserId': campaign.advertiserId,
-          'startDate': campaign.startDate.toIso8601String(),
-          'endDate': campaign.endDate.toIso8601String(),
-          'status': campaign.status.name,
-        },
+        '/campaigns/${campaign.id}',
+        data: campaign.toJson(),
+        options: Options(
+          headers: {
+            ...headers,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        ),
       );
 
       if (response.statusCode == 200) {
         final json = response.data;
-        return Campaign(
-          id: json['id'],
-          title: json['title'],
-          description: json['description'],
-          advertiserId: json['advertiserId'],
-          startDate: DateTime.parse(json['startDate']),
-          endDate: DateTime.parse(json['endDate']),
-          status: _parseStatus(json['status'] ?? 'active'),
-        );
+        AppLogger.auth.i('Campaign updated successfully: ${json['id']}');
+        return Campaign.fromJson(json);
       } else {
         throw Exception('Failed to update campaign: ${response.statusMessage}');
       }
     } on DioException catch (e) {
-      throw Exception('Network error: ${e.message}');
+      AppLogger.auth.e('Campaign update failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+
+      if (e.response != null) {
+        final statusCode = e.response!.statusCode;
+        final responseData = e.response!.data;
+
+        switch (statusCode) {
+          case 401:
+            throw Exception('Authentication failed. Please log in again.');
+          case 404:
+            throw Exception('Campaign not found.');
+          case 422:
+            // Handle validation errors
+            if (responseData is Map && responseData.containsKey('message')) {
+              throw Exception(responseData['message'].toString());
+            }
+            if (responseData is Map && responseData.containsKey('errors')) {
+              final errors = responseData['errors'] as Map?;
+              if (errors != null && errors.isNotEmpty) {
+                final firstError = errors.values.first;
+                if (firstError is List && firstError.isNotEmpty) {
+                  throw Exception(firstError.first.toString());
+                }
+              }
+            }
+            throw Exception('Invalid campaign data.');
+          case 500:
+            throw Exception('Server error. Please try again later.');
+          default:
+            throw Exception('Unable to update campaign. Please try again.');
+        }
+      } else {
+        throw Exception('Network error. Please check your connection and try again.');
+      }
+    } catch (e) {
+      AppLogger.auth.e('Unexpected error during campaign update: $e');
+      throw Exception('Failed to update campaign: $e');
     }
   }
 
   @override
   Future<void> deleteCampaign(String id) async {
     try {
-      final response = await dio.delete('campaigns/$id');
+      final headers = await _getAuthHeaders();
 
-      if (response.statusCode != 204 && response.statusCode != 200) {
+      AppLogger.auth.i('Deleting campaign: $id');
+
+      final response = await dio.delete(
+        '/campaigns/$id',
+        options: Options(
+          headers: {
+            ...headers,
+            'Accept': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 204 || response.statusCode == 200) {
+        AppLogger.auth.i('Campaign deleted successfully: $id');
+      } else {
         throw Exception('Failed to delete campaign: ${response.statusMessage}');
       }
     } on DioException catch (e) {
+      AppLogger.auth.e('Campaign deletion failed: ${e.response?.statusCode} - ${e.message}');
+
+      if (e.response != null) {
+        final statusCode = e.response!.statusCode;
+        switch (statusCode) {
+          case 401:
+            throw Exception('Authentication failed. Please log in again.');
+          case 404:
+            throw Exception('Campaign not found.');
+          case 403:
+            throw Exception('You do not have permission to delete this campaign.');
+          default:
+            throw Exception('Unable to delete campaign.');
+        }
+      }
       throw Exception('Network error: ${e.message}');
+    } catch (e) {
+      AppLogger.auth.e('Unexpected error during campaign deletion: $e');
+      throw Exception('Failed to delete campaign: $e');
     }
   }
 }
