@@ -41,48 +41,88 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
   @override
   Future<List<Campaign>> getCampaigns() async {
     try {
-      final response = await dio.get('campaigns');
+      final headers = await _getAuthHeaders();
+
+      AppLogger.auth.i('Fetching campaigns list');
+
+      final response = await dio.get(
+        '/campaigns',
+        options: Options(
+          headers: {
+            ...headers,
+            'Accept': 'application/json',
+          },
+        ),
+      );
 
       if (response.statusCode == 200) {
-        final data = response.data as List;
-        return data.map((json) => Campaign(
-          id: json['id'],
-          title: json['title'],
-          description: json['description'],
-          advertiserId: json['advertiserId'],
-          startDate: DateTime.parse(json['startDate']),
-          endDate: DateTime.parse(json['endDate']),
-          status: _parseStatus(json['status'] ?? 'active'),
-        )).toList();
+        final data = response.data;
+        AppLogger.auth.i('Campaigns fetched successfully: ${data is List ? data.length : 0} campaigns');
+
+        // Handle both array and object with data property
+        final List campaigns = data is List ? data : (data['data'] as List? ?? []);
+
+        return campaigns
+            .map((json) => Campaign.fromJson(json as Map<String, dynamic>))
+            .toList();
       } else {
         throw Exception('Failed to fetch campaigns: ${response.statusMessage}');
       }
     } on DioException catch (e) {
+      AppLogger.auth.e('Fetch campaigns failed: ${e.response?.statusCode} - ${e.message}');
+
+      if (e.response != null && e.response!.statusCode == 401) {
+        throw Exception('Authentication failed. Please log in again.');
+      }
       throw Exception('Network error: ${e.message}');
+    } catch (e) {
+      AppLogger.auth.e('Unexpected error fetching campaigns: $e');
+      throw Exception('Failed to fetch campaigns: $e');
     }
   }
 
   @override
   Future<Campaign> getCampaign(String id) async {
     try {
-      final response = await dio.get('campaigns/$id');
+      final headers = await _getAuthHeaders();
+
+      AppLogger.auth.i('Fetching campaign: $id');
+
+      final response = await dio.get(
+        '/campaigns/$id',
+        options: Options(
+          headers: {
+            ...headers,
+            'Accept': 'application/json',
+          },
+        ),
+      );
 
       if (response.statusCode == 200) {
         final json = response.data;
-        return Campaign(
-          id: json['id'],
-          title: json['title'],
-          description: json['description'],
-          advertiserId: json['advertiserId'],
-          startDate: DateTime.parse(json['startDate']),
-          endDate: DateTime.parse(json['endDate']),
-          status: _parseStatus(json['status'] ?? 'active'),
-        );
+        AppLogger.auth.i('Campaign fetched successfully: ${json['id']}');
+        return Campaign.fromJson(json);
       } else {
         throw Exception('Failed to fetch campaign: ${response.statusMessage}');
       }
     } on DioException catch (e) {
+      AppLogger.auth.e('Fetch campaign failed: ${e.response?.statusCode} - ${e.message}');
+
+      if (e.response != null) {
+        final statusCode = e.response!.statusCode;
+        switch (statusCode) {
+          case 401:
+            throw Exception('Authentication failed. Please log in again.');
+          case 404:
+            throw Exception('Campaign not found.');
+          default:
+            throw Exception('Failed to fetch campaign.');
+        }
+      }
       throw Exception('Network error: ${e.message}');
+    } catch (e) {
+      AppLogger.auth.e('Unexpected error fetching campaign: $e');
+      throw Exception('Failed to fetch campaign: $e');
     }
   }
 

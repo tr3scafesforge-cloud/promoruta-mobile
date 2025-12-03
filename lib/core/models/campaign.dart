@@ -1,5 +1,31 @@
 /// Campaign status enumeration
-enum CampaignStatus { active, pending, completed, canceled, expired }
+enum CampaignStatus {
+  active,
+  pending,
+  completed,
+  canceled,
+  expired,
+  created; // New status from API
+
+  static CampaignStatus fromString(String status) {
+    switch (status.toLowerCase()) {
+      case 'active':
+        return CampaignStatus.active;
+      case 'pending':
+        return CampaignStatus.pending;
+      case 'completed':
+        return CampaignStatus.completed;
+      case 'canceled':
+        return CampaignStatus.canceled;
+      case 'expired':
+        return CampaignStatus.expired;
+      case 'created':
+        return CampaignStatus.created;
+      default:
+        return CampaignStatus.pending;
+    }
+  }
+}
 
 /// Route coordinate model
 class RouteCoordinate {
@@ -26,17 +52,62 @@ class RouteCoordinate {
   }
 }
 
+/// Campaign user model (simplified User for campaign relations)
+class CampaignUser {
+  final String id;
+  final String name;
+  final String email;
+  final String? emailVerifiedAt;
+  final String role;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+
+  const CampaignUser({
+    required this.id,
+    required this.name,
+    required this.email,
+    this.emailVerifiedAt,
+    required this.role,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  factory CampaignUser.fromJson(Map<String, dynamic> json) {
+    return CampaignUser(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      email: json['email'] as String,
+      emailVerifiedAt: json['email_verified_at'] as String?,
+      role: json['role'] as String,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updatedAt: DateTime.parse(json['updated_at'] as String),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'email': email,
+      'email_verified_at': emailVerifiedAt,
+      'role': role,
+      'created_at': createdAt.toIso8601String(),
+      'updated_at': updatedAt.toIso8601String(),
+    };
+  }
+}
+
 /// Campaign model.
 class Campaign {
   final String? id; // Optional for creation
   final String title;
   final String? description; // Optional
-  final String? advertiserId; // Optional - will be set by backend
-  final DateTime? startDate; // Optional - using startTime instead
-  final DateTime? endDate; // Optional - using endTime instead
+  final String? advertiserId; // Optional - will be set by backend (deprecated, use createdBy)
+  final DateTime? startDate; // Optional - deprecated, use startTime
+  final DateTime? endDate; // Optional - deprecated, use endTime
   final CampaignStatus? status; // Optional - will be set by backend
 
-  // New required fields from API
+  // API fields
   final String? audioUrl;
   final String zone;
   final double suggestedPrice;
@@ -46,6 +117,15 @@ class Campaign {
   final List<RouteCoordinate> routeCoordinates;
   final DateTime startTime;
   final DateTime endTime;
+
+  // New fields from API response
+  final CampaignUser? createdBy;
+  final CampaignUser? acceptedBy;
+  final String? selectedBidId;
+  final double? finalPrice;
+  final CampaignUser? lastUpdatedBy;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   const Campaign({
     this.id,
@@ -64,6 +144,13 @@ class Campaign {
     required this.routeCoordinates,
     required this.startTime,
     required this.endTime,
+    this.createdBy,
+    this.acceptedBy,
+    this.selectedBidId,
+    this.finalPrice,
+    this.lastUpdatedBy,
+    this.createdAt,
+    this.updatedAt,
   });
 
   Map<String, dynamic> toJson() {
@@ -82,6 +169,13 @@ class Campaign {
       'start_time': startTime.toIso8601String(),
       'end_time': endTime.toIso8601String(),
       if (status != null) 'status': status!.name,
+      if (createdBy != null) 'created_by': createdBy!.toJson(),
+      if (acceptedBy != null) 'accepted_by': acceptedBy!.toJson(),
+      if (selectedBidId != null) 'selected_bid_id': selectedBidId,
+      if (finalPrice != null) 'final_price': finalPrice,
+      if (lastUpdatedBy != null) 'last_updated_by': lastUpdatedBy!.toJson(),
+      if (createdAt != null) 'created_at': createdAt!.toIso8601String(),
+      if (updatedAt != null) 'updated_at': updatedAt!.toIso8601String(),
     };
   }
 
@@ -93,20 +187,42 @@ class Campaign {
       advertiserId: json['advertiser_id'] as String?,
       audioUrl: json['audio_url'] as String?,
       zone: json['zone'] as String,
-      suggestedPrice: (json['suggested_price'] as num).toDouble(),
+      suggestedPrice: json['suggested_price'] is String
+          ? double.parse(json['suggested_price'] as String)
+          : (json['suggested_price'] as num).toDouble(),
       bidDeadline: DateTime.parse(json['bid_deadline'] as String),
       audioDuration: json['audio_duration'] as int,
-      distance: (json['distance'] as num).toDouble(),
+      distance: json['distance'] is String
+          ? double.parse(json['distance'] as String)
+          : (json['distance'] as num).toDouble(),
       routeCoordinates: (json['route_coordinates'] as List)
           .map((c) => RouteCoordinate.fromJson(c as Map<String, dynamic>))
           .toList(),
       startTime: DateTime.parse(json['start_time'] as String),
       endTime: DateTime.parse(json['end_time'] as String),
       status: json['status'] != null
-          ? CampaignStatus.values.firstWhere(
-              (e) => e.name == json['status'],
-              orElse: () => CampaignStatus.pending,
-            )
+          ? CampaignStatus.fromString(json['status'] as String)
+          : null,
+      createdBy: json['created_by'] != null
+          ? CampaignUser.fromJson(json['created_by'] as Map<String, dynamic>)
+          : null,
+      acceptedBy: json['accepted_by'] != null
+          ? CampaignUser.fromJson(json['accepted_by'] as Map<String, dynamic>)
+          : null,
+      selectedBidId: json['selected_bid_id'] as String?,
+      finalPrice: json['final_price'] != null
+          ? (json['final_price'] is String
+              ? double.parse(json['final_price'] as String)
+              : (json['final_price'] as num).toDouble())
+          : null,
+      lastUpdatedBy: json['last_updated_by'] != null
+          ? CampaignUser.fromJson(json['last_updated_by'] as Map<String, dynamic>)
+          : null,
+      createdAt: json['created_at'] != null
+          ? DateTime.parse(json['created_at'] as String)
+          : null,
+      updatedAt: json['updated_at'] != null
+          ? DateTime.parse(json['updated_at'] as String)
           : null,
       startDate: json['start_date'] != null
           ? DateTime.parse(json['start_date'] as String)
@@ -134,6 +250,13 @@ class Campaign {
     List<RouteCoordinate>? routeCoordinates,
     DateTime? startTime,
     DateTime? endTime,
+    CampaignUser? createdBy,
+    CampaignUser? acceptedBy,
+    String? selectedBidId,
+    double? finalPrice,
+    CampaignUser? lastUpdatedBy,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) {
     return Campaign(
       id: id ?? this.id,
@@ -152,6 +275,13 @@ class Campaign {
       routeCoordinates: routeCoordinates ?? this.routeCoordinates,
       startTime: startTime ?? this.startTime,
       endTime: endTime ?? this.endTime,
+      createdBy: createdBy ?? this.createdBy,
+      acceptedBy: acceptedBy ?? this.acceptedBy,
+      selectedBidId: selectedBidId ?? this.selectedBidId,
+      finalPrice: finalPrice ?? this.finalPrice,
+      lastUpdatedBy: lastUpdatedBy ?? this.lastUpdatedBy,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 }
