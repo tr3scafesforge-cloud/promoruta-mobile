@@ -1,17 +1,22 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/widgets/custom_button.dart';
 import 'package:promoruta/shared/widgets/app_card.dart';
+import 'package:promoruta/shared/providers/providers.dart';
+import 'package:promoruta/shared/datasources/remote/media_remote_data_source.dart';
 
-class CreateCampaignPage extends StatefulWidget {
+class CreateCampaignPage extends ConsumerStatefulWidget {
   const CreateCampaignPage({super.key});
 
   @override
-  State<CreateCampaignPage> createState() => _CreateCampaignPageState();
+  ConsumerState<CreateCampaignPage> createState() => _CreateCampaignPageState();
 }
 
-class _CreateCampaignPageState extends State<CreateCampaignPage> {
+class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
@@ -22,9 +27,11 @@ class _CreateCampaignPageState extends State<CreateCampaignPage> {
   final _endTimeController = TextEditingController();
 
   String? _audioFileName;
+  File? _audioFile;
   DateTime? _selectedDate;
   TimeOfDay? _startTime;
   TimeOfDay? _endTime;
+  bool _isUploading = false;
 
   @override
   void dispose() {
@@ -188,8 +195,44 @@ class _CreateCampaignPageState extends State<CreateCampaignPage> {
                     ),
                   ),
                   const SizedBox(height: 12),
+                  if (_audioFileName != null)
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      margin: const EdgeInsets.only(bottom: 12),
+                      decoration: BoxDecoration(
+                        color: AppColors.secondary.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: AppColors.secondary.withValues(alpha: 0.3)),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.audio_file, color: AppColors.secondary),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              _audioFileName!,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: AppColors.textPrimary,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.close, size: 20),
+                            color: AppColors.textSecondary,
+                            onPressed: () {
+                              setState(() {
+                                _audioFileName = null;
+                                _audioFile = null;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
                   CustomButton(
-                    text: _audioFileName ?? 'Añadir archivo de audio',
+                    text: _audioFileName == null ? 'Añadir archivo de audio' : 'Cambiar archivo de audio',
                     backgroundColor: AppColors.secondary,
                     onPressed: _pickAudioFile,
                   ),
@@ -459,11 +502,26 @@ class _CreateCampaignPageState extends State<CreateCampaignPage> {
             const SizedBox(height: 32),
 
             // Create Campaign Button
-            CustomButton(
-              text: 'Crear campaña',
-              backgroundColor: AppColors.secondary,
-              onPressed: _createCampaign,
-            ),
+            _isUploading
+                ? const Center(
+                    child: Column(
+                      children: [
+                        CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(AppColors.secondary),
+                        ),
+                        SizedBox(height: 12),
+                        Text(
+                          'Subiendo archivo de audio...',
+                          style: TextStyle(color: AppColors.textSecondary),
+                        ),
+                      ],
+                    ),
+                  )
+                : CustomButton(
+                    text: 'Crear campaña',
+                    backgroundColor: AppColors.secondary,
+                    onPressed: _createCampaign,
+                  ),
           ],
         ),
       ),
@@ -471,15 +529,56 @@ class _CreateCampaignPageState extends State<CreateCampaignPage> {
   }
 
   Future<void> _pickAudioFile() async {
-    // TODO: Implement file picker
-    // For now, just simulate selection
-    setState(() {
-      _audioFileName = 'audio_sample.mp3';
-    });
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['mp3', 'wav', 'aac', 'm4a'],
+        allowMultiple: false,
+      );
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Función de selección de audio pendiente de implementar')),
-    );
+      if (result != null && result.files.isNotEmpty) {
+        final file = result.files.first;
+
+        // Validate file size (10 MB max)
+        if (file.size > 10 * 1024 * 1024) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('El archivo es demasiado grande. Máximo 10 MB.'),
+                backgroundColor: AppColors.error,
+              ),
+            );
+          }
+          return;
+        }
+
+        // Validate duration (30 seconds max) - This would require additional audio analysis
+        // For now, we'll just check file size as a rough estimate
+
+        setState(() {
+          _audioFileName = file.name;
+          _audioFile = File(file.path!);
+        });
+
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Archivo seleccionado: ${file.name}'),
+              backgroundColor: AppColors.secondary,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error al seleccionar archivo: $e'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+    }
   }
 
   Future<void> _selectLocation() async {
@@ -552,18 +651,67 @@ class _CreateCampaignPageState extends State<CreateCampaignPage> {
     }
   }
 
-  void _createCampaign() {
-    if (_formKey.currentState!.validate()) {
-      // TODO: Implement campaign creation logic
+  Future<void> _createCampaign() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    // Validate audio file is selected
+    if (_audioFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Campaña creada exitosamente'),
-          backgroundColor: AppColors.secondary,
+          content: Text('Por favor selecciona un archivo de audio'),
+          backgroundColor: AppColors.error,
         ),
       );
+      return;
+    }
 
-      // Navigate back or to campaigns list
-      Navigator.pop(context);
+    setState(() {
+      _isUploading = true;
+    });
+
+    try {
+      // TODO: First create the campaign via API and get the campaign ID
+      // For now, we'll use a temporary campaign ID for demonstration
+      const tempCampaignId = '019a4222-051c-7223-b72f-ac9c8b9c0fd3';
+
+      // Upload the audio file
+      final mediaRepository = ref.read(mediaRepositoryProvider);
+      final uploadResponse = await mediaRepository.uploadCampaignMedia(
+        campaignId: tempCampaignId,
+        file: _audioFile!,
+        role: MediaRole.audio,
+      );
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Campaña creada exitosamente\nAudio ID: ${uploadResponse.id}'),
+            backgroundColor: AppColors.secondary,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+
+        // Navigate back or to campaigns list
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error al crear campaña: $e'),
+            backgroundColor: AppColors.error,
+            duration: const Duration(seconds: 4),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isUploading = false;
+        });
+      }
     }
   }
 }

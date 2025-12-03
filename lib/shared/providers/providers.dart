@@ -5,7 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/shared/shared.dart';
 import 'package:promoruta/shared/datasources/local/user_local_data_source.dart';
 import 'package:promoruta/shared/datasources/remote/user_remote_data_source.dart';
+import 'package:promoruta/shared/datasources/remote/media_remote_data_source.dart';
 import 'package:promoruta/shared/repositories/user_repository.dart';
+import 'package:promoruta/shared/repositories/media_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:promoruta/core/core.dart' as model;
@@ -123,6 +125,12 @@ final userRemoteDataSourceProvider = Provider<UserRemoteDataSource>((ref) {
   return UserRemoteDataSourceImpl(dio: dio, localDataSource: localDataSource, authRemoteDataSource: authRemoteDataSource);
 });
 
+final mediaRemoteDataSourceProvider = Provider<MediaRemoteDataSource>((ref) {
+  final dio = ref.watch(dioProvider);
+  final userLocalDataSource = ref.watch(userLocalDataSourceProvider);
+  return MediaRemoteDataSourceImpl(dio: dio, localDataSource: userLocalDataSource);
+});
+
 // Sync Service
 final syncServiceProvider = Provider<SyncService>((ref) {
   final connectivityService = ref.watch(connectivityServiceProvider);
@@ -192,6 +200,14 @@ final userRepositoryProvider = Provider<UserRepository>((ref) {
     remoteDataSource: remoteDataSource,
     localDataSource: localDataSource,
     authLocalDataSource: authLocalDataSource,
+  );
+});
+
+final mediaRepositoryProvider = Provider<MediaRepository>((ref) {
+  final remoteDataSource = ref.watch(mediaRemoteDataSourceProvider);
+
+  return MediaRepositoryImpl(
+    remoteDataSource: remoteDataSource,
   );
 });
 
