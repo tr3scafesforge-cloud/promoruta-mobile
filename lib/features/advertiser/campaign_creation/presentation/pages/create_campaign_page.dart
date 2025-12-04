@@ -84,18 +84,17 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
           children: [
-            // Información Básica Section
-            _SectionHeader(
-              icon: Icons.info_outline,
-              iconColor: AppColors.secondary,
-              title: 'Información Básica',
-            ),
-            const SizedBox(height: 12),
             AppCard(
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  _SectionHeader(
+                    icon: Icons.info_outline,
+                    iconColor: AppColors.secondary,
+                    title: 'Información Básica',
+                  ),
+                  const SizedBox(height: 12),
                   Text(
                     'Título de la campaña',
                     style: theme.textTheme.bodyMedium?.copyWith(
@@ -121,9 +120,11 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: AppColors.secondary, width: 2),
+                        borderSide:
+                            BorderSide(color: AppColors.secondary, width: 2),
                       ),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -159,9 +160,11 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: AppColors.secondary, width: 2),
+                        borderSide:
+                            BorderSide(color: AppColors.secondary, width: 2),
                       ),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -174,20 +177,20 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
               ),
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 10),
 
             // Anuncio de audio Section
-            _SectionHeader(
-              icon: Icons.volume_up,
-              iconColor: AppColors.secondary,
-              title: 'Anuncio de audio',
-            ),
-            const SizedBox(height: 12),
             AppCard(
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  _SectionHeader(
+                    icon: Icons.volume_up,
+                    iconColor: AppColors.secondary,
+                    title: 'Anuncio de audio',
+                  ),
+                  const SizedBox(height: 10),
                   Text(
                     'Cargar archivo de audio',
                     style: theme.textTheme.bodyMedium?.copyWith(
@@ -203,7 +206,8 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                       decoration: BoxDecoration(
                         color: AppColors.secondary.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: AppColors.secondary.withValues(alpha: 0.3)),
+                        border: Border.all(
+                            color: AppColors.secondary.withValues(alpha: 0.3)),
                       ),
                       child: Row(
                         children: [
@@ -233,7 +237,9 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                       ),
                     ),
                   CustomButton(
-                    text: _audioFileName == null ? 'Añadir archivo de audio' : 'Cambiar archivo de audio',
+                    text: _audioFileName == null
+                        ? 'Añadir archivo de audio'
+                        : 'Cambiar archivo de audio',
                     backgroundColor: AppColors.secondary,
                     onPressed: _pickAudioFile,
                   ),
@@ -250,20 +256,19 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
               ),
             ),
 
-            const SizedBox(height: 24),
-
+            const SizedBox(height: 10),
             // Presupuesto y ubicación Section
-            _SectionHeader(
-              icon: Icons.attach_money,
-              iconColor: AppColors.secondary,
-              title: 'Presupuesto y ubicación',
-            ),
-            const SizedBox(height: 12),
             AppCard(
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  _SectionHeader(
+                    icon: Icons.attach_money,
+                    iconColor: AppColors.secondary,
+                    title: 'Presupuesto y ubicación',
+                  ),
+                  const SizedBox(height: 12),
                   Text(
                     'Presupuesto',
                     style: theme.textTheme.bodyMedium?.copyWith(
@@ -290,9 +295,11 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: AppColors.secondary, width: 2),
+                        borderSide:
+                            BorderSide(color: AppColors.secondary, width: 2),
                       ),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -345,20 +352,19 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
               ),
             ),
 
-            const SizedBox(height: 24),
-
-            // Agenda de campaña Section
-            _SectionHeader(
-              icon: Icons.calendar_today,
-              iconColor: AppColors.secondary,
-              title: 'Agenda de campaña',
-            ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
             AppCard(
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Agenda de campaña Section
+                  _SectionHeader(
+                    icon: Icons.calendar_today,
+                    iconColor: AppColors.secondary,
+                    title: 'Agenda de campaña',
+                  ),
+                  const SizedBox(height: 12),
                   Text(
                     'Fecha',
                     style: theme.textTheme.bodyMedium?.copyWith(
@@ -375,7 +381,8 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                       hintStyle: TextStyle(color: AppColors.textHint),
                       filled: true,
                       fillColor: AppColors.surface,
-                      suffixIcon: Icon(Icons.calendar_today, color: AppColors.textSecondary),
+                      suffixIcon: Icon(Icons.calendar_today,
+                          color: AppColors.textSecondary),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: BorderSide(color: AppColors.grayStroke),
@@ -386,9 +393,11 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: AppColors.secondary, width: 2),
+                        borderSide:
+                            BorderSide(color: AppColors.secondary, width: 2),
                       ),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
                     ),
                     onTap: _selectDate,
                     validator: (value) {
@@ -421,20 +430,25 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                                 hintStyle: TextStyle(color: AppColors.textHint),
                                 filled: true,
                                 fillColor: AppColors.surface,
-                                suffixIcon: Icon(Icons.access_time, color: AppColors.textSecondary),
+                                suffixIcon: Icon(Icons.access_time,
+                                    color: AppColors.textSecondary),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(color: AppColors.grayStroke),
+                                  borderSide:
+                                      BorderSide(color: AppColors.grayStroke),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(color: AppColors.grayStroke),
+                                  borderSide:
+                                      BorderSide(color: AppColors.grayStroke),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(color: AppColors.secondary, width: 2),
+                                  borderSide: BorderSide(
+                                      color: AppColors.secondary, width: 2),
                                 ),
-                                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 12),
                               ),
                               onTap: () => _selectTime(isStartTime: true),
                               validator: (value) {
@@ -468,20 +482,25 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                                 hintStyle: TextStyle(color: AppColors.textHint),
                                 filled: true,
                                 fillColor: AppColors.surface,
-                                suffixIcon: Icon(Icons.access_time, color: AppColors.textSecondary),
+                                suffixIcon: Icon(Icons.access_time,
+                                    color: AppColors.textSecondary),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(color: AppColors.grayStroke),
+                                  borderSide:
+                                      BorderSide(color: AppColors.grayStroke),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(color: AppColors.grayStroke),
+                                  borderSide:
+                                      BorderSide(color: AppColors.grayStroke),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(color: AppColors.secondary, width: 2),
+                                  borderSide: BorderSide(
+                                      color: AppColors.secondary, width: 2),
                                 ),
-                                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 12),
                               ),
                               onTap: () => _selectTime(isStartTime: false),
                               validator: (value) {
@@ -508,7 +527,8 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                     child: Column(
                       children: [
                         CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(AppColors.secondary),
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              AppColors.secondary),
                         ),
                         SizedBox(height: 12),
                         Text(
@@ -585,7 +605,9 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
   Future<void> _selectLocation() async {
     // TODO: Implement map location picker
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Función de selección de ubicación pendiente de implementar')),
+      const SnackBar(
+          content: Text(
+              'Función de selección de ubicación pendiente de implementar')),
     );
   }
 
@@ -613,7 +635,8 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
     if (picked != null) {
       setState(() {
         _selectedDate = picked;
-        _dateController.text = '${picked.month.toString().padLeft(2, '0')}/${picked.day.toString().padLeft(2, '0')}/${picked.year}';
+        _dateController.text =
+            '${picked.month.toString().padLeft(2, '0')}/${picked.day.toString().padLeft(2, '0')}/${picked.year}';
       });
     }
   }
@@ -717,7 +740,8 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
       );
 
       // Create campaign
-      final createdCampaign = await campaignRepository.createCampaign(newCampaign);
+      final createdCampaign =
+          await campaignRepository.createCampaign(newCampaign);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -808,7 +832,7 @@ class _SectionHeader extends StatelessWidget {
         const SizedBox(width: 12),
         Text(
           title,
-          style: theme.textTheme.titleMedium?.copyWith(
+          style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w700,
             color: AppColors.textPrimary,
           ),
