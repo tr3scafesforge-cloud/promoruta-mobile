@@ -250,11 +250,14 @@ class AdvertiserSecuritySettingsRoute extends GoRouteData with _$AdvertiserSecur
   path: '/create-campaign',
 )
 class CreateCampaignRoute extends GoRouteData with _$CreateCampaignRoute {
-  const CreateCampaignRoute();
+  const CreateCampaignRoute({this.sourceTab});
+
+  final int? sourceTab;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const CreateCampaignPage();
+    final tab = sourceTab ?? int.tryParse(state.uri.queryParameters['sourceTab'] ?? '');
+    return CreateCampaignPage(sourceTab: tab);
   }
 }
 

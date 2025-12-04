@@ -12,7 +12,9 @@ import 'package:promoruta/shared/providers/providers.dart';
 import 'package:promoruta/shared/datasources/remote/media_remote_data_source.dart';
 
 class CreateCampaignPage extends ConsumerStatefulWidget {
-  const CreateCampaignPage({super.key});
+  const CreateCampaignPage({super.key, this.sourceTab});
+
+  final int? sourceTab;
 
   @override
   ConsumerState<CreateCampaignPage> createState() => _CreateCampaignPageState();
@@ -47,6 +49,23 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
     super.dispose();
   }
 
+  String _getTabName(int tabIndex) {
+    switch (tabIndex) {
+      case 0:
+        return 'home';
+      case 1:
+        return 'campaigns';
+      case 2:
+        return 'live';
+      case 3:
+        return 'history';
+      case 4:
+        return 'profile';
+      default:
+        return 'home';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -59,7 +78,15 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-          onPressed: () => context.canPop() ? context.pop() : context.go('/advertiser-home'),
+          onPressed: () {
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              // Fallback if no previous route - navigate to advertiser home with the source tab
+              final tab = widget.sourceTab ?? 0;
+              context.go('/advertiser-home?tab=${_getTabName(tab)}');
+            }
+          },
         ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -781,7 +808,13 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
         ref.read(campaignsProvider.notifier).loadCampaigns();
 
         // Navigate back
-        context.pop();
+        if (context.canPop()) {
+          context.pop();
+        } else {
+          // Fallback if no previous route - navigate to advertiser home with the source tab
+          final tab = widget.sourceTab ?? 0;
+          context.go('/advertiser-home?tab=${_getTabName(tab)}');
+        }
       }
     } catch (e) {
       if (mounted) {

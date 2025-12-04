@@ -27,11 +27,31 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Check if we need to navigate to profile tab
+    // Check if we need to navigate to a specific tab
     final uri = GoRouterState.of(context).uri;
     final tab = uri.queryParameters['tab'];
-    if (tab == 'profile') {
-      setState(() => _currentIndex = 4);
+    if (tab != null) {
+      final tabIndex = _getTabIndex(tab);
+      if (tabIndex != null) {
+        setState(() => _currentIndex = tabIndex);
+      }
+    }
+  }
+
+  int? _getTabIndex(String tabName) {
+    switch (tabName) {
+      case 'home':
+        return 0;
+      case 'campaigns':
+        return 1;
+      case 'live':
+        return 2;
+      case 'history':
+        return 3;
+      case 'profile':
+        return 4;
+      default:
+        return null;
     }
   }
 
@@ -54,7 +74,7 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
               ),
               backgroundColor: AppColors.secondary,
               onPressed: () {
-                const CreateCampaignRoute().push(context);
+                CreateCampaignRoute(sourceTab: _currentIndex).push(context);
               },
               child: const Icon(
                 Icons.add_rounded,
@@ -160,7 +180,7 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
                   const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
               child: FilledButton.icon(
                 onPressed: () {
-                  const CreateCampaignRoute().push(context);
+                  CreateCampaignRoute(sourceTab: _currentIndex).push(context);
                 },
                 icon: const Icon(Icons.add),
                 label: Text(l10n.newCampaign),
