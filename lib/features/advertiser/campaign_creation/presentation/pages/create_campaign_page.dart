@@ -323,6 +323,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                   GestureDetector(
                     onTap: _selectLocation,
                     child: Container(
+                      width: double.infinity,
                       height: 120,
                       decoration: BoxDecoration(
                         color: AppColors.surface,
