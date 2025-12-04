@@ -13,6 +13,17 @@ final _mockCampaigns = <model.Campaign>[
     startDate: DateTime(2025, 1, 1, 10, 50),
     endDate: DateTime(2025, 1, 2, 10, 50),
     status: model.CampaignStatus.completed,
+    zone: 'Norte',
+    suggestedPrice: 150.0,
+    bidDeadline: DateTime(2025, 1, 1, 8, 0),
+    audioDuration: 30,
+    distance: 10.5,
+    routeCoordinates: [
+      model.RouteCoordinate(lat: -12.0464, lng: -77.0428),
+      model.RouteCoordinate(lat: -12.0500, lng: -77.0450),
+    ],
+    startTime: DateTime(2025, 1, 1, 10, 50),
+    endTime: DateTime(2025, 1, 2, 10, 50),
   ),
   model.Campaign(
     id: '2',
@@ -22,6 +33,17 @@ final _mockCampaigns = <model.Campaign>[
     startDate: DateTime(2025, 1, 1, 14, 50),
     endDate: DateTime(2025, 1, 2, 14, 50),
     status: model.CampaignStatus.canceled,
+    zone: 'Sur',
+    suggestedPrice: 200.0,
+    bidDeadline: DateTime(2025, 1, 1, 12, 0),
+    audioDuration: 45,
+    distance: 15.0,
+    routeCoordinates: [
+      model.RouteCoordinate(lat: -12.0600, lng: -77.0500),
+      model.RouteCoordinate(lat: -12.0650, lng: -77.0550),
+    ],
+    startTime: DateTime(2025, 1, 1, 14, 50),
+    endTime: DateTime(2025, 1, 2, 14, 50),
   ),
   model.Campaign(
     id: '3',
@@ -31,6 +53,17 @@ final _mockCampaigns = <model.Campaign>[
     startDate: DateTime(2025, 1, 1, 9, 50),
     endDate: DateTime(2025, 1, 2, 9, 50),
     status: model.CampaignStatus.expired,
+    zone: 'Este',
+    suggestedPrice: 100.0,
+    bidDeadline: DateTime(2025, 1, 1, 7, 0),
+    audioDuration: 20,
+    distance: 8.0,
+    routeCoordinates: [
+      model.RouteCoordinate(lat: -12.0400, lng: -77.0300),
+      model.RouteCoordinate(lat: -12.0420, lng: -77.0320),
+    ],
+    startTime: DateTime(2025, 1, 1, 9, 50),
+    endTime: DateTime(2025, 1, 2, 9, 50),
   ),
 ];
 
@@ -60,25 +93,34 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
   Future<void> saveCampaigns(List<model.Campaign> campaigns) async {
     await db.batch((batch) {
       for (final campaign in campaigns) {
+        // Only save campaigns that have all required fields
+        if (campaign.id == null ||
+            campaign.advertiserId == null ||
+            campaign.startDate == null ||
+            campaign.endDate == null ||
+            campaign.status == null) {
+          continue;
+        }
+
         batch.insert(
           db.campaignsEntity,
           CampaignsEntityCompanion(
-            id: Value(campaign.id),
+            id: Value(campaign.id!),
             title: Value(campaign.title),
-            description: Value(campaign.description),
-            advertiserId: Value(campaign.advertiserId),
-            startDate: Value(campaign.startDate),
-            endDate: Value(campaign.endDate),
-            status: Value(campaign.status.name),
+            description: Value(campaign.description ?? ''),
+            advertiserId: Value(campaign.advertiserId!),
+            startDate: Value(campaign.startDate!),
+            endDate: Value(campaign.endDate!),
+            status: Value(campaign.status!.name),
           ),
           onConflict: DoUpdate(
             (_) => CampaignsEntityCompanion(
               title: Value(campaign.title),
-              description: Value(campaign.description),
-              advertiserId: Value(campaign.advertiserId),
-              startDate: Value(campaign.startDate),
-              endDate: Value(campaign.endDate),
-              status: Value(campaign.status.name),
+              description: Value(campaign.description ?? ''),
+              advertiserId: Value(campaign.advertiserId!),
+              startDate: Value(campaign.startDate!),
+              endDate: Value(campaign.endDate!),
+              status: Value(campaign.status!.name),
             ),
           ),
         );
@@ -105,20 +147,38 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
       startDate: row.startDate,
       endDate: row.endDate,
       status: _parseStatus(row.status),
+      // Use deprecated fields as fallback for required fields
+      zone: 'Unknown',
+      suggestedPrice: 0.0,
+      bidDeadline: row.startDate,
+      audioDuration: 30,
+      distance: 0.0,
+      routeCoordinates: [],
+      startTime: row.startDate,
+      endTime: row.endDate,
     )).toList();
   }
 
   @override
   Future<void> saveCampaign(model.Campaign campaign) async {
+    // Only save campaigns that have all required fields
+    if (campaign.id == null ||
+        campaign.advertiserId == null ||
+        campaign.startDate == null ||
+        campaign.endDate == null ||
+        campaign.status == null) {
+      return;
+    }
+
     await db.into(db.campaignsEntity).insertOnConflictUpdate(
       CampaignsEntityCompanion(
-        id: Value(campaign.id),
+        id: Value(campaign.id!),
         title: Value(campaign.title),
-        description: Value(campaign.description),
-        advertiserId: Value(campaign.advertiserId),
-        startDate: Value(campaign.startDate),
-        endDate: Value(campaign.endDate),
-        status: Value(campaign.status.name),
+        description: Value(campaign.description ?? ''),
+        advertiserId: Value(campaign.advertiserId!),
+        startDate: Value(campaign.startDate!),
+        endDate: Value(campaign.endDate!),
+        status: Value(campaign.status!.name),
       ),
     );
   }
@@ -139,6 +199,15 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
       startDate: campaignRow.startDate,
       endDate: campaignRow.endDate,
       status: _parseStatus(campaignRow.status),
+      // Use deprecated fields as fallback for required fields
+      zone: 'Unknown',
+      suggestedPrice: 0.0,
+      bidDeadline: campaignRow.startDate,
+      audioDuration: 30,
+      distance: 0.0,
+      routeCoordinates: [],
+      startTime: campaignRow.startDate,
+      endTime: campaignRow.endDate,
     );
   }
 
