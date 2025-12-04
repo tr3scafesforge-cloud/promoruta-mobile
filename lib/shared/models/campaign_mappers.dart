@@ -6,14 +6,14 @@ extension CampaignMappers on model.Campaign {
   /// Convert core Campaign to UI Campaign
   ui.Campaign toUiModel() {
     return ui.Campaign(
-      id: id,
+      id: id ?? '',
       title: title,
       subtitle: description,
-      location: 'Unknown Location', // Could be enhanced with location data
-      distanceKm: 0.0, // Could be calculated based on user location
-      status: _mapStatusToUi(status),
+      location: zone, // Use zone as location
+      distanceKm: distance, // Use distance from core model
+      status: _mapStatusToUi(status ?? model.CampaignStatus.pending),
       dateTime: startDate,
-      payUsd: 0, // Could be added to core model if needed
+      payUsd: suggestedPrice.toInt(), // Use suggestedPrice as payment
       peopleNeeded: 0, // Could be added to core model if needed
     );
   }
@@ -30,6 +30,8 @@ extension CampaignMappers on model.Campaign {
         return ui.CampaignStatus.canceled;
       case model.CampaignStatus.expired:
         return ui.CampaignStatus.expired;
+      case model.CampaignStatus.created:
+        return ui.CampaignStatus.pending; // Map created to pending
     }
   }
 }
@@ -38,14 +40,25 @@ extension CampaignMappers on model.Campaign {
 extension UiCampaignMappers on ui.Campaign {
   /// Convert UI Campaign to core Campaign
   model.Campaign toCoreModel() {
+    final now = DateTime.now();
+    final campaignDate = dateTime ?? now;
+
     return model.Campaign(
       id: id,
       title: title,
       description: subtitle ?? '',
       advertiserId: '', // Would need to be provided from context
-      startDate: dateTime ?? DateTime.now(),
-      endDate: (dateTime ?? DateTime.now()).add(const Duration(days: 1)),
+      startDate: campaignDate,
+      endDate: campaignDate.add(const Duration(days: 1)),
       status: _mapStatusToCore(status),
+      zone: location ?? 'Unknown',
+      suggestedPrice: payUsd?.toDouble() ?? 0.0,
+      bidDeadline: campaignDate.subtract(const Duration(hours: 2)),
+      audioDuration: 30, // Default duration
+      distance: distanceKm ?? 0.0,
+      routeCoordinates: [], // Empty route by default
+      startTime: campaignDate,
+      endTime: campaignDate.add(const Duration(days: 1)),
     );
   }
 
