@@ -21,23 +21,6 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
     return {'Authorization': 'Bearer ${user.accessToken}'};
   }
 
-  CampaignStatus _parseStatus(String statusString) {
-    switch (statusString.toLowerCase()) {
-      case 'active':
-        return CampaignStatus.active;
-      case 'pending':
-        return CampaignStatus.pending;
-      case 'completed':
-        return CampaignStatus.completed;
-      case 'canceled':
-        return CampaignStatus.canceled;
-      case 'expired':
-        return CampaignStatus.expired;
-      default:
-        return CampaignStatus.active;
-    }
-  }
-
   @override
   Future<List<Campaign>> getCampaigns() async {
     try {
