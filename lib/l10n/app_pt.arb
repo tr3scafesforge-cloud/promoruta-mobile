@@ -678,5 +678,168 @@
   "noUserLoggedIn": "Nenhum usuário conectado",
   "@noUserLoggedIn": {
     "description": "Message when no user is logged in"
+  },
+  "createCampaign": "Criar campanha",
+  "@createCampaign": {
+    "description": "Title for create campaign page"
+  },
+  "createCampaignSubtitle": "Crie sua campanha de promoção em áudio",
+  "@createCampaignSubtitle": {
+    "description": "Subtitle for create campaign page"
+  },
+  "basicInformation": "Informação Básica",
+  "@basicInformation": {
+    "description": "Section header for basic information"
+  },
+  "campaignTitle": "Título da campanha",
+  "@campaignTitle": {
+    "description": "Label for campaign title field"
+  },
+  "campaignNameHint": "Nome da campanha",
+  "@campaignNameHint": {
+    "description": "Hint for campaign name input"
+  },
+  "pleaseEnterCampaignTitle": "Por favor digite o título da campanha",
+  "@pleaseEnterCampaignTitle": {
+    "description": "Validation message for empty campaign title"
+  },
+  "description": "Descrição",
+  "@description": {
+    "description": "Label for description field"
+  },
+  "briefCampaignDescription": "Breve descrição da campanha",
+  "@briefCampaignDescription": {
+    "description": "Hint for campaign description input"
+  },
+  "pleaseEnterDescription": "Por favor digite uma descrição",
+  "@pleaseEnterDescription": {
+    "description": "Validation message for empty description"
+  },
+  "audioAnnouncement": "Anúncio de áudio",
+  "@audioAnnouncement": {
+    "description": "Section header for audio announcement"
+  },
+  "uploadAudioFile": "Carregar arquivo de áudio",
+  "@uploadAudioFile": {
+    "description": "Label for upload audio file section"
+  },
+  "addAudioFile": "Adicionar arquivo de áudio",
+  "@addAudioFile": {
+    "description": "Button text to add audio file"
+  },
+  "changeAudioFile": "Alterar arquivo de áudio",
+  "@changeAudioFile": {
+    "description": "Button text to change audio file"
+  },
+  "audioFileSpecs": "MP3 / WAV / AAC · Até 30 s · 10 MB máx",
+  "@audioFileSpecs": {
+    "description": "Audio file specifications"
+  },
+  "budgetAndLocation": "Orçamento e localização",
+  "@budgetAndLocation": {
+    "description": "Section header for budget and location"
+  },
+  "budget": "Orçamento",
+  "@budget": {
+    "description": "Label for budget field"
+  },
+  "pleaseEnterBudget": "Por favor digite o orçamento",
+  "@pleaseEnterBudget": {
+    "description": "Validation message for empty budget"
+  },
+  "enterValidNumber": "Por favor digite um número válido",
+  "@enterValidNumber": {
+    "description": "Validation message for invalid number"
+  },
+  "coverageZone": "Zona de cobertura",
+  "@coverageZone": {
+    "description": "Label for coverage zone"
+  },
+  "mapLocation": "Map Location",
+  "@mapLocation": {
+    "description": "Placeholder text for map location"
+  },
+  "campaignSchedule": "Agenda da campanha",
+  "@campaignSchedule": {
+    "description": "Section header for campaign schedule"
+  },
+  "date": "Data",
+  "@date": {
+    "description": "Label for date field"
+  },
+  "dateFormatHint": "mm/dd/yyyy",
+  "@dateFormatHint": {
+    "description": "Date format hint"
+  },
+  "pleaseSelectDate": "Por favor selecione uma data",
+  "@pleaseSelectDate": {
+    "description": "Validation message for empty date"
+  },
+  "startTime": "Hora de início",
+  "@startTime": {
+    "description": "Label for start time field"
+  },
+  "endTime": "Hora de término",
+  "@endTime": {
+    "description": "Label for end time field"
+  },
+  "uploadingAudioFile": "Enviando arquivo de áudio...",
+  "@uploadingAudioFile": {
+    "description": "Loading message when uploading audio"
+  },
+  "fileTooLarge": "O arquivo é muito grande. Máximo 10 MB.",
+  "@fileTooLarge": {
+    "description": "Error message for file too large"
+  },
+  "fileSelected": "Arquivo selecionado: {fileName}",
+  "@fileSelected": {
+    "description": "Success message when file is selected",
+    "placeholders": {
+      "fileName": {
+        "type": "String"
+      }
+    }
+  },
+  "errorSelectingFile": "Erro ao selecionar arquivo: {error}",
+  "@errorSelectingFile": {
+    "description": "Error message when selecting file fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "locationSelectionPending": "Função de seleção de localização pendente de implementação",
+  "@locationSelectionPending": {
+    "description": "Message for pending location selection feature"
+  },
+  "pleaseSelectAudioFile": "Por favor selecione um arquivo de áudio",
+  "@pleaseSelectAudioFile": {
+    "description": "Validation message for missing audio file"
+  },
+  "campaignCreatedUploadingAudio": "Campanha criada. Enviando áudio...",
+  "@campaignCreatedUploadingAudio": {
+    "description": "Success message when campaign is created"
+  },
+  "campaignCreatedSuccessfully": "Campanha criada com sucesso\nID: {id}\nÁudio URL: {audioUrl}",
+  "@campaignCreatedSuccessfully": {
+    "description": "Success message with campaign details",
+    "placeholders": {
+      "id": {
+        "type": "String"
+      },
+      "audioUrl": {
+        "type": "String"
+      }
+    }
+  },
+  "errorCreatingCampaign": "Erro ao criar campanha: {error}",
+  "@errorCreatingCampaign": {
+    "description": "Error message when creating campaign fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
   }
 }

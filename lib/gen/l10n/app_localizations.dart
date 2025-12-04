@@ -106,10 +106,10 @@ abstract class AppLocalizations {
   /// **'Welcome to PromoRuta'**
   String get welcomeMessage;
 
-  /// Description of the application
+  /// Label for description field
   ///
   /// In en, this message translates to:
-  /// **'Connect advertisers with promoters for effective campaigns.'**
+  /// **'Description'**
   String get description;
 
   /// Label for the button to start the onboarding or process
@@ -1095,6 +1095,210 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No user logged in'**
   String get noUserLoggedIn;
+
+  /// Title for create campaign page
+  ///
+  /// In en, this message translates to:
+  /// **'Create campaign'**
+  String get createCampaign;
+
+  /// Subtitle for create campaign page
+  ///
+  /// In en, this message translates to:
+  /// **'Design your audio promotion campaign'**
+  String get createCampaignSubtitle;
+
+  /// Section header for basic information
+  ///
+  /// In en, this message translates to:
+  /// **'Basic Information'**
+  String get basicInformation;
+
+  /// Label for campaign title field
+  ///
+  /// In en, this message translates to:
+  /// **'Campaign title'**
+  String get campaignTitle;
+
+  /// Hint for campaign name input
+  ///
+  /// In en, this message translates to:
+  /// **'Campaign name'**
+  String get campaignNameHint;
+
+  /// Validation message for empty campaign title
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the campaign title'**
+  String get pleaseEnterCampaignTitle;
+
+  /// Hint for campaign description input
+  ///
+  /// In en, this message translates to:
+  /// **'Brief campaign description'**
+  String get briefCampaignDescription;
+
+  /// Validation message for empty description
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a description'**
+  String get pleaseEnterDescription;
+
+  /// Section header for audio announcement
+  ///
+  /// In en, this message translates to:
+  /// **'Audio announcement'**
+  String get audioAnnouncement;
+
+  /// Label for upload audio file section
+  ///
+  /// In en, this message translates to:
+  /// **'Upload audio file'**
+  String get uploadAudioFile;
+
+  /// Button text to add audio file
+  ///
+  /// In en, this message translates to:
+  /// **'Add audio file'**
+  String get addAudioFile;
+
+  /// Button text to change audio file
+  ///
+  /// In en, this message translates to:
+  /// **'Change audio file'**
+  String get changeAudioFile;
+
+  /// Audio file specifications
+  ///
+  /// In en, this message translates to:
+  /// **'MP3 / WAV / AAC · Up to 30 s · 10 MB max'**
+  String get audioFileSpecs;
+
+  /// Section header for budget and location
+  ///
+  /// In en, this message translates to:
+  /// **'Budget and location'**
+  String get budgetAndLocation;
+
+  /// Label for budget field
+  ///
+  /// In en, this message translates to:
+  /// **'Budget'**
+  String get budget;
+
+  /// Validation message for empty budget
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the budget'**
+  String get pleaseEnterBudget;
+
+  /// Validation message for invalid number
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid number'**
+  String get enterValidNumber;
+
+  /// Label for coverage zone
+  ///
+  /// In en, this message translates to:
+  /// **'Coverage zone'**
+  String get coverageZone;
+
+  /// Placeholder text for map location
+  ///
+  /// In en, this message translates to:
+  /// **'Map Location'**
+  String get mapLocation;
+
+  /// Section header for campaign schedule
+  ///
+  /// In en, this message translates to:
+  /// **'Campaign schedule'**
+  String get campaignSchedule;
+
+  /// Label for date field
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get date;
+
+  /// Date format hint
+  ///
+  /// In en, this message translates to:
+  /// **'mm/dd/yyyy'**
+  String get dateFormatHint;
+
+  /// Validation message for empty date
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a date'**
+  String get pleaseSelectDate;
+
+  /// Label for start time field
+  ///
+  /// In en, this message translates to:
+  /// **'Start time'**
+  String get startTime;
+
+  /// Label for end time field
+  ///
+  /// In en, this message translates to:
+  /// **'End time'**
+  String get endTime;
+
+  /// Loading message when uploading audio
+  ///
+  /// In en, this message translates to:
+  /// **'Uploading audio file...'**
+  String get uploadingAudioFile;
+
+  /// Error message for file too large
+  ///
+  /// In en, this message translates to:
+  /// **'File is too large. Maximum 10 MB.'**
+  String get fileTooLarge;
+
+  /// Success message when file is selected
+  ///
+  /// In en, this message translates to:
+  /// **'File selected: {fileName}'**
+  String fileSelected(String fileName);
+
+  /// Error message when selecting file fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error selecting file: {error}'**
+  String errorSelectingFile(String error);
+
+  /// Message for pending location selection feature
+  ///
+  /// In en, this message translates to:
+  /// **'Location selection feature pending implementation'**
+  String get locationSelectionPending;
+
+  /// Validation message for missing audio file
+  ///
+  /// In en, this message translates to:
+  /// **'Please select an audio file'**
+  String get pleaseSelectAudioFile;
+
+  /// Success message when campaign is created
+  ///
+  /// In en, this message translates to:
+  /// **'Campaign created. Uploading audio...'**
+  String get campaignCreatedUploadingAudio;
+
+  /// Success message with campaign details
+  ///
+  /// In en, this message translates to:
+  /// **'Campaign created successfully\nID: {id}\nAudio URL: {audioUrl}'**
+  String campaignCreatedSuccessfully(String id, String audioUrl);
+
+  /// Error message when creating campaign fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error creating campaign: {error}'**
+  String errorCreatingCampaign(String error);
 }
 
 class _AppLocalizationsDelegate

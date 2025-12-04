@@ -64,14 +64,14 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Crear campaña',
+              l10n.createCampaign,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w700,
                 color: AppColors.textPrimary,
               ),
             ),
             Text(
-              'Diseña tu campaña de promoción en audio',
+              l10n.createCampaignSubtitle,
               style: theme.textTheme.bodySmall?.copyWith(
                 color: AppColors.textSecondary,
               ),
@@ -92,11 +92,11 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                   _SectionHeader(
                     icon: Icons.info_outline,
                     iconColor: AppColors.secondary,
-                    title: 'Información Básica',
+                    title: l10n.basicInformation,
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Título de la campaña',
+                    l10n.campaignTitle,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: AppColors.textPrimary,
@@ -106,7 +106,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                   TextFormField(
                     controller: _titleController,
                     decoration: InputDecoration(
-                      hintText: 'Nombre de la campaña',
+                      hintText: l10n.campaignNameHint,
                       hintStyle: TextStyle(color: AppColors.textHint),
                       filled: true,
                       fillColor: AppColors.surface,
@@ -128,14 +128,14 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Por favor ingresa el título de la campaña';
+                        return l10n.pleaseEnterCampaignTitle;
                       }
                       return null;
                     },
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Descripción',
+                    l10n.description,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: AppColors.textPrimary,
@@ -146,7 +146,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                     controller: _descriptionController,
                     maxLines: 3,
                     decoration: InputDecoration(
-                      hintText: 'Breve descripción de la campaña',
+                      hintText: l10n.briefCampaignDescription,
                       hintStyle: TextStyle(color: AppColors.textHint),
                       filled: true,
                       fillColor: AppColors.surface,
@@ -168,7 +168,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Por favor ingresa una descripción';
+                        return l10n.pleaseEnterDescription;
                       }
                       return null;
                     },
@@ -188,11 +188,11 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                   _SectionHeader(
                     icon: Icons.volume_up,
                     iconColor: AppColors.secondary,
-                    title: 'Anuncio de audio',
+                    title: l10n.audioAnnouncement,
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    'Cargar archivo de audio',
+                    l10n.uploadAudioFile,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: AppColors.textPrimary,
@@ -238,15 +238,15 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                     ),
                   CustomButton(
                     text: _audioFileName == null
-                        ? 'Añadir archivo de audio'
-                        : 'Cambiar archivo de audio',
+                        ? l10n.addAudioFile
+                        : l10n.changeAudioFile,
                     backgroundColor: AppColors.secondary,
                     onPressed: _pickAudioFile,
                   ),
                   const SizedBox(height: 8),
                   Center(
                     child: Text(
-                      'MP3 / WAV / AAC · Hasta 30 s · 10 MB máx',
+                      l10n.audioFileSpecs,
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: AppColors.textSecondary,
                       ),
@@ -266,11 +266,11 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                   _SectionHeader(
                     icon: Icons.attach_money,
                     iconColor: AppColors.secondary,
-                    title: 'Presupuesto y ubicación',
+                    title: l10n.budgetAndLocation,
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Presupuesto',
+                    l10n.budget,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: AppColors.textPrimary,
@@ -303,17 +303,17 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Por favor ingresa el presupuesto';
+                        return l10n.pleaseEnterBudget;
                       }
                       if (double.tryParse(value) == null) {
-                        return 'Por favor ingresa un número válido';
+                        return l10n.enterValidNumber;
                       }
                       return null;
                     },
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Zona de cobertura',
+                    l10n.coverageZone,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: AppColors.textPrimary,
@@ -339,7 +339,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Map Location',
+                            l10n.mapLocation,
                             style: theme.textTheme.bodyMedium?.copyWith(
                               color: AppColors.textSecondary,
                             ),
@@ -362,11 +362,11 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                   _SectionHeader(
                     icon: Icons.calendar_today,
                     iconColor: AppColors.secondary,
-                    title: 'Agenda de campaña',
+                    title: l10n.campaignSchedule,
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Fecha',
+                    l10n.date,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: AppColors.textPrimary,
@@ -377,7 +377,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                     controller: _dateController,
                     readOnly: true,
                     decoration: InputDecoration(
-                      hintText: 'mm/dd/yyyy',
+                      hintText: l10n.dateFormatHint,
                       hintStyle: TextStyle(color: AppColors.textHint),
                       filled: true,
                       fillColor: AppColors.surface,
@@ -402,7 +402,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                     onTap: _selectDate,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Por favor selecciona una fecha';
+                        return l10n.pleaseSelectDate;
                       }
                       return null;
                     },
@@ -415,7 +415,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Hora de inicio',
+                              l10n.startTime,
                               style: theme.textTheme.bodyMedium?.copyWith(
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.textPrimary,
@@ -453,7 +453,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                               onTap: () => _selectTime(isStartTime: true),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Requerido';
+                                  return l10n.required;
                                 }
                                 return null;
                               },
@@ -467,7 +467,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Hora de fin',
+                              l10n.endTime,
                               style: theme.textTheme.bodyMedium?.copyWith(
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.textPrimary,
@@ -505,7 +505,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                               onTap: () => _selectTime(isStartTime: false),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Requerido';
+                                  return l10n.required;
                                 }
                                 return null;
                               },
@@ -523,23 +523,23 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
 
             // Create Campaign Button
             _isUploading
-                ? const Center(
+                ? Center(
                     child: Column(
                       children: [
-                        CircularProgressIndicator(
+                        const CircularProgressIndicator(
                           valueColor: AlwaysStoppedAnimation<Color>(
                               AppColors.secondary),
                         ),
-                        SizedBox(height: 12),
+                        const SizedBox(height: 12),
                         Text(
-                          'Subiendo archivo de audio...',
-                          style: TextStyle(color: AppColors.textSecondary),
+                          l10n.uploadingAudioFile,
+                          style: const TextStyle(color: AppColors.textSecondary),
                         ),
                       ],
                     ),
                   )
                 : CustomButton(
-                    text: 'Crear campaña',
+                    text: l10n.createCampaign,
                     backgroundColor: AppColors.secondary,
                     onPressed: _createCampaign,
                   ),
@@ -550,6 +550,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
   }
 
   Future<void> _pickAudioFile() async {
+    final l10n = AppLocalizations.of(context);
     try {
       final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -564,8 +565,8 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
         if (file.size > 10 * 1024 * 1024) {
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('El archivo es demasiado grande. Máximo 10 MB.'),
+              SnackBar(
+                content: Text(l10n.fileTooLarge),
                 backgroundColor: AppColors.error,
               ),
             );
@@ -584,7 +585,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Archivo seleccionado: ${file.name}'),
+              content: Text(l10n.fileSelected(file.name)),
               backgroundColor: AppColors.secondary,
             ),
           );
@@ -594,7 +595,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error al seleccionar archivo: $e'),
+            content: Text(l10n.errorSelectingFile(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -603,11 +604,12 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
   }
 
   Future<void> _selectLocation() async {
+    final l10n = AppLocalizations.of(context);
     // TODO: Implement map location picker
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
+      SnackBar(
           content: Text(
-              'Función de selección de ubicación pendiente de implementar')),
+              l10n.locationSelectionPending)),
     );
   }
 
@@ -676,6 +678,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
   }
 
   Future<void> _createCampaign() async {
+    final l10n = AppLocalizations.of(context);
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -683,8 +686,8 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
     // Validate audio file is selected
     if (_audioFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Por favor selecciona un archivo de audio'),
+        SnackBar(
+          content: Text(l10n.pleaseSelectAudioFile),
           backgroundColor: AppColors.error,
         ),
       );
@@ -745,10 +748,10 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Campaña creada. Subiendo audio...'),
+          SnackBar(
+            content: Text(l10n.campaignCreatedUploadingAudio),
             backgroundColor: AppColors.secondary,
-            duration: Duration(seconds: 2),
+            duration: const Duration(seconds: 2),
           ),
         );
       }
@@ -765,9 +768,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'Campaña creada exitosamente\n'
-              'ID: ${createdCampaign.id}\n'
-              'Audio URL: ${uploadResponse.url}',
+              l10n.campaignCreatedSuccessfully(createdCampaign.id!, uploadResponse.url),
             ),
             backgroundColor: AppColors.secondary,
             duration: const Duration(seconds: 4),
@@ -784,7 +785,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error al crear campaña: $e'),
+            content: Text(l10n.errorCreatingCampaign(e.toString())),
             backgroundColor: AppColors.error,
             duration: const Duration(seconds: 4),
           ),

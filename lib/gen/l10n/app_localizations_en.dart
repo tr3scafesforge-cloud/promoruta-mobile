@@ -12,8 +12,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get welcomeMessage => 'Welcome to PromoRuta';
 
   @override
-  String get description =>
-      'Connect advertisers with promoters for effective campaigns.';
+  String get description => 'Description';
 
   @override
   String get start => 'Start';
@@ -536,4 +535,116 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noUserLoggedIn => 'No user logged in';
+
+  @override
+  String get createCampaign => 'Create campaign';
+
+  @override
+  String get createCampaignSubtitle => 'Design your audio promotion campaign';
+
+  @override
+  String get basicInformation => 'Basic Information';
+
+  @override
+  String get campaignTitle => 'Campaign title';
+
+  @override
+  String get campaignNameHint => 'Campaign name';
+
+  @override
+  String get pleaseEnterCampaignTitle => 'Please enter the campaign title';
+
+  @override
+  String get briefCampaignDescription => 'Brief campaign description';
+
+  @override
+  String get pleaseEnterDescription => 'Please enter a description';
+
+  @override
+  String get audioAnnouncement => 'Audio announcement';
+
+  @override
+  String get uploadAudioFile => 'Upload audio file';
+
+  @override
+  String get addAudioFile => 'Add audio file';
+
+  @override
+  String get changeAudioFile => 'Change audio file';
+
+  @override
+  String get audioFileSpecs => 'MP3 / WAV / AAC · Up to 30 s · 10 MB max';
+
+  @override
+  String get budgetAndLocation => 'Budget and location';
+
+  @override
+  String get budget => 'Budget';
+
+  @override
+  String get pleaseEnterBudget => 'Please enter the budget';
+
+  @override
+  String get enterValidNumber => 'Please enter a valid number';
+
+  @override
+  String get coverageZone => 'Coverage zone';
+
+  @override
+  String get mapLocation => 'Map Location';
+
+  @override
+  String get campaignSchedule => 'Campaign schedule';
+
+  @override
+  String get date => 'Date';
+
+  @override
+  String get dateFormatHint => 'mm/dd/yyyy';
+
+  @override
+  String get pleaseSelectDate => 'Please select a date';
+
+  @override
+  String get startTime => 'Start time';
+
+  @override
+  String get endTime => 'End time';
+
+  @override
+  String get uploadingAudioFile => 'Uploading audio file...';
+
+  @override
+  String get fileTooLarge => 'File is too large. Maximum 10 MB.';
+
+  @override
+  String fileSelected(String fileName) {
+    return 'File selected: $fileName';
+  }
+
+  @override
+  String errorSelectingFile(String error) {
+    return 'Error selecting file: $error';
+  }
+
+  @override
+  String get locationSelectionPending =>
+      'Location selection feature pending implementation';
+
+  @override
+  String get pleaseSelectAudioFile => 'Please select an audio file';
+
+  @override
+  String get campaignCreatedUploadingAudio =>
+      'Campaign created. Uploading audio...';
+
+  @override
+  String campaignCreatedSuccessfully(String id, String audioUrl) {
+    return 'Campaign created successfully\nID: $id\nAudio URL: $audioUrl';
+  }
+
+  @override
+  String errorCreatingCampaign(String error) {
+    return 'Error creating campaign: $error';
+  }
 }
