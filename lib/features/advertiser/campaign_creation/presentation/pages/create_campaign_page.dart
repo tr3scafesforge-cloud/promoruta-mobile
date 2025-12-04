@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:go_router/go_router.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/core/models/campaign.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
@@ -58,7 +59,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => context.canPop() ? context.pop() : context.go('/advertiser-home'),
         ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -780,7 +781,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
         ref.read(campaignsProvider.notifier).loadCampaigns();
 
         // Navigate back
-        Navigator.pop(context);
+        context.pop();
       }
     } catch (e) {
       if (mounted) {

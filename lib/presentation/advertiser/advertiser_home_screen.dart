@@ -54,7 +54,7 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
               ),
               backgroundColor: AppColors.secondary,
               onPressed: () {
-                const CreateCampaignRoute().go(context);
+                const CreateCampaignRoute().push(context);
               },
               child: const Icon(
                 Icons.add_rounded,
@@ -160,7 +160,7 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
                   const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
               child: FilledButton.icon(
                 onPressed: () {
-                  const CreateCampaignRoute().go(context);
+                  const CreateCampaignRoute().push(context);
                 },
                 icon: const Icon(Icons.add),
                 label: Text(l10n.newCampaign),
