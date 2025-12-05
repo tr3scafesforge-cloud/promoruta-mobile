@@ -255,9 +255,26 @@ class CreateCampaignRoute extends GoRouteData with _$CreateCampaignRoute {
   final int? sourceTab;
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
     final tab = sourceTab ?? int.tryParse(state.uri.queryParameters['sourceTab'] ?? '');
-    return CreateCampaignPage(sourceTab: tab);
+
+    return CustomTransitionPage(
+      key: state.pageKey,
+      child: CreateCampaignPage(sourceTab: tab),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0); // Slide from bottom
+        const end = Offset.zero;
+        const curve = Curves.easeInOut;
+
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var offsetAnimation = animation.drive(tween);
+
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
+      },
+    );
   }
 }
 
