@@ -18,7 +18,7 @@ class SecuritySettingsPage extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black87),
-          onPressed: () => context.canPop() ? context.pop() : context.go('/advertiser-home?tab=profile'),
+          onPressed: () => context.pop(),
         ),
         title: const SizedBox.shrink(),
       ),

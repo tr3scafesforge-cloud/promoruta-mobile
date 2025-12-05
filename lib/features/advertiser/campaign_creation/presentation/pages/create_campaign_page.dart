@@ -12,9 +12,7 @@ import 'package:promoruta/shared/providers/providers.dart';
 import 'package:promoruta/shared/datasources/remote/media_remote_data_source.dart';
 
 class CreateCampaignPage extends ConsumerStatefulWidget {
-  const CreateCampaignPage({super.key, this.sourceTab});
-
-  final int? sourceTab;
+  const CreateCampaignPage({super.key});
 
   @override
   ConsumerState<CreateCampaignPage> createState() => _CreateCampaignPageState();
@@ -49,23 +47,6 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
     super.dispose();
   }
 
-  String _getTabName(int tabIndex) {
-    switch (tabIndex) {
-      case 0:
-        return 'home';
-      case 1:
-        return 'campaigns';
-      case 2:
-        return 'live';
-      case 3:
-        return 'history';
-      case 4:
-        return 'profile';
-      default:
-        return 'home';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -79,13 +60,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
           onPressed: () {
-            if (context.canPop()) {
-              context.pop();
-            } else {
-              // Fallback if no previous route - navigate to advertiser home with the source tab
-              final tab = widget.sourceTab ?? 0;
-              context.go('/advertiser-home?tab=${_getTabName(tab)}');
-            }
+            context.pop();
           },
         ),
         title: Column(
@@ -808,13 +783,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
         ref.read(campaignsProvider.notifier).loadCampaigns();
 
         // Navigate back
-        if (context.canPop()) {
-          context.pop();
-        } else {
-          // Fallback if no previous route - navigate to advertiser home with the source tab
-          final tab = widget.sourceTab ?? 0;
-          context.go('/advertiser-home?tab=${_getTabName(tab)}');
-        }
+        context.pop();
       }
     } catch (e) {
       if (mounted) {

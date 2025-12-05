@@ -477,20 +477,11 @@ RouteBase get $createCampaignRoute => GoRouteData.$route(
 
 mixin _$CreateCampaignRoute on GoRouteData {
   static CreateCampaignRoute _fromState(GoRouterState state) =>
-      CreateCampaignRoute(
-        sourceTab: _$convertMapValue(
-            'source-tab', state.uri.queryParameters, int.tryParse),
-      );
-
-  CreateCampaignRoute get _self => this as CreateCampaignRoute;
+      const CreateCampaignRoute();
 
   @override
   String get location => GoRouteData.$location(
         '/create-campaign',
-        queryParams: {
-          if (_self.sourceTab != null)
-            'source-tab': _self.sourceTab!.toString(),
-        },
       );
 
   @override

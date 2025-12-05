@@ -74,7 +74,7 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
               ),
               backgroundColor: AppColors.secondary,
               onPressed: () {
-                CreateCampaignRoute(sourceTab: _currentIndex).push(context);
+                const CreateCampaignRoute().push(context);
               },
               child: const Icon(
                 Icons.add_rounded,
@@ -154,9 +154,9 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
                 );
           },
           onTapSecurity: () =>
-              const AdvertiserSecuritySettingsRoute().go(context),
-          onTapLanguage: () => const LanguageSettingsRoute().go(context),
-          onTapAccount: () => const UserProfileRoute().go(context),
+              const AdvertiserSecuritySettingsRoute().push(context),
+          onTapLanguage: () => const LanguageSettingsRoute().push(context),
+          onTapAccount: () => const UserProfileRoute().push(context),
         );
       default:
         return const AdvertiserHomePage();
@@ -180,7 +180,7 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
                   const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
               child: FilledButton.icon(
                 onPressed: () {
-                  CreateCampaignRoute(sourceTab: _currentIndex).push(context);
+                  const CreateCampaignRoute().push(context);
                 },
                 icon: const Icon(Icons.add),
                 label: Text(l10n.newCampaign),
