@@ -71,7 +71,9 @@ class LoginRoute extends GoRouteData with _$LoginRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     final roleParam = state.uri.queryParameters['role'];
-    final userRole = roleParam != null ? model.UserRole.fromString(roleParam) : model.UserRole.promoter;
+    final userRole = roleParam != null
+        ? model.UserRole.fromString(roleParam)
+        : model.UserRole.promoter;
     return Login(role: userRole);
   }
 }
@@ -202,7 +204,8 @@ class AdvertiserHomeRoute extends GoRouteData with _$AdvertiserHomeRoute {
           const end = Offset.zero;
           const curve = Curves.easeInOut;
 
-          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
           var offsetAnimation = secondaryAnimation.drive(tween);
 
           return SlideTransition(
@@ -221,7 +224,8 @@ class AdvertiserHomeRoute extends GoRouteData with _$AdvertiserHomeRoute {
 @TypedGoRoute<AdvertiserSecuritySettingsRoute>(
   path: '/advertiser-security-settings',
 )
-class AdvertiserSecuritySettingsRoute extends GoRouteData with _$AdvertiserSecuritySettingsRoute {
+class AdvertiserSecuritySettingsRoute extends GoRouteData
+    with _$AdvertiserSecuritySettingsRoute {
   const AdvertiserSecuritySettingsRoute();
 
   @override
@@ -234,7 +238,8 @@ class AdvertiserSecuritySettingsRoute extends GoRouteData with _$AdvertiserSecur
         const end = Offset.zero;
         const curve = Curves.easeInOut;
 
-        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
         var offsetAnimation = animation.drive(tween);
 
         return SlideTransition(
@@ -256,30 +261,20 @@ class CreateCampaignRoute extends GoRouteData with _$CreateCampaignRoute {
 
   @override
   Page<void> buildPage(BuildContext context, GoRouterState state) {
-    final tab = sourceTab ?? int.tryParse(state.uri.queryParameters['sourceTab'] ?? '');
+    final tab =
+        sourceTab ?? int.tryParse(state.uri.queryParameters['sourceTab'] ?? '');
 
-    return CustomTransitionPage(
+    // Use simple MaterialPage for now
+    return MaterialPage(
       key: state.pageKey,
       child: CreateCampaignPage(sourceTab: tab),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(0.0, 1.0); // Slide from bottom
-        const end = Offset.zero;
-        const curve = Curves.easeInOut;
-
-        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-        var offsetAnimation = animation.drive(tween);
-
-        return SlideTransition(
-          position: offsetAnimation,
-          child: child,
-        );
-      },
     );
   }
 }
 
 class AppRouter {
-  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
 
   static final GoRouter router = GoRouter(
     initialLocation: '/',
