@@ -193,31 +193,8 @@ class AdvertiserHomeRoute extends GoRouteData with _$AdvertiserHomeRoute {
   const AdvertiserHomeRoute();
 
   @override
-  Page<void> buildPage(BuildContext context, GoRouterState state) {
-    return CustomTransitionPage(
-      key: state.pageKey,
-      child: const AdvertiserHomeScreen(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        // Handle reverse animation when coming back from security settings
-        if (secondaryAnimation.status == AnimationStatus.reverse) {
-          const begin = Offset(-1.0, 0.0);
-          const end = Offset.zero;
-          const curve = Curves.easeInOut;
-
-          var tween =
-              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-          var offsetAnimation = secondaryAnimation.drive(tween);
-
-          return SlideTransition(
-            position: offsetAnimation,
-            child: child,
-          );
-        }
-
-        // Default transition
-        return child;
-      },
-    );
+  Widget build(BuildContext context, GoRouterState state) {
+    return const AdvertiserHomeScreen();
   }
 }
 
@@ -229,25 +206,8 @@ class AdvertiserSecuritySettingsRoute extends GoRouteData
   const AdvertiserSecuritySettingsRoute();
 
   @override
-  Page<void> buildPage(BuildContext context, GoRouterState state) {
-    return CustomTransitionPage(
-      key: state.pageKey,
-      child: const SecuritySettingsPage(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(1.0, 0.0);
-        const end = Offset.zero;
-        const curve = Curves.easeInOut;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-        var offsetAnimation = animation.drive(tween);
-
-        return SlideTransition(
-          position: offsetAnimation,
-          child: child,
-        );
-      },
-    );
+  Widget build(BuildContext context, GoRouterState state) {
+    return const SecuritySettingsPage();
   }
 }
 
@@ -258,24 +218,8 @@ class CreateCampaignRoute extends GoRouteData with _$CreateCampaignRoute {
   const CreateCampaignRoute();
 
   @override
-  Page<void> buildPage(BuildContext context, GoRouterState state) {
-    return CustomTransitionPage(
-      key: state.pageKey,
-      child: const CreateCampaignPage(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(0.0, 1.0); // Slide from bottom
-        const end = Offset.zero;
-        const curve = Curves.easeInOut;
-
-        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-        var offsetAnimation = animation.drive(tween);
-
-        return SlideTransition(
-          position: offsetAnimation,
-          child: child,
-        );
-      },
-    );
+  Widget build(BuildContext context, GoRouterState state) {
+    return const CreateCampaignPage();
   }
 }
 
