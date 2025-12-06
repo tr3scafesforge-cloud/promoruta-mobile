@@ -51,11 +51,11 @@ extension UiCampaignMappers on ui.Campaign {
       startDate: campaignDate,
       endDate: campaignDate.add(const Duration(days: 1)),
       status: _mapStatusToCore(status),
-      zone: location ?? 'Unknown',
+      zone: location,
       suggestedPrice: payUsd?.toDouble() ?? 0.0,
       bidDeadline: campaignDate.subtract(const Duration(hours: 2)),
       audioDuration: 30, // Default duration
-      distance: distanceKm ?? 0.0,
+      distance: distanceKm,
       routeCoordinates: [], // Empty route by default
       startTime: campaignDate,
       endTime: campaignDate.add(const Duration(days: 1)),

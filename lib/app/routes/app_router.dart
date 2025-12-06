@@ -407,33 +407,3 @@ Widget _slideTransition({
     child: child,
   );
 }
-
-/// Creates a fade transition for route animations
-Widget _fadeTransition({
-  required Animation<double> animation,
-  required Widget child,
-  Curve curve = Curves.easeInOut,
-}) {
-  final curvedAnimation = CurvedAnimation(parent: animation, curve: curve);
-  return FadeTransition(
-    opacity: curvedAnimation,
-    child: child,
-  );
-}
-
-/// Creates a scale transition for route animations
-Widget _scaleTransition({
-  required Animation<double> animation,
-  required Widget child,
-  Curve curve = Curves.easeInOut,
-  Alignment alignment = Alignment.center,
-}) {
-  final tween = Tween(begin: 0.8, end: 1.0).chain(CurveTween(curve: curve));
-  final scaleAnimation = animation.drive(tween);
-
-  return ScaleTransition(
-    scale: scaleAnimation,
-    alignment: alignment,
-    child: child,
-  );
-}

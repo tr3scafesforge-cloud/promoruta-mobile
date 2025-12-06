@@ -1,5 +1,5 @@
 /// Media Upload Service - Usage Examples
-///
+library;
 /// This file demonstrates how to use the media upload service with the canonical URL pattern:
 /// /api/{modelType}/{modelId}/media
 ///
@@ -22,6 +22,7 @@
 
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:promoruta/core/utils/logger.dart';
 import 'package:promoruta/shared/datasources/remote/media_remote_data_source.dart';
 import 'package:promoruta/shared/providers/providers.dart';
 
@@ -41,10 +42,10 @@ Future<void> uploadCampaignAudio(
       role: MediaRole.audio,
     );
 
-    print('Audio uploaded successfully!');
-    print('ID: ${response.id}');
-    print('URL: ${response.url}');
-    print('Path: ${response.path}');
+    AppLogger.auth.i('Audio uploaded successfully!');
+    AppLogger.auth.i('ID: ${response.id}');
+    AppLogger.auth.i('URL: ${response.url}');
+    AppLogger.auth.i('Path: ${response.path}');
 
     // Response example:
     // {
@@ -56,7 +57,7 @@ Future<void> uploadCampaignAudio(
     //   "updated_at": "2025-12-03T02:04:13.000000Z"
     // }
   } catch (e) {
-    print('Error uploading audio: $e');
+    AppLogger.auth.e('Error uploading audio: $e');
   }
 }
 
@@ -77,10 +78,10 @@ Future<void> uploadCampaignBanner(
       role: MediaRole.banner,
     );
 
-    print('Banner uploaded successfully!');
-    print('URL: ${response.url}');
+    AppLogger.auth.i('Banner uploaded successfully!');
+    AppLogger.auth.i('URL: ${response.url}');
   } catch (e) {
-    print('Error uploading banner: $e');
+    AppLogger.auth.e('Error uploading banner: $e');
   }
 }
 
@@ -99,10 +100,10 @@ Future<void> uploadAvatar(
       file: avatarImage,
     );
 
-    print('Avatar uploaded successfully!');
-    print('URL: ${response.url}');
+    AppLogger.auth.i('Avatar uploaded successfully!');
+    AppLogger.auth.i('URL: ${response.url}');
   } catch (e) {
-    print('Error uploading avatar: $e');
+    AppLogger.auth.e('Error uploading avatar: $e');
   }
 }
 
@@ -121,10 +122,10 @@ Future<void> uploadGalleryImage(
       file: galleryImage,
     );
 
-    print('Gallery image uploaded successfully!');
-    print('URL: ${response.url}');
+    AppLogger.auth.i('Gallery image uploaded successfully!');
+    AppLogger.auth.i('URL: ${response.url}');
   } catch (e) {
-    print('Error uploading gallery image: $e');
+    AppLogger.auth.e('Error uploading gallery image: $e');
   }
 }
 
@@ -144,10 +145,10 @@ Future<void> uploadBidDocument(
       role: MediaRole.document,
     );
 
-    print('Document uploaded successfully!');
-    print('URL: ${response.url}');
+    AppLogger.auth.i('Document uploaded successfully!');
+    AppLogger.auth.i('URL: ${response.url}');
   } catch (e) {
-    print('Error uploading document: $e');
+    AppLogger.auth.e('Error uploading document: $e');
   }
 }
 
@@ -167,10 +168,10 @@ Future<void> uploadCampaignThumbnail(
       role: MediaRole.thumbnail,
     );
 
-    print('Thumbnail uploaded successfully!');
-    print('URL: ${response.url}');
+    AppLogger.auth.i('Thumbnail uploaded successfully!');
+    AppLogger.auth.i('URL: ${response.url}');
   } catch (e) {
-    print('Error uploading thumbnail: $e');
+    AppLogger.auth.e('Error uploading thumbnail: $e');
   }
 }
 
@@ -190,10 +191,10 @@ Future<void> uploadCampaignVideo(
       role: MediaRole.video,
     );
 
-    print('Video uploaded successfully!');
-    print('URL: ${response.url}');
+    AppLogger.auth.i('Video uploaded successfully!');
+    AppLogger.auth.i('URL: ${response.url}');
   } catch (e) {
-    print('Error uploading video: $e');
+    AppLogger.auth.e('Error uploading video: $e');
   }
 }
 
@@ -213,10 +214,10 @@ Future<void> uploadGpsTrackProof(
       role: MediaRole.gallery, // or thumbnail
     );
 
-    print('GPS track proof uploaded successfully!');
-    print('URL: ${response.url}');
+    AppLogger.auth.i('GPS track proof uploaded successfully!');
+    AppLogger.auth.i('URL: ${response.url}');
   } catch (e) {
-    print('Error uploading GPS track proof: $e');
+    AppLogger.auth.e('Error uploading GPS track proof: $e');
   }
 }
 
@@ -236,10 +237,10 @@ Future<void> uploadPaymentReceipt(
       role: MediaRole.document,
     );
 
-    print('Payment receipt uploaded successfully!');
-    print('URL: ${response.url}');
+    AppLogger.auth.i('Payment receipt uploaded successfully!');
+    AppLogger.auth.i('URL: ${response.url}');
   } catch (e) {
-    print('Error uploading payment receipt: $e');
+    AppLogger.auth.e('Error uploading payment receipt: $e');
   }
 }
 
@@ -259,9 +260,9 @@ Future<void> uploadRatingImage(
       role: MediaRole.gallery,
     );
 
-    print('Rating image uploaded successfully!');
-    print('URL: ${response.url}');
+    AppLogger.auth.i('Rating image uploaded successfully!');
+    AppLogger.auth.i('URL: ${response.url}');
   } catch (e) {
-    print('Error uploading rating image: $e');
+    AppLogger.auth.e('Error uploading rating image: $e');
   }
 }
