@@ -206,8 +206,19 @@ class AdvertiserSecuritySettingsRoute extends GoRouteData
   const AdvertiserSecuritySettingsRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const SecuritySettingsPage();
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage(
+      key: state.pageKey,
+      child: const SecuritySettingsPage(),
+      opaque: true,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return _slideTransition(
+          animation: animation,
+          child: child,
+          direction: SlideDirection.fromRight,
+        );
+      },
+    );
   }
 }
 
@@ -218,8 +229,19 @@ class CreateCampaignRoute extends GoRouteData with _$CreateCampaignRoute {
   const CreateCampaignRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const CreateCampaignPage();
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage(
+      key: state.pageKey,
+      child: const CreateCampaignPage(),
+      opaque: true,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return _slideTransition(
+          animation: animation,
+          child: child,
+          direction: SlideDirection.fromRight,
+        );
+      },
+    );
   }
 }
 
@@ -295,4 +317,90 @@ class _AppStartupState extends ConsumerState<AppStartup> {
       ),
     );
   }
+}
+
+// ============================================================================
+// Reusable Route Transition Helpers
+// ============================================================================
+
+/// Slide direction for route transitions
+enum SlideDirection {
+  fromRight,
+  fromLeft,
+  fromBottom,
+  fromTop,
+}
+
+/// Creates a slide transition for route animations
+///
+/// Usage:
+/// ```dart
+/// transitionsBuilder: (context, animation, secondaryAnimation, child) {
+///   return _slideTransition(
+///     animation: animation,
+///     child: child,
+///     direction: SlideDirection.fromRight,
+///   );
+/// }
+/// ```
+Widget _slideTransition({
+  required Animation<double> animation,
+  required Widget child,
+  required SlideDirection direction,
+  Curve curve = Curves.easeInOut,
+}) {
+  Offset begin;
+  switch (direction) {
+    case SlideDirection.fromRight:
+      begin = const Offset(1.0, 0.0);
+      break;
+    case SlideDirection.fromLeft:
+      begin = const Offset(-1.0, 0.0);
+      break;
+    case SlideDirection.fromBottom:
+      begin = const Offset(0.0, 1.0);
+      break;
+    case SlideDirection.fromTop:
+      begin = const Offset(0.0, -1.0);
+      break;
+  }
+
+  const end = Offset.zero;
+  final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+  final offsetAnimation = animation.drive(tween);
+
+  return SlideTransition(
+    position: offsetAnimation,
+    child: child,
+  );
+}
+
+/// Creates a fade transition for route animations
+Widget _fadeTransition({
+  required Animation<double> animation,
+  required Widget child,
+  Curve curve = Curves.easeInOut,
+}) {
+  final curvedAnimation = CurvedAnimation(parent: animation, curve: curve);
+  return FadeTransition(
+    opacity: curvedAnimation,
+    child: child,
+  );
+}
+
+/// Creates a scale transition for route animations
+Widget _scaleTransition({
+  required Animation<double> animation,
+  required Widget child,
+  Curve curve = Curves.easeInOut,
+  Alignment alignment = Alignment.center,
+}) {
+  final tween = Tween(begin: 0.8, end: 1.0).chain(CurveTween(curve: curve));
+  final scaleAnimation = animation.drive(tween);
+
+  return ScaleTransition(
+    scale: scaleAnimation,
+    alignment: alignment,
+    child: child,
+  );
 }
