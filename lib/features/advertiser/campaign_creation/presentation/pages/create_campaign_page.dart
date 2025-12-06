@@ -703,9 +703,6 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
     });
 
     try {
-      // STEP 1: Create the campaign first (without audio_url)
-      final campaignRepository = ref.read(campaignRepositoryProvider);
-
       // Combine date and time
       final startDateTime = DateTime(
         _selectedDate!.year,
@@ -746,34 +743,20 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
         endTime: endDateTime,
       );
 
-      // Create campaign
-      final createdCampaign =
-          await campaignRepository.createCampaign(newCampaign);
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.campaignCreatedUploadingAudio),
-            backgroundColor: AppColors.secondary,
-            duration: const Duration(seconds: 2),
-          ),
-        );
-      }
-
-      // STEP 2: Upload the audio file using the created campaign ID
-      final mediaRepository = ref.read(mediaRepositoryProvider);
-      final uploadResponse = await mediaRepository.uploadCampaignMedia(
-        campaignId: createdCampaign.id!,
-        file: _audioFile!,
-        role: MediaRole.audio,
+      // Create campaign with audio file (audio will be uploaded first)
+      final campaignRepository = ref.read(campaignRepositoryProvider);
+      final createdCampaign = await campaignRepository.createCampaign(
+        newCampaign,
+        audioFile: _audioFile,
       );
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-              l10n.campaignCreatedSuccessfully(createdCampaign.id!, uploadResponse.url),
-            ),
+            content: Text(l10n.campaignCreatedSuccessfully(
+              createdCampaign.id!,
+              createdCampaign.audioUrl ?? 'N/A',
+            )),
             backgroundColor: AppColors.secondary,
             duration: const Duration(seconds: 4),
           ),

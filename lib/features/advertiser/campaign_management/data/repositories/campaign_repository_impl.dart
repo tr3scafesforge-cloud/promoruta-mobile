@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:promoruta/core/core.dart' as model;
 import 'package:promoruta/shared/shared.dart';
 import '../../domain/repositories/campaign_repository.dart';
@@ -66,12 +67,12 @@ class CampaignRepositoryImpl implements CampaignRepository {
   }
 
   @override
-  Future<model.Campaign> createCampaign(model.Campaign campaign) async {
+  Future<model.Campaign> createCampaign(model.Campaign campaign, {File? audioFile}) async {
     final isConnected = await _connectivityService.isConnected;
 
     if (isConnected) {
       try {
-        final createdCampaign = await _remoteDataSource.createCampaign(campaign);
+        final createdCampaign = await _remoteDataSource.createCampaign(campaign, audioFile: audioFile);
         // Save locally
         await _localDataSource.saveCampaign(createdCampaign);
         return createdCampaign;

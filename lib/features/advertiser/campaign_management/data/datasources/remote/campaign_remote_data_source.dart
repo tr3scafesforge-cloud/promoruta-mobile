@@ -1,14 +1,19 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:promoruta/core/utils/logger.dart';
 import 'package:promoruta/core/models/campaign.dart';
+import 'package:promoruta/features/advertiser/campaign_creation/data/datasources/remote/media_remote_data_source.dart';
 
 import '../../../domain/repositories/campaign_repository.dart';
 
 class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
   final Dio dio;
+  final MediaRemoteDataSource? mediaDataSource;
 
   CampaignRemoteDataSourceImpl({
     required this.dio,
+    this.mediaDataSource,
   });
 
   @override
@@ -85,13 +90,16 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
   }
 
   @override
-  Future<Campaign> createCampaign(Campaign campaign) async {
+  Future<Campaign> createCampaign(Campaign campaign, {File? audioFile}) async {
     try {
+      // STEP 1: Create campaign first (without audio_url)
+      final campaignData = campaign.toJson();
       AppLogger.auth.i('Creating campaign: ${campaign.title}');
+      AppLogger.auth.d('Campaign POST body: $campaignData');
 
       final response = await dio.post(
         '/campaigns',
-        data: campaign.toJson(),
+        data: campaignData,
         options: Options(
           headers: {
             'Content-Type': 'application/json',
@@ -102,12 +110,71 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final json = response.data;
-        AppLogger.auth.i('Campaign created successfully: ${json['id']}');
-        return Campaign.fromJson(json);
+        final createdCampaign = Campaign.fromJson(json);
+        AppLogger.auth.i('Campaign created successfully: ${createdCampaign.id}');
+
+        // STEP 2: Upload audio file if provided
+        if (audioFile != null && createdCampaign.id != null) {
+          AppLogger.auth.i('Uploading audio file for campaign: ${createdCampaign.id}');
+
+          final mediaSource = mediaDataSource;
+          if (mediaSource == null) {
+            AppLogger.auth.w('Media data source not available, returning campaign without audio');
+            return createdCampaign;
+          }
+
+          try {
+            // Upload audio to /campaigns/{id}/media
+            final uploadResponse = await mediaSource.uploadMedia(
+              modelType: ModelType.campaigns,
+              modelId: createdCampaign.id!,
+              file: audioFile,
+              role: MediaRole.audio,
+            );
+
+            AppLogger.auth.i('Audio uploaded successfully: ${uploadResponse.url}');
+
+            // STEP 3: Update campaign with audio_url
+            final updatedCampaign = createdCampaign.copyWith(audioUrl: uploadResponse.url);
+
+            AppLogger.auth.i('Updating campaign with audio URL');
+            final updateResponse = await dio.put(
+              '/campaigns/${createdCampaign.id}',
+              data: updatedCampaign.toJson(),
+              options: Options(
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json',
+                },
+              ),
+            );
+
+            if (updateResponse.statusCode == 200) {
+              AppLogger.auth.i('Campaign updated with audio URL successfully');
+              return Campaign.fromJson(updateResponse.data);
+            } else {
+              AppLogger.auth.w('Failed to update campaign with audio URL, returning campaign with local audio_url');
+              return updatedCampaign;
+            }
+          } catch (audioError) {
+            AppLogger.auth.e('Failed to upload/update audio: $audioError');
+            // Return the created campaign even if audio upload fails
+            return createdCampaign;
+          }
+        }
+
+        return createdCampaign;
       } else {
         throw Exception('Failed to create campaign: ${response.statusMessage}');
       }
     } on DioException catch (e) {
+      // For 401 errors, the TokenRefreshInterceptor should have already handled it
+      // If we still get a 401 here, it means token refresh failed
+      if (e.response?.statusCode == 401) {
+        AppLogger.auth.e('Authentication failed - token refresh unsuccessful');
+        throw Exception('Session expired. Please log in again.');
+      }
+
       AppLogger.auth.e('Campaign creation failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
 
       if (e.response != null) {
@@ -115,9 +182,6 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
         final responseData = e.response!.data;
 
         switch (statusCode) {
-          case 401:
-            // Let the TokenRefreshInterceptor handle this
-            rethrow;
           case 422:
             // Handle validation errors
             if (responseData is Map && responseData.containsKey('message')) {

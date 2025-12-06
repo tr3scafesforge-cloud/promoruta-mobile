@@ -1,3 +1,4 @@
+import 'dart:io';
 import '../repositories/campaign_repository.dart';
 import 'package:promoruta/core/core.dart' as model;
 import 'package:promoruta/shared/shared.dart';
@@ -26,15 +27,29 @@ class GetCampaignUseCase implements UseCase<model.Campaign?, String> {
   }
 }
 
+/// Parameters for creating a campaign
+class CreateCampaignParams {
+  final model.Campaign campaign;
+  final File? audioFile;
+
+  const CreateCampaignParams({
+    required this.campaign,
+    this.audioFile,
+  });
+}
+
 /// Use case for creating a new campaign
-class CreateCampaignUseCase implements UseCase<model.Campaign, model.Campaign> {
+class CreateCampaignUseCase implements UseCase<model.Campaign, CreateCampaignParams> {
   final CampaignRepository _repository;
 
   CreateCampaignUseCase(this._repository);
 
   @override
-  Future<model.Campaign> call(model.Campaign campaign) async {
-    return await _repository.createCampaign(campaign);
+  Future<model.Campaign> call(CreateCampaignParams params) async {
+    return await _repository.createCampaign(
+      params.campaign,
+      audioFile: params.audioFile,
+    );
   }
 }
 

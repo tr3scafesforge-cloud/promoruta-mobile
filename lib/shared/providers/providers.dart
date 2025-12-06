@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -123,7 +124,11 @@ final campaignLocalDataSourceProvider = Provider<CampaignLocalDataSource>((ref) 
 
 final campaignRemoteDataSourceProvider = Provider<CampaignRemoteDataSource>((ref) {
   final dio = ref.watch(dioProvider);
-  return CampaignRemoteDataSourceImpl(dio: dio);
+  final mediaDataSource = ref.watch(mediaRemoteDataSourceProvider);
+  return CampaignRemoteDataSourceImpl(
+    dio: dio,
+    mediaDataSource: mediaDataSource,
+  );
 });
 
 final gpsLocalDataSourceProvider = Provider<GpsLocalDataSource>((ref) {
@@ -446,9 +451,11 @@ class CampaignsNotifier extends StateNotifier<AsyncValue<List<model.Campaign>>> 
     }
   }
 
-  Future<void> createCampaign(model.Campaign campaign) async {
+  Future<void> createCampaign(model.Campaign campaign, {File? audioFile}) async {
     try {
-      final created = await _createCampaignUseCase(campaign);
+      final created = await _createCampaignUseCase(
+        CreateCampaignParams(campaign: campaign, audioFile: audioFile),
+      );
       if (mounted) {
         state = state.maybeWhen(
           data: (campaigns) => AsyncValue.data([...campaigns, created]),
