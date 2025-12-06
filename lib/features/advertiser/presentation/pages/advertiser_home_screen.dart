@@ -5,7 +5,7 @@ import 'package:promoruta/app/routes/app_router.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/widgets/bottom_navigation_item.dart';
-import 'package:promoruta/features/advertiser/presentation/widgets/advertiser_app_bar.dart';
+import '../widgets/advertiser_app_bar.dart';
 import 'package:promoruta/presentation/advertiser/pages/advertiser_home_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/advertiser_campaigns_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/advertiser_live_page.dart';

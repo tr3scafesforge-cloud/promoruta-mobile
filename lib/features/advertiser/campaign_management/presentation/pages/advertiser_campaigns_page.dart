@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
-import 'package:promoruta/features/advertiser/campaign_management/presentation/models/campaign_ui.dart' as ui;
+import '../models/campaign_ui.dart' as ui;
 import 'package:promoruta/shared/widgets/advertiser_search_filter_bar.dart';
 
 class AdvertiserCampaignsPage extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/presentation/promotor/pages/promoter_user_profile_page.dart';
-import 'package:promoruta/shared/widgets/profile_widgets.dart';
+import 'package:promoruta/features/profile/presentation/widgets/profile_widgets.dart';
 
 class PromoterProfilePage extends StatefulWidget {
   const PromoterProfilePage({

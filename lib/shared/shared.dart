@@ -1,36 +1,21 @@
-// Repositories
-export 'repositories/campaign_repository.dart';
-export 'repositories/gps_repository.dart';
-
-export 'repositories/campaign_repository_impl.dart';
-export 'repositories/gps_repository_impl.dart';
-
-// Services
+// Services (Infrastructure only)
 export 'services/config_service.dart';
 export 'services/connectivity_service.dart';
 export 'services/connectivity_service_impl.dart';
 export 'services/sync_service.dart';
 export 'services/sync_service_impl.dart';
 
-// Data Sources
-export 'datasources/local/campaign_local_data_source.dart';
-export 'datasources/local/gps_local_data_source.dart';
-export 'datasources/remote/campaign_remote_data_source.dart';
-export 'datasources/remote/gps_remote_data_source.dart';
+// Database (Shared infrastructure)
 export 'datasources/local/db/database.dart';
 
-// Use Cases
+// Use Cases (Base abstractions only)
 export 'use_cases/base_use_case.dart';
-export 'use_cases/campaign_use_cases.dart';
 
-// Models
-export 'models/campaign_mappers.dart';
-
-// Providers
+// Providers (Infrastructure providers)
 export 'providers/providers.dart';
 
-// Widgets
+// Widgets (Generic reusable widgets only)
 export 'widgets/app_card.dart';
 export 'widgets/multi_switch.dart';
-export 'widgets/advertiser_app_bar.dart';
 export 'widgets/custom_button.dart';
+export 'widgets/bottom_navigation_item.dart';

@@ -3,11 +3,21 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/shared/shared.dart';
-import 'package:promoruta/shared/datasources/local/user_local_data_source.dart';
-import 'package:promoruta/shared/datasources/remote/user_remote_data_source.dart';
-import 'package:promoruta/shared/datasources/remote/media_remote_data_source.dart';
-import 'package:promoruta/shared/repositories/user_repository.dart';
-import 'package:promoruta/shared/repositories/media_repository.dart';
+import 'package:promoruta/features/profile/data/datasources/local/user_local_data_source.dart' as user_ds;
+import 'package:promoruta/features/profile/data/datasources/remote/user_remote_data_source.dart' as user_remote_ds;
+import 'package:promoruta/features/profile/data/repositories/user_repository_impl.dart';
+import 'package:promoruta/features/profile/domain/repositories/user_repository.dart' hide UserLocalDataSource, UserRemoteDataSource;
+import 'package:promoruta/features/advertiser/campaign_creation/data/datasources/remote/media_remote_data_source.dart';
+import 'package:promoruta/features/advertiser/campaign_creation/domain/repositories/media_repository.dart';
+import 'package:promoruta/features/advertiser/campaign_management/data/datasources/local/campaign_local_data_source.dart';
+import 'package:promoruta/features/advertiser/campaign_management/data/datasources/remote/campaign_remote_data_source.dart';
+import 'package:promoruta/features/advertiser/campaign_management/data/repositories/campaign_repository_impl.dart';
+import 'package:promoruta/features/advertiser/campaign_management/domain/repositories/campaign_repository.dart';
+import 'package:promoruta/features/advertiser/campaign_management/domain/use_cases/campaign_use_cases.dart';
+import 'package:promoruta/features/promotor/gps_tracking/data/datasources/local/gps_local_data_source.dart';
+import 'package:promoruta/features/promotor/gps_tracking/data/datasources/remote/gps_remote_data_source.dart';
+import 'package:promoruta/features/promotor/gps_tracking/data/repositories/gps_repository_impl.dart';
+import 'package:promoruta/features/promotor/gps_tracking/domain/repositories/gps_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:promoruta/core/core.dart' as model;
@@ -126,14 +136,14 @@ final gpsRemoteDataSourceProvider = Provider<GpsRemoteDataSource>((ref) {
   return GpsRemoteDataSourceImpl(dio: dio);
 });
 
-final userLocalDataSourceProvider = Provider<UserLocalDataSource>((ref) {
+final userLocalDataSourceProvider = Provider<user_ds.UserLocalDataSource>((ref) {
   final database = ref.watch(databaseProvider);
-  return UserLocalDataSourceImpl(database);
+  return user_ds.UserLocalDataSourceImpl(database);
 });
 
-final userRemoteDataSourceProvider = Provider<UserRemoteDataSource>((ref) {
+final userRemoteDataSourceProvider = Provider<user_remote_ds.UserRemoteDataSource>((ref) {
   final dio = ref.watch(dioProvider);
-  return UserRemoteDataSourceImpl(dio: dio);
+  return user_remote_ds.UserRemoteDataSourceImpl(dio: dio);
 });
 
 final mediaRemoteDataSourceProvider = Provider<MediaRemoteDataSource>((ref) {

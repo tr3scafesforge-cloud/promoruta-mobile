@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
-import 'package:promoruta/shared/widgets/profile_widgets.dart';
+import 'package:promoruta/features/profile/presentation/widgets/profile_widgets.dart';
 import 'package:promoruta/shared/providers/providers.dart';
 
 class AdvertiserProfilePage extends ConsumerStatefulWidget {

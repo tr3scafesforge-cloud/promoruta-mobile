@@ -1,6 +1,9 @@
 import 'package:promoruta/core/utils/logger.dart';
 import 'package:promoruta/shared/shared.dart';
 import 'package:promoruta/features/auth/domain/repositories/auth_repository.dart';
+import 'package:promoruta/features/advertiser/campaign_management/domain/repositories/campaign_repository.dart';
+import 'package:promoruta/features/promotor/gps_tracking/domain/repositories/gps_repository.dart';
+import 'package:promoruta/features/promotor/gps_tracking/data/datasources/local/gps_local_data_source.dart' as gps_local;
 
 class SyncServiceImpl implements SyncService {
   final ConnectivityService _connectivityService;
@@ -45,7 +48,8 @@ class SyncServiceImpl implements SyncService {
   @override
   Future<bool> hasPendingChanges() async {
     // Check if there are completed routes to sync
-    final pendingRoutes = await _gpsLocalDataSource.getPendingSyncRoutes();
+    final impl = _gpsLocalDataSource as gps_local.GpsLocalDataSourceImpl;
+    final pendingRoutes = await impl.getPendingSyncRoutes();
     return pendingRoutes.isNotEmpty;
   }
 
@@ -99,7 +103,8 @@ class SyncServiceImpl implements SyncService {
   Future<void> _syncGpsRoutes() async {
     try {
       // Get completed routes that need syncing
-      final pendingRoutes = await _gpsLocalDataSource.getPendingSyncRoutes();
+      final impl = _gpsLocalDataSource as gps_local.GpsLocalDataSourceImpl;
+      final pendingRoutes = await impl.getPendingSyncRoutes();
 
       for (final route in pendingRoutes) {
         try {
