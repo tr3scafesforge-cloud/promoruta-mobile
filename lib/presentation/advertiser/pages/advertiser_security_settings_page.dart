@@ -31,20 +31,20 @@ class SecuritySettingsPage extends StatelessWidget {
                 _SettingsTile(
                   icon: Icons.credit_card,
                   title: l10n.paymentMethods,
-                  onTap: () => const PaymentMethodsRoute().go(context),
+                  onTap: () => const PaymentMethodsRoute().push(context),
                 ),
                 const _RowDivider(),
                 _SettingsTile(
                   // three asterisks look from mock; password icon also fine
                   icon: Icons.password_outlined,
                   title: l10n.changePassword,
-                  onTap: () => const ChangePasswordRoute().go(context),
+                  onTap: () => const ChangePasswordRoute().push(context),
                 ),
                 const _RowDivider(),
                 _SettingsTile(
                   icon: Icons.lock_outline,
                   title: l10n.twoFactorAuth,
-                  onTap: () => const TwoFactorAuthRoute().go(context),
+                  onTap: () => const TwoFactorAuthRoute().push(context),
                 ),
               ],
             ),
