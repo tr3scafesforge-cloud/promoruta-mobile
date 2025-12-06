@@ -1,4 +1,3 @@
-import 'package:promoruta/core/models/campaign.dart';
 import '../repositories/campaign_repository.dart';
 import 'package:promoruta/core/core.dart' as model;
 import 'package:promoruta/shared/shared.dart';

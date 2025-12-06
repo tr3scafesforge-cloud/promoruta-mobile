@@ -63,8 +63,15 @@ class TokenRefreshInterceptor extends Interceptor {
     try {
       AppLogger.auth.i('Token expired, attempting refresh...');
 
+      // Create a new Dio instance without interceptors to avoid infinite loop
+      final refreshDio = Dio(BaseOptions(
+        baseUrl: _dio.options.baseUrl,
+        connectTimeout: _dio.options.connectTimeout,
+        receiveTimeout: _dio.options.receiveTimeout,
+      ));
+
       // Refresh the token
-      final response = await _dio.post(
+      final response = await refreshDio.post(
         '/auth/refresh',
         data: {'refresh_token': user.refreshToken},
         options: Options(

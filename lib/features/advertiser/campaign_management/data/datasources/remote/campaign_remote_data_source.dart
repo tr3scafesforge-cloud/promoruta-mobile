@@ -115,6 +115,9 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
         final responseData = e.response!.data;
 
         switch (statusCode) {
+          case 401:
+            // Let the TokenRefreshInterceptor handle this
+            rethrow;
           case 422:
             // Handle validation errors
             if (responseData is Map && responseData.containsKey('message')) {
