@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:promoruta/core/core.dart';
 import 'package:promoruta/core/utils/logger.dart';
 
-import '../../repositories/auth_repository.dart';
+import '../../../domain/repositories/auth_repository.dart';
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final Dio dio;

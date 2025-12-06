@@ -1,8 +1,8 @@
 import 'package:drift/drift.dart';
 
-import '../../../core/models/user.dart' as model;
-import '../../repositories/auth_repository.dart';
-import 'db/database.dart';
+import '../../../../../core/models/user.dart' as model;
+import '../../../../../shared/datasources/local/db/database.dart';
+import '../../../domain/repositories/auth_repository.dart';
 
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   final AppDatabase db;

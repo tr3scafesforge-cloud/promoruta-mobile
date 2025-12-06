@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
-import 'package:promoruta/presentation/providers/permission_provider.dart';
-import 'package:promoruta/shared/widgets/permission_card.dart';
+import '../providers/permission_provider.dart';
+import '../widgets/permission_card.dart';
 
 class Permissions extends ConsumerWidget {
   const Permissions({super.key});

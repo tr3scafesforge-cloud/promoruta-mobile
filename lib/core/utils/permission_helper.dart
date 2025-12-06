@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
-import 'package:promoruta/presentation/providers/permission_provider.dart';
+import 'package:promoruta/features/auth/presentation/providers/permission_provider.dart';
 
 class PermissionHelper {
   // Check if location permission is granted

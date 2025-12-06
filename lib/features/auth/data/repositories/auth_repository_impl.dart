@@ -1,7 +1,9 @@
 
 import 'package:promoruta/core/core.dart' as model;
 import 'package:promoruta/core/utils/logger.dart';
-import 'package:promoruta/shared/shared.dart';
+import 'package:promoruta/shared/services/connectivity_service.dart';
+
+import '../../domain/repositories/auth_repository.dart';
 
 
 class AuthRepositoryImpl implements AuthRepository {

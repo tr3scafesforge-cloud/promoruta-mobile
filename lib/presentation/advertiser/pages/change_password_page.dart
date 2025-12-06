@@ -5,7 +5,7 @@ import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/core/result.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
-import 'package:promoruta/shared/use_cases/auth_use_cases.dart';
+import 'package:promoruta/features/auth/domain/use_cases/auth_use_cases.dart';
 import 'package:promoruta/shared/services/notification_service.dart';
 
 class ChangePasswordPage extends ConsumerStatefulWidget {

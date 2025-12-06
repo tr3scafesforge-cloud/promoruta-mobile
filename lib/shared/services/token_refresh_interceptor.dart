@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:promoruta/core/core.dart';
 import 'package:promoruta/core/utils/logger.dart';
-import 'package:promoruta/shared/repositories/auth_repository.dart';
+import 'package:promoruta/features/auth/domain/repositories/auth_repository.dart';
 
 /// Dio interceptor that handles automatic token refresh on 401 responses
 class TokenRefreshInterceptor extends Interceptor {

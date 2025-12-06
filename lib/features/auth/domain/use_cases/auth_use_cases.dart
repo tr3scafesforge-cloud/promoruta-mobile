@@ -1,5 +1,7 @@
 import 'package:promoruta/core/result.dart';
-import 'package:promoruta/shared/shared.dart';
+import 'package:promoruta/shared/use_cases/base_use_case.dart';
+
+import '../repositories/auth_repository.dart';
 
 /// Use case for changing password
 class ChangePasswordUseCase implements UseCaseResultVoid<ChangePasswordParams> {

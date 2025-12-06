@@ -1,5 +1,6 @@
 import 'package:promoruta/core/utils/logger.dart';
 import 'package:promoruta/shared/shared.dart';
+import 'package:promoruta/features/auth/domain/repositories/auth_repository.dart';
 
 class SyncServiceImpl implements SyncService {
   final ConnectivityService _connectivityService;

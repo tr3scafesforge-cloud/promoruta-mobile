@@ -4,8 +4,8 @@ import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'choose_role.dart';
-import 'permissions.dart';
+import 'choose_role_page.dart';
+import 'permissions_page.dart';
 import 'start_page.dart';
 
 class OnboardingPageView extends StatefulWidget {

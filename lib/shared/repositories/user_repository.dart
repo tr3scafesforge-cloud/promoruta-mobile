@@ -1,7 +1,7 @@
 import 'package:promoruta/core/core.dart';
 import 'package:promoruta/shared/datasources/local/user_local_data_source.dart';
 import 'package:promoruta/shared/datasources/remote/user_remote_data_source.dart';
-import 'package:promoruta/shared/repositories/auth_repository.dart';
+import 'package:promoruta/features/auth/domain/repositories/auth_repository.dart';
 
 abstract class UserRepository {
   Future<User> getUserById(String userId, {bool forceRefresh = false});
