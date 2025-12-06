@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:promoruta/core/utils/logger.dart';
-import 'package:promoruta/shared/repositories/auth_repository.dart';
 
 /// Enum for model types
 enum ModelType {
@@ -102,19 +101,10 @@ abstract class MediaRemoteDataSource {
 
 class MediaRemoteDataSourceImpl implements MediaRemoteDataSource {
   final Dio dio;
-  final AuthLocalDataSource _localDataSource;
 
   MediaRemoteDataSourceImpl({
     required this.dio,
-    required AuthLocalDataSource localDataSource,
-  }) : _localDataSource = localDataSource;
-
-  /// Helper method to get authorization headers
-  Future<Map<String, String>> _getAuthHeaders() async {
-    final user = await _localDataSource.getUser();
-    if (user == null) throw Exception('No user logged in');
-    return {'Authorization': 'Bearer ${user.accessToken}'};
-  }
+  });
 
   @override
   Future<MediaUploadResponse> uploadMedia({
@@ -124,7 +114,6 @@ class MediaRemoteDataSourceImpl implements MediaRemoteDataSource {
     required MediaRole role,
   }) async {
     try {
-      final headers = await _getAuthHeaders();
       final fileName = file.path.split('/').last;
 
       // Create form data with file and role
@@ -146,7 +135,6 @@ class MediaRemoteDataSourceImpl implements MediaRemoteDataSource {
         data: formData,
         options: Options(
           headers: {
-            ...headers,
             'Content-Type': 'multipart/form-data',
             'Accept': 'application/json',
           },

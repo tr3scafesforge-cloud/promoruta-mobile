@@ -2,37 +2,24 @@ import 'package:dio/dio.dart';
 import 'package:promoruta/core/utils/logger.dart';
 
 import '../../../core/models/campaign.dart';
-import '../../repositories/auth_repository.dart';
 import '../../repositories/campaign_repository.dart';
 
 class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
   final Dio dio;
-  final AuthLocalDataSource _localDataSource;
 
   CampaignRemoteDataSourceImpl({
     required this.dio,
-    required AuthLocalDataSource localDataSource,
-  }) : _localDataSource = localDataSource;
-
-  /// Helper method to get authorization headers
-  Future<Map<String, String>> _getAuthHeaders() async {
-    final user = await _localDataSource.getUser();
-    if (user == null) throw Exception('No user logged in');
-    return {'Authorization': 'Bearer ${user.accessToken}'};
-  }
+  });
 
   @override
   Future<List<Campaign>> getCampaigns() async {
     try {
-      final headers = await _getAuthHeaders();
-
       AppLogger.auth.i('Fetching campaigns list');
 
       final response = await dio.get(
         '/campaigns',
         options: Options(
           headers: {
-            ...headers,
             'Accept': 'application/json',
           },
         ),
@@ -51,13 +38,6 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
       } else {
         throw Exception('Failed to fetch campaigns: ${response.statusMessage}');
       }
-    } on DioException catch (e) {
-      AppLogger.auth.e('Fetch campaigns failed: ${e.response?.statusCode} - ${e.message}');
-
-      if (e.response != null && e.response!.statusCode == 401) {
-        throw Exception('Authentication failed. Please log in again.');
-      }
-      throw Exception('Network error: ${e.message}');
     } catch (e) {
       AppLogger.auth.e('Unexpected error fetching campaigns: $e');
       throw Exception('Failed to fetch campaigns: $e');
@@ -67,15 +47,12 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
   @override
   Future<Campaign> getCampaign(String id) async {
     try {
-      final headers = await _getAuthHeaders();
-
       AppLogger.auth.i('Fetching campaign: $id');
 
       final response = await dio.get(
         '/campaigns/$id',
         options: Options(
           headers: {
-            ...headers,
             'Accept': 'application/json',
           },
         ),
@@ -94,8 +71,6 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
       if (e.response != null) {
         final statusCode = e.response!.statusCode;
         switch (statusCode) {
-          case 401:
-            throw Exception('Authentication failed. Please log in again.');
           case 404:
             throw Exception('Campaign not found.');
           default:
@@ -112,8 +87,6 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
   @override
   Future<Campaign> createCampaign(Campaign campaign) async {
     try {
-      final headers = await _getAuthHeaders();
-
       AppLogger.auth.i('Creating campaign: ${campaign.title}');
 
       final response = await dio.post(
@@ -121,7 +94,6 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
         data: campaign.toJson(),
         options: Options(
           headers: {
-            ...headers,
             'Content-Type': 'application/json',
             'Accept': 'application/json',
           },
@@ -143,8 +115,6 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
         final responseData = e.response!.data;
 
         switch (statusCode) {
-          case 401:
-            throw Exception('Authentication failed. Please log in again.');
           case 422:
             // Handle validation errors
             if (responseData is Map && responseData.containsKey('message')) {
@@ -177,8 +147,6 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
   @override
   Future<Campaign> updateCampaign(Campaign campaign) async {
     try {
-      final headers = await _getAuthHeaders();
-
       AppLogger.auth.i('Updating campaign: ${campaign.id}');
 
       final response = await dio.put(
@@ -186,7 +154,6 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
         data: campaign.toJson(),
         options: Options(
           headers: {
-            ...headers,
             'Content-Type': 'application/json',
             'Accept': 'application/json',
           },
@@ -208,8 +175,6 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
         final responseData = e.response!.data;
 
         switch (statusCode) {
-          case 401:
-            throw Exception('Authentication failed. Please log in again.');
           case 404:
             throw Exception('Campaign not found.');
           case 422:
@@ -244,15 +209,12 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
   @override
   Future<void> deleteCampaign(String id) async {
     try {
-      final headers = await _getAuthHeaders();
-
       AppLogger.auth.i('Deleting campaign: $id');
 
       final response = await dio.delete(
         '/campaigns/$id',
         options: Options(
           headers: {
-            ...headers,
             'Accept': 'application/json',
           },
         ),
@@ -269,8 +231,6 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
       if (e.response != null) {
         final statusCode = e.response!.statusCode;
         switch (statusCode) {
-          case 401:
-            throw Exception('Authentication failed. Please log in again.');
           case 404:
             throw Exception('Campaign not found.');
           case 403:

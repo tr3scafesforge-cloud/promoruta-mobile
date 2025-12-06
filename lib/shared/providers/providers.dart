@@ -18,6 +18,7 @@ import 'package:promoruta/shared/use_cases/auth_use_cases.dart';
 import 'package:promoruta/app/routes/app_router.dart';
 import 'package:promoruta/shared/services/notification_service.dart';
 import 'package:promoruta/shared/services/overlay_notification_service.dart';
+import 'package:promoruta/shared/services/token_refresh_interceptor.dart';
 
 
 // Database provider
@@ -46,13 +47,21 @@ final dioProvider = Provider<Dio>((ref) {
   final configAsync = ref.watch(configProvider);
   final config = configAsync.maybeWhen(
     data: (config) => config,
-    orElse: () => const AppConfig(baseUrl: 'http://172.81.177.85/api/'), // Fallback
+    orElse: () =>
+        const AppConfig(baseUrl: 'http://172.81.177.85/api/'), // Fallback
   );
 
   final dio = Dio(BaseOptions(
     baseUrl: config.baseUrl,
     connectTimeout: const Duration(seconds: 10),
     receiveTimeout: const Duration(seconds: 10),
+  ));
+
+  // Add token refresh interceptor (must be added before logging interceptor)
+  final authLocalDataSource = ref.watch(authLocalDataSourceProvider);
+  dio.interceptors.add(TokenRefreshInterceptor(
+    localDataSource: authLocalDataSource,
+    dio: dio,
   ));
 
   // Add logging interceptor
@@ -100,8 +109,7 @@ final campaignLocalDataSourceProvider = Provider<CampaignLocalDataSource>((ref) 
 
 final campaignRemoteDataSourceProvider = Provider<CampaignRemoteDataSource>((ref) {
   final dio = ref.watch(dioProvider);
-  final authLocalDataSource = ref.watch(authLocalDataSourceProvider);
-  return CampaignRemoteDataSourceImpl(dio: dio, localDataSource: authLocalDataSource);
+  return CampaignRemoteDataSourceImpl(dio: dio);
 });
 
 final gpsLocalDataSourceProvider = Provider<GpsLocalDataSource>((ref) {
@@ -121,15 +129,12 @@ final userLocalDataSourceProvider = Provider<UserLocalDataSource>((ref) {
 
 final userRemoteDataSourceProvider = Provider<UserRemoteDataSource>((ref) {
   final dio = ref.watch(dioProvider);
-  final localDataSource = ref.watch(authLocalDataSourceProvider);
-  final authRemoteDataSource = ref.watch(authRemoteDataSourceProvider);
-  return UserRemoteDataSourceImpl(dio: dio, localDataSource: localDataSource, authRemoteDataSource: authRemoteDataSource);
+  return UserRemoteDataSourceImpl(dio: dio);
 });
 
 final mediaRemoteDataSourceProvider = Provider<MediaRemoteDataSource>((ref) {
   final dio = ref.watch(dioProvider);
-  final authLocalDataSource = ref.watch(authLocalDataSourceProvider);
-  return MediaRemoteDataSourceImpl(dio: dio, localDataSource: authLocalDataSource);
+  return MediaRemoteDataSourceImpl(dio: dio);
 });
 
 // Sync Service

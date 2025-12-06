@@ -13,32 +13,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required AuthLocalDataSource localDataSource,
   }) : _localDataSource = localDataSource;
 
-  /// Helper method to handle token refresh on 401 errors and retry the request
-  Future<T> _handleRequestWithTokenRefresh<T>(
-    Future<T> Function(Map<String, String> headers) request,
-  ) async {
-    final user = await _localDataSource.getUser();
-    if (user == null) throw Exception('No user logged in');
-    final headers = {'Authorization': 'Bearer ${user.accessToken}'};
-
-    try {
-      return await request(headers);
-    } on DioException catch (e) {
-      if (e.response?.statusCode == 401) {
-        try {
-          final refreshedUser = await refreshToken(user.refreshToken!);
-          final newHeaders = {'Authorization': 'Bearer ${refreshedUser.accessToken}'};
-          return await request(newHeaders);
-        } catch (refreshError) {
-          AppLogger.auth.e('Token refresh failed: $refreshError');
-          throw Exception('Authentication failed. Please log in again.');
-        }
-      } else {
-        rethrow;
-      }
-    }
-  }
-
   @override
   Future<User> login(String email, String password) async {
     try {
@@ -139,12 +113,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<void> logout() async {
     try {
-      await _handleRequestWithTokenRefresh((headers) async {
-        await dio.post(
-          '/auth/logout',
-          options: Options(headers: headers),
-        );
-      });
+      await dio.post('/auth/logout');
     } on DioException catch (e) {
       throw Exception('Network error: ${e.message}');
     }
@@ -153,23 +122,20 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<void> changePassword(String currentPassword, String newPassword, String newPasswordConfirmation) async {
     try {
-      await _handleRequestWithTokenRefresh((headers) async {
-        await dio.post(
-          '/auth/change-password',
-          data: {
-            'current_password': currentPassword,
-            'new_password': newPassword,
-            'new_password_confirmation': newPasswordConfirmation,
+      await dio.post(
+        '/auth/change-password',
+        data: {
+          'current_password': currentPassword,
+          'new_password': newPassword,
+          'new_password_confirmation': newPasswordConfirmation,
+        },
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
           },
-          options: Options(
-            headers: {
-              ...headers,
-              'Content-Type': 'application/json',
-              'Accept': 'application/json',
-            },
-          ),
-        );
-      });
+        ),
+      );
     } on DioException catch (e) {
       AppLogger.auth.e('Change password failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
 
