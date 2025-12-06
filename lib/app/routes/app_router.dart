@@ -133,8 +133,19 @@ class PaymentMethodsRoute extends GoRouteData with _$PaymentMethodsRoute {
   const PaymentMethodsRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const PaymentMethodsPage();
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage(
+      key: state.pageKey,
+      child: const PaymentMethodsPage(),
+      opaque: true,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return _slideTransition(
+          animation: animation,
+          child: child,
+          direction: SlideDirection.fromRight,
+        );
+      },
+    );
   }
 }
 
@@ -145,8 +156,19 @@ class ChangePasswordRoute extends GoRouteData with _$ChangePasswordRoute {
   const ChangePasswordRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const ChangePasswordPage();
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage(
+      key: state.pageKey,
+      child: const ChangePasswordPage(),
+      opaque: true,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return _slideTransition(
+          animation: animation,
+          child: child,
+          direction: SlideDirection.fromRight,
+        );
+      },
+    );
   }
 }
 
@@ -157,8 +179,19 @@ class TwoFactorAuthRoute extends GoRouteData with _$TwoFactorAuthRoute {
   const TwoFactorAuthRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const TwoFactorAuthPage();
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage(
+      key: state.pageKey,
+      child: const TwoFactorAuthPage(),
+      opaque: true,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return _slideTransition(
+          animation: animation,
+          child: child,
+          direction: SlideDirection.fromRight,
+        );
+      },
+    );
   }
 }
 
