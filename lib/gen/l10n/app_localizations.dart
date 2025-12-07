@@ -1291,8 +1291,8 @@ abstract class AppLocalizations {
   /// Success message with campaign details
   ///
   /// In en, this message translates to:
-  /// **'Campaign created successfully\nID: {id}\nAudio URL: {audioUrl}'**
-  String campaignCreatedSuccessfully(String id, String audioUrl);
+  /// **'Campaign created successfully'**
+  String get campaignCreatedSuccessfully;
 
   /// Error message when creating campaign fails
   ///

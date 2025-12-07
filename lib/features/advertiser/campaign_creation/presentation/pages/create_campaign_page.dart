@@ -745,7 +745,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
 
       // Create campaign with audio file (audio will be uploaded first)
       final campaignRepository = ref.read(campaignRepositoryProvider);
-      final createdCampaign = await campaignRepository.createCampaign(
+      final _ = await campaignRepository.createCampaign(
         newCampaign,
         audioFile: _audioFile,
       );
@@ -753,10 +753,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(l10n.campaignCreatedSuccessfully(
-              createdCampaign.id!,
-              createdCampaign.audioUrl ?? 'N/A',
-            )),
+            content: Text(l10n.campaignCreatedSuccessfully),
             backgroundColor: AppColors.secondary,
             duration: const Duration(seconds: 4),
           ),

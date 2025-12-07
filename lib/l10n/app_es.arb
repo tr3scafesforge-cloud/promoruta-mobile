@@ -821,17 +821,9 @@
   "@campaignCreatedUploadingAudio": {
     "description": "Success message when campaign is created"
   },
-  "campaignCreatedSuccessfully": "Campaña creada exitosamente\nID: {id}\nAudio URL: {audioUrl}",
+  "campaignCreatedSuccessfully": "Campaña creada exitosamente",
   "@campaignCreatedSuccessfully": {
-    "description": "Success message with campaign details",
-    "placeholders": {
-      "id": {
-        "type": "String"
-      },
-      "audioUrl": {
-        "type": "String"
-      }
-    }
+    "description": "Success message with campaign details"
   },
   "errorCreatingCampaign": "Error al crear campaña: {error}",
   "@errorCreatingCampaign": {

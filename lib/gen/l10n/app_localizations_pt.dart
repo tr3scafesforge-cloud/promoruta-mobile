@@ -642,9 +642,7 @@ class AppLocalizationsPt extends AppLocalizations {
       'Campanha criada. Enviando áudio...';
 
   @override
-  String campaignCreatedSuccessfully(String id, String audioUrl) {
-    return 'Campanha criada com sucesso\nID: $id\nÁudio URL: $audioUrl';
-  }
+  String get campaignCreatedSuccessfully => 'Campanha criada com sucesso';
 
   @override
   String errorCreatingCampaign(String error) {
