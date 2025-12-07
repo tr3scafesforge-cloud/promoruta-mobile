@@ -9,7 +9,6 @@ import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/widgets/custom_button.dart';
 import 'package:promoruta/shared/widgets/app_card.dart';
 import 'package:promoruta/shared/providers/providers.dart';
-import '../../../campaign_creation/data/datasources/remote/media_remote_data_source.dart';
 
 class CreateCampaignPage extends ConsumerStatefulWidget {
   const CreateCampaignPage({super.key});
