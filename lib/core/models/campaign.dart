@@ -216,7 +216,9 @@ class Campaign {
               : (json['final_price'] as num).toDouble())
           : null,
       lastUpdatedBy: json['last_updated_by'] != null
-          ? CampaignUser.fromJson(json['last_updated_by'] as Map<String, dynamic>)
+          ? (json['last_updated_by'] is String
+              ? null // If it's just a UUID string, we can't create a full user object
+              : CampaignUser.fromJson(json['last_updated_by'] as Map<String, dynamic>))
           : null,
       createdAt: json['created_at'] != null
           ? DateTime.parse(json['created_at'] as String)

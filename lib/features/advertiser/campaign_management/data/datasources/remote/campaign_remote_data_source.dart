@@ -92,8 +92,18 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
   @override
   Future<Campaign> createCampaign(Campaign campaign, {File? audioFile}) async {
     try {
-      // STEP 1: Create campaign first (without audio_url)
-      final campaignData = campaign.toJson();
+      Campaign campaignToCreate = campaign;
+
+      // STEP 1: If audio file provided, set placeholder URL
+      if (audioFile != null) {
+        AppLogger.auth.i('Audio file provided, creating campaign with placeholder URL');
+        campaignToCreate = campaign.copyWith(
+          audioUrl: 'https://placeholder.com/audio.mp3',
+        );
+      }
+
+      // STEP 2: Create campaign (with placeholder URL if audio file exists)
+      final campaignData = campaignToCreate.toJson();
       AppLogger.auth.i('Creating campaign: ${campaign.title}');
       AppLogger.auth.d('Campaign POST body: $campaignData');
 
@@ -109,22 +119,42 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final json = response.data;
+        final responseData = response.data;
+        AppLogger.auth.d('Response data type: ${responseData.runtimeType}');
+        AppLogger.auth.d('Response data: $responseData');
+
+        Map<String, dynamic> json;
+        try {
+          // Parse JSON if response is a string
+          if (responseData is String) {
+            json = jsonDecode(responseData) as Map<String, dynamic>;
+          } else if (responseData is Map<String, dynamic>) {
+            json = responseData;
+          } else if (responseData is Map) {
+            json = Map<String, dynamic>.from(responseData);
+          } else {
+            throw Exception('Unexpected response data type: ${responseData.runtimeType}');
+          }
+        } catch (e) {
+          AppLogger.auth.e('Failed to parse response data: $e');
+          AppLogger.auth.e('Raw response: $responseData');
+          rethrow;
+        }
+
         final createdCampaign = Campaign.fromJson(json);
         AppLogger.auth.i('Campaign created successfully: ${createdCampaign.id}');
 
-        // STEP 2: Upload audio file if provided
+        // STEP 3: Upload audio file if provided
         if (audioFile != null && createdCampaign.id != null) {
-          AppLogger.auth.i('Uploading audio file for campaign: ${createdCampaign.id}');
-
           final mediaSource = mediaDataSource;
           if (mediaSource == null) {
-            AppLogger.auth.w('Media data source not available, returning campaign without audio');
+            AppLogger.auth.w('Media data source not available, returning campaign with placeholder URL');
             return createdCampaign;
           }
 
           try {
             // Upload audio to /campaigns/{id}/media
+            AppLogger.auth.i('Uploading audio to campaign: ${createdCampaign.id}');
             final uploadResponse = await mediaSource.uploadMedia(
               modelType: ModelType.campaigns,
               modelId: createdCampaign.id!,
@@ -134,10 +164,10 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
 
             AppLogger.auth.i('Audio uploaded successfully: ${uploadResponse.url}');
 
-            // STEP 3: Update campaign with audio_url
+            // STEP 4: Update campaign with real audio URL
             final updatedCampaign = createdCampaign.copyWith(audioUrl: uploadResponse.url);
 
-            AppLogger.auth.i('Updating campaign with audio URL');
+            AppLogger.auth.i('Updating campaign with real audio URL');
             final updateResponse = await dio.put(
               '/campaigns/${createdCampaign.id}',
               data: updatedCampaign.toJson(),
@@ -150,14 +180,20 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
             );
 
             if (updateResponse.statusCode == 200) {
-              AppLogger.auth.i('Campaign updated with audio URL successfully');
-              return Campaign.fromJson(updateResponse.data);
+              AppLogger.auth.i('Campaign updated with real audio URL successfully');
+
+              final updateData = updateResponse.data;
+              final updateJson = updateData is String
+                  ? jsonDecode(updateData) as Map<String, dynamic>
+                  : updateData as Map<String, dynamic>;
+
+              return Campaign.fromJson(updateJson);
             } else {
-              AppLogger.auth.w('Failed to update campaign with audio URL, returning campaign with local audio_url');
+              AppLogger.auth.w('Failed to update campaign with audio URL, returning campaign with uploaded URL');
               return updatedCampaign;
             }
-          } catch (audioError) {
-            AppLogger.auth.e('Failed to upload/update audio: $audioError');
+          } catch (uploadError) {
+            AppLogger.auth.e('Failed to upload/update audio: $uploadError');
             // Return the created campaign even if audio upload fails
             return createdCampaign;
           }
@@ -184,15 +220,28 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
         switch (statusCode) {
           case 422:
             // Handle validation errors
-            if (responseData is Map && responseData.containsKey('message')) {
-              throw Exception(responseData['message'].toString());
+            Map<String, dynamic>? errorMap;
+            if (responseData is String) {
+              try {
+                errorMap = jsonDecode(responseData) as Map<String, dynamic>;
+              } catch (e) {
+                AppLogger.auth.e('Failed to parse error response: $e');
+              }
+            } else if (responseData is Map) {
+              errorMap = Map<String, dynamic>.from(responseData);
             }
-            if (responseData is Map && responseData.containsKey('errors')) {
-              final errors = responseData['errors'] as Map?;
-              if (errors != null && errors.isNotEmpty) {
+
+            if (errorMap != null && errorMap.containsKey('message')) {
+              throw Exception(errorMap['message'].toString());
+            }
+            if (errorMap != null && errorMap.containsKey('errors')) {
+              final errors = errorMap['errors'];
+              if (errors is Map && errors.isNotEmpty) {
                 final firstError = errors.values.first;
                 if (firstError is List && firstError.isNotEmpty) {
                   throw Exception(firstError.first.toString());
+                } else if (firstError is String) {
+                  throw Exception(firstError);
                 }
               }
             }
