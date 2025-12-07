@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
 import '../models/campaign_ui.dart' as ui;
 import 'package:promoruta/shared/widgets/advertiser_search_filter_bar.dart';
+import 'package:promoruta/core/models/campaign.dart' as backend;
 
-class AdvertiserCampaignsPage extends StatefulWidget {
+class AdvertiserCampaignsPage extends ConsumerStatefulWidget {
   const AdvertiserCampaignsPage({super.key});
 
   @override
-  State<AdvertiserCampaignsPage> createState() =>
+  ConsumerState<AdvertiserCampaignsPage> createState() =>
       _AdvertiserCampaignsPageState();
 }
 
-class _AdvertiserCampaignsPageState extends State<AdvertiserCampaignsPage> {
+class _AdvertiserCampaignsPageState extends ConsumerState<AdvertiserCampaignsPage> {
   final TextEditingController _searchCtrl = TextEditingController();
   ui.CampaignStatus _selected = ui.CampaignStatus.all;
 
@@ -26,49 +28,25 @@ class _AdvertiserCampaignsPageState extends State<AdvertiserCampaignsPage> {
     ui.CampaignStatus.pending,
     ui.CampaignStatus.completed,
   ];
-  final List<ui.Campaign> _all = [
-    ui.Campaign(
-      id: '1',
-      title: 'Promoción Cafetería',
-      subtitle: '2 Promotores activos',
-      location: 'Punta Carretas',
-      distanceKm: 2.4,
-      completionPct: 68,
-      audioSeconds: 45,
-      budget: 48.20,
-      dateRange: '2025-01-01 - 2025-01-02',
-      status: ui.CampaignStatus.active,
-    ),
-    ui.Campaign(
-      id: '2',
-      title: 'Apertura Tienda',
-      subtitle: 'Promotores pendientes',
-      location: 'Nuevo Centro',
-      distanceKm: 2.4,
-      completionPct: 0,
-      audioSeconds: 45,
-      budget: 2000.00,
-      dateRange: '2025-01-01 - 2025-01-02',
-      status: ui.CampaignStatus.pending,
-    ),
-    ui.Campaign(
-      id: '3',
-      title: 'Promoción Agua',
-      subtitle: 'Montevideo Shopping',
-      location: 'Montevideo Shopping',
-      distanceKm: 2.4,
-      completionPct: 100,
-      audioSeconds: 30,
-      budget: 100.00,
-      dateRange: '2025-01-01 - 2025-01-02',
-      status: ui.CampaignStatus.completed,
-    ),
-  ];
 
-  List<ui.Campaign> get _filtered {
+  @override
+  void initState() {
+    super.initState();
+    // Load campaigns on init
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(campaignsProvider.notifier).loadCampaigns();
+    });
+  }
+
+  List<ui.Campaign> _getFilteredCampaigns(List<backend.Campaign> backendCampaigns) {
     final q = _searchCtrl.text.trim().toLowerCase();
 
-    return _all.where((c) {
+    // Convert backend campaigns to UI campaigns
+    final uiCampaigns = backendCampaigns
+        .map((bc) => ui.Campaign.fromBackend(bc))
+        .toList();
+
+    return uiCampaigns.where((c) {
       final byStatus = _selected == ui.CampaignStatus.all || c.status == _selected;
       final bySearch = q.isEmpty ||
           c.title.toLowerCase().contains(q) ||
@@ -90,78 +68,110 @@ class _AdvertiserCampaignsPageState extends State<AdvertiserCampaignsPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final campaignsAsync = ref.watch(campaignsProvider);
 
     return SafeArea(
-      child: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
-        children: [
-          AdvertiserSearchFilterBar(
-            controller: _searchCtrl,
-            hint: AppLocalizations.of(context).searchCampaigns,
-            onChanged: (_) => setState(() {}),
-            onClear: () {
-              _searchCtrl.clear();
-              setState(() {});
-            },
-            onFilterTap: _openFiltersSheet,
-          ),
-          const SizedBox(height: 12),
-          MultiSwitch(
-            options: [
-              AppLocalizations.of(context).campaignFilterAll,
-              AppLocalizations.of(context).campaignFilterActive,
-              AppLocalizations.of(context).campaignFilterPending,
-              AppLocalizations.of(context).campaignFilterCompleted,
+      child: campaignsAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stack) => Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.error_outline, size: 48, color: Colors.red),
+              const SizedBox(height: 16),
+              Text(
+                'Error loading campaigns',
+                style: theme.textTheme.titleMedium,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                error.toString(),
+                style: theme.textTheme.bodySmall,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () => ref.read(campaignsProvider.notifier).loadCampaigns(),
+                child: const Text('Retry'),
+              ),
             ],
-            initialIndex: _statuses.indexOf(_selected),
-            onChanged: (index) => setState(() => _selected = _statuses[index]),
           ),
-          if (_hasAnyExtraFilter)
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: _ActiveFiltersBar(
-                maxDistanceKm: _maxDistanceKm,
-                minBudget: _minBudget,
-                onClearAll: () {
-                  setState(() {
-                    _maxDistanceKm = null;
-                    _minBudget = null;
-                  });
+        ),
+        data: (backendCampaigns) {
+          final filtered = _getFilteredCampaigns(backendCampaigns);
+
+          return ListView(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+            children: [
+              AdvertiserSearchFilterBar(
+                controller: _searchCtrl,
+                hint: AppLocalizations.of(context).searchCampaigns,
+                onChanged: (_) => setState(() {}),
+                onClear: () {
+                  _searchCtrl.clear();
+                  setState(() {});
                 },
+                onFilterTap: _openFiltersSheet,
               ),
-            ),
-          const SizedBox(height: 10),
-          ..._filtered.map((c) => AnimatedSwitcher(
-                duration: const Duration(milliseconds: 300),
-                transitionBuilder: (Widget child, Animation<double> animation) =>
-                    SlideTransition(
-                      position: Tween<Offset>(
-                        begin: const Offset(0, 0.1),
-                        end: Offset.zero,
-                      ).animate(animation),
-                      child: FadeTransition(
-                        opacity: animation,
-                        child: child,
-                      ),
+              const SizedBox(height: 12),
+              MultiSwitch(
+                options: [
+                  AppLocalizations.of(context).campaignFilterAll,
+                  AppLocalizations.of(context).campaignFilterActive,
+                  AppLocalizations.of(context).campaignFilterPending,
+                  AppLocalizations.of(context).campaignFilterCompleted,
+                ],
+                initialIndex: _statuses.indexOf(_selected),
+                onChanged: (index) => setState(() => _selected = _statuses[index]),
+              ),
+              if (_hasAnyExtraFilter)
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: _ActiveFiltersBar(
+                    maxDistanceKm: _maxDistanceKm,
+                    minBudget: _minBudget,
+                    onClearAll: () {
+                      setState(() {
+                        _maxDistanceKm = null;
+                        _minBudget = null;
+                      });
+                    },
+                  ),
+                ),
+              const SizedBox(height: 10),
+              ...filtered.map((c) => AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    transitionBuilder: (Widget child, Animation<double> animation) =>
+                        SlideTransition(
+                          position: Tween<Offset>(
+                            begin: const Offset(0, 0.1),
+                            end: Offset.zero,
+                          ).animate(animation),
+                          child: FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          ),
+                        ),
+                    child: Padding(
+                      key: ValueKey(c.id),
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: _CampaignCard(campaign: c),
                     ),
-                child: Padding(
-                  key: ValueKey(c.title),
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: _CampaignCard(campaign: c),
+                  )),
+              if (filtered.isEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(top: 48),
+                  child: Center(
+                    child: Text(
+                      AppLocalizations.of(context).noCampaignsForSelectedFilters,
+                      style: theme.textTheme.bodyMedium
+                          ?.copyWith(color: Colors.grey[700]),
+                    ),
+                  ),
                 ),
-              )),
-          if (_filtered.isEmpty)
-            Padding(
-              padding: const EdgeInsets.only(top: 48),
-              child: Center(
-                child: Text(
-                  AppLocalizations.of(context).noCampaignsForSelectedFilters,
-                  style: theme.textTheme.bodyMedium
-                      ?.copyWith(color: Colors.grey[700]),
-                ),
-              ),
-            ),
-        ],
+            ],
+          );
+        },
       ),
     );
   }

@@ -104,6 +104,11 @@ class AppDatabase extends _$AppDatabase {
               await m.addColumn(users, users.username);
               await m.addColumn(users, users.photoUrl);
               await m.addColumn(users, users.createdAt);
+
+              // Create missing tables if they don't exist
+              await m.createTable(campaignsEntity);
+              await m.createTable(routes);
+              await m.createTable(gpsPoints);
             });
           }
           if (from <= 2 && to > 2) {
@@ -111,6 +116,11 @@ class AppDatabase extends _$AppDatabase {
               await m.addColumn(users, users.username);
               await m.addColumn(users, users.photoUrl);
               await m.addColumn(users, users.createdAt);
+
+              // Create missing tables if they don't exist
+              await m.createTable(campaignsEntity);
+              await m.createTable(routes);
+              await m.createTable(gpsPoints);
             });
           }
         }
