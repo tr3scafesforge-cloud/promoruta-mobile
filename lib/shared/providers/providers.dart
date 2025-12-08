@@ -34,6 +34,11 @@ import 'package:promoruta/app/routes/app_router.dart';
 import 'package:promoruta/shared/services/notification_service.dart';
 import 'package:promoruta/shared/services/overlay_notification_service.dart';
 import 'package:promoruta/shared/services/token_refresh_interceptor.dart';
+import 'package:promoruta/shared/services/location_service.dart';
+import 'package:promoruta/shared/services/location_service_impl.dart';
+import 'package:promoruta/shared/services/route_service.dart';
+import 'package:promoruta/shared/services/route_service_impl.dart';
+import 'package:logger/logger.dart';
 
 
 // Database provider
@@ -97,12 +102,38 @@ final connectivityProvider = Provider<Connectivity>((ref) {
   return Connectivity();
 });
 
+// Logger provider
+final loggerProvider = Provider<Logger>((ref) {
+  return Logger(
+    printer: PrettyPrinter(
+      methodCount: 0,
+      errorMethodCount: 5,
+      lineLength: 50,
+      colors: true,
+      printEmojis: true,
+    ),
+  );
+});
+
 // Services
 final connectivityServiceProvider = Provider<ConnectivityService>((ref) {
   final connectivity = ref.watch(connectivityProvider);
   final service = ConnectivityServiceImpl(connectivity);
   ref.onDispose(() => service.dispose());
   return service;
+});
+
+final locationServiceProvider = Provider<LocationService>((ref) {
+  final logger = ref.watch(loggerProvider);
+  final service = LocationServiceImpl(logger: logger);
+  ref.onDispose(() => service.dispose());
+  return service;
+});
+
+final routeServiceProvider = Provider<RouteService>((ref) {
+  final dio = ref.watch(dioProvider);
+  final logger = ref.watch(loggerProvider);
+  return RouteServiceImpl(dio: dio, logger: logger);
 });
 
 // Data Sources

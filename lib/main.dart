@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
+import 'package:promoruta/shared/constants/env.dart';
 
 import 'app/routes/app_router.dart';
 import 'shared/providers/providers.dart';
@@ -9,6 +11,7 @@ import 'shared/providers/providers.dart';
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
 
+  MapboxOptions.setAccessToken(Env.mapboxAccessToken);
   runApp(
     // Wrap your app with ProviderScope
     const ProviderScope(

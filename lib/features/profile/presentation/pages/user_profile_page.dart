@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:promoruta/app/routes/app_router.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
+import 'package:promoruta/features/promotor/presentation/pages/map_screen.dart';
 
 class UserProfilePage extends ConsumerStatefulWidget {
   const UserProfilePage({
@@ -144,6 +146,76 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
                     ),
 
                     const SizedBox(height: 24),
+
+                    // TEST: Mapbox Integration Test (Remove after testing)
+                    if (true) ...[
+                      const Text(
+                        '🧪 TEST FEATURES',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                          color: Colors.orange,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      CustomButton(
+                        text: '🗺️ Test Mapbox - View Map',
+                        backgroundColor: Colors.blue,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MapScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 8),
+                      CustomButton(
+                        text: '🗺️ Test Mapbox - Route Planning',
+                        backgroundColor: Colors.green,
+                        onPressed: () {
+                          // Example waypoints for testing
+                          final waypoints = [
+                            LatLng(4.7110, -74.0721), // Bogotá
+                            LatLng(4.6533, -74.0836), // Near Bogotá
+                            LatLng(4.6870, -74.0547), // Another point
+                          ];
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MapScreen(
+                                waypoints: waypoints,
+                                showRoute: true,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 8),
+                      CustomButton(
+                        text: '🗺️ Test Mapbox - Single Destination',
+                        backgroundColor: Colors.teal,
+                        onPressed: () {
+                          // Single destination from current location
+                          final destination = [
+                            LatLng(4.6097, -74.0817), // Plaza de Bolívar
+                          ];
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MapScreen(
+                                waypoints: destination,
+                                showRoute: true,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 24),
+                    ],
 
                     // Eliminar cuenta (destructive)
                     CustomButton(
