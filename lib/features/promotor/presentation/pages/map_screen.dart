@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
@@ -28,6 +30,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
   bool _isLoadingRoute = false;
   PointAnnotationManager? _pointAnnotationManager;
   PolylineAnnotationManager? _polylineAnnotationManager;
+  StreamSubscription<LatLng>? _locationSubscription;
 
   @override
   void initState() {
@@ -46,7 +49,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
 
       // Start tracking location updates
       locationService.startTracking();
-      locationService.locationStream.listen((newLocation) {
+      _locationSubscription = locationService.locationStream.listen((newLocation) {
         if (mounted) {
           setState(() {
             _currentLocation = newLocation;
@@ -219,8 +222,8 @@ class _MapScreenState extends ConsumerState<MapScreen> {
 
   @override
   void dispose() {
-    final locationService = ref.read(locationServiceProvider);
-    locationService.stopTracking();
+    // Cancel the location subscription
+    _locationSubscription?.cancel();
     super.dispose();
   }
 
