@@ -179,8 +179,9 @@ class _MapScreenState extends ConsumerState<MapScreen> {
       geometry: Point(
         coordinates: Position(location.longitude, location.latitude),
       ),
-      iconSize: 1.0,
-      iconColor: MapConstants.routeColorPrimary,
+      iconSize: 1.5,
+      textField: '📍',
+      textSize: 16.0,
     );
 
     await _pointAnnotationManager!.create(pointOptions);
