@@ -4,8 +4,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:logger/logger.dart';
 
-import '../constants/map_constants.dart';
-import 'location_service.dart';
+import '../../../../shared/constants/map_constants.dart';
+import '../../domain/location_service.dart';
 
 class LocationServiceImpl implements LocationService {
   final Logger _logger;

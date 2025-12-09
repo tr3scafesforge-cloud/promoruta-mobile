@@ -8,6 +8,7 @@ import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import '../../../../shared/constants/map_constants.dart';
 import '../../../../shared/models/route_model.dart';
 import '../../../../shared/providers/providers.dart';
+import '../../../location/location.dart';
 
 class MapScreen extends ConsumerStatefulWidget {
   final List<LatLng>? waypoints;

@@ -34,8 +34,6 @@ import 'package:promoruta/app/routes/app_router.dart';
 import 'package:promoruta/shared/services/notification_service.dart';
 import 'package:promoruta/shared/services/overlay_notification_service.dart';
 import 'package:promoruta/shared/services/token_refresh_interceptor.dart';
-import 'package:promoruta/shared/services/location_service.dart';
-import 'package:promoruta/shared/services/location_service_impl.dart';
 import 'package:promoruta/shared/services/route_service.dart';
 import 'package:promoruta/shared/services/route_service_impl.dart';
 import 'package:logger/logger.dart';
@@ -119,13 +117,6 @@ final loggerProvider = Provider<Logger>((ref) {
 final connectivityServiceProvider = Provider<ConnectivityService>((ref) {
   final connectivity = ref.watch(connectivityProvider);
   final service = ConnectivityServiceImpl(connectivity);
-  ref.onDispose(() => service.dispose());
-  return service;
-});
-
-final locationServiceProvider = Provider<LocationService>((ref) {
-  final logger = ref.watch(loggerProvider);
-  final service = LocationServiceImpl(logger: logger);
   ref.onDispose(() => service.dispose());
   return service;
 });
