@@ -160,7 +160,6 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
           profile: 'driving',
           alternatives: false,
         );
-        // TODO: In the future, implement multi-waypoint routing
       }
 
       setState(() {
@@ -296,6 +295,29 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
 
     setState(() {
       _waypoints.removeLast();
+    });
+
+    await _updateMarkers();
+
+    if (_waypoints.length >= 2) {
+      await _fetchAndDrawRoute();
+    } else {
+      // Clear route if less than 2 waypoints
+      await _polylineAnnotationManager?.deleteAll();
+      setState(() {
+        _currentRoute = null;
+      });
+    }
+
+    // Notify parent
+    widget.onRouteSelected?.call(_waypoints, _currentRoute);
+  }
+
+  void _removeWaypointAt(int index) async {
+    if (index < 0 || index >= _waypoints.length) return;
+
+    setState(() {
+      _waypoints.removeAt(index);
     });
 
     await _updateMarkers();
@@ -491,7 +513,7 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
                   }
 
                   return Padding(
-                    padding: const EdgeInsets.only(bottom: 4),
+                    padding: const EdgeInsets.only(bottom: 2),
                     child: Row(
                       children: [
                         Container(
@@ -503,12 +525,29 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        Text(
-                          '$label: ${point.latitude.toStringAsFixed(4)}, ${point.longitude.toStringAsFixed(4)}',
-                          style: TextStyle(
-                            fontSize: 11,
-                            color: AppColors.textSecondary,
+                        Expanded(
+                          child: Text(
+                            '$label: ${point.latitude.toStringAsFixed(4)}, ${point.longitude.toStringAsFixed(4)}',
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: AppColors.textSecondary,
+                            ),
                           ),
+                        ),
+                        // Delete button
+                        IconButton(
+                          icon: Icon(
+                            Icons.delete_outline,
+                            size: 18,
+                            color: AppColors.error,
+                          ),
+                          padding: EdgeInsets.zero,
+                          constraints: BoxConstraints(
+                            minWidth: 18,
+                            minHeight: 18,
+                          ),
+                          onPressed: () => _removeWaypointAt(index),
+                          tooltip: 'Eliminar punto',
                         ),
                       ],
                     ),
