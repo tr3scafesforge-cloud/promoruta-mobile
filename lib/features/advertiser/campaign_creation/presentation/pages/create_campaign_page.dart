@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:file_picker/file_picker.dart';
@@ -38,8 +39,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
   bool _isUploading = false;
 
   // Coverage zone map points
-  LatLng? _routeStartPoint;
-  LatLng? _routeEndPoint;
+  List<LatLng> _routeWaypoints = [];
   bool _showMap = false;
 
   @override
@@ -362,8 +362,8 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                               ),
                             ),
                             Text(
-                              _routeStartPoint != null && _routeEndPoint != null
-                                  ? 'Ruta seleccionada ✓'
+                              _routeWaypoints.length >= 2
+                                  ? 'Ruta de ${_routeWaypoints.length} puntos ✓'
                                   : 'Toca para abrir el mapa',
                               style: theme.textTheme.bodySmall?.copyWith(
                                 color: AppColors.textSecondary,
@@ -379,15 +379,20 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                         MapConstants.montevideoLat,
                         MapConstants.montevideoLng,
                       ),
-                      startPoint: _routeStartPoint,
-                      endPoint: _routeEndPoint,
-                      onPointsSelected: (start, end) {
+                      initialWaypoints: _routeWaypoints.isEmpty ? null : _routeWaypoints,
+                      onRouteSelected: (waypoints, route) {
                         setState(() {
-                          _routeStartPoint = start;
-                          _routeEndPoint = end;
-                          // Update location controller with zone info
-                          _locationController.text =
-                              'Montevideo - Ruta seleccionada';
+                          _routeWaypoints = waypoints;
+
+                          if (waypoints.isEmpty) {
+                            _locationController.text = '';
+                          } else if (route != null) {
+                            _locationController.text =
+                                'Ruta de ${waypoints.length} puntos - ${route.distanceKm.toStringAsFixed(1)} km';
+                          } else {
+                            _locationController.text =
+                                '${waypoints.length} puntos seleccionados';
+                          }
                         });
                       },
                     ),
@@ -727,6 +732,17 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
       return;
     }
 
+    // Validate route waypoints are selected
+    if (_routeWaypoints.length < 2) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Por favor selecciona al menos 2 puntos en el mapa para la ruta'),
+          backgroundColor: AppColors.error,
+        ),
+      );
+      return;
+    }
+
     setState(() {
       _isUploading = true;
     });
@@ -752,6 +768,36 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
       // Bid deadline: 2 days before start time
       final bidDeadline = startDateTime.subtract(const Duration(days: 2));
 
+      // Convert waypoints to RouteCoordinate format
+      final routeCoordinates = _routeWaypoints
+          .map((waypoint) => RouteCoordinate(
+                lat: waypoint.latitude,
+                lng: waypoint.longitude,
+              ))
+          .toList();
+
+      // Calculate straight-line distance between waypoints as fallback
+      // TODO: Use actual route distance from RouteModel when available
+      double totalDistance = 0.0;
+      for (int i = 0; i < _routeWaypoints.length - 1; i++) {
+        final point1 = _routeWaypoints[i];
+        final point2 = _routeWaypoints[i + 1];
+
+        // Simple Haversine formula for distance calculation
+        const earthRadius = 6371.0; // km
+        final dLat = _toRadians(point2.latitude - point1.latitude);
+        final dLon = _toRadians(point2.longitude - point1.longitude);
+
+        final a = math.sin(dLat / 2) * math.sin(dLat / 2) +
+            math.cos(_toRadians(point1.latitude)) *
+            math.cos(_toRadians(point2.latitude)) *
+            math.sin(dLon / 2) *
+            math.sin(dLon / 2);
+
+        final c = 2 * math.asin(math.sqrt(a));
+        totalDistance += earthRadius * c;
+      }
+
       // Create campaign object
       final newCampaign = Campaign(
         title: _titleController.text.trim(),
@@ -762,12 +808,8 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
         suggestedPrice: double.tryParse(_budgetController.text.trim()) ?? 0.0,
         bidDeadline: bidDeadline,
         audioDuration: 30, // Placeholder - should be calculated from audio file
-        distance: 10.0, // Placeholder - should come from map selection
-        routeCoordinates: [
-          // Placeholder coordinates - should come from map selection
-          const RouteCoordinate(lat: 40.7128, lng: -74.0060),
-          const RouteCoordinate(lat: 40.7138, lng: -74.0070),
-        ],
+        distance: totalDistance,
+        routeCoordinates: routeCoordinates,
         startTime: startDateTime,
         endTime: endDateTime,
       );
@@ -811,6 +853,11 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
         });
       }
     }
+  }
+
+  // Helper function to convert degrees to radians
+  double _toRadians(double degrees) {
+    return degrees * math.pi / 180.0;
   }
 }
 
