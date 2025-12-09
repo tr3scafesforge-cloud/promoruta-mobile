@@ -498,36 +498,33 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
                   final isFirst = index == 0;
                   final isLast = index == _waypoints.length - 1;
 
-                  Color dotColor;
-                  String label;
+                  IconData markerIcon;
+                  Color markerColor;
 
                   if (isFirst) {
-                    dotColor = Colors.green;
-                    label = 'Inicio';
+                    markerIcon = Icons.location_on;
+                    markerColor = Colors.green;
                   } else if (isLast) {
-                    dotColor = Colors.red;
-                    label = 'Fin';
+                    markerIcon = Icons.flag;
+                    markerColor = Colors.red;
                   } else {
-                    dotColor = Colors.blue;
-                    label = 'Punto $index';
+                    markerIcon = Icons.location_on_outlined;
+                    markerColor = Colors.blue;
                   }
 
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 2),
                     child: Row(
                       children: [
-                        Container(
-                          width: 8,
-                          height: 8,
-                          decoration: BoxDecoration(
-                            color: dotColor,
-                            shape: BoxShape.circle,
-                          ),
+                        Icon(
+                          markerIcon,
+                          size: 20,
+                          color: markerColor,
                         ),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            '$label: ${point.latitude.toStringAsFixed(4)}, ${point.longitude.toStringAsFixed(4)}',
+                            '${point.latitude.toStringAsFixed(4)}, ${point.longitude.toStringAsFixed(4)}',
                             style: TextStyle(
                               fontSize: 11,
                               color: AppColors.textSecondary,
