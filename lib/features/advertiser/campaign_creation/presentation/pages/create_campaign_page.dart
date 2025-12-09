@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:go_router/go_router.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/core/models/campaign.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/widgets/custom_button.dart';
 import 'package:promoruta/shared/widgets/app_card.dart';
 import 'package:promoruta/shared/providers/providers.dart';
+import 'package:promoruta/shared/constants/map_constants.dart';
+import '../widgets/coverage_zone_map_picker.dart';
 
 class CreateCampaignPage extends ConsumerStatefulWidget {
   const CreateCampaignPage({super.key});
@@ -33,6 +36,11 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
   TimeOfDay? _startTime;
   TimeOfDay? _endTime;
   bool _isUploading = false;
+
+  // Coverage zone map points
+  LatLng? _routeStartPoint;
+  LatLng? _routeEndPoint;
+  bool _showMap = false;
 
   @override
   void dispose() {
@@ -322,35 +330,67 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  GestureDetector(
-                    onTap: _selectLocation,
-                    child: Container(
-                      width: double.infinity,
-                      height: 120,
-                      decoration: BoxDecoration(
-                        color: AppColors.surface,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: AppColors.grayStroke),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.location_on_outlined,
-                            size: 48,
-                            color: AppColors.textSecondary,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            l10n.mapLocation,
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: AppColors.textSecondary,
+                  if (!_showMap)
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _showMap = true;
+                        });
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        height: 120,
+                        decoration: BoxDecoration(
+                          color: AppColors.surface,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: AppColors.grayStroke),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.map_outlined,
+                              size: 48,
+                              color: AppColors.secondary,
                             ),
-                          ),
-                        ],
+                            const SizedBox(height: 8),
+                            Text(
+                              'Seleccionar zona en el mapa',
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: AppColors.secondary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text(
+                              _routeStartPoint != null && _routeEndPoint != null
+                                  ? 'Ruta seleccionada ✓'
+                                  : 'Toca para abrir el mapa',
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
+                  if (_showMap)
+                    CoverageZoneMapPicker(
+                      initialCenter: LatLng(
+                        MapConstants.montevideoLat,
+                        MapConstants.montevideoLng,
+                      ),
+                      startPoint: _routeStartPoint,
+                      endPoint: _routeEndPoint,
+                      onPointsSelected: (start, end) {
+                        setState(() {
+                          _routeStartPoint = start;
+                          _routeEndPoint = end;
+                          // Update location controller with zone info
+                          _locationController.text =
+                              'Montevideo - Ruta seleccionada';
+                        });
+                      },
+                    ),
                 ],
               ),
             ),
@@ -604,16 +644,6 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
         );
       }
     }
-  }
-
-  Future<void> _selectLocation() async {
-    final l10n = AppLocalizations.of(context);
-    // TODO: Implement map location picker
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-          content: Text(
-              l10n.locationSelectionPending)),
-    );
   }
 
   Future<void> _selectDate() async {

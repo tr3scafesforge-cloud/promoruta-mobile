@@ -11,6 +11,11 @@ class MapConstants {
   static const double minZoom = 10.0;
   static const double maxZoom = 20.0;
 
+  // Default locations
+  // Montevideo, Uruguay - City center
+  static const double montevideoLat = -34.9011;
+  static const double montevideoLng = -56.1645;
+
   // Routing settings
   static const String routingProfile = 'mapbox/driving';
   static const String routingProfileWalking = 'mapbox/walking';
