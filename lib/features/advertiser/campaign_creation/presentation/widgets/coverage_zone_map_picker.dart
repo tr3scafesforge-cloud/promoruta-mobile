@@ -135,6 +135,7 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
       iconImage: 'green-marker',
       iconSize: 1.0,
       iconColor: Colors.green.toARGB32(),
+      iconAnchor: IconAnchor.BOTTOM, // Align bottom of marker with coordinate
     );
     final startAnnotation = await _pointAnnotationManager!.create(startPointOptions);
     _annotations.add(startAnnotation);
@@ -149,6 +150,7 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
         iconImage: 'red-marker',
         iconSize: 1.0,
         iconColor: Colors.red.toARGB32(),
+        iconAnchor: IconAnchor.BOTTOM, // Align bottom of marker with coordinate
       );
       final endAnnotation = await _pointAnnotationManager!.create(endPointOptions);
       _annotations.add(endAnnotation);
