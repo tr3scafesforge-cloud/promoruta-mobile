@@ -80,10 +80,11 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
     }
 
     // Initialize annotation managers
-    _pointAnnotationManager =
-        await mapboxMap.annotations.createPointAnnotationManager();
+    // Create polyline manager first so it appears below markers
     _polylineAnnotationManager =
         await mapboxMap.annotations.createPolylineAnnotationManager();
+    _pointAnnotationManager =
+        await mapboxMap.annotations.createPointAnnotationManager();
 
     // Add existing waypoints if any
     if (_waypoints.isNotEmpty) {
