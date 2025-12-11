@@ -53,7 +53,7 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
 
     // Load custom marker images
     try {
-      final ByteData bytes = await rootBundle.load('assets/icons/map_marker_48.png');
+      final ByteData bytes = await rootBundle.load('assets/icons/map_marker_full_48.png');
       final Uint8List imageData = bytes.buffer.asUint8List();
 
       await mapboxMap.style.addStyleImage(
