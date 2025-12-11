@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
@@ -50,6 +51,34 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
   void _onMapCreated(MapboxMap mapboxMap) async {
     _mapboxMap = mapboxMap;
 
+    // Load custom marker images
+    try {
+      final ByteData bytes = await rootBundle.load('assets/icons/map_marker_48.png');
+      final Uint8List imageData = bytes.buffer.asUint8List();
+
+      await mapboxMap.style.addStyleImage(
+        'green-marker',
+        1.0, // scale
+        MbxImage(width: 48, height: 48, data: imageData),
+        true, // sdf (allows tinting)
+        [], // stretchX
+        [], // stretchY
+        null, // content
+      );
+
+      await mapboxMap.style.addStyleImage(
+        'red-marker',
+        1.0, // scale
+        MbxImage(width: 48, height: 48, data: imageData),
+        true, // sdf (allows tinting)
+        [], // stretchX
+        [], // stretchY
+        null, // content
+      );
+    } catch (e) {
+      // Silently handle error - markers will use default if loading fails
+    }
+
     // Initialize annotation managers
     _pointAnnotationManager =
         await mapboxMap.annotations.createPointAnnotationManager();
@@ -94,39 +123,35 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
     await _pointAnnotationManager!.deleteAll();
     _annotations.clear();
 
-    // Add markers for each waypoint
-    for (int i = 0; i < _waypoints.length; i++) {
-      final point = _waypoints[i];
-      final isFirst = i == 0;
-      final isLast = i == _waypoints.length - 1;
+    if (_waypoints.isEmpty) return;
 
-      String label;
-      int color;
+    // Only show markers for start and end points
+    // Start point marker (green)
+    final startPoint = _waypoints.first;
+    final startPointOptions = PointAnnotationOptions(
+      geometry: Point(
+        coordinates: Position(startPoint.longitude, startPoint.latitude),
+      ),
+      iconImage: 'green-marker',
+      iconSize: 1.0,
+      iconColor: Colors.green.toARGB32(),
+    );
+    final startAnnotation = await _pointAnnotationManager!.create(startPointOptions);
+    _annotations.add(startAnnotation);
 
-      if (isFirst) {
-        label = '🟢 Inicio';
-        color = Colors.green.toARGB32();
-      } else if (isLast) {
-        label = '🔴 Fin';
-        color = Colors.red.toARGB32();
-      } else {
-        label = '📍 Punto $i';
-        color = Colors.blue.toARGB32();
-      }
-
-      final pointOptions = PointAnnotationOptions(
+    // End point marker (red) - only if we have more than one point
+    if (_waypoints.length > 1) {
+      final endPoint = _waypoints.last;
+      final endPointOptions = PointAnnotationOptions(
         geometry: Point(
-          coordinates: Position(point.longitude, point.latitude),
+          coordinates: Position(endPoint.longitude, endPoint.latitude),
         ),
-        textField: label,
-        textSize: 14.0,
-        textColor: color,
-        textOffset: [0.0, -2.0],
-        iconSize: 1.5,
+        iconImage: 'red-marker',
+        iconSize: 1.0,
+        iconColor: Colors.red.toARGB32(),
       );
-
-      final annotation = await _pointAnnotationManager!.create(pointOptions);
-      _annotations.add(annotation);
+      final endAnnotation = await _pointAnnotationManager!.create(endPointOptions);
+      _annotations.add(endAnnotation);
     }
   }
 
