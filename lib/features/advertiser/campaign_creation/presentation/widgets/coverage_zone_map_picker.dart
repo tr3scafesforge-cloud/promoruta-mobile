@@ -180,13 +180,14 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
           alternatives: false,
         );
       } else {
-        // For more waypoints, use optimization (if available)
-        // Otherwise, just use first and last point
-        route = await routeService.getRoute(
+        // For more than 2 waypoints, use all points in the route
+        // Pass middle waypoints, with first as origin and last as destination
+        final middleWaypoints = _waypoints.sublist(1, _waypoints.length - 1);
+        route = await routeService.optimizeRoute(
+          waypoints: middleWaypoints,
           origin: _waypoints.first,
           destination: _waypoints.last,
           profile: 'driving',
-          alternatives: false,
         );
       }
 
