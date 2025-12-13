@@ -743,6 +743,40 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
       return;
     }
 
+    // Show confirmation dialog
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.confirmCampaignCreation),
+        content: Text(l10n.campaignCreationWarning),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(
+              l10n.cancel,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.secondary,
+              foregroundColor: Colors.white,
+            ),
+            child: Text(
+              l10n.confirm,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    // If user cancelled, return
+    if (confirmed != true) {
+      return;
+    }
+
     setState(() {
       _isUploading = true;
     });

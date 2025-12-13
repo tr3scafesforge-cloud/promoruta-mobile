@@ -703,10 +703,6 @@
   "@pleaseEnterCampaignTitle": {
     "description": "Validation message for empty campaign title"
   },
-  "description": "Descripción",
-  "@description": {
-    "description": "Label for description field"
-  },
   "briefCampaignDescription": "Breve descripción de la campaña",
   "@briefCampaignDescription": {
     "description": "Hint for campaign description input"
@@ -833,5 +829,13 @@
         "type": "String"
       }
     }
+  },
+  "confirmCampaignCreation": "Confirmar creación de campaña",
+  "@confirmCampaignCreation": {
+    "description": "Title for campaign creation confirmation dialog"
+  },
+  "campaignCreationWarning": "Una vez creada la campaña, no podrás modificar ningún dato. ¿Estás seguro de que toda la información es correcta?",
+  "@campaignCreationWarning": {
+    "description": "Warning message in campaign creation confirmation dialog"
   }
 }

@@ -106,10 +106,10 @@ abstract class AppLocalizations {
   /// **'Welcome to PromoRuta'**
   String get welcomeMessage;
 
-  /// Label for description field
+  /// Description of the application
   ///
   /// In en, this message translates to:
-  /// **'Description'**
+  /// **'Connect advertisers with promoters for effective campaigns.'**
   String get description;
 
   /// Label for the button to start the onboarding or process
@@ -1299,6 +1299,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error creating campaign: {error}'**
   String errorCreatingCampaign(String error);
+
+  /// Title for campaign creation confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm campaign creation'**
+  String get confirmCampaignCreation;
+
+  /// Warning message in campaign creation confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Once the campaign is created, you will not be able to modify any data. Are you sure all the information is correct?'**
+  String get campaignCreationWarning;
 }
 
 class _AppLocalizationsDelegate

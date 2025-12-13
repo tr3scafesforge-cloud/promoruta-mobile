@@ -12,7 +12,8 @@ class AppLocalizationsPt extends AppLocalizations {
   String get welcomeMessage => 'Bem-vindo ao PromoRuta';
 
   @override
-  String get description => 'Descrição';
+  String get description =>
+      'Conecte anunciantes com promotores para campanhas eficazes.';
 
   @override
   String get start => 'Começar';
@@ -648,4 +649,11 @@ class AppLocalizationsPt extends AppLocalizations {
   String errorCreatingCampaign(String error) {
     return 'Erro ao criar campanha: $error';
   }
+
+  @override
+  String get confirmCampaignCreation => 'Confirmar criação de campanha';
+
+  @override
+  String get campaignCreationWarning =>
+      'Depois de criada a campanha, você não poderá modificar nenhum dado. Tem certeza de que todas as informações estão corretas?';
 }
