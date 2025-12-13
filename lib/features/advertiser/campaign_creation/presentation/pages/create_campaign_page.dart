@@ -40,6 +40,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
 
   // Coverage zone map points
   List<LatLng> _routeWaypoints = [];
+  Map<int, String> _routeWaypointNames = {};
   bool _showMap = false;
 
   @override
@@ -380,15 +381,19 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                         MapConstants.montevideoLng,
                       ),
                       initialWaypoints: _routeWaypoints.isEmpty ? null : _routeWaypoints,
-                      onRouteSelected: (waypoints, route) {
+                      onRouteSelected: (waypoints, waypointNames, route) {
                         setState(() {
                           _routeWaypoints = waypoints;
+                          _routeWaypointNames = waypointNames;
 
                           if (waypoints.isEmpty) {
                             _locationController.text = '';
                           } else if (route != null) {
+                            // Build description from street names
+                            final startName = waypointNames[0] ?? 'Inicio';
+                            final endName = waypointNames[waypoints.length - 1] ?? 'Fin';
                             _locationController.text =
-                                'Ruta de ${waypoints.length} puntos - ${route.distanceKm.toStringAsFixed(1)} km';
+                                '$startName → $endName (${route.distanceKm.toStringAsFixed(1)} km)';
                           } else {
                             _locationController.text =
                                 '${waypoints.length} puntos seleccionados';

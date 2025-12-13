@@ -16,7 +16,7 @@ import '../../../../../shared/providers/providers.dart';
 class CoverageZoneMapPicker extends ConsumerStatefulWidget {
   final List<LatLng>? initialWaypoints;
   final LatLng initialCenter;
-  final Function(List<LatLng> waypoints, RouteModel? route)? onRouteSelected;
+  final Function(List<LatLng> waypoints, Map<int, String> waypointNames, RouteModel? route)? onRouteSelected;
 
   const CoverageZoneMapPicker({
     super.key,
@@ -35,6 +35,7 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
   PolylineAnnotationManager? _polylineAnnotationManager;
 
   final List<LatLng> _waypoints = [];
+  final Map<int, String> _waypointNames = {}; // Store street names by index
   RouteModel? _currentRoute;
   bool _isLoadingRoute = false;
 
@@ -100,9 +101,13 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
     final position = context.point.coordinates;
     final tappedPoint = LatLng(position.lat.toDouble(), position.lng.toDouble());
 
+    final waypointIndex = _waypoints.length;
+
     setState(() {
       // Add waypoint
       _waypoints.add(tappedPoint);
+      // Set temporary "Loading..." text while geocoding
+      _waypointNames[waypointIndex] = 'Cargando dirección...';
     });
 
     // Update markers
@@ -113,8 +118,19 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
       await _fetchAndDrawRoute();
     }
 
-    // Notify parent
-    widget.onRouteSelected?.call(_waypoints, _currentRoute);
+    // Fetch street name for this waypoint (in background)
+    final geocodingService = ref.read(geocodingServiceProvider);
+    final streetName = await geocodingService.reverseGeocode(tappedPoint);
+
+    if (mounted) {
+      setState(() {
+        _waypointNames[waypointIndex] = streetName ??
+            '${tappedPoint.latitude.toStringAsFixed(4)}, ${tappedPoint.longitude.toStringAsFixed(4)}';
+      });
+
+      // Notify parent with updated names
+      widget.onRouteSelected?.call(_waypoints, _waypointNames, _currentRoute);
+    }
   }
 
   Future<void> _updateMarkers() async {
@@ -296,6 +312,7 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
   void _resetRoute() {
     setState(() {
       _waypoints.clear();
+      _waypointNames.clear();
       _currentRoute = null;
       _isLoadingRoute = false;
     });
@@ -316,14 +333,17 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
     );
 
     // Notify parent
-    widget.onRouteSelected?.call([], null);
+    widget.onRouteSelected?.call([], {}, null);
   }
 
   void _removeLastWaypoint() async {
     if (_waypoints.isEmpty) return;
 
+    final lastIndex = _waypoints.length - 1;
+
     setState(() {
       _waypoints.removeLast();
+      _waypointNames.remove(lastIndex);
     });
 
     await _updateMarkers();
@@ -339,7 +359,7 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
     }
 
     // Notify parent
-    widget.onRouteSelected?.call(_waypoints, _currentRoute);
+    widget.onRouteSelected?.call(_waypoints, _waypointNames, _currentRoute);
   }
 
   void _removeWaypointAt(int index) async {
@@ -347,6 +367,18 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
 
     setState(() {
       _waypoints.removeAt(index);
+      // Remove the name and shift all subsequent names down
+      _waypointNames.remove(index);
+      final updatedNames = <int, String>{};
+      _waypointNames.forEach((key, value) {
+        if (key > index) {
+          updatedNames[key - 1] = value;
+        } else {
+          updatedNames[key] = value;
+        }
+      });
+      _waypointNames.clear();
+      _waypointNames.addAll(updatedNames);
     });
 
     await _updateMarkers();
@@ -362,7 +394,7 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
     }
 
     // Notify parent
-    widget.onRouteSelected?.call(_waypoints, _currentRoute);
+    widget.onRouteSelected?.call(_waypoints, _waypointNames, _currentRoute);
   }
 
   @override
@@ -553,11 +585,13 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            '${point.latitude.toStringAsFixed(4)}, ${point.longitude.toStringAsFixed(4)}',
+                            _waypointNames[index] ??
+                                '${point.latitude.toStringAsFixed(4)}, ${point.longitude.toStringAsFixed(4)}',
                             style: TextStyle(
                               fontSize: 11,
                               color: AppColors.textSecondary,
                             ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         // Delete button

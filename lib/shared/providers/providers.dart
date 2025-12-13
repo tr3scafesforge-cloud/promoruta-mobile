@@ -36,6 +36,8 @@ import 'package:promoruta/shared/services/overlay_notification_service.dart';
 import 'package:promoruta/shared/services/token_refresh_interceptor.dart';
 import 'package:promoruta/shared/services/route_service.dart';
 import 'package:promoruta/shared/services/route_service_impl.dart';
+import 'package:promoruta/shared/services/geocoding_service.dart';
+import 'package:promoruta/shared/services/geocoding_service_impl.dart';
 import 'package:logger/logger.dart';
 
 
@@ -125,6 +127,12 @@ final routeServiceProvider = Provider<RouteService>((ref) {
   final dio = ref.watch(dioProvider);
   final logger = ref.watch(loggerProvider);
   return RouteServiceImpl(dio: dio, logger: logger);
+});
+
+final geocodingServiceProvider = Provider<GeocodingService>((ref) {
+  final dio = ref.watch(dioProvider);
+  final logger = ref.watch(loggerProvider);
+  return GeocodingServiceImpl(dio: dio, logger: logger);
 });
 
 // Data Sources
