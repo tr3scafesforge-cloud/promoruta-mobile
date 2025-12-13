@@ -1311,6 +1311,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Once the campaign is created, you will not be able to modify any data. Are you sure all the information is correct?'**
   String get campaignCreationWarning;
+
+  /// Title for invalid time range error
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid time range'**
+  String get invalidTimeRange;
+
+  /// Error message when start time is not before end time
+  ///
+  /// In en, this message translates to:
+  /// **'Start time must be before end time. If your campaign crosses midnight (e.g., 23:00 to 01:00), please select dates on different days.'**
+  String get startTimeMustBeBeforeEndTime;
 }
 
 class _AppLocalizationsDelegate

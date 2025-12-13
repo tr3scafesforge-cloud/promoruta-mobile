@@ -656,4 +656,11 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get campaignCreationWarning =>
       'Depois de criada a campanha, você não poderá modificar nenhum dado. Tem certeza de que todas as informações estão corretas?';
+
+  @override
+  String get invalidTimeRange => 'Horário inválido';
+
+  @override
+  String get startTimeMustBeBeforeEndTime =>
+      'A hora de início deve ser anterior à hora de fim. Se sua campanha cruza a meia-noite (ex: 23:00 a 01:00), por favor selecione datas em dias diferentes.';
 }

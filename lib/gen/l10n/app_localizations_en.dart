@@ -653,4 +653,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get campaignCreationWarning =>
       'Once the campaign is created, you will not be able to modify any data. Are you sure all the information is correct?';
+
+  @override
+  String get invalidTimeRange => 'Invalid time range';
+
+  @override
+  String get startTimeMustBeBeforeEndTime =>
+      'Start time must be before end time. If your campaign crosses midnight (e.g., 23:00 to 01:00), please select dates on different days.';
 }

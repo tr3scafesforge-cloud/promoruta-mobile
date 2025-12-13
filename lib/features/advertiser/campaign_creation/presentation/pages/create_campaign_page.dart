@@ -743,6 +743,26 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
       return;
     }
 
+    // Validate time range
+    // For same-day campaigns, start time must be before end time
+    // For cross-midnight campaigns, user should select different dates
+    final startMinutes = _startTime!.hour * 60 + _startTime!.minute;
+    final endMinutes = _endTime!.hour * 60 + _endTime!.minute;
+
+    if (startMinutes >= endMinutes) {
+      // Start time is after or equal to end time on the same day
+      // This could be a cross-midnight scenario (e.g., 23:00 to 01:00)
+      // For now, we guide users to use different dates for such cases
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.startTimeMustBeBeforeEndTime),
+          backgroundColor: AppColors.error,
+          duration: const Duration(seconds: 5),
+        ),
+      );
+      return;
+    }
+
     // Show confirmation dialog
     final confirmed = await showDialog<bool>(
       context: context,

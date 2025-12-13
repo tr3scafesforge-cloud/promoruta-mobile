@@ -837,5 +837,13 @@
   "campaignCreationWarning": "Depois de criada a campanha, você não poderá modificar nenhum dado. Tem certeza de que todas as informações estão corretas?",
   "@campaignCreationWarning": {
     "description": "Warning message in campaign creation confirmation dialog"
+  },
+  "invalidTimeRange": "Horário inválido",
+  "@invalidTimeRange": {
+    "description": "Title for invalid time range error"
+  },
+  "startTimeMustBeBeforeEndTime": "A hora de início deve ser anterior à hora de fim. Se sua campanha cruza a meia-noite (ex: 23:00 a 01:00), por favor selecione datas em dias diferentes.",
+  "@startTimeMustBeBeforeEndTime": {
+    "description": "Error message when start time is not before end time"
   }
 }
