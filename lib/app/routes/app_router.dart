@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/core/utils/logger.dart';
+import 'package:promoruta/features/advertiser/presentation/pages/advertiser_home_screen.dart';
 import 'package:promoruta/features/profile/presentation/pages/user_profile_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:promoruta/core/core.dart' as model;
@@ -13,7 +14,6 @@ import 'package:promoruta/features/auth/presentation/pages/permissions_page.dart
 import 'package:promoruta/features/auth/presentation/pages/start_page.dart';
 import 'package:promoruta/presentation/home_screen.dart';
 import 'package:promoruta/presentation/promotor/promoter_home_screen.dart';
-import 'package:promoruta/presentation/advertiser/advertiser_home_screen.dart';
 import 'package:promoruta/presentation/advertiser/pages/advertiser_security_settings_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/language_settings_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/payment_methods_page.dart';

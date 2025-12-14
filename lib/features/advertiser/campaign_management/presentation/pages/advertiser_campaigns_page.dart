@@ -32,7 +32,7 @@ class _AdvertiserCampaignsPageState extends ConsumerState<AdvertiserCampaignsPag
   @override
   void initState() {
     super.initState();
-    // Load campaigns on init
+    // Load all campaigns on init (no status filter)
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(campaignsProvider.notifier).loadCampaigns();
     });

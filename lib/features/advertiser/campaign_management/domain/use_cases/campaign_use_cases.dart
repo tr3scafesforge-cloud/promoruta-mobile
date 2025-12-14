@@ -3,15 +3,37 @@ import '../repositories/campaign_repository.dart';
 import 'package:promoruta/core/core.dart' as model;
 import 'package:promoruta/shared/shared.dart';
 
+/// Parameters for getting campaigns
+///
+/// Available status values: pending, created, accepted, in_progress, completed, cancelled, expired
+class GetCampaignsParams {
+  final String? status;
+  final String? zone;
+  final String? createdBy;
+  final int? perPage;
+
+  const GetCampaignsParams({
+    this.status,
+    this.zone,
+    this.createdBy,
+    this.perPage,
+  });
+}
+
 /// Use case for getting all campaigns
-class GetCampaignsUseCase implements UseCaseNoParams<List<model.Campaign>> {
+class GetCampaignsUseCase implements UseCase<List<model.Campaign>, GetCampaignsParams?> {
   final CampaignRepository _repository;
 
   GetCampaignsUseCase(this._repository);
 
   @override
-  Future<List<model.Campaign>> call() async {
-    return await _repository.getCampaigns();
+  Future<List<model.Campaign>> call([GetCampaignsParams? params]) async {
+    return await _repository.getCampaigns(
+      status: params?.status,
+      zone: params?.zone,
+      createdBy: params?.createdBy,
+      perPage: params?.perPage,
+    );
   }
 }
 

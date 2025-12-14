@@ -3,7 +3,12 @@ import 'package:promoruta/core/models/campaign.dart';
 
 /// Abstract repository for campaign operations
 abstract class CampaignRepository {
-  Future<List<Campaign>> getCampaigns();
+  Future<List<Campaign>> getCampaigns({
+    String? status,
+    String? zone,
+    String? createdBy,
+    int? perPage,
+  });
   Future<Campaign> getCampaign(String id);
   Future<Campaign> createCampaign(Campaign campaign, {File? audioFile});
   Future<Campaign> updateCampaign(Campaign campaign);
@@ -22,7 +27,12 @@ abstract class CampaignLocalDataSource {
 
 /// Abstract remote data source for campaigns
 abstract class CampaignRemoteDataSource {
-  Future<List<Campaign>> getCampaigns();
+  Future<List<Campaign>> getCampaigns({
+    String? status,
+    String? zone,
+    String? createdBy,
+    int? perPage,
+  });
   Future<Campaign> getCampaign(String id);
   Future<Campaign> createCampaign(Campaign campaign, {File? audioFile});
   Future<Campaign> updateCampaign(Campaign campaign);

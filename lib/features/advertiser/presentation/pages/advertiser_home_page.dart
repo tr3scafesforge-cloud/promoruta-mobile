@@ -1,21 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
+import 'package:promoruta/core/models/campaign.dart' as model;
 
-class AdvertiserHomePage extends StatelessWidget {
+class AdvertiserHomePage extends ConsumerWidget {
   const AdvertiserHomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    return _HomeContent(l10n: l10n);
+    final activeCampaignsAsync = ref.watch(activeCampaignsProvider);
+
+    return activeCampaignsAsync.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stack) => _HomeContent(l10n: l10n, activeCampaigns: const []),
+      data: (campaigns) => _HomeContent(l10n: l10n, activeCampaigns: campaigns),
+    );
   }
 }
 
 class _HomeContent extends StatelessWidget {
   final AppLocalizations l10n;
-  const _HomeContent({required this.l10n});
+  final List<model.Campaign> activeCampaigns;
+
+  const _HomeContent({required this.l10n, required this.activeCampaigns});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +38,7 @@ class _HomeContent extends StatelessWidget {
             Expanded(
               child: _StatCard(
                 icon: Icons.trending_up_rounded,
-                value: '3',
+                value: '${activeCampaigns.length}',
                 labelTop: l10n.campaigns,
                 labelBottom: l10n.active,
                 iconColor: AppColors.blueDark,
@@ -85,37 +95,30 @@ class _HomeContent extends StatelessWidget {
         ),
 
         // Campaign list
-        _CampaignCard(
-          icon: Icons.play_circle_fill_rounded,
-          iconColor: Colors.teal,
-          title: l10n.coffeeShopPromotion,
-          statusChipLabel: l10n.active,
-          statusChipColor: const Color(0xFFE6F4FF),
-          rightAmount: '\$48.20',
-          rightSubtitle: l10n.today,
-          metrics: [
-            _CampaignMetric(value: '2.4km', label: l10n.route),
-            _CampaignMetric(value: '45s', label: l10n.audio),
-            _CampaignMetric(value: '68%', label: l10n.completed),
-          ],
-          subtitle: l10n.twoActivePromoters,
-        ),
-        const SizedBox(height: 12),
-        _CampaignCard(
-          icon: Icons.schedule_rounded,
-          iconColor: const Color(0xFFFFB74D),
-          title: l10n.storeOpening,
-          statusChipLabel: l10n.pending,
-          statusChipColor: const Color(0xFFFFF3E0),
-          rightAmount: '\$0.00',
-          rightSubtitle: l10n.today,
-          metrics: [
-            _CampaignMetric(value: '1.8km', label: l10n.route),
-            _CampaignMetric(value: '30s', label: l10n.audio),
-            _CampaignMetric(value: '0%', label: l10n.completed),
-          ],
-          subtitle: l10n.waitingForPromoters,
-        ),
+        if (activeCampaigns.isEmpty)
+          AppCard(
+            padding: const EdgeInsets.all(20),
+            child: Center(
+              child: Text(
+                'No hay campañas activas',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(
+                      color: Colors.grey[700],
+                      fontWeight: FontWeight.w500,
+                    ),
+              ),
+            ),
+          )
+        else
+          ...activeCampaigns.take(5).map((campaign) => Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: _CampaignCard(
+                  campaign: campaign,
+                  l10n: l10n,
+                ),
+              )),
       ],
     );
   }
@@ -252,30 +255,19 @@ class _CreateFirstCampaignCard extends StatelessWidget {
 }
 
 class _CampaignCard extends StatelessWidget {
-  final IconData icon;
-  final Color iconColor;
-  final String title;
-  final String subtitle;
-  final String statusChipLabel;
-  final Color statusChipColor;
-  final String rightAmount;
-  final String rightSubtitle;
-  final List<_CampaignMetric> metrics;
+  final model.Campaign campaign;
+  final AppLocalizations l10n;
 
   const _CampaignCard({
-    required this.icon,
-    required this.iconColor,
-    required this.title,
-    required this.subtitle,
-    required this.statusChipLabel,
-    required this.statusChipColor,
-    required this.rightAmount,
-    required this.rightSubtitle,
-    required this.metrics,
+    required this.campaign,
+    required this.l10n,
   });
 
   @override
   Widget build(BuildContext context) {
+    final statusColor = _getStatusColor(campaign.status);
+    final statusLabel = _getStatusLabel(campaign.status, l10n);
+
     return AppCard(
       padding: const EdgeInsets.all(14),
       child: Column(
@@ -286,15 +278,18 @@ class _CampaignCard extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 18,
-                backgroundColor: statusChipColor,
-                child: Icon(icon, color: iconColor),
+                backgroundColor: statusColor.withValues(alpha: .2),
+                child: Icon(
+                  Icons.play_circle_fill_rounded,
+                  color: statusColor,
+                ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title,
+                    Text(campaign.title,
                         style:
                             Theme.of(context).textTheme.titleMedium?.copyWith(
                                   fontWeight: FontWeight.w700,
@@ -306,11 +301,11 @@ class _CampaignCard extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 8, vertical: 2),
                           decoration: BoxDecoration(
-                            color: statusChipColor,
+                            color: statusColor.withValues(alpha: .2),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
-                            statusChipLabel,
+                            statusLabel,
                             style: Theme.of(context)
                                 .textTheme
                                 .labelSmall
@@ -319,7 +314,7 @@ class _CampaignCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          subtitle,
+                          campaign.zone,
                           style: Theme.of(context)
                               .textTheme
                               .labelMedium
@@ -334,12 +329,12 @@ class _CampaignCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    rightAmount,
+                    '\$${campaign.finalPrice?.toStringAsFixed(2) ?? campaign.suggestedPrice.toStringAsFixed(2)}',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w800,
                         ),
                   ),
-                  Text(rightSubtitle,
+                  Text(l10n.today,
                       style: Theme.of(context)
                           .textTheme
                           .labelSmall
@@ -352,15 +347,56 @@ class _CampaignCard extends StatelessWidget {
           // Metrics row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: metrics
-                .map((m) => Expanded(
-                      child: _MetricTile(value: m.value, label: m.label),
-                    ))
-                .toList(),
+            children: [
+              Expanded(
+                child: _MetricTile(
+                  value: '${campaign.distance.toStringAsFixed(1)}km',
+                  label: l10n.route,
+                ),
+              ),
+              Expanded(
+                child: _MetricTile(
+                  value: '${campaign.audioDuration}s',
+                  label: l10n.audio,
+                ),
+              ),
+              Expanded(
+                child: _MetricTile(
+                  value: '0%',
+                  label: l10n.completed,
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
+  }
+
+  Color _getStatusColor(model.CampaignStatus? status) {
+    switch (status) {
+      case model.CampaignStatus.active:
+        return const Color(0xFF11A192);
+      case model.CampaignStatus.pending:
+        return const Color(0xFFFFB74D);
+      case model.CampaignStatus.completed:
+        return Colors.grey;
+      default:
+        return const Color(0xFF11A192);
+    }
+  }
+
+  String _getStatusLabel(model.CampaignStatus? status, AppLocalizations l10n) {
+    switch (status) {
+      case model.CampaignStatus.active:
+        return l10n.active;
+      case model.CampaignStatus.pending:
+        return l10n.pending;
+      case model.CampaignStatus.completed:
+        return 'Completed';
+      default:
+        return l10n.active;
+    }
   }
 }
 
@@ -396,8 +432,3 @@ class _MetricTile extends StatelessWidget {
   }
 }
 
-class _CampaignMetric {
-  final String value;
-  final String label;
-  const _CampaignMetric({required this.value, required this.label});
-}

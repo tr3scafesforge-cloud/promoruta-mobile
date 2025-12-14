@@ -17,12 +17,30 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
   });
 
   @override
-  Future<List<Campaign>> getCampaigns() async {
+  Future<List<Campaign>> getCampaigns({
+    String? status,
+    String? zone,
+    String? createdBy,
+    int? perPage,
+  }) async {
     try {
-      AppLogger.auth.i('Fetching campaigns list');
+      final filters = <String>[];
+      if (status != null) filters.add('status=$status');
+      if (zone != null) filters.add('zone=$zone');
+      if (createdBy != null) filters.add('created_by=$createdBy');
+      if (perPage != null) filters.add('per_page=$perPage');
+
+      AppLogger.auth.i('Fetching campaigns list${filters.isNotEmpty ? ' with filters: ${filters.join(', ')}' : ''}');
+
+      final queryParameters = <String, dynamic>{};
+      if (status != null) queryParameters['status'] = status;
+      if (zone != null) queryParameters['zone'] = zone;
+      if (createdBy != null) queryParameters['created_by'] = createdBy;
+      if (perPage != null) queryParameters['per_page'] = perPage;
 
       final response = await dio.get(
         '/campaigns',
+        queryParameters: queryParameters,
         options: Options(
           headers: {
             'Accept': 'application/json',

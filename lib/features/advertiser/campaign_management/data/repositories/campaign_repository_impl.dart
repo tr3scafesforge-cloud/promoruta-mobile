@@ -18,13 +18,23 @@ class CampaignRepositoryImpl implements CampaignRepository {
   );
 
   @override
-  Future<List<model.Campaign>> getCampaigns() async {
+  Future<List<model.Campaign>> getCampaigns({
+    String? status,
+    String? zone,
+    String? createdBy,
+    int? perPage,
+  }) async {
     final isConnected = await _connectivityService.isConnected;
 
     if (isConnected) {
       try {
         // Try remote first
-        final remoteCampaigns = await _remoteDataSource.getCampaigns();
+        final remoteCampaigns = await _remoteDataSource.getCampaigns(
+          status: status,
+          zone: zone,
+          createdBy: createdBy,
+          perPage: perPage,
+        );
 
         // Try to update local cache, but don't fail if it errors
         try {

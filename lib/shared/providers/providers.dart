@@ -316,6 +316,12 @@ final campaignsProvider = StateNotifierProvider<CampaignsNotifier, AsyncValue<Li
   );
 });
 
+// Provider for active campaigns (status = in_progress)
+final activeCampaignsProvider = FutureProvider<List<model.Campaign>>((ref) async {
+  final getCampaignsUseCase = ref.watch(getCampaignsUseCaseProvider);
+  return await getCampaignsUseCase(const GetCampaignsParams(status: 'in_progress'));
+});
+
 final connectivityStatusProvider = StreamProvider<bool>((ref) {
   final connectivityService = ref.watch(connectivityServiceProvider);
   return connectivityService.connectivityStream;
@@ -467,10 +473,24 @@ class CampaignsNotifier extends StateNotifier<AsyncValue<List<model.Campaign>>> 
     loadCampaigns();
   }
 
-  Future<void> loadCampaigns() async {
+  Future<void> loadCampaigns({
+    String? status,
+    String? zone,
+    String? createdBy,
+    int? perPage,
+  }) async {
     state = const AsyncValue.loading();
     try {
-      final campaigns = await _getCampaignsUseCase();
+      final campaigns = await _getCampaignsUseCase(
+        (status != null || zone != null || createdBy != null || perPage != null)
+            ? GetCampaignsParams(
+                status: status,
+                zone: zone,
+                createdBy: createdBy,
+                perPage: perPage,
+              )
+            : null,
+      );
       if (mounted) {
         state = AsyncValue.data(campaigns);
       }

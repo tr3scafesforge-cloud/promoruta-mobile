@@ -21,6 +21,44 @@ class $AssetsConfigGen {
   List<String> get values => [appConfig];
 }
 
+class $AssetsIconsGen {
+  const $AssetsIconsGen();
+
+  /// File path: assets/icons/map_marker_24.png
+  AssetGenImage get mapMarker24 =>
+      const AssetGenImage('assets/icons/map_marker_24.png');
+
+  /// File path: assets/icons/map_marker_32.png
+  AssetGenImage get mapMarker32 =>
+      const AssetGenImage('assets/icons/map_marker_32.png');
+
+  /// File path: assets/icons/map_marker_48.png
+  AssetGenImage get mapMarker48 =>
+      const AssetGenImage('assets/icons/map_marker_48.png');
+
+  /// File path: assets/icons/map_marker_full_24.png
+  AssetGenImage get mapMarkerFull24 =>
+      const AssetGenImage('assets/icons/map_marker_full_24.png');
+
+  /// File path: assets/icons/map_marker_full_32.png
+  AssetGenImage get mapMarkerFull32 =>
+      const AssetGenImage('assets/icons/map_marker_full_32.png');
+
+  /// File path: assets/icons/map_marker_full_48.png
+  AssetGenImage get mapMarkerFull48 =>
+      const AssetGenImage('assets/icons/map_marker_full_48.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [
+        mapMarker24,
+        mapMarker32,
+        mapMarker48,
+        mapMarkerFull24,
+        mapMarkerFull32,
+        mapMarkerFull48
+      ];
+}
+
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
@@ -44,8 +82,13 @@ class $AssetsImagesGen {
 class Assets {
   const Assets._();
 
+  static const String aEnv = '.env';
   static const $AssetsConfigGen config = $AssetsConfigGen();
+  static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
+
+  /// List of all assets
+  static List<String> get values => [aEnv];
 }
 
 class AssetGenImage {
