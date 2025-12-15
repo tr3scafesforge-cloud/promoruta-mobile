@@ -89,7 +89,7 @@ class _HomeContent extends StatelessWidget {
                     .textTheme
                     .bodyMedium
                     ?.copyWith(
-                      color: Colors.grey[700],
+                      color: AppColors.textSecondary,
                       fontWeight: FontWeight.w500,
                     ),
               ),
@@ -154,7 +154,7 @@ class _StatCard extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .labelMedium
-                ?.copyWith(color: Colors.grey[700]),
+                ?.copyWith(color: AppColors.textSecondary),
           ),
           Text(
             labelBottom,
@@ -360,13 +360,13 @@ class _CampaignCard extends StatelessWidget {
   Color _getStatusColor(model.CampaignStatus? status) {
     switch (status) {
       case model.CampaignStatus.active:
-        return const Color(0xFF11A192);
+        return AppColors.activeCampaignColor;
       case model.CampaignStatus.pending:
-        return const Color(0xFFFFB74D);
+        return AppColors.pendingOrangeColor;
       case model.CampaignStatus.completed:
-        return Colors.grey;
+        return AppColors.completedGreenColor;
       default:
-        return const Color(0xFF11A192);
+        return AppColors.greyUnknown;
     }
   }
 
@@ -377,7 +377,7 @@ class _CampaignCard extends StatelessWidget {
       case model.CampaignStatus.pending:
         return l10n.pending;
       case model.CampaignStatus.completed:
-        return 'Completed';
+        return l10n.completed;
       default:
         return l10n.active;
     }
