@@ -256,7 +256,11 @@ class _CampaignCard extends StatelessWidget {
         return theme.brightness == Brightness.light
             ? AppColors.expiredColor
             : Colors.white;
-      default:
+      case ui.CampaignStatus.pending:
+        return AppColors.pendingOrangeColor;
+      case ui.CampaignStatus.active:
+        return AppColors.activeBlueColor;
+      case ui.CampaignStatus.all:
         return Colors.grey;
     }
   }
@@ -269,8 +273,29 @@ class _CampaignCard extends StatelessWidget {
         return AppLocalizations.of(context).statusCanceled;
       case ui.CampaignStatus.expired:
         return AppLocalizations.of(context).statusExpired;
-      default:
-        return AppLocalizations.of(context).statusUnknown;
+      case ui.CampaignStatus.pending:
+        return AppLocalizations.of(context).pending;
+      case ui.CampaignStatus.active:
+        return AppLocalizations.of(context).active;
+      case ui.CampaignStatus.all:
+        return AppLocalizations.of(context).all;
+    }
+  }
+
+  IconData _statusIcon() {
+    switch (campaign.status) {
+      case ui.CampaignStatus.completed:
+        return Icons.check_circle;
+      case ui.CampaignStatus.canceled:
+        return Icons.cancel;
+      case ui.CampaignStatus.expired:
+        return Icons.access_time;
+      case ui.CampaignStatus.pending:
+        return Icons.pending;
+      case ui.CampaignStatus.active:
+        return Icons.play_circle_filled;
+      case ui.CampaignStatus.all:
+        return Icons.circle;
     }
   }
 
@@ -337,7 +362,7 @@ class _CampaignCard extends StatelessWidget {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.check_circle, size: 14, color: _statusColor(theme)),
+                              Icon(_statusIcon(), size: 14, color: _statusColor(theme)),
                               const SizedBox(width: 4),
                               Text(
                                 _statusLabel(context),
