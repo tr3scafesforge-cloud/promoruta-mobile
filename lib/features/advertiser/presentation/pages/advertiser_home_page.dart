@@ -84,7 +84,7 @@ class _HomeContent extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             child: Center(
               child: Text(
-                'No hay campañas activas',
+                l10n.noActiveCampaigns,
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium

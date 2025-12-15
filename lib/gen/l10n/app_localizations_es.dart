@@ -682,4 +682,7 @@ class AppLocalizationsEs extends AppLocalizations {
     );
     return '$_temp0 ';
   }
+
+  @override
+  String get noActiveCampaigns => 'No hay campañas activas';
 }

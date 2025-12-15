@@ -1329,6 +1329,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =0{Active} other{Actives}} '**
   String nActive(num count);
+
+  /// Message shown when there are no active campaigns
+  ///
+  /// In en, this message translates to:
+  /// **'No active campaigns'**
+  String get noActiveCampaigns;
 }
 
 class _AppLocalizationsDelegate

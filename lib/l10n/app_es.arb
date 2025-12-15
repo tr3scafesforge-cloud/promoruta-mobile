@@ -855,5 +855,9 @@
         "format": "compact"
       }
     }
+  },
+  "noActiveCampaigns": "No hay campañas activas",
+  "@noActiveCampaigns": {
+    "description": "Message shown when there are no active campaigns"
   }
 }
