@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
 import '../models/campaign_ui.dart' as ui;
@@ -266,13 +267,14 @@ class _CampaignCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     final badge = switch (campaign.status) {
       ui.CampaignStatus.active =>
-        _StatusBadge(text: 'Activa', color: const Color(0xFF11A192)),
+        _StatusBadge(text: l10n.nActive(0), color: AppColors.activeCampaignColor),
       ui.CampaignStatus.pending =>
-        _StatusBadge(text: 'Pendiente', color: const Color(0xFFF6A723)),
+        _StatusBadge(text: l10n.pending, color: AppColors.pendingOrangeColor),
       ui.CampaignStatus.completed =>
-        _StatusBadge(text: 'Completada', color: const Color(0xFF8893A2)),
+        _StatusBadge(text: l10n.statusCompleted, color: AppColors.completedGreenColor),
       ui.CampaignStatus.all => const SizedBox.shrink(),
       _ => const SizedBox.shrink(),
     };

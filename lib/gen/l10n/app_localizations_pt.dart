@@ -663,4 +663,20 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get startTimeMustBeBeforeEndTime =>
       'A hora de início deve ser anterior à hora de fim. Se sua campanha cruza a meia-noite (ex: 23:00 a 01:00), por favor selecione datas em dias diferentes.';
+
+  @override
+  String nActive(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ativas',
+      zero: 'Ativa',
+    );
+    return '$_temp0 ';
+  }
 }

@@ -1323,6 +1323,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Start time must be before end time. If your campaign crosses midnight (e.g., 23:00 to 01:00), please select dates on different days.'**
   String get startTimeMustBeBeforeEndTime;
+
+  /// Label for active campaigns with plural message
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Active} other{Actives}} '**
+  String nActive(num count);
 }
 
 class _AppLocalizationsDelegate

@@ -50,4 +50,6 @@ class AppColors {
   static const Color expiredColorDark = Color(0xFF111827);
   static const Color pendingOrangeColor = Color(0xFFFF9800);
   static const Color activeBlueColor = Color(0xFF2196F3);
+  static const Color greyUnknown = Color(0xFF8893A2);
+  static const Color activeCampaignColor = Color(0xFF11A192);
 }

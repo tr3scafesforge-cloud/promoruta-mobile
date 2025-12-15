@@ -845,5 +845,15 @@
   "startTimeMustBeBeforeEndTime": "La hora de inicio debe ser anterior a la hora de fin. Si tu campaña cruza la medianoche (ej: 23:00 a 01:00), por favor selecciona fechas en días diferentes.",
   "@startTimeMustBeBeforeEndTime": {
     "description": "Error message when start time is not before end time"
+  },
+  "nActive": "{count, plural, =0{Activa} other{Activas}} ",
+  "@nActive": {
+    "description": "Label for active campaigns with plural message",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
   }
 }

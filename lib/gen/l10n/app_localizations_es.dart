@@ -666,4 +666,20 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get startTimeMustBeBeforeEndTime =>
       'La hora de inicio debe ser anterior a la hora de fin. Si tu campaña cruza la medianoche (ej: 23:00 a 01:00), por favor selecciona fechas en días diferentes.';
+
+  @override
+  String nActive(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Activas',
+      zero: 'Activa',
+    );
+    return '$_temp0 ';
+  }
 }
