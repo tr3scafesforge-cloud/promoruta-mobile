@@ -1,6 +1,5 @@
-import 'package:promoruta/core/models/campaign.dart';
 import 'package:promoruta/core/core.dart' as model;
-import '../../presentation/models/campaign_ui.dart' as ui;
+import 'package:promoruta/features/advertiser/campaign_management/presentation/models/campaign_ui.dart' as ui;
 
 /// Extension methods for converting between core and UI campaign models
 extension CampaignMappers on model.Campaign {
@@ -13,7 +12,8 @@ extension CampaignMappers on model.Campaign {
       location: zone, // Use zone as location
       distanceKm: distance, // Use distance from core model
       status: _mapStatusToUi(status ?? model.CampaignStatus.pending),
-      dateTime: startDate,
+      dateTime: startTime, // Use startTime instead of deprecated startDate
+      durationSec: audioDuration,
       payUsd: suggestedPrice.toInt(), // Use suggestedPrice as payment
       peopleNeeded: 0, // Could be added to core model if needed
     );
