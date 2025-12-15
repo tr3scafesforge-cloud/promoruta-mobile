@@ -88,7 +88,9 @@ class _AdvertiserHistoryPageState extends ConsumerState<AdvertiserHistoryPage> {
           for (final c in _filtered)
             _CampaignCard(
               campaign: c,
-              dateFormatted: df.format(c.dateTime!),
+              dateFormatted: c.dateTime != null
+                  ? df.format(c.dateTime!)
+                  : '--',
             ),
           if (_filtered.isEmpty)
             Padding(
