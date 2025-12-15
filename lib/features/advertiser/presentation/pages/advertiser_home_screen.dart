@@ -22,8 +22,6 @@ class AdvertiserHomeScreen extends ConsumerStatefulWidget {
 }
 
 class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
-  int _currentIndex = 0;
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -33,7 +31,9 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
     if (tab != null) {
       final tabIndex = _getTabIndex(tab);
       if (tabIndex != null) {
-        setState(() => _currentIndex = tabIndex);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ref.read(advertiserTabProvider.notifier).setTab(tabIndex);
+        });
       }
     }
   }
@@ -58,14 +58,15 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final currentIndex = ref.watch(advertiserTabProvider);
 
     return Scaffold(
-      appBar: _buildAppBar(context, l10n),
+      appBar: _buildAppBar(context, l10n, currentIndex),
       body: SafeArea(
         top: false,
-        child: _getPage(_currentIndex),
+        child: _getPage(currentIndex),
       ),
-      floatingActionButton: _currentIndex == 4
+      floatingActionButton: currentIndex == 4
           ? null
           : FloatingActionButton(
               elevation: 0.0,
@@ -95,38 +96,38 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             BottomNavigationItem(
-              isSelected: _currentIndex == 0,
+              isSelected: currentIndex == 0,
               icon: Icons.home_rounded,
               label: l10n.home,
-              onTap: () => setState(() => _currentIndex = 0),
+              onTap: () => ref.read(advertiserTabProvider.notifier).setTab(0),
               splashColor: AppColors.secondary.withValues(alpha: .10),
             ),
             BottomNavigationItem(
-              isSelected: _currentIndex == 1,
+              isSelected: currentIndex == 1,
               icon: Icons.view_list_rounded,
               label: l10n.campaigns,
-              onTap: () => setState(() => _currentIndex = 1),
+              onTap: () => ref.read(advertiserTabProvider.notifier).setTab(1),
               splashColor: AppColors.secondary.withValues(alpha: .10),
             ),
             BottomNavigationItem(
-              isSelected: _currentIndex == 2,
+              isSelected: currentIndex == 2,
               icon: Icons.podcasts_rounded,
               label: l10n.live,
-              onTap: () => setState(() => _currentIndex = 2),
+              onTap: () => ref.read(advertiserTabProvider.notifier).setTab(2),
               splashColor: AppColors.secondary.withValues(alpha: .10),
             ),
             BottomNavigationItem(
-              isSelected: _currentIndex == 3,
+              isSelected: currentIndex == 3,
               icon: Icons.history_rounded,
               label: l10n.history,
-              onTap: () => setState(() => _currentIndex = 3),
+              onTap: () => ref.read(advertiserTabProvider.notifier).setTab(3),
               splashColor: AppColors.secondary.withValues(alpha: .10),
             ),
             BottomNavigationItem(
-              isSelected: _currentIndex == 4,
+              isSelected: currentIndex == 4,
               icon: Icons.person_rounded,
               label: l10n.profile,
-              onTap: () => setState(() => _currentIndex = 4),
+              onTap: () => ref.read(advertiserTabProvider.notifier).setTab(4),
               splashColor: AppColors.secondary.withValues(alpha: .10),
             ),
           ],
@@ -164,8 +165,8 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
   }
 
   PreferredSizeWidget _buildAppBar(
-      BuildContext context, AppLocalizations l10n) {
-    switch (_currentIndex) {
+      BuildContext context, AppLocalizations l10n, int currentIndex) {
+    switch (currentIndex) {
       case 0: // Home
         return AdvertiserAppBar(
           title: l10n.goodMorning,

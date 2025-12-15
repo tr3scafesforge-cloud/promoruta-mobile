@@ -76,23 +76,7 @@ class _HomeContent extends StatelessWidget {
         const SizedBox(height: 5),
 
         // Section header
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(l10n.activeCampaigns,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    )),
-            TextButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(l10n.seeAllWip)),
-                );
-              },
-              child: Text(l10n.seeAll),
-            ),
-          ],
-        ),
+        _SectionHeader(l10n: l10n),
 
         // Campaign list
         if (activeCampaigns.isEmpty)
@@ -428,6 +412,32 @@ class _MetricTile extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _SectionHeader extends ConsumerWidget {
+  final AppLocalizations l10n;
+
+  const _SectionHeader({required this.l10n});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(l10n.activeCampaigns,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                )),
+        TextButton(
+          onPressed: () {
+            // Navigate to campaigns tab (index 1)
+            ref.read(advertiserTabProvider.notifier).setTab(1);
+          },
+          child: Text(l10n.seeAll),
+        ),
+      ],
     );
   }
 }

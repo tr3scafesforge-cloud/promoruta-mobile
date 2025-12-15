@@ -555,3 +555,16 @@ class CampaignsNotifier extends StateNotifier<AsyncValue<List<model.Campaign>>> 
     }
   }
 }
+
+// Advertiser tab navigation provider
+class AdvertiserTabNotifier extends StateNotifier<int> {
+  AdvertiserTabNotifier() : super(0);
+
+  void setTab(int index) {
+    state = index;
+  }
+}
+
+final advertiserTabProvider = StateNotifierProvider<AdvertiserTabNotifier, int>((ref) {
+  return AdvertiserTabNotifier();
+});
