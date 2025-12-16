@@ -568,3 +568,36 @@ class AdvertiserTabNotifier extends StateNotifier<int> {
 final advertiserTabProvider = StateNotifierProvider<AdvertiserTabNotifier, int>((ref) {
   return AdvertiserTabNotifier();
 });
+
+// First campaign flag provider
+class FirstCampaignNotifier extends StateNotifier<bool> {
+  FirstCampaignNotifier() : super(false) {
+    _loadFlag();
+  }
+
+  Future<void> _loadFlag() async {
+    final prefs = await SharedPreferences.getInstance();
+    final hasCreated = prefs.getBool('hasCreatedFirstCampaign') ?? false;
+    if (mounted) {
+      state = hasCreated;
+    }
+  }
+
+  Future<void> markFirstCampaignCreated() async {
+    state = true;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('hasCreatedFirstCampaign', true);
+  }
+
+  /// Syncs the flag with actual campaign data
+  /// If user has campaigns but flag is false (e.g., after reinstall), set it to true
+  Future<void> syncWithCampaigns(int totalCampaignCount) async {
+    if (!state && totalCampaignCount > 0) {
+      await markFirstCampaignCreated();
+    }
+  }
+}
+
+final firstCampaignProvider = StateNotifierProvider<FirstCampaignNotifier, bool>((ref) {
+  return FirstCampaignNotifier();
+});

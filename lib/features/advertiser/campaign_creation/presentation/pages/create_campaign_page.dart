@@ -889,6 +889,9 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
           ),
         );
 
+        // Mark first campaign as created
+        ref.read(firstCampaignProvider.notifier).markFirstCampaignCreated();
+
         // Reload campaigns list
         ref.read(campaignsProvider.notifier).loadCampaigns();
 

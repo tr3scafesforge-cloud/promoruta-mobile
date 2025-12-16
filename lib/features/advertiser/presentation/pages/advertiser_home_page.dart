@@ -21,14 +21,37 @@ class AdvertiserHomePage extends ConsumerWidget {
   }
 }
 
-class _HomeContent extends StatelessWidget {
+class _HomeContent extends ConsumerStatefulWidget {
   final AppLocalizations l10n;
   final List<model.Campaign> activeCampaigns;
 
   const _HomeContent({required this.l10n, required this.activeCampaigns});
 
   @override
+  ConsumerState<_HomeContent> createState() => _HomeContentState();
+}
+
+class _HomeContentState extends ConsumerState<_HomeContent> {
+  @override
+  void initState() {
+    super.initState();
+    // Sync flag with campaign data after the first frame
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _syncFirstCampaignFlag();
+    });
+  }
+
+  Future<void> _syncFirstCampaignFlag() async {
+    final allCampaignsAsync = ref.read(campaignsProvider);
+    allCampaignsAsync.whenData((campaigns) {
+      ref.read(firstCampaignProvider.notifier).syncWithCampaigns(campaigns.length);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final hasCreatedFirstCampaign = ref.watch(firstCampaignProvider);
+
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
       children: [
@@ -38,9 +61,9 @@ class _HomeContent extends StatelessWidget {
             Expanded(
               child: _StatCard(
                 icon: Icons.trending_up_rounded,
-                value: '${activeCampaigns.length}',
-                labelTop: l10n.campaigns,
-                labelBottom: l10n.active,
+                value: '${widget.activeCampaigns.length}',
+                labelTop: widget.l10n.campaigns,
+                labelBottom: widget.l10n.active,
                 iconColor: AppColors.blueDark,
                 backgroundColor: AppColors.blueDark.withValues(alpha: .2),
               ),
@@ -50,8 +73,8 @@ class _HomeContent extends StatelessWidget {
               child: _StatCard(
                 icon: Icons.place_rounded,
                 value: '12',
-                labelTop: l10n.zonesCovered,
-                labelBottom: l10n.thisWeek,
+                labelTop: widget.l10n.zonesCovered,
+                labelBottom: widget.l10n.thisWeek,
                 iconColor: AppColors.green,
                 backgroundColor: AppColors.green.withValues(alpha: .2),
               ),
@@ -61,8 +84,8 @@ class _HomeContent extends StatelessWidget {
               child: _StatCard(
                 icon: Icons.attach_money_rounded,
                 value: '\$284',
-                labelTop: l10n.investment,
-                labelBottom: l10n.accumulated,
+                labelTop: widget.l10n.investment,
+                labelBottom: widget.l10n.accumulated,
                 iconColor: AppColors.secondary,
                 backgroundColor: AppColors.secondary.withValues(alpha: .2),
               ),
@@ -71,20 +94,22 @@ class _HomeContent extends StatelessWidget {
         ),
         const SizedBox(height: 10),
 
-        _CreateFirstCampaignCard(l10n: l10n),
+        if (!hasCreatedFirstCampaign)
+          _CreateFirstCampaignCard(l10n: widget.l10n),
 
-        const SizedBox(height: 5),
+        if (!hasCreatedFirstCampaign)
+          const SizedBox(height: 5),
 
         // Section header
-        _SectionHeader(l10n: l10n),
+        _SectionHeader(l10n: widget.l10n),
 
         // Campaign list
-        if (activeCampaigns.isEmpty)
+        if (widget.activeCampaigns.isEmpty)
           AppCard(
             padding: const EdgeInsets.all(20),
             child: Center(
               child: Text(
-                l10n.noActiveCampaigns,
+                widget.l10n.noActiveCampaigns,
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium
@@ -96,11 +121,11 @@ class _HomeContent extends StatelessWidget {
             ),
           )
         else
-          ...activeCampaigns.take(5).map((campaign) => Padding(
+          ...widget.activeCampaigns.take(5).map((campaign) => Padding(
                 padding: const EdgeInsets.only(bottom: 12),
                 child: _CampaignCard(
                   campaign: campaign,
-                  l10n: l10n,
+                  l10n: widget.l10n,
                 ),
               )),
       ],
