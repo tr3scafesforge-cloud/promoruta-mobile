@@ -4,6 +4,7 @@ import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
 import 'package:promoruta/core/models/campaign.dart' as model;
+import 'package:promoruta/app/routes/app_router.dart';
 
 class AdvertiserHomePage extends ConsumerWidget {
   const AdvertiserHomePage({super.key});
@@ -209,9 +210,7 @@ class _CreateFirstCampaignCard extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(l10n.createCampaignWip)),
-                  );
+                  const CreateCampaignRoute().push(context);
                 },
                 child: Container(
                   width: 44,
@@ -252,9 +251,7 @@ class _CreateFirstCampaignCard extends StatelessWidget {
             text: l10n.startCampaign,
             backgroundColor: AppColors.secondary,
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(l10n.startCampaignWip)),
-              );
+              const CreateCampaignRoute().push(context);
             },
           ),
         ],
