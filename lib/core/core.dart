@@ -3,6 +3,7 @@ export 'models/campaign.dart';
 export 'models/gps_point.dart';
 export 'models/route.dart';
 export 'models/user.dart';
+export 'models/advertiser_kpi_stats.dart';
 
 
 // Utils

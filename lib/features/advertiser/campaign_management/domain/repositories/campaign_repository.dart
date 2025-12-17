@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:promoruta/core/models/campaign.dart';
+import 'package:promoruta/core/models/advertiser_kpi_stats.dart';
 
 /// Abstract repository for campaign operations
 abstract class CampaignRepository {
@@ -13,6 +14,7 @@ abstract class CampaignRepository {
   Future<Campaign> createCampaign(Campaign campaign, {File? audioFile});
   Future<Campaign> updateCampaign(Campaign campaign);
   Future<void> deleteCampaign(String id);
+  Future<AdvertiserKpiStats> getKpiStats();
 }
 
 /// Abstract local data source for campaigns
@@ -37,4 +39,5 @@ abstract class CampaignRemoteDataSource {
   Future<Campaign> createCampaign(Campaign campaign, {File? audioFile});
   Future<Campaign> updateCampaign(Campaign campaign);
   Future<void> deleteCampaign(String id);
+  Future<AdvertiserKpiStats> getKpiStats();
 }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:promoruta/core/utils/logger.dart';
 import 'package:promoruta/core/models/campaign.dart';
+import 'package:promoruta/core/models/advertiser_kpi_stats.dart';
 import 'package:promoruta/features/advertiser/campaign_creation/data/datasources/remote/media_remote_data_source.dart';
 
 import '../../../domain/repositories/campaign_repository.dart';
@@ -377,6 +378,46 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
     } catch (e) {
       AppLogger.auth.e('Unexpected error during campaign deletion: $e');
       throw Exception('Failed to delete campaign: $e');
+    }
+  }
+
+  @override
+  Future<AdvertiserKpiStats> getKpiStats() async {
+    try {
+      AppLogger.auth.i('Fetching advertiser KPI stats');
+
+      final response = await dio.get(
+        '/advertiser/kpi-stats',
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final json = response.data;
+        AppLogger.auth.i('KPI stats fetched successfully');
+        return AdvertiserKpiStats.fromJson(json);
+      } else {
+        throw Exception('Failed to fetch KPI stats: ${response.statusMessage}');
+      }
+    } on DioException catch (e) {
+      AppLogger.auth.e('Fetch KPI stats failed: ${e.response?.statusCode} - ${e.message}');
+
+      if (e.response != null) {
+        final statusCode = e.response!.statusCode;
+        switch (statusCode) {
+          case 404:
+            throw Exception('KPI stats endpoint not found.');
+          default:
+            throw Exception('Failed to fetch KPI stats.');
+        }
+      }
+      throw Exception('Network error: ${e.message}');
+    } catch (e) {
+      AppLogger.auth.e('Unexpected error fetching KPI stats: $e');
+      throw Exception('Failed to fetch KPI stats: $e');
     }
   }
 }

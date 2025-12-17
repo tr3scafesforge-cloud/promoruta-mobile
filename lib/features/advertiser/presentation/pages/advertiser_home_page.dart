@@ -52,6 +52,9 @@ class _HomeContentState extends ConsumerState<_HomeContent> {
   @override
   Widget build(BuildContext context) {
     final hasCreatedFirstCampaign = ref.watch(firstCampaignProvider);
+    final zonesCovered = ref.watch(zonesCoveredThisWeekProvider);
+    // TODO: Switch to kpiStatsProvider when backend is deployed
+    final totalInvestment = ref.watch(totalInvestmentProvider);
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
@@ -73,7 +76,7 @@ class _HomeContentState extends ConsumerState<_HomeContent> {
             Expanded(
               child: _StatCard(
                 icon: Icons.place_rounded,
-                value: '12',
+                value: '$zonesCovered',
                 labelTop: widget.l10n.zonesCovered,
                 labelBottom: widget.l10n.thisWeek,
                 iconColor: AppColors.green,
@@ -84,7 +87,7 @@ class _HomeContentState extends ConsumerState<_HomeContent> {
             Expanded(
               child: _StatCard(
                 icon: Icons.attach_money_rounded,
-                value: '\$284',
+                value: '\$${totalInvestment.toStringAsFixed(0)}',
                 labelTop: widget.l10n.investment,
                 labelBottom: widget.l10n.accumulated,
                 iconColor: AppColors.secondary,

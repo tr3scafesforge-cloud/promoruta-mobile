@@ -322,6 +322,58 @@ final activeCampaignsProvider = FutureProvider<List<model.Campaign>>((ref) async
   return await getCampaignsUseCase(const GetCampaignsParams(status: 'in_progress'));
 });
 
+// TODO: Switch to backend KPI stats endpoint when deployed
+// Provider for KPI stats from backend (currently disabled)
+// final kpiStatsProvider = FutureProvider.autoDispose<model.AdvertiserKpiStats>((ref) async {
+//   final repository = ref.watch(campaignRepositoryProvider);
+//   return await repository.getKpiStats();
+// });
+
+// Provider for zones covered this week (calculated locally)
+final zonesCoveredThisWeekProvider = Provider<int>((ref) {
+  final campaignsAsync = ref.watch(campaignsProvider);
+
+  return campaignsAsync.maybeWhen(
+    data: (campaigns) {
+      final now = DateTime.now();
+      final weekStart = now.subtract(Duration(days: now.weekday - 1));
+      final weekStartMidnight = DateTime(weekStart.year, weekStart.month, weekStart.day);
+
+      // Filter campaigns that started this week
+      final thisWeekCampaigns = campaigns.where((campaign) {
+        final campaignStart = campaign.startTime;
+        return campaignStart.isAfter(weekStartMidnight) ||
+               campaignStart.isAtSameMomentAs(weekStartMidnight);
+      });
+
+      // Get unique zones
+      final uniqueZones = <String>{};
+      for (final campaign in thisWeekCampaigns) {
+        uniqueZones.add(campaign.zone);
+      }
+
+      return uniqueZones.length;
+    },
+    orElse: () => 0,
+  );
+});
+
+// Provider for total investment (calculated locally)
+// TODO: Replace with backend endpoint once deployed
+final totalInvestmentProvider = Provider<double>((ref) {
+  final campaignsAsync = ref.watch(campaignsProvider);
+
+  return campaignsAsync.maybeWhen(
+    data: (campaigns) {
+      return campaigns.fold<double>(0.0, (total, campaign) {
+        final price = campaign.finalPrice ?? campaign.suggestedPrice;
+        return total + price;
+      });
+    },
+    orElse: () => 0.0,
+  );
+});
+
 final connectivityStatusProvider = StreamProvider<bool>((ref) {
   final connectivityService = ref.watch(connectivityServiceProvider);
   return connectivityService.connectivityStream;
