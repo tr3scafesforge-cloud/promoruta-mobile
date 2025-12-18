@@ -13,11 +13,14 @@ class AdvertiserHomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final activeCampaignsAsync = ref.watch(activeCampaignsProvider);
+    final isLoading = activeCampaignsAsync.isLoading;
+    final activeCampaigns = activeCampaignsAsync.valueOrNull ?? const [];
 
-    return activeCampaignsAsync.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => _HomeContent(l10n: l10n, activeCampaigns: const []),
-      data: (campaigns) => _HomeContent(l10n: l10n, activeCampaigns: campaigns),
+    return _HomeContent(
+      l10n: l10n,
+      activeCampaigns: activeCampaigns,
+      isLoading: isLoading,
+      hasError: activeCampaignsAsync.hasError,
     );
   }
 }
@@ -25,8 +28,15 @@ class AdvertiserHomePage extends ConsumerWidget {
 class _HomeContent extends ConsumerStatefulWidget {
   final AppLocalizations l10n;
   final List<model.Campaign> activeCampaigns;
+  final bool isLoading;
+  final bool hasError;
 
-  const _HomeContent({required this.l10n, required this.activeCampaigns});
+  const _HomeContent({
+    required this.l10n,
+    required this.activeCampaigns,
+    required this.isLoading,
+    required this.hasError,
+  });
 
   @override
   ConsumerState<_HomeContent> createState() => _HomeContentState();
@@ -64,7 +74,7 @@ class _HomeContentState extends ConsumerState<_HomeContent> {
             Expanded(
               child: _StatCard(
                 icon: Icons.trending_up_rounded,
-                value: '${widget.activeCampaigns.length}',
+                value: widget.isLoading ? '--' : '${widget.activeCampaigns.length}',
                 labelTop: widget.l10n.campaigns,
                 labelBottom: widget.l10n.active,
                 iconColor: AppColors.blueDark,
@@ -115,17 +125,38 @@ class _HomeContentState extends ConsumerState<_HomeContent> {
         ),
         const SizedBox(height: 10),
 
-        if (!hasCreatedFirstCampaign)
+        if (!hasCreatedFirstCampaign && !widget.isLoading)
           _CreateFirstCampaignCard(l10n: widget.l10n),
 
-        if (!hasCreatedFirstCampaign)
+        if (!hasCreatedFirstCampaign && !widget.isLoading)
           const SizedBox(height: 5),
 
         // Section header
         _SectionHeader(l10n: widget.l10n),
 
-        // Campaign list
-        if (widget.activeCampaigns.isEmpty)
+        // Campaign list with loading state
+        if (widget.isLoading)
+          const Padding(
+            padding: EdgeInsets.only(top: 50),
+            child: Center(child: CircularProgressIndicator()),
+          )
+        else if (widget.hasError)
+          AppCard(
+            padding: const EdgeInsets.all(20),
+            child: Center(
+              child: Text(
+                widget.l10n.noActiveCampaigns,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(
+                      color: AppColors.textSecondary,
+                      fontWeight: FontWeight.w500,
+                    ),
+              ),
+            ),
+          )
+        else if (widget.activeCampaigns.isEmpty)
           AppCard(
             padding: const EdgeInsets.all(20),
             child: Center(
