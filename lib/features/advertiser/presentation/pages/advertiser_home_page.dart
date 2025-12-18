@@ -53,8 +53,7 @@ class _HomeContentState extends ConsumerState<_HomeContent> {
   Widget build(BuildContext context) {
     final hasCreatedFirstCampaign = ref.watch(firstCampaignProvider);
     final zonesCovered = ref.watch(zonesCoveredThisWeekProvider);
-    // TODO: Switch to kpiStatsProvider when backend is deployed
-    final totalInvestment = ref.watch(totalInvestmentProvider);
+    final kpiStatsAsync = ref.watch(kpiStatsProvider);
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
@@ -85,13 +84,31 @@ class _HomeContentState extends ConsumerState<_HomeContent> {
             ),
             const SizedBox(width: 5),
             Expanded(
-              child: _StatCard(
-                icon: Icons.attach_money_rounded,
-                value: '\$${totalInvestment.toStringAsFixed(0)}',
-                labelTop: widget.l10n.investment,
-                labelBottom: widget.l10n.accumulated,
-                iconColor: AppColors.secondary,
-                backgroundColor: AppColors.secondary.withValues(alpha: .2),
+              child: kpiStatsAsync.when(
+                loading: () => _StatCard(
+                  icon: Icons.attach_money_rounded,
+                  value: '--',
+                  labelTop: widget.l10n.investment,
+                  labelBottom: widget.l10n.accumulated,
+                  iconColor: AppColors.secondary,
+                  backgroundColor: AppColors.secondary.withValues(alpha: .2),
+                ),
+                error: (error, stack) => _StatCard(
+                  icon: Icons.attach_money_rounded,
+                  value: '\$0',
+                  labelTop: widget.l10n.investment,
+                  labelBottom: widget.l10n.accumulated,
+                  iconColor: AppColors.secondary,
+                  backgroundColor: AppColors.secondary.withValues(alpha: .2),
+                ),
+                data: (kpiStats) => _StatCard(
+                  icon: Icons.attach_money_rounded,
+                  value: '\$${kpiStats.totalInvestment.toStringAsFixed(0)}',
+                  labelTop: widget.l10n.investment,
+                  labelBottom: widget.l10n.accumulated,
+                  iconColor: AppColors.secondary,
+                  backgroundColor: AppColors.secondary.withValues(alpha: .2),
+                ),
               ),
             ),
           ],
