@@ -70,41 +70,20 @@ class _AdvertiserCampaignsPageState extends ConsumerState<AdvertiserCampaignsPag
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final campaignsAsync = ref.watch(campaignsProvider);
+    final isLoading = campaignsAsync.isLoading;
+
+    final backendCampaigns = campaignsAsync.valueOrNull ?? [];
+    final filtered = isLoading ? <ui.Campaign>[] : _getFilteredCampaigns(backendCampaigns);
 
     return SafeArea(
-      child: campaignsAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) => Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.error_outline, size: 48, color: Colors.red),
-              const SizedBox(height: 16),
-              Text(
-                'Error loading campaigns',
-                style: theme.textTheme.titleMedium,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                error.toString(),
-                style: theme.textTheme.bodySmall,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () => ref.read(campaignsProvider.notifier).loadCampaigns(),
-                child: const Text('Retry'),
-              ),
-            ],
-          ),
-        ),
-        data: (backendCampaigns) {
-          final filtered = _getFilteredCampaigns(backendCampaigns);
-
-          return ListView(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
-            children: [
-              AdvertiserSearchFilterBar(
+      child: ListView(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+        children: [
+          IgnorePointer(
+            ignoring: isLoading,
+            child: Opacity(
+              opacity: isLoading ? 0.5 : 1.0,
+              child: AdvertiserSearchFilterBar(
                 controller: _searchCtrl,
                 hint: AppLocalizations.of(context).searchCampaigns,
                 onChanged: (_) => setState(() {}),
@@ -114,8 +93,14 @@ class _AdvertiserCampaignsPageState extends ConsumerState<AdvertiserCampaignsPag
                 },
                 onFilterTap: _openFiltersSheet,
               ),
-              const SizedBox(height: 12),
-              MultiSwitch(
+            ),
+          ),
+          const SizedBox(height: 12),
+          IgnorePointer(
+            ignoring: isLoading,
+            child: Opacity(
+              opacity: isLoading ? 0.5 : 1.0,
+              child: MultiSwitch(
                 options: [
                   AppLocalizations.of(context).campaignFilterAll,
                   AppLocalizations.of(context).campaignFilterActive,
@@ -125,54 +110,87 @@ class _AdvertiserCampaignsPageState extends ConsumerState<AdvertiserCampaignsPag
                 initialIndex: _statuses.indexOf(_selected),
                 onChanged: (index) => setState(() => _selected = _statuses[index]),
               ),
-              if (_hasAnyExtraFilter)
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: _ActiveFiltersBar(
-                    maxDistanceKm: _maxDistanceKm,
-                    minBudget: _minBudget,
-                    onClearAll: () {
-                      setState(() {
-                        _maxDistanceKm = null;
-                        _minBudget = null;
-                      });
-                    },
+            ),
+          ),
+          if (_hasAnyExtraFilter && !isLoading)
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: _ActiveFiltersBar(
+                maxDistanceKm: _maxDistanceKm,
+                minBudget: _minBudget,
+                onClearAll: () {
+                  setState(() {
+                    _maxDistanceKm = null;
+                    _minBudget = null;
+                  });
+                },
+              ),
+            ),
+          const SizedBox(height: 10),
+          if (isLoading)
+            const Padding(
+              padding: EdgeInsets.only(top: 100),
+              child: Center(child: CircularProgressIndicator()),
+            )
+          else if (campaignsAsync.hasError)
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 48),
+                  const Icon(Icons.error_outline, size: 48, color: Colors.red),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Error loading campaigns',
+                    style: theme.textTheme.titleMedium,
                   ),
-                ),
-              const SizedBox(height: 10),
-              ...filtered.map((c) => AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    transitionBuilder: (Widget child, Animation<double> animation) =>
-                        SlideTransition(
-                          position: Tween<Offset>(
-                            begin: const Offset(0, 0.1),
-                            end: Offset.zero,
-                          ).animate(animation),
-                          child: FadeTransition(
-                            opacity: animation,
-                            child: child,
-                          ),
+                  const SizedBox(height: 8),
+                  Text(
+                    campaignsAsync.error.toString(),
+                    style: theme.textTheme.bodySmall,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () => ref.read(campaignsProvider.notifier).loadCampaigns(),
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            )
+          else ...[
+            ...filtered.map((c) => AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  transitionBuilder: (Widget child, Animation<double> animation) =>
+                      SlideTransition(
+                        position: Tween<Offset>(
+                          begin: const Offset(0, 0.1),
+                          end: Offset.zero,
+                        ).animate(animation),
+                        child: FadeTransition(
+                          opacity: animation,
+                          child: child,
                         ),
-                    child: Padding(
-                      key: ValueKey(c.id),
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: _CampaignCard(campaign: c),
-                    ),
-                  )),
-              if (filtered.isEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(top: 48),
-                  child: Center(
-                    child: Text(
-                      AppLocalizations.of(context).noCampaignsForSelectedFilters,
-                      style: theme.textTheme.bodyMedium
-                          ?.copyWith(color: Colors.grey[700]),
-                    ),
+                      ),
+                  child: Padding(
+                    key: ValueKey(c.id),
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: _CampaignCard(campaign: c),
+                  ),
+                )),
+            if (filtered.isEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 48),
+                child: Center(
+                  child: Text(
+                    AppLocalizations.of(context).noCampaignsForSelectedFilters,
+                    style: theme.textTheme.bodyMedium
+                        ?.copyWith(color: Colors.grey[700]),
                   ),
                 ),
-            ],
-          );
-        },
+              ),
+          ],
+        ],
       ),
     );
   }

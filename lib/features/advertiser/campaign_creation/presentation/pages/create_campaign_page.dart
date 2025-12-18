@@ -825,6 +825,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
       );
 
       // Bid deadline: 2 days before start time
+      // Todo: check how to handle this for campaigns starting in less than 2 days
       final bidDeadline = startDateTime.subtract(const Duration(days: 2));
 
       // Convert waypoints to RouteCoordinate format
