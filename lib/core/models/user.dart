@@ -7,6 +7,7 @@ enum UserRole {
   static UserRole fromString(String role) {
     switch (role.toLowerCase()) {
       case 'promotor':
+      case 'promoter':
         return UserRole.promoter;
       case 'advertiser':
         return UserRole.advertiser;
