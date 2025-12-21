@@ -22,15 +22,15 @@ class _PromoterHomeContent extends StatelessWidget {
       children: [
         // KPI cards
         Row(
-          children: const [
+          children: [
             Expanded(
               child: StatCard(
                 icon: Icons.attach_money_rounded,
                 value: '\$284',
                 labelTop: 'Esta',
                 labelBottom: 'semana',
-                iconColor: AppColors.primary,
-                backgroundColor: Color(0xFFEFF7F5),
+                iconColor: AppColors.deepOrange,
+                backgroundColor: AppColors.deepOrange.withValues(alpha: .2),
               ),
             ),
             SizedBox(width: 12),
@@ -40,8 +40,8 @@ class _PromoterHomeContent extends StatelessWidget {
                 value: '\$320',
                 labelTop: 'Este',
                 labelBottom: 'mes',
-                iconColor: AppColors.primary,
-                backgroundColor: Color(0xFFEFF7F5),
+                iconColor: AppColors.completedGreenColor,
+                backgroundColor: AppColors.completedGreenColor.withValues(alpha: .2),
               ),
             ),
           ],
