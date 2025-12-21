@@ -691,4 +691,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get viewMap => 'View Map';
+
+  @override
+  String get inYourArea => 'In your area';
+
+  @override
+  String get activeSingular => 'Active';
+
+  @override
+  String get earnings => 'Earnings';
+
+  @override
+  String get readyToEarnIncome => 'Ready to earn income?';
+
+  @override
+  String get takeCampaignsNearbyStartPromo =>
+      'Take nearby campaigns and start the promo.';
 }

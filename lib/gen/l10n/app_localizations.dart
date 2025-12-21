@@ -1359,6 +1359,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'View Map'**
   String get viewMap;
+
+  /// Bottom navigation label for nearby campaigns in your area
+  ///
+  /// In en, this message translates to:
+  /// **'In your area'**
+  String get inYourArea;
+
+  /// Bottom navigation label for active campaign (singular)
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get activeSingular;
+
+  /// Bottom navigation label for earnings
+  ///
+  /// In en, this message translates to:
+  /// **'Earnings'**
+  String get earnings;
+
+  /// AppBar title for promoter home page
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to earn income?'**
+  String get readyToEarnIncome;
+
+  /// AppBar subtitle for promoter home page
+  ///
+  /// In en, this message translates to:
+  /// **'Take nearby campaigns and start the promo.'**
+  String get takeCampaignsNearbyStartPromo;
 }
 
 class _AppLocalizationsDelegate

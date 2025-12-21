@@ -694,4 +694,20 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get viewMap => 'Ver Mapa';
+
+  @override
+  String get inYourArea => 'Na sua área';
+
+  @override
+  String get activeSingular => 'Ativa';
+
+  @override
+  String get earnings => 'Ganhos';
+
+  @override
+  String get readyToEarnIncome => 'Pronto para ganhar renda?';
+
+  @override
+  String get takeCampaignsNearbyStartPromo =>
+      'Pegue campanhas próximas e comece a promoção.';
 }

@@ -875,5 +875,25 @@
   "viewMap": "Ver Mapa",
   "@viewMap": {
     "description": "Button text to view map"
+  },
+  "inYourArea": "En tu zona",
+  "@inYourArea": {
+    "description": "Bottom navigation label for nearby campaigns in your area"
+  },
+  "activeSingular": "Activa",
+  "@activeSingular": {
+    "description": "Bottom navigation label for active campaign (singular)"
+  },
+  "earnings": "Ganancias",
+  "@earnings": {
+    "description": "Bottom navigation label for earnings"
+  },
+  "readyToEarnIncome": "¿Listo para sumar ingresos?",
+  "@readyToEarnIncome": {
+    "description": "AppBar title for promoter home page"
+  },
+  "takeCampaignsNearbyStartPromo": "Tomá campañas cercanas y empezá la promo.",
+  "@takeCampaignsNearbyStartPromo": {
+    "description": "AppBar subtitle for promoter home page"
   }
 }

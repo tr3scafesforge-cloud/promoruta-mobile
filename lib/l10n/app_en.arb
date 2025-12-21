@@ -875,5 +875,25 @@
   "viewMap": "View Map",
   "@viewMap": {
     "description": "Button text to view map"
+  },
+  "inYourArea": "In your area",
+  "@inYourArea": {
+    "description": "Bottom navigation label for nearby campaigns in your area"
+  },
+  "activeSingular": "Active",
+  "@activeSingular": {
+    "description": "Bottom navigation label for active campaign (singular)"
+  },
+  "earnings": "Earnings",
+  "@earnings": {
+    "description": "Bottom navigation label for earnings"
+  },
+  "readyToEarnIncome": "Ready to earn income?",
+  "@readyToEarnIncome": {
+    "description": "AppBar title for promoter home page"
+  },
+  "takeCampaignsNearbyStartPromo": "Take nearby campaigns and start the promo.",
+  "@takeCampaignsNearbyStartPromo": {
+    "description": "AppBar subtitle for promoter home page"
   }
 }

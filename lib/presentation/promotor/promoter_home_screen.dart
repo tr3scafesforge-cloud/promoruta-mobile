@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/app/routes/app_router.dart';
 import 'package:promoruta/core/constants/colors.dart';
+import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/presentation/promotor/pages/promoter_profile_page.dart';
 import 'package:promoruta/presentation/promotor/pages/promoter_home_page.dart';
 import 'package:promoruta/presentation/promotor/pages/promoter_nearby_page.dart';
@@ -26,6 +27,8 @@ class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: _buildAppBar(context),
@@ -57,35 +60,35 @@ class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
             _BottomNavigationItem(
               isSelected: _currentIndex == 0,
               icon: Icons.home_rounded,
-              label: 'Inicio',
+              label: l10n.home,
               onTap: () => setState(() => _currentIndex = 0),
               splashColor: _accent.withValues(alpha: .10),
             ),
             _BottomNavigationItem(
               isSelected: _currentIndex == 1,
               icon: Icons.place_rounded,
-              label: 'En tu zona',
+              label: l10n.inYourArea,
               onTap: () => setState(() => _currentIndex = 1),
               splashColor: _accent.withValues(alpha: .10),
             ),
             _BottomNavigationItem(
               isSelected: _currentIndex == 2,
               icon: Icons.play_circle_rounded,
-              label: 'Activa',
+              label: l10n.activeSingular,
               onTap: () => setState(() => _currentIndex = 2),
               splashColor: _accent.withValues(alpha: .10),
             ),
             _BottomNavigationItem(
               isSelected: _currentIndex == 3,
               icon: Icons.attach_money_rounded,
-              label: 'Ganancias',
+              label: l10n.earnings,
               onTap: () => setState(() => _currentIndex = 3),
               splashColor: _accent.withValues(alpha: .10),
             ),
             _BottomNavigationItem(
               isSelected: _currentIndex == 4,
               icon: Icons.person_rounded,
-              label: 'Perfil',
+              label: l10n.profile,
               onTap: () => setState(() => _currentIndex = 4),
               splashColor: _accent.withValues(alpha: .10),
             ),
@@ -121,22 +124,24 @@ class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
   }
 
   PreferredSizeWidget _buildAppBar(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     switch (_currentIndex) {
       case 0: // Home
         return PromoterAppBar(
-          title: '¿Listo para sumar ingresos?',
-          subtitle: 'Tomá campañas cercanas y empezá la promo.',
+          title: l10n.readyToEarnIncome,
+          subtitle: l10n.takeCampaignsNearbyStartPromo,
         );
       case 1: // Nearby
-        return PromoterAppBar(title: 'En tu zona');
+        return PromoterAppBar(title: l10n.inYourArea);
       case 2: // Active
-        return PromoterAppBar(title: 'Activa');
+        return PromoterAppBar(title: l10n.activeSingular);
       case 3: // Earnings
-        return PromoterAppBar(title: 'Ganancias');
+        return PromoterAppBar(title: l10n.earnings);
       case 4: // Profile
-        return PromoterAppBar(title: 'Perfil');
+        return PromoterAppBar(title: l10n.profile);
       default:
-        return PromoterAppBar(title: 'Inicio');
+        return PromoterAppBar(title: l10n.home);
     }
   }
 }
