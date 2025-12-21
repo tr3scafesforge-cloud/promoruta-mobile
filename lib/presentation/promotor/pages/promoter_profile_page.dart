@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
-import 'package:promoruta/presentation/promotor/pages/promoter_user_profile_page.dart';
+import 'package:promoruta/features/profile/presentation/pages/user_profile_page.dart';
 import 'package:promoruta/features/profile/presentation/widgets/profile_widgets.dart';
 
 class PromoterProfilePage extends StatefulWidget {
@@ -59,7 +59,7 @@ class _PromoterProfilePageState extends State<PromoterProfilePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const PromoterUserProfilePage(),
+                    builder: (context) => const UserProfilePage(),
                   ),
                 );
               },

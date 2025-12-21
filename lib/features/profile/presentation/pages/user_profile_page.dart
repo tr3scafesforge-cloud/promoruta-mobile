@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:promoruta/app/routes/app_router.dart';
 import 'package:promoruta/core/constants/colors.dart';
+import 'package:promoruta/core/core.dart' as model;
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
 import 'package:promoruta/features/promotor/presentation/pages/map_screen.dart';
@@ -56,7 +57,6 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
   @override
   Widget build(BuildContext context) {
     final currentUserAsync = ref.watch(authStateProvider);
-    final userAsync = ref.watch(authStateProvider);
     final destructive = const Color(0xFFCC0033); // deep red like your mock
     final cardRadius = 12.0;
     final l10n = AppLocalizations.of(context);
@@ -66,11 +66,28 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
       appBar: AppBar(
         backgroundColor: const Color(0xFFF3F5F7),
         elevation: 0,
-        leading: IconButton(
-          onPressed: () => context.canPop()
-              ? context.pop()
-              : context.go('/advertiser-home?tab=profile'),
-          icon: const Icon(Icons.arrow_back, color: Colors.black87),
+        leading: currentUserAsync.maybeWhen(
+          data: (user) => IconButton(
+            onPressed: () {
+              if (context.canPop()) {
+                context.pop();
+              } else {
+                // Fallback navigation based on user role
+                if (user?.role == model.UserRole.advertiser) {
+                  context.go('/advertiser-home?tab=profile');
+                } else if (user?.role == model.UserRole.promoter) {
+                  context.go('/promoter-home');
+                } else {
+                  context.go('/');
+                }
+              }
+            },
+            icon: const Icon(Icons.arrow_back, color: Colors.black87),
+          ),
+          orElse: () => IconButton(
+            onPressed: () => Navigator.maybePop(context),
+            icon: const Icon(Icons.arrow_back, color: Colors.black87),
+          ),
         ),
       ),
       body: SafeArea(
@@ -150,8 +167,8 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
 
                     const SizedBox(height: 24),
 
-                    // TEST: Mapbox Integration Test (Remove after testing)
-                    if (true) ...[
+                    // TEST: Mapbox Integration Test (Only for advertisers, remove after testing)
+                    if (user.role == model.UserRole.advertiser) ...[
                       const Text(
                         '🧪 MAPBOX TEST FEATURES',
                         style: TextStyle(
