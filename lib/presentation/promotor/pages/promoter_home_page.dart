@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
+import 'package:promoruta/shared/shared.dart';
 
 class PromoterHomePage extends StatelessWidget {
   const PromoterHomePage({super.key});
@@ -23,20 +24,24 @@ class _PromoterHomeContent extends StatelessWidget {
         Row(
           children: const [
             Expanded(
-              child: _KpiCard(
+              child: StatCard(
                 icon: Icons.attach_money_rounded,
                 value: '\$284',
-                top: 'Esta',
-                bottom: 'semana',
+                labelTop: 'Esta',
+                labelBottom: 'semana',
+                iconColor: AppColors.primary,
+                backgroundColor: Color(0xFFEFF7F5),
               ),
             ),
             SizedBox(width: 12),
             Expanded(
-              child: _KpiCard(
+              child: StatCard(
                 icon: Icons.trending_up_rounded,
                 value: '\$320',
-                top: 'Este',
-                bottom: 'mes',
+                labelTop: 'Este',
+                labelBottom: 'mes',
+                iconColor: AppColors.primary,
+                backgroundColor: Color(0xFFEFF7F5),
               ),
             ),
           ],
@@ -85,61 +90,6 @@ class _PromoterHomeContent extends StatelessWidget {
         // Active campaign
         const _ActiveCampaignCard(),
       ],
-    );
-  }
-}
-
-class _KpiCard extends StatelessWidget {
-  final IconData icon;
-  final String value;
-  final String top;
-  final String bottom;
-
-  const _KpiCard({
-    required this.icon,
-    required this.value,
-    required this.top,
-    required this.bottom,
-  });
-
-  static const Color _pill = Color(0xFFEFF7F5);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 0,
-      color: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(
-          children: [
-            CircleAvatar(
-              radius: 18,
-              backgroundColor: _pill,
-              child: Icon(icon, color: AppColors.primary),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              value,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
-            ),
-            const SizedBox(height: 2),
-            Text(top,
-                style: Theme.of(context)
-                    .textTheme
-                    .labelMedium
-                    ?.copyWith(color: Colors.grey[700])),
-            Text(bottom,
-                style: Theme.of(context)
-                    .textTheme
-                    .labelMedium
-                    ?.copyWith(color: Colors.grey[700])),
-          ],
-        ),
-      ),
     );
   }
 }

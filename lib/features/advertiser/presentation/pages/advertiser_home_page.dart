@@ -72,7 +72,7 @@ class _HomeContentState extends ConsumerState<_HomeContent> {
         Row(
           children: [
             Expanded(
-              child: _StatCard(
+              child: StatCard(
                 icon: Icons.trending_up_rounded,
                 value: widget.isLoading ? '--' : '${widget.activeCampaigns.length}',
                 labelTop: widget.l10n.campaigns,
@@ -83,7 +83,7 @@ class _HomeContentState extends ConsumerState<_HomeContent> {
             ),
             const SizedBox(width: 5),
             Expanded(
-              child: _StatCard(
+              child: StatCard(
                 icon: Icons.place_rounded,
                 value: '$zonesCovered',
                 labelTop: widget.l10n.zonesCovered,
@@ -95,7 +95,7 @@ class _HomeContentState extends ConsumerState<_HomeContent> {
             const SizedBox(width: 5),
             Expanded(
               child: kpiStatsAsync.when(
-                loading: () => _StatCard(
+                loading: () => StatCard(
                   icon: Icons.attach_money_rounded,
                   value: '--',
                   labelTop: widget.l10n.investment,
@@ -103,7 +103,7 @@ class _HomeContentState extends ConsumerState<_HomeContent> {
                   iconColor: AppColors.secondary,
                   backgroundColor: AppColors.secondary.withValues(alpha: .2),
                 ),
-                error: (error, stack) => _StatCard(
+                error: (error, stack) => StatCard(
                   icon: Icons.attach_money_rounded,
                   value: '\$0',
                   labelTop: widget.l10n.investment,
@@ -111,7 +111,7 @@ class _HomeContentState extends ConsumerState<_HomeContent> {
                   iconColor: AppColors.secondary,
                   backgroundColor: AppColors.secondary.withValues(alpha: .2),
                 ),
-                data: (kpiStats) => _StatCard(
+                data: (kpiStats) => StatCard(
                   icon: Icons.attach_money_rounded,
                   value: '\$${kpiStats.totalInvestment.toStringAsFixed(0)}',
                   labelTop: widget.l10n.investment,
@@ -181,68 +181,6 @@ class _HomeContentState extends ConsumerState<_HomeContent> {
                 ),
               )),
       ],
-    );
-  }
-}
-
-class _StatCard extends StatelessWidget {
-  final IconData icon;
-  final String value;
-  final String labelTop;
-  final String labelBottom;
-  final Color? iconColor;
-  final Color? backgroundColor;
-
-  const _StatCard({
-    required this.icon,
-    required this.value,
-    required this.labelTop,
-    required this.labelBottom,
-    this.iconColor,
-    this.backgroundColor,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return AppCard(
-      padding: const EdgeInsets.all(14),
-      child: Column(
-        children: [
-          CircleAvatar(
-            radius: 20,
-            backgroundColor: backgroundColor ?? const Color(0xFFF0F6F5),
-            child: Icon(
-              icon,
-              color: iconColor ?? AppColors.secondary,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            value,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            labelTop,
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            style: Theme.of(context)
-                .textTheme
-                .labelMedium
-                ?.copyWith(color: AppColors.textSecondary),
-          ),
-          Text(
-            labelBottom,
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: AppColors.textSecondary,
-                ),
-          ),
-        ],
-      ),
     );
   }
 }

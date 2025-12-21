@@ -19,3 +19,4 @@ export 'widgets/app_card.dart';
 export 'widgets/multi_switch.dart';
 export 'widgets/custom_button.dart';
 export 'widgets/bottom_navigation_item.dart';
+export 'widgets/stat_card.dart';
