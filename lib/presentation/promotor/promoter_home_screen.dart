@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:promoruta/app/routes/app_router.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/presentation/promotor/pages/promoter_profile_page.dart';
 import 'package:promoruta/presentation/promotor/pages/promoter_home_page.dart';
@@ -112,6 +113,7 @@ class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
                   isDark ? ThemeMode.dark : ThemeMode.light,
                 );
           },
+          onTapLanguage: () => const LanguageSettingsRoute().push(context),
         );
       default:
         return const PromoterHomePage();
