@@ -1347,6 +1347,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Accept promotion'**
   String get acceptPromotion;
+
+  /// Section header for nearby campaigns
+  ///
+  /// In en, this message translates to:
+  /// **'Nearby campaigns'**
+  String get nearbyCampaigns;
+
+  /// Button text to view map
+  ///
+  /// In en, this message translates to:
+  /// **'View Map'**
+  String get viewMap;
 }
 
 class _AppLocalizationsDelegate

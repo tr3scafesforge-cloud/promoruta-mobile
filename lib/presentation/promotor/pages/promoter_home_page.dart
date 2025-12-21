@@ -52,7 +52,7 @@ class _PromoterHomeContent extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Campañas cerca tuyo',
+            Text(AppLocalizations.of(context).nearbyCampaigns,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w700,
                     )),
@@ -61,7 +61,7 @@ class _PromoterHomeContent extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Ver Mapa (WIP)')),
                   ),
-              child: const Text('Ver Mapa'),
+              child: Text(AppLocalizations.of(context).viewMap),
             ),
           ],
         ),

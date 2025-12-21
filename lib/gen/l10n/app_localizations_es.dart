@@ -691,4 +691,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get acceptPromotion => 'Aceptar promoción';
+
+  @override
+  String get nearbyCampaigns => 'Campañas cerca tuyo';
+
+  @override
+  String get viewMap => 'Ver Mapa';
 }

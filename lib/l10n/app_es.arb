@@ -867,5 +867,13 @@
   "acceptPromotion": "Aceptar promoción",
   "@acceptPromotion": {
     "description": "Button text to accept a promotion"
+  },
+  "nearbyCampaigns": "Campañas cerca tuyo",
+  "@nearbyCampaigns": {
+    "description": "Section header for nearby campaigns"
+  },
+  "viewMap": "Ver Mapa",
+  "@viewMap": {
+    "description": "Button text to view map"
   }
 }
