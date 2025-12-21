@@ -859,5 +859,13 @@
   "noActiveCampaigns": "No active campaigns",
   "@noActiveCampaigns": {
     "description": "Message shown when there are no active campaigns"
+  },
+  "preview": "Preview",
+  "@preview": {
+    "description": "Button text to preview a campaign"
+  },
+  "acceptPromotion": "Accept promotion",
+  "@acceptPromotion": {
+    "description": "Button text to accept a promotion"
   }
 }

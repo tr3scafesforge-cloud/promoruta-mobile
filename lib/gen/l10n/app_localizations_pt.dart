@@ -682,4 +682,10 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get noActiveCampaigns => 'Nenhuma campanha ativa';
+
+  @override
+  String get preview => 'Preview';
+
+  @override
+  String get acceptPromotion => 'Aceitar promoção';
 }

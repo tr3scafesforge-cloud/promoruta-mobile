@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/core/constants/colors.dart';
+import 'package:promoruta/gen/l10n/app_localizations.dart';
 
 class PromoterHomePage extends StatelessWidget {
   const PromoterHomePage({super.key});
@@ -252,7 +253,7 @@ class _NearbyCampaignCard extends StatelessWidget {
                         const SnackBar(content: Text('Preview (WIP)')),
                       );
                     },
-                    child: const Text('Preview'),
+                    child: Text(AppLocalizations.of(context).preview),
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -271,7 +272,7 @@ class _NearbyCampaignCard extends StatelessWidget {
                         const SnackBar(content: Text('Aceptar promoción (WIP)')),
                       );
                     },
-                    child: const Text('Aceptar promoción'),
+                    child: Text(AppLocalizations.of(context).acceptPromotion),
                   ),
                 ),
               ],

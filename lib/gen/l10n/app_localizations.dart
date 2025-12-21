@@ -1335,6 +1335,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No active campaigns'**
   String get noActiveCampaigns;
+
+  /// Button text to preview a campaign
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get preview;
+
+  /// Button text to accept a promotion
+  ///
+  /// In en, this message translates to:
+  /// **'Accept promotion'**
+  String get acceptPromotion;
 }
 
 class _AppLocalizationsDelegate
