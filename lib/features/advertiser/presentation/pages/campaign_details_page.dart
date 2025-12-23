@@ -87,13 +87,16 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
 
     try {
       final cancelUseCase = ref.read(cancelCampaignUseCaseProvider);
-      await cancelUseCase(CancelCampaignParams(
+      final cancelledCampaign = await cancelUseCase(CancelCampaignParams(
         campaignId: widget.campaignId,
         reason: _reasonController.text.trim(),
       ));
 
-      // Refresh campaigns list and current campaign
-      ref.invalidate(campaignsProvider);
+      // Update the campaigns list with the cancelled campaign
+      final campaignsNotifier = ref.read(campaignsProvider.notifier);
+      await campaignsNotifier.updateCampaign(cancelledCampaign);
+
+      // Refresh providers to ensure all views are updated
       ref.invalidate(activeCampaignsProvider);
       ref.invalidate(campaignByIdProvider(widget.campaignId));
 
