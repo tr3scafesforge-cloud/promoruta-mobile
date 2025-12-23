@@ -16,6 +16,7 @@ enum CampaignStatus {
       case 'completed':
         return CampaignStatus.completed;
       case 'canceled':
+      case 'cancelled':  // Support both American and British spelling
         return CampaignStatus.canceled;
       case 'expired':
         return CampaignStatus.expired;

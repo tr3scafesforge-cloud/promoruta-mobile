@@ -294,6 +294,8 @@ class _CampaignCard extends StatelessWidget {
         _StatusBadge(text: l10n.pending, color: AppColors.pendingOrangeColor),
       ui.CampaignStatus.completed =>
         _StatusBadge(text: l10n.statusCompleted, color: AppColors.completedGreenColor),
+      ui.CampaignStatus.canceled =>
+        _StatusBadge(text: l10n.cancelled, color: Colors.red),
       ui.CampaignStatus.all => const SizedBox.shrink(),
       _ => const SizedBox.shrink(),
     };

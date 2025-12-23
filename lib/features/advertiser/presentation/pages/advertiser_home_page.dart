@@ -383,6 +383,8 @@ class _CampaignCard extends StatelessWidget {
         return AppColors.pendingOrangeColor;
       case model.CampaignStatus.completed:
         return AppColors.completedGreenColor;
+      case model.CampaignStatus.canceled:
+        return Colors.red;
       default:
         return AppColors.greyUnknown;
     }
@@ -396,6 +398,8 @@ class _CampaignCard extends StatelessWidget {
         return l10n.pending;
       case model.CampaignStatus.completed:
         return l10n.completed;
+      case model.CampaignStatus.canceled:
+        return l10n.cancelled;
       default:
         return l10n.active;
     }

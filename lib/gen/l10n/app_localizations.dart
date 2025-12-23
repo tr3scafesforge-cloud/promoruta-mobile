@@ -748,6 +748,12 @@ abstract class AppLocalizations {
   /// **'Completed'**
   String get campaignFilterCompleted;
 
+  /// Filter option for cancelled campaigns
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get campaignFilterCancelled;
+
   /// Tab label for active promoters
   ///
   /// In en, this message translates to:

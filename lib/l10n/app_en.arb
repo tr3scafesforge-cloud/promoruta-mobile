@@ -437,6 +437,10 @@
   "@campaignFilterCompleted": {
     "description": "Filter option for completed campaigns"
   },
+  "campaignFilterCancelled": "Cancelled",
+  "@campaignFilterCancelled": {
+    "description": "Filter option for cancelled campaigns"
+  },
   "activePromoters": "Active Promoters",
   "@activePromoters": {
     "description": "Tab label for active promoters"
