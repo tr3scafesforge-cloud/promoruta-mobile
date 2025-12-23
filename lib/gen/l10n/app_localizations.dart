@@ -634,7 +634,7 @@ abstract class AppLocalizations {
   /// **'Reactivate'**
   String get reactivate;
 
-  /// Label for status section in filter modal
+  /// Label for campaign status
   ///
   /// In en, this message translates to:
   /// **'Status'**
@@ -1234,16 +1234,16 @@ abstract class AppLocalizations {
   /// **'Please select a date'**
   String get pleaseSelectDate;
 
-  /// Label for start time field
+  /// Label for campaign start time
   ///
   /// In en, this message translates to:
-  /// **'Start time'**
+  /// **'Start Time'**
   String get startTime;
 
-  /// Label for end time field
+  /// Label for campaign end time
   ///
   /// In en, this message translates to:
-  /// **'End time'**
+  /// **'End Time'**
   String get endTime;
 
   /// Loading message when uploading audio
@@ -1389,6 +1389,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Take nearby campaigns and start the promo.'**
   String get takeCampaignsNearbyStartPromo;
+
+  /// Title for campaign details page
+  ///
+  /// In en, this message translates to:
+  /// **'Campaign Details'**
+  String get campaignDetails;
+
+  /// Button text to cancel a campaign
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Campaign'**
+  String get cancelCampaign;
+
+  /// Label for cancellation reason input
+  ///
+  /// In en, this message translates to:
+  /// **'Cancellation Reason'**
+  String get cancelReason;
+
+  /// Placeholder for cancellation reason input
+  ///
+  /// In en, this message translates to:
+  /// **'Enter cancellation reason'**
+  String get enterCancellationReason;
+
+  /// Title for confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Cancellation'**
+  String get confirmCancellation;
+
+  /// Message for cancellation confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to cancel this campaign? This action cannot be undone.'**
+  String get areYouSureCancelCampaign;
+
+  /// Success message after campaign cancellation
+  ///
+  /// In en, this message translates to:
+  /// **'Campaign cancelled successfully'**
+  String get campaignCancelled;
+
+  /// Label for suggested price
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested Price'**
+  String get suggestedPrice;
+
+  /// Label for final price
+  ///
+  /// In en, this message translates to:
+  /// **'Final Price'**
+  String get finalPrice;
+
+  /// Label for bid deadline
+  ///
+  /// In en, this message translates to:
+  /// **'Bid Deadline'**
+  String get bidDeadline;
+
+  /// Status text for cancelled campaign
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get cancelled;
+
+  /// Validation message for cancellation reason
+  ///
+  /// In en, this message translates to:
+  /// **'Reason is required'**
+  String get reasonIsRequired;
 }
 
 class _AppLocalizationsDelegate

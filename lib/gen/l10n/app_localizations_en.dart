@@ -607,10 +607,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseSelectDate => 'Please select a date';
 
   @override
-  String get startTime => 'Start time';
+  String get startTime => 'Start Time';
 
   @override
-  String get endTime => 'End time';
+  String get endTime => 'End Time';
 
   @override
   String get uploadingAudioFile => 'Uploading audio file...';
@@ -707,4 +707,41 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get takeCampaignsNearbyStartPromo =>
       'Take nearby campaigns and start the promo.';
+
+  @override
+  String get campaignDetails => 'Campaign Details';
+
+  @override
+  String get cancelCampaign => 'Cancel Campaign';
+
+  @override
+  String get cancelReason => 'Cancellation Reason';
+
+  @override
+  String get enterCancellationReason => 'Enter cancellation reason';
+
+  @override
+  String get confirmCancellation => 'Confirm Cancellation';
+
+  @override
+  String get areYouSureCancelCampaign =>
+      'Are you sure you want to cancel this campaign? This action cannot be undone.';
+
+  @override
+  String get campaignCancelled => 'Campaign cancelled successfully';
+
+  @override
+  String get suggestedPrice => 'Suggested Price';
+
+  @override
+  String get finalPrice => 'Final Price';
+
+  @override
+  String get bidDeadline => 'Bid Deadline';
+
+  @override
+  String get cancelled => 'Cancelled';
+
+  @override
+  String get reasonIsRequired => 'Reason is required';
 }

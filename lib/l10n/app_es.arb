@@ -895,5 +895,65 @@
   "takeCampaignsNearbyStartPromo": "Tomá campañas cercanas y empezá la promo.",
   "@takeCampaignsNearbyStartPromo": {
     "description": "AppBar subtitle for promoter home page"
+  },
+  "campaignDetails": "Detalles de la Campaña",
+  "@campaignDetails": {
+    "description": "Title for campaign details page"
+  },
+  "cancelCampaign": "Cancelar Campaña",
+  "@cancelCampaign": {
+    "description": "Button text to cancel a campaign"
+  },
+  "cancelReason": "Razón de Cancelación",
+  "@cancelReason": {
+    "description": "Label for cancellation reason input"
+  },
+  "enterCancellationReason": "Ingresá la razón de cancelación",
+  "@enterCancellationReason": {
+    "description": "Placeholder for cancellation reason input"
+  },
+  "confirmCancellation": "Confirmar Cancelación",
+  "@confirmCancellation": {
+    "description": "Title for confirmation dialog"
+  },
+  "areYouSureCancelCampaign": "¿Estás seguro de que querés cancelar esta campaña? Esta acción no se puede deshacer.",
+  "@areYouSureCancelCampaign": {
+    "description": "Message for cancellation confirmation dialog"
+  },
+  "campaignCancelled": "Campaña cancelada exitosamente",
+  "@campaignCancelled": {
+    "description": "Success message after campaign cancellation"
+  },
+  "status": "Estado",
+  "@status": {
+    "description": "Label for campaign status"
+  },
+  "suggestedPrice": "Precio Sugerido",
+  "@suggestedPrice": {
+    "description": "Label for suggested price"
+  },
+  "finalPrice": "Precio Final",
+  "@finalPrice": {
+    "description": "Label for final price"
+  },
+  "bidDeadline": "Fecha Límite de Oferta",
+  "@bidDeadline": {
+    "description": "Label for bid deadline"
+  },
+  "startTime": "Hora de Inicio",
+  "@startTime": {
+    "description": "Label for campaign start time"
+  },
+  "endTime": "Hora de Fin",
+  "@endTime": {
+    "description": "Label for campaign end time"
+  },
+  "cancelled": "Cancelada",
+  "@cancelled": {
+    "description": "Status text for cancelled campaign"
+  },
+  "reasonIsRequired": "La razón es requerida",
+  "@reasonIsRequired": {
+    "description": "Validation message for cancellation reason"
   }
 }

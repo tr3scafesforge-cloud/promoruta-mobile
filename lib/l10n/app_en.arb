@@ -895,5 +895,65 @@
   "takeCampaignsNearbyStartPromo": "Take nearby campaigns and start the promo.",
   "@takeCampaignsNearbyStartPromo": {
     "description": "AppBar subtitle for promoter home page"
+  },
+  "campaignDetails": "Campaign Details",
+  "@campaignDetails": {
+    "description": "Title for campaign details page"
+  },
+  "cancelCampaign": "Cancel Campaign",
+  "@cancelCampaign": {
+    "description": "Button text to cancel a campaign"
+  },
+  "cancelReason": "Cancellation Reason",
+  "@cancelReason": {
+    "description": "Label for cancellation reason input"
+  },
+  "enterCancellationReason": "Enter cancellation reason",
+  "@enterCancellationReason": {
+    "description": "Placeholder for cancellation reason input"
+  },
+  "confirmCancellation": "Confirm Cancellation",
+  "@confirmCancellation": {
+    "description": "Title for confirmation dialog"
+  },
+  "areYouSureCancelCampaign": "Are you sure you want to cancel this campaign? This action cannot be undone.",
+  "@areYouSureCancelCampaign": {
+    "description": "Message for cancellation confirmation dialog"
+  },
+  "campaignCancelled": "Campaign cancelled successfully",
+  "@campaignCancelled": {
+    "description": "Success message after campaign cancellation"
+  },
+  "status": "Status",
+  "@status": {
+    "description": "Label for campaign status"
+  },
+  "suggestedPrice": "Suggested Price",
+  "@suggestedPrice": {
+    "description": "Label for suggested price"
+  },
+  "finalPrice": "Final Price",
+  "@finalPrice": {
+    "description": "Label for final price"
+  },
+  "bidDeadline": "Bid Deadline",
+  "@bidDeadline": {
+    "description": "Label for bid deadline"
+  },
+  "startTime": "Start Time",
+  "@startTime": {
+    "description": "Label for campaign start time"
+  },
+  "endTime": "End Time",
+  "@endTime": {
+    "description": "Label for campaign end time"
+  },
+  "cancelled": "Cancelled",
+  "@cancelled": {
+    "description": "Status text for cancelled campaign"
+  },
+  "reasonIsRequired": "Reason is required",
+  "@reasonIsRequired": {
+    "description": "Validation message for cancellation reason"
   }
 }

@@ -382,6 +382,70 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
   }
 
   @override
+  Future<Campaign> cancelCampaign(String id, String reason) async {
+    try {
+      AppLogger.auth.i('Cancelling campaign: $id');
+
+      final response = await dio.post(
+        '/campaigns/$id/cancel',
+        data: {'reason': reason},
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final json = response.data;
+        AppLogger.auth.i('Campaign cancelled successfully: ${json['campaign']['id']}');
+        return Campaign.fromJson(json['campaign']);
+      } else {
+        throw Exception('Failed to cancel campaign: ${response.statusMessage}');
+      }
+    } on DioException catch (e) {
+      AppLogger.auth.e('Campaign cancellation failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+
+      if (e.response != null) {
+        final statusCode = e.response!.statusCode;
+        final responseData = e.response!.data;
+
+        switch (statusCode) {
+          case 404:
+            throw Exception('Campaign not found.');
+          case 403:
+            throw Exception('You do not have permission to cancel this campaign.');
+          case 422:
+            // Handle validation errors
+            if (responseData is Map && responseData.containsKey('message')) {
+              throw Exception(responseData['message'].toString());
+            }
+            if (responseData is Map && responseData.containsKey('errors')) {
+              final errors = responseData['errors'] as Map?;
+              if (errors != null && errors.isNotEmpty) {
+                final firstError = errors.values.first;
+                if (firstError is List && firstError.isNotEmpty) {
+                  throw Exception(firstError.first.toString());
+                }
+              }
+            }
+            throw Exception('Invalid cancellation request.');
+          case 500:
+            throw Exception('Server error. Please try again later.');
+          default:
+            throw Exception('Unable to cancel campaign. Please try again.');
+        }
+      } else {
+        throw Exception('Network error. Please check your connection and try again.');
+      }
+    } catch (e) {
+      AppLogger.auth.e('Unexpected error during campaign cancellation: $e');
+      throw Exception('Failed to cancel campaign: $e');
+    }
+  }
+
+  @override
   Future<AdvertiserKpiStats> getKpiStats() async {
     try {
       AppLogger.auth.i('Fetching advertiser KPI stats');

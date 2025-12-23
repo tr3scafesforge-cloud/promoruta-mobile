@@ -612,10 +612,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get pleaseSelectDate => 'Por favor selecciona una fecha';
 
   @override
-  String get startTime => 'Hora de inicio';
+  String get startTime => 'Hora de Inicio';
 
   @override
-  String get endTime => 'Hora de fin';
+  String get endTime => 'Hora de Fin';
 
   @override
   String get uploadingAudioFile => 'Subiendo archivo de audio...';
@@ -713,4 +713,41 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get takeCampaignsNearbyStartPromo =>
       'Tomá campañas cercanas y empezá la promo.';
+
+  @override
+  String get campaignDetails => 'Detalles de la Campaña';
+
+  @override
+  String get cancelCampaign => 'Cancelar Campaña';
+
+  @override
+  String get cancelReason => 'Razón de Cancelación';
+
+  @override
+  String get enterCancellationReason => 'Ingresá la razón de cancelación';
+
+  @override
+  String get confirmCancellation => 'Confirmar Cancelación';
+
+  @override
+  String get areYouSureCancelCampaign =>
+      '¿Estás seguro de que querés cancelar esta campaña? Esta acción no se puede deshacer.';
+
+  @override
+  String get campaignCancelled => 'Campaña cancelada exitosamente';
+
+  @override
+  String get suggestedPrice => 'Precio Sugerido';
+
+  @override
+  String get finalPrice => 'Precio Final';
+
+  @override
+  String get bidDeadline => 'Fecha Límite de Oferta';
+
+  @override
+  String get cancelled => 'Cancelada';
+
+  @override
+  String get reasonIsRequired => 'La razón es requerida';
 }

@@ -98,3 +98,26 @@ class DeleteCampaignUseCase implements UseCaseVoid<String> {
     return await _repository.deleteCampaign(campaignId);
   }
 }
+
+/// Parameters for cancelling a campaign
+class CancelCampaignParams {
+  final String campaignId;
+  final String reason;
+
+  const CancelCampaignParams({
+    required this.campaignId,
+    required this.reason,
+  });
+}
+
+/// Use case for cancelling a campaign
+class CancelCampaignUseCase implements UseCase<model.Campaign, CancelCampaignParams> {
+  final CampaignRepository _repository;
+
+  CancelCampaignUseCase(this._repository);
+
+  @override
+  Future<model.Campaign> call(CancelCampaignParams params) async {
+    return await _repository.cancelCampaign(params.campaignId, params.reason);
+  }
+}

@@ -20,6 +20,7 @@ import 'package:promoruta/presentation/advertiser/pages/payment_methods_page.dar
 import 'package:promoruta/presentation/advertiser/pages/change_password_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/two_factor_auth_page.dart';
 import 'package:promoruta/features/advertiser/campaign_creation/presentation/pages/create_campaign_page.dart';
+import 'package:promoruta/features/advertiser/presentation/pages/campaign_details_page.dart';
 import 'package:promoruta/shared/shared.dart';
 
 part 'app_router.g.dart';
@@ -266,6 +267,31 @@ class CreateCampaignRoute extends GoRouteData with _$CreateCampaignRoute {
     return CustomTransitionPage(
       key: state.pageKey,
       child: const CreateCampaignPage(),
+      opaque: true,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return _slideTransition(
+          animation: animation,
+          child: child,
+          direction: SlideDirection.fromRight,
+        );
+      },
+    );
+  }
+}
+
+@TypedGoRoute<CampaignDetailsRoute>(
+  path: '/campaign-details/:campaignId',
+)
+class CampaignDetailsRoute extends GoRouteData with _$CampaignDetailsRoute {
+  final String campaignId;
+
+  const CampaignDetailsRoute({required this.campaignId});
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage(
+      key: state.pageKey,
+      child: CampaignDetailsPage(campaignId: campaignId),
       opaque: true,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return _slideTransition(

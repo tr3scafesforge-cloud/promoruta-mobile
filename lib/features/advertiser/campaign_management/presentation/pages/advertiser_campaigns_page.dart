@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
+import 'package:promoruta/app/routes/app_router.dart';
 import '../models/campaign_ui.dart' as ui;
 import 'package:promoruta/shared/widgets/advertiser_search_filter_bar.dart';
 import 'package:promoruta/core/models/campaign.dart' as backend;
@@ -297,8 +298,12 @@ class _CampaignCard extends StatelessWidget {
       _ => const SizedBox.shrink(),
     };
 
-    return Container(
-      decoration: BoxDecoration(
+    return GestureDetector(
+      onTap: () {
+        CampaignDetailsRoute(campaignId: campaign.id).push(context);
+      },
+      child: Container(
+        decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         border: Border.all(color: theme.colorScheme.outline),
         borderRadius: BorderRadius.circular(16),
@@ -373,6 +378,7 @@ class _CampaignCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
       ),
     );
   }

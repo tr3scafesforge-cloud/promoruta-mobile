@@ -297,6 +297,17 @@ final deleteCampaignUseCaseProvider = Provider<DeleteCampaignUseCase>((ref) {
   return DeleteCampaignUseCase(repository);
 });
 
+final cancelCampaignUseCaseProvider = Provider<CancelCampaignUseCase>((ref) {
+  final repository = ref.watch(campaignRepositoryProvider);
+  return CancelCampaignUseCase(repository);
+});
+
+// Provider for getting a single campaign by ID
+final campaignByIdProvider = FutureProvider.family<model.Campaign?, String>((ref, campaignId) async {
+  final getCampaignUseCase = ref.watch(getCampaignUseCaseProvider);
+  return await getCampaignUseCase(campaignId);
+});
+
 // State Notifiers for UI
 final authStateProvider = StateNotifierProvider<AuthNotifier, AsyncValue<model.User?>>((ref) {
   final repository = ref.watch(authRepositoryProvider);

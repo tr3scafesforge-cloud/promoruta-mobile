@@ -14,6 +14,7 @@ abstract class CampaignRepository {
   Future<Campaign> createCampaign(Campaign campaign, {File? audioFile});
   Future<Campaign> updateCampaign(Campaign campaign);
   Future<void> deleteCampaign(String id);
+  Future<Campaign> cancelCampaign(String id, String reason);
   Future<AdvertiserKpiStats> getKpiStats();
 }
 
@@ -39,5 +40,6 @@ abstract class CampaignRemoteDataSource {
   Future<Campaign> createCampaign(Campaign campaign, {File? audioFile});
   Future<Campaign> updateCampaign(Campaign campaign);
   Future<void> deleteCampaign(String id);
+  Future<Campaign> cancelCampaign(String id, String reason);
   Future<AdvertiserKpiStats> getKpiStats();
 }

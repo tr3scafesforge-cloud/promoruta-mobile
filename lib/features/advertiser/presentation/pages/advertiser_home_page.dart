@@ -263,9 +263,15 @@ class _CampaignCard extends StatelessWidget {
     final statusColor = _getStatusColor(campaign.status);
     final statusLabel = _getStatusLabel(campaign.status, l10n);
 
-    return AppCard(
-      padding: const EdgeInsets.all(14),
-      child: Column(
+    return GestureDetector(
+      onTap: () {
+        if (campaign.id != null) {
+          CampaignDetailsRoute(campaignId: campaign.id!).push(context);
+        }
+      },
+      child: AppCard(
+        padding: const EdgeInsets.all(14),
+        child: Column(
         children: [
           // Header row
           Row(
@@ -364,6 +370,7 @@ class _CampaignCard extends StatelessWidget {
             ],
           ),
         ],
+        ),
       ),
     );
   }

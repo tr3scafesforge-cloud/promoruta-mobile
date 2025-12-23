@@ -216,6 +216,30 @@ class CampaignRepositoryImpl implements CampaignRepository {
   }
 
   @override
+  Future<model.Campaign> cancelCampaign(String id, String reason) async {
+    final isConnected = await _connectivityService.isConnected;
+
+    if (isConnected) {
+      try {
+        final cancelledCampaign = await _remoteDataSource.cancelCampaign(id, reason);
+
+        // Try to update local cache, but don't fail if it errors
+        try {
+          await _localDataSource.saveCampaign(cancelledCampaign);
+        } catch (localError) {
+          AppLogger.auth.w('Could not save to local cache: $localError');
+        }
+
+        return cancelledCampaign;
+      } catch (e) {
+        rethrow;
+      }
+    } else {
+      throw Exception('No internet connection. Campaign cancellation requires online access.');
+    }
+  }
+
+  @override
   Future<AdvertiserKpiStats> getKpiStats() async {
     final isConnected = await _connectivityService.isConnected;
 

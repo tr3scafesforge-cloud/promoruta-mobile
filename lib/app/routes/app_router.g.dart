@@ -23,6 +23,7 @@ List<RouteBase> get $appRoutes => [
       $advertiserHomeRoute,
       $advertiserSecuritySettingsRoute,
       $createCampaignRoute,
+      $campaignDetailsRoute,
     ];
 
 RouteBase get $appStartupRoute => GoRouteData.$route(
@@ -482,6 +483,38 @@ mixin _$CreateCampaignRoute on GoRouteData {
   @override
   String get location => GoRouteData.$location(
         '/create-campaign',
+      );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $campaignDetailsRoute => GoRouteData.$route(
+      path: '/campaign-details/:campaignId',
+      factory: _$CampaignDetailsRoute._fromState,
+    );
+
+mixin _$CampaignDetailsRoute on GoRouteData {
+  static CampaignDetailsRoute _fromState(GoRouterState state) =>
+      CampaignDetailsRoute(
+        campaignId: state.pathParameters['campaignId']!,
+      );
+
+  CampaignDetailsRoute get _self => this as CampaignDetailsRoute;
+
+  @override
+  String get location => GoRouteData.$location(
+        '/campaign-details/${Uri.encodeComponent(_self.campaignId)}',
       );
 
   @override
