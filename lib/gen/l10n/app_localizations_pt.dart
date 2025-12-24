@@ -361,7 +361,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get campaignFilterCompleted => 'Concluídas';
 
   @override
-  String get campaignFilterCancelled => 'Cancelled';
+  String get campaignFilterCancelled => 'Canceladas';
 
   @override
   String get activePromoters => 'Promotores Ativos';
@@ -727,39 +727,39 @@ class AppLocalizationsPt extends AppLocalizations {
       'Pegue campanhas próximas e comece a promoção.';
 
   @override
-  String get campaignDetails => 'Campaign Details';
+  String get campaignDetails => 'Detalhes da Campanha';
 
   @override
-  String get cancelCampaign => 'Cancel Campaign';
+  String get cancelCampaign => 'Cancelar Campanha';
 
   @override
-  String get cancelReason => 'Cancellation Reason';
+  String get cancelReason => 'Motivo do Cancelamento';
 
   @override
-  String get enterCancellationReason => 'Enter cancellation reason';
+  String get enterCancellationReason => 'Digite o motivo do cancelamento';
 
   @override
-  String get confirmCancellation => 'Confirm Cancellation';
+  String get confirmCancellation => 'Confirmar Cancelamento';
 
   @override
   String get areYouSureCancelCampaign =>
-      'Are you sure you want to cancel this campaign? This action cannot be undone.';
+      'Tem certeza de que deseja cancelar esta campanha? Esta ação não pode ser desfeita.';
 
   @override
-  String get campaignCancelled => 'Campaign cancelled successfully';
+  String get campaignCancelled => 'Campanha cancelada com sucesso';
 
   @override
-  String get suggestedPrice => 'Suggested Price';
+  String get suggestedPrice => 'Preço Sugerido';
 
   @override
-  String get finalPrice => 'Final Price';
+  String get finalPrice => 'Preço Final';
 
   @override
-  String get bidDeadline => 'Bid Deadline';
+  String get bidDeadline => 'Prazo Limite da Oferta';
 
   @override
-  String get cancelled => 'Cancelled';
+  String get cancelled => 'Cancelada';
 
   @override
-  String get reasonIsRequired => 'Reason is required';
+  String get reasonIsRequired => 'O motivo é obrigatório';
 }

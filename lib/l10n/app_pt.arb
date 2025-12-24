@@ -453,6 +453,10 @@
   "@campaignFilterCompleted": {
     "description": "Filter option for completed campaigns"
   },
+  "campaignFilterCancelled": "Canceladas",
+  "@campaignFilterCancelled": {
+    "description": "Filter option for cancelled campaigns"
+  },
   "activePromoters": "Promotores Ativos",
   "@activePromoters": {
     "description": "Tab label for active promoters"
@@ -911,5 +915,53 @@
   "takeCampaignsNearbyStartPromo": "Pegue campanhas próximas e comece a promoção.",
   "@takeCampaignsNearbyStartPromo": {
     "description": "AppBar subtitle for promoter home page"
+  },
+  "campaignDetails": "Detalhes da Campanha",
+  "@campaignDetails": {
+    "description": "Title for campaign details page"
+  },
+  "cancelCampaign": "Cancelar Campanha",
+  "@cancelCampaign": {
+    "description": "Button text to cancel a campaign"
+  },
+  "cancelReason": "Motivo do Cancelamento",
+  "@cancelReason": {
+    "description": "Label for cancellation reason input"
+  },
+  "enterCancellationReason": "Digite o motivo do cancelamento",
+  "@enterCancellationReason": {
+    "description": "Placeholder for cancellation reason input"
+  },
+  "confirmCancellation": "Confirmar Cancelamento",
+  "@confirmCancellation": {
+    "description": "Title for confirmation dialog"
+  },
+  "areYouSureCancelCampaign": "Tem certeza de que deseja cancelar esta campanha? Esta ação não pode ser desfeita.",
+  "@areYouSureCancelCampaign": {
+    "description": "Message for cancellation confirmation dialog"
+  },
+  "campaignCancelled": "Campanha cancelada com sucesso",
+  "@campaignCancelled": {
+    "description": "Success message after campaign cancellation"
+  },
+  "suggestedPrice": "Preço Sugerido",
+  "@suggestedPrice": {
+    "description": "Label for suggested price"
+  },
+  "finalPrice": "Preço Final",
+  "@finalPrice": {
+    "description": "Label for final price"
+  },
+  "bidDeadline": "Prazo Limite da Oferta",
+  "@bidDeadline": {
+    "description": "Label for bid deadline"
+  },
+  "cancelled": "Cancelada",
+  "@cancelled": {
+    "description": "Status text for cancelled campaign"
+  },
+  "reasonIsRequired": "O motivo é obrigatório",
+  "@reasonIsRequired": {
+    "description": "Validation message for cancellation reason"
   }
 }
