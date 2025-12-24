@@ -232,6 +232,22 @@
   "@thisWeek": {
     "description": "Time period for stats"
   },
+  "thisWeekLabelTop": "Esta",
+  "@thisWeekLabelTop": {
+    "description": "Top label for this week stat card (feminine)"
+  },
+  "thisWeekLabelBottom": "semana",
+  "@thisWeekLabelBottom": {
+    "description": "Bottom label for this week stat card"
+  },
+  "thisMonthLabelTop": "Este",
+  "@thisMonthLabelTop": {
+    "description": "Top label for this month stat card (masculine)"
+  },
+  "thisMonthLabelBottom": "mes",
+  "@thisMonthLabelBottom": {
+    "description": "Bottom label for this month stat card"
+  },
   "investment": "Inversión",
   "@investment": {
     "description": "Label for investment stat"

@@ -448,6 +448,30 @@ abstract class AppLocalizations {
   /// **'this week'**
   String get thisWeek;
 
+  /// Top label for this week stat card (feminine)
+  ///
+  /// In en, this message translates to:
+  /// **'This'**
+  String get thisWeekLabelTop;
+
+  /// Bottom label for this week stat card
+  ///
+  /// In en, this message translates to:
+  /// **'week'**
+  String get thisWeekLabelBottom;
+
+  /// Top label for this month stat card (masculine)
+  ///
+  /// In en, this message translates to:
+  /// **'This'**
+  String get thisMonthLabelTop;
+
+  /// Bottom label for this month stat card
+  ///
+  /// In en, this message translates to:
+  /// **'month'**
+  String get thisMonthLabelBottom;
+
   /// Label for investment stat
   ///
   /// In en, this message translates to:

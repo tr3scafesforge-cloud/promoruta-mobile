@@ -193,6 +193,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get thisWeek => 'this week';
 
   @override
+  String get thisWeekLabelTop => 'This';
+
+  @override
+  String get thisWeekLabelBottom => 'week';
+
+  @override
+  String get thisMonthLabelTop => 'This';
+
+  @override
+  String get thisMonthLabelBottom => 'month';
+
+  @override
   String get investment => 'Investment';
 
   @override

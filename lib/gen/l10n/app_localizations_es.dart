@@ -194,6 +194,18 @@ class AppLocalizationsEs extends AppLocalizations {
   String get thisWeek => 'esta semana';
 
   @override
+  String get thisWeekLabelTop => 'Esta';
+
+  @override
+  String get thisWeekLabelBottom => 'semana';
+
+  @override
+  String get thisMonthLabelTop => 'Este';
+
+  @override
+  String get thisMonthLabelBottom => 'mes';
+
+  @override
   String get investment => 'Inversión';
 
   @override

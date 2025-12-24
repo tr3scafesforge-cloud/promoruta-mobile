@@ -19,6 +19,7 @@ class _PromoterHomeContent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final kpiStatsAsync = ref.watch(promoterKpiStatsProvider);
+    final l10n = AppLocalizations.of(context);
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
@@ -28,27 +29,27 @@ class _PromoterHomeContent extends ConsumerWidget {
           children: [
             Expanded(
               child: kpiStatsAsync.when(
-                loading: () => const StatCard(
+                loading: () => StatCard(
                   icon: Icons.attach_money_rounded,
                   value: '--',
-                  labelTop: 'Esta',
-                  labelBottom: 'semana',
+                  labelTop: l10n.thisWeekLabelTop,
+                  labelBottom: l10n.thisWeekLabelBottom,
                   iconColor: AppColors.deepOrange,
                   backgroundColor: AppColors.deepOrange,
                 ),
-                error: (error, stack) => const StatCard(
+                error: (error, stack) => StatCard(
                   icon: Icons.attach_money_rounded,
                   value: '\$0',
-                  labelTop: 'Esta',
-                  labelBottom: 'semana',
+                  labelTop: l10n.thisWeekLabelTop,
+                  labelBottom: l10n.thisWeekLabelBottom,
                   iconColor: AppColors.deepOrange,
                   backgroundColor: AppColors.deepOrange,
                 ),
                 data: (kpiStats) => StatCard(
                   icon: Icons.attach_money_rounded,
                   value: '\$${kpiStats.thisWeekEarnings.toStringAsFixed(0)}',
-                  labelTop: 'Esta',
-                  labelBottom: 'semana',
+                  labelTop: l10n.thisWeekLabelTop,
+                  labelBottom: l10n.thisWeekLabelBottom,
                   iconColor: AppColors.deepOrange,
                   backgroundColor: AppColors.deepOrange.withValues(alpha: .2),
                 ),
@@ -57,27 +58,27 @@ class _PromoterHomeContent extends ConsumerWidget {
             const SizedBox(width: 12),
             Expanded(
               child: kpiStatsAsync.when(
-                loading: () => const StatCard(
+                loading: () => StatCard(
                   icon: Icons.trending_up_rounded,
                   value: '--',
-                  labelTop: 'Este',
-                  labelBottom: 'mes',
+                  labelTop: l10n.thisMonthLabelTop,
+                  labelBottom: l10n.thisMonthLabelBottom,
                   iconColor: AppColors.completedGreenColor,
                   backgroundColor: AppColors.completedGreenColor,
                 ),
-                error: (error, stack) => const StatCard(
+                error: (error, stack) => StatCard(
                   icon: Icons.trending_up_rounded,
                   value: '\$0',
-                  labelTop: 'Este',
-                  labelBottom: 'mes',
+                  labelTop: l10n.thisMonthLabelTop,
+                  labelBottom: l10n.thisMonthLabelBottom,
                   iconColor: AppColors.completedGreenColor,
                   backgroundColor: AppColors.completedGreenColor,
                 ),
                 data: (kpiStats) => StatCard(
                   icon: Icons.trending_up_rounded,
                   value: '\$${kpiStats.thisMonthEarnings.toStringAsFixed(0)}',
-                  labelTop: 'Este',
-                  labelBottom: 'mes',
+                  labelTop: l10n.thisMonthLabelTop,
+                  labelBottom: l10n.thisMonthLabelBottom,
                   iconColor: AppColors.completedGreenColor,
                   backgroundColor: AppColors.completedGreenColor.withValues(alpha: .2),
                 ),
