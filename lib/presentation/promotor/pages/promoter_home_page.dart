@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
@@ -12,11 +13,13 @@ class PromoterHomePage extends StatelessWidget {
   }
 }
 
-class _PromoterHomeContent extends StatelessWidget {
+class _PromoterHomeContent extends ConsumerWidget {
   const _PromoterHomeContent();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final kpiStatsAsync = ref.watch(promoterKpiStatsProvider);
+
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
       children: [
@@ -24,24 +27,60 @@ class _PromoterHomeContent extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: StatCard(
-                icon: Icons.attach_money_rounded,
-                value: '\$284',
-                labelTop: 'Esta',
-                labelBottom: 'semana',
-                iconColor: AppColors.deepOrange,
-                backgroundColor: AppColors.deepOrange.withValues(alpha: .2),
+              child: kpiStatsAsync.when(
+                loading: () => const StatCard(
+                  icon: Icons.attach_money_rounded,
+                  value: '--',
+                  labelTop: 'Esta',
+                  labelBottom: 'semana',
+                  iconColor: AppColors.deepOrange,
+                  backgroundColor: AppColors.deepOrange,
+                ),
+                error: (error, stack) => const StatCard(
+                  icon: Icons.attach_money_rounded,
+                  value: '\$0',
+                  labelTop: 'Esta',
+                  labelBottom: 'semana',
+                  iconColor: AppColors.deepOrange,
+                  backgroundColor: AppColors.deepOrange,
+                ),
+                data: (kpiStats) => StatCard(
+                  icon: Icons.attach_money_rounded,
+                  value: '\$${kpiStats.thisWeekEarnings.toStringAsFixed(0)}',
+                  labelTop: 'Esta',
+                  labelBottom: 'semana',
+                  iconColor: AppColors.deepOrange,
+                  backgroundColor: AppColors.deepOrange.withValues(alpha: .2),
+                ),
               ),
             ),
-            SizedBox(width: 12),
+            const SizedBox(width: 12),
             Expanded(
-              child: StatCard(
-                icon: Icons.trending_up_rounded,
-                value: '\$320',
-                labelTop: 'Este',
-                labelBottom: 'mes',
-                iconColor: AppColors.completedGreenColor,
-                backgroundColor: AppColors.completedGreenColor.withValues(alpha: .2),
+              child: kpiStatsAsync.when(
+                loading: () => const StatCard(
+                  icon: Icons.trending_up_rounded,
+                  value: '--',
+                  labelTop: 'Este',
+                  labelBottom: 'mes',
+                  iconColor: AppColors.completedGreenColor,
+                  backgroundColor: AppColors.completedGreenColor,
+                ),
+                error: (error, stack) => const StatCard(
+                  icon: Icons.trending_up_rounded,
+                  value: '\$0',
+                  labelTop: 'Este',
+                  labelBottom: 'mes',
+                  iconColor: AppColors.completedGreenColor,
+                  backgroundColor: AppColors.completedGreenColor,
+                ),
+                data: (kpiStats) => StatCard(
+                  icon: Icons.trending_up_rounded,
+                  value: '\$${kpiStats.thisMonthEarnings.toStringAsFixed(0)}',
+                  labelTop: 'Este',
+                  labelBottom: 'mes',
+                  iconColor: AppColors.completedGreenColor,
+                  backgroundColor: AppColors.completedGreenColor.withValues(alpha: .2),
+                ),
               ),
             ),
           ],

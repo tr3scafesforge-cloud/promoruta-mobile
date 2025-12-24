@@ -19,6 +19,10 @@ import 'package:promoruta/features/promotor/gps_tracking/data/datasources/local/
 import 'package:promoruta/features/promotor/gps_tracking/data/datasources/remote/gps_remote_data_source.dart';
 import 'package:promoruta/features/promotor/gps_tracking/data/repositories/gps_repository_impl.dart';
 import 'package:promoruta/features/promotor/gps_tracking/domain/repositories/gps_repository.dart';
+import 'package:promoruta/features/promotor/data/datasources/remote/promoter_remote_data_source.dart';
+import 'package:promoruta/features/promotor/data/repositories/promoter_repository_impl.dart';
+import 'package:promoruta/features/promotor/domain/repositories/promoter_repository.dart';
+import 'package:promoruta/core/models/promoter_kpi_stats.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:promoruta/core/core.dart' as model;
@@ -246,6 +250,21 @@ final gpsRepositoryProvider = Provider<GpsRepository>((ref) {
   );
 });
 
+final promoterRemoteDataSourceProvider = Provider<PromoterRemoteDataSource>((ref) {
+  final dio = ref.watch(dioProvider);
+  return PromoterRemoteDataSourceImpl(dio: dio);
+});
+
+final promoterRepositoryProvider = Provider<PromoterRepository>((ref) {
+  final remoteDataSource = ref.watch(promoterRemoteDataSourceProvider);
+  final connectivityService = ref.watch(connectivityServiceProvider);
+
+  return PromoterRepositoryImpl(
+    remoteDataSource,
+    connectivityService,
+  );
+});
+
 final userRepositoryProvider = Provider<UserRepository>((ref) {
   final localDataSource = ref.watch(userLocalDataSourceProvider);
   final remoteDataSource = ref.watch(userRemoteDataSourceProvider);
@@ -333,9 +352,15 @@ final activeCampaignsProvider = FutureProvider<List<model.Campaign>>((ref) async
   return await getCampaignsUseCase(const GetCampaignsParams(status: 'in_progress'));
 });
 
-// Provider for KPI stats from backend
+// Provider for advertiser KPI stats from backend
 final kpiStatsProvider = FutureProvider.autoDispose<model.AdvertiserKpiStats>((ref) async {
   final repository = ref.watch(campaignRepositoryProvider);
+  return await repository.getKpiStats();
+});
+
+// Provider for promoter KPI stats from backend
+final promoterKpiStatsProvider = FutureProvider.autoDispose<PromoterKpiStats>((ref) async {
+  final repository = ref.watch(promoterRepositoryProvider);
   return await repository.getKpiStats();
 });
 
