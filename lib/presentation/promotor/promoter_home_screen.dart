@@ -36,15 +36,25 @@ class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
         top: false,
         child: _getPage(_currentIndex),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: _accent,
-        onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Ir a ruta (WIP)')),
-            );
-        },
-        child: const Icon(Icons.near_me_rounded),
-      ),
+      floatingActionButton: _currentIndex == 4
+          ? null
+          : FloatingActionButton(
+              elevation: 0.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50),
+              ),
+              backgroundColor: _accent,
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Ir a ruta (WIP)')),
+                );
+              },
+              child: const Icon(
+                Icons.near_me_rounded,
+                color: Colors.white,
+                size: 30,
+              ),
+            ),
       bottomNavigationBar: Container(
         height: kBottomNavigationBarHeight +
             MediaQuery.of(context).viewPadding.bottom,
