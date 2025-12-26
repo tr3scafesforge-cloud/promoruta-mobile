@@ -22,6 +22,8 @@ import 'package:promoruta/presentation/advertiser/pages/two_factor_auth_page.dar
 import 'package:promoruta/features/advertiser/campaign_creation/presentation/pages/create_campaign_page.dart';
 import 'package:promoruta/features/advertiser/presentation/pages/campaign_details_page.dart';
 import 'package:promoruta/shared/shared.dart';
+import 'package:promoruta/app/routes/route_guards.dart';
+import 'package:promoruta/app/routes/auth_notifier.dart';
 
 part 'app_router.g.dart';
 
@@ -308,12 +310,63 @@ class AppRouter {
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>();
 
-  static final GoRouter router = GoRouter(
-    initialLocation: '/',
-    navigatorKey: navigatorKey,
-    routes: $appRoutes, // This will be generated
-  );
+  static GoRouter createRouter(GoRouterAuthNotifier authNotifier) {
+    return GoRouter(
+      initialLocation: '/',
+      navigatorKey: navigatorKey,
+      routes: $appRoutes,
+      refreshListenable: authNotifier,
+      redirect: (context, state) {
+        final user = authNotifier.user;
+        final path = state.uri.path;
+
+        // Allow startup route to handle its own navigation
+        if (path == '/') {
+          return null;
+        }
+
+        final guard = RouteGuards.getGuard(path);
+
+        // Public routes - allow access
+        if (guard != null && !guard.requiresAuth) {
+          return null;
+        }
+
+        // Protected routes - check role-based access only if user is loaded
+        if (guard != null && guard.requiresAuth && user != null) {
+          // Check role-based access
+          if (!guard.canAccess(user.role)) {
+            // User doesn't have required role
+            AppLogger.router.w('Access denied to $path: role ${user.role} not allowed');
+
+            // Redirect to appropriate home based on user's role
+            if (user.role == model.UserRole.promoter) {
+              return '/promoter-home';
+            } else if (user.role == model.UserRole.advertiser) {
+              return '/advertiser-home';
+            }
+            return '/home';
+          }
+        }
+
+        // Allow access if user is null (let AppStartup handle auth)
+        // or if user has the required role
+        return null;
+      },
+    );
+  }
 }
+
+// Auth notifier provider
+final goRouterAuthNotifierProvider = Provider<GoRouterAuthNotifier>((ref) {
+  return GoRouterAuthNotifier(ref);
+});
+
+// Router provider that provides the GoRouter instance
+final routerProvider = Provider<GoRouter>((ref) {
+  final authNotifier = ref.watch(goRouterAuthNotifierProvider);
+  return AppRouter.createRouter(authNotifier);
+});
 
 class AppStartup extends ConsumerStatefulWidget {
   const AppStartup({super.key});

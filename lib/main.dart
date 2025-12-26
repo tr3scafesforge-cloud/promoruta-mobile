@@ -29,6 +29,7 @@ class PromorutaApp extends ConsumerWidget {
     final locale = ref.watch(localeProvider);
     final lightTheme = ref.watch(lightThemeProvider);
     final darkTheme = ref.watch(darkThemeProvider);
+    final router = ref.watch(routerProvider);
 
     return MaterialApp.router(
       title: 'PromoRuta',
@@ -38,7 +39,7 @@ class PromorutaApp extends ConsumerWidget {
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: themeMode,
-      routerConfig: AppRouter.router,
+      routerConfig: router,
       debugShowCheckedModeBanner: false,
     );
   }
