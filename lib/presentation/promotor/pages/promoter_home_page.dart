@@ -262,7 +262,13 @@ class _NearbyCampaignCard extends StatelessWidget {
                         const SnackBar(content: Text('Aceptar promoción (WIP)')),
                       );
                     },
-                    child: Text(AppLocalizations.of(context).acceptPromotion),
+                    child: Text(
+                      AppLocalizations.of(context).acceptPromotion,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
+                    ),
                   ),
                 ),
               ],
