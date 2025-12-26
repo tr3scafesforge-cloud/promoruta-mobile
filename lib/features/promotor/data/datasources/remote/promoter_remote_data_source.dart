@@ -35,6 +35,13 @@ class PromoterRemoteDataSourceImpl implements PromoterRemoteDataSource {
         throw Exception('Failed to fetch KPI stats: ${response.statusMessage}');
       }
     } on DioException catch (e) {
+      // For 401 errors, the TokenRefreshInterceptor should have already handled it
+      // If we still get a 401 here, it means token refresh failed
+      if (e.response?.statusCode == 401) {
+        AppLogger.auth.e('Authentication failed - token refresh unsuccessful');
+        throw Exception('Session expired. Please log in again.');
+      }
+
       AppLogger.auth.e('Fetch promoter KPI stats failed: ${e.response?.statusCode} - ${e.message}');
 
       if (e.response != null) {
