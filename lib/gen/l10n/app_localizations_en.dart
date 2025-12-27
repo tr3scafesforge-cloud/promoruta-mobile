@@ -130,7 +130,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get emailLabel => 'Email';
 
   @override
-  String get emailHint => 'myemail@email.com';
+  String get emailHint => 'user@example.com';
 
   @override
   String get pleaseEnterEmail => 'Please enter your email';
@@ -145,7 +145,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get passwordHint => 'Enter your password';
 
   @override
-  String get pleaseEnterPassword => 'Please enter your password';
+  String get pleaseEnterPassword => 'Please enter a password';
 
   @override
   String get forgotPassword => 'Forgot your password?';
@@ -455,7 +455,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get currentPassword => 'Current password';
 
   @override
-  String get newPassword => 'New password';
+  String get newPassword => 'New Password';
 
   @override
   String get confirmNewPassword => 'Confirm new password';
@@ -759,4 +759,62 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reasonIsRequired => 'Reason is required';
+
+  @override
+  String get forgotPasswordTitle => 'Forgot Password';
+
+  @override
+  String get resetYourPassword => 'Reset your password';
+
+  @override
+  String get resetPasswordDescription =>
+      'Enter your email address and we\'ll send you a 6-digit verification code.';
+
+  @override
+  String get sendCode => 'Send Code';
+
+  @override
+  String get resetPasswordPageTitle => 'Reset Password';
+
+  @override
+  String get checkYourEmail => 'Check your email';
+
+  @override
+  String codeSentToEmail(String email) {
+    return 'We sent a 6-digit code to $email';
+  }
+
+  @override
+  String get codeExpiresIn => 'Code expires in 10 minutes';
+
+  @override
+  String get verificationCode => 'Verification Code';
+
+  @override
+  String get codeHint => '000000';
+
+  @override
+  String get pleaseEnterVerificationCode =>
+      'Please enter the verification code';
+
+  @override
+  String get codeMustBeSixDigits => 'Code must be 6 digits';
+
+  @override
+  String get didntReceiveCodeResend => 'Didn\'t receive code? Resend';
+
+  @override
+  String get minCharacters => 'Min 8 characters';
+
+  @override
+  String get confirmPassword => 'Confirm Password';
+
+  @override
+  String get passwordMinLengthEight => 'Password must be at least 8 characters';
+
+  @override
+  String get pleaseConfirmPassword => 'Please confirm your password';
+
+  @override
+  String get resetPassword => 'Reset Password';
 }

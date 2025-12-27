@@ -322,10 +322,10 @@ abstract class AppLocalizations {
   /// **'Email'**
   String get emailLabel;
 
-  /// Hint text for email input
+  /// Hint text for email input field
   ///
   /// In en, this message translates to:
-  /// **'myemail@email.com'**
+  /// **'user@example.com'**
   String get emailHint;
 
   /// Validation message for empty email
@@ -352,10 +352,10 @@ abstract class AppLocalizations {
   /// **'Enter your password'**
   String get passwordHint;
 
-  /// Validation message for empty password
+  /// Validation error for empty password field
   ///
   /// In en, this message translates to:
-  /// **'Please enter your password'**
+  /// **'Please enter a password'**
   String get pleaseEnterPassword;
 
   /// Forgot password link text
@@ -946,10 +946,10 @@ abstract class AppLocalizations {
   /// **'Current password'**
   String get currentPassword;
 
-  /// Label for new password field
+  /// Label for new password input field
   ///
   /// In en, this message translates to:
-  /// **'New password'**
+  /// **'New Password'**
   String get newPassword;
 
   /// Label for confirm new password field
@@ -982,7 +982,7 @@ abstract class AppLocalizations {
   /// **'Password confirmation is required'**
   String get confirmPasswordRequired;
 
-  /// Validation message when passwords don't match
+  /// Validation error when passwords don't match
   ///
   /// In en, this message translates to:
   /// **'Passwords do not match'**
@@ -1491,6 +1491,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reason is required'**
   String get reasonIsRequired;
+
+  /// Title for forgot password page
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password'**
+  String get forgotPasswordTitle;
+
+  /// Main title on forgot password page
+  ///
+  /// In en, this message translates to:
+  /// **'Reset your password'**
+  String get resetYourPassword;
+
+  /// Description text on forgot password page
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email address and we\'ll send you a 6-digit verification code.'**
+  String get resetPasswordDescription;
+
+  /// Button text to send verification code
+  ///
+  /// In en, this message translates to:
+  /// **'Send Code'**
+  String get sendCode;
+
+  /// Title for reset password page
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get resetPasswordPageTitle;
+
+  /// Title text on verify code page
+  ///
+  /// In en, this message translates to:
+  /// **'Check your email'**
+  String get checkYourEmail;
+
+  /// Message showing where code was sent
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a 6-digit code to {email}'**
+  String codeSentToEmail(String email);
+
+  /// Warning message about code expiration
+  ///
+  /// In en, this message translates to:
+  /// **'Code expires in 10 minutes'**
+  String get codeExpiresIn;
+
+  /// Label for verification code input field
+  ///
+  /// In en, this message translates to:
+  /// **'Verification Code'**
+  String get verificationCode;
+
+  /// Hint text for verification code field
+  ///
+  /// In en, this message translates to:
+  /// **'000000'**
+  String get codeHint;
+
+  /// Validation error for empty code field
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the verification code'**
+  String get pleaseEnterVerificationCode;
+
+  /// Validation error for invalid code length
+  ///
+  /// In en, this message translates to:
+  /// **'Code must be 6 digits'**
+  String get codeMustBeSixDigits;
+
+  /// Button text to resend verification code
+  ///
+  /// In en, this message translates to:
+  /// **'Didn\'t receive code? Resend'**
+  String get didntReceiveCodeResend;
+
+  /// Hint text for password field minimum length
+  ///
+  /// In en, this message translates to:
+  /// **'Min 8 characters'**
+  String get minCharacters;
+
+  /// Label for confirm password input field
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get confirmPassword;
+
+  /// Validation error for password too short
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 8 characters'**
+  String get passwordMinLengthEight;
+
+  /// Validation error for empty confirm password field
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm your password'**
+  String get pleaseConfirmPassword;
+
+  /// Button text to reset password
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get resetPassword;
 }
 
 class _AppLocalizationsDelegate

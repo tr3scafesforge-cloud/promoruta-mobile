@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/app/routes/app_router.dart';
+import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
 
 class ForgotPasswordPage extends ConsumerStatefulWidget {
@@ -66,7 +67,7 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text('Forgot Password'),
+        title: Text(AppLocalizations.of(context).forgotPasswordTitle),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
       body: SafeArea(
@@ -86,7 +87,7 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
                   ),
                   const SizedBox(height: 32),
                   Text(
-                    'Reset your password',
+                    AppLocalizations.of(context).resetYourPassword,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).colorScheme.onSurface,
@@ -95,7 +96,7 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Enter your email address and we\'ll send you a 6-digit verification code.',
+                    AppLocalizations.of(context).resetPasswordDescription,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
@@ -106,8 +107,8 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
-                      labelText: 'Email',
-                      hintText: 'user@example.com',
+                      labelText: AppLocalizations.of(context).emailLabel,
+                      hintText: AppLocalizations.of(context).emailHint,
                       prefixIcon: const Icon(Icons.email),
                       filled: true,
                       fillColor: Theme.of(context).colorScheme.surface,
@@ -133,11 +134,11 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
+                        return AppLocalizations.of(context).pleaseEnterEmail;
                       }
                       if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                           .hasMatch(value)) {
-                        return 'Please enter a valid email';
+                        return AppLocalizations.of(context).enterValidEmail;
                       }
                       return null;
                     },
@@ -164,7 +165,7 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
                             ),
                           )
                         : Text(
-                            'Send Code',
+                            AppLocalizations.of(context).sendCode,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyLarge

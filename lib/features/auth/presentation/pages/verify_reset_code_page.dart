@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/app/routes/app_router.dart';
+import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
 
 class VerifyResetCodePage extends ConsumerStatefulWidget {
@@ -114,7 +115,7 @@ class _VerifyResetCodePageState extends ConsumerState<VerifyResetCodePage> {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text('Reset Password'),
+        title: Text(AppLocalizations.of(context).resetPasswordPageTitle),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
       body: SafeArea(
@@ -133,7 +134,7 @@ class _VerifyResetCodePageState extends ConsumerState<VerifyResetCodePage> {
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  'Check your email',
+                  AppLocalizations.of(context).checkYourEmail,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.onSurface,
@@ -142,7 +143,7 @@ class _VerifyResetCodePageState extends ConsumerState<VerifyResetCodePage> {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  'We sent a 6-digit code to ${widget.email}',
+                  AppLocalizations.of(context).codeSentToEmail(widget.email),
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
@@ -150,7 +151,7 @@ class _VerifyResetCodePageState extends ConsumerState<VerifyResetCodePage> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Code expires in 10 minutes',
+                  AppLocalizations.of(context).codeExpiresIn,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Colors.orange,
                         fontWeight: FontWeight.w500,
@@ -175,8 +176,8 @@ class _VerifyResetCodePageState extends ConsumerState<VerifyResetCodePage> {
                     LengthLimitingTextInputFormatter(6),
                   ],
                   decoration: InputDecoration(
-                    labelText: 'Verification Code',
-                    hintText: '000000',
+                    labelText: AppLocalizations.of(context).verificationCode,
+                    hintText: AppLocalizations.of(context).codeHint,
                     filled: true,
                     fillColor: Theme.of(context).colorScheme.surface,
                     border: OutlineInputBorder(
@@ -202,10 +203,10 @@ class _VerifyResetCodePageState extends ConsumerState<VerifyResetCodePage> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter the verification code';
+                      return AppLocalizations.of(context).pleaseEnterVerificationCode;
                     }
                     if (value.length != 6) {
-                      return 'Code must be 6 digits';
+                      return AppLocalizations.of(context).codeMustBeSixDigits;
                     }
                     return null;
                   },
@@ -218,7 +219,7 @@ class _VerifyResetCodePageState extends ConsumerState<VerifyResetCodePage> {
                   child: TextButton(
                     onPressed: _isLoading ? null : _resendCode,
                     child: Text(
-                      'Didn\'t receive code? Resend',
+                      AppLocalizations.of(context).didntReceiveCodeResend,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: Theme.of(context).colorScheme.primary,
                           ),
@@ -235,8 +236,8 @@ class _VerifyResetCodePageState extends ConsumerState<VerifyResetCodePage> {
                   controller: _passwordController,
                   obscureText: _obscurePassword,
                   decoration: InputDecoration(
-                    labelText: 'New Password',
-                    hintText: 'Min 8 characters',
+                    labelText: AppLocalizations.of(context).newPassword,
+                    hintText: AppLocalizations.of(context).minCharacters,
                     prefixIcon: const Icon(Icons.lock),
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -271,10 +272,10 @@ class _VerifyResetCodePageState extends ConsumerState<VerifyResetCodePage> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter a password';
+                      return AppLocalizations.of(context).pleaseEnterPassword;
                     }
                     if (value.length < 8) {
-                      return 'Password must be at least 8 characters';
+                      return AppLocalizations.of(context).passwordMinLengthEight;
                     }
                     return null;
                   },
@@ -286,7 +287,7 @@ class _VerifyResetCodePageState extends ConsumerState<VerifyResetCodePage> {
                   controller: _confirmPasswordController,
                   obscureText: _obscureConfirmPassword,
                   decoration: InputDecoration(
-                    labelText: 'Confirm Password',
+                    labelText: AppLocalizations.of(context).confirmPassword,
                     prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -323,10 +324,10 @@ class _VerifyResetCodePageState extends ConsumerState<VerifyResetCodePage> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please confirm your password';
+                      return AppLocalizations.of(context).pleaseConfirmPassword;
                     }
                     if (value != _passwordController.text) {
-                      return 'Passwords do not match';
+                      return AppLocalizations.of(context).passwordsDoNotMatch;
                     }
                     return null;
                   },
@@ -355,7 +356,7 @@ class _VerifyResetCodePageState extends ConsumerState<VerifyResetCodePage> {
                           ),
                         )
                       : Text(
-                          'Reset Password',
+                          AppLocalizations.of(context).resetPassword,
                           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                                 fontWeight: FontWeight.w600,
                                 color: Theme.of(context).colorScheme.onPrimary,

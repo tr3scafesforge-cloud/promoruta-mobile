@@ -131,7 +131,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get emailLabel => 'Email';
 
   @override
-  String get emailHint => 'myemail@email.com';
+  String get emailHint => 'usuario@exemplo.com';
 
   @override
   String get pleaseEnterEmail => 'Por favor, digite seu email';
@@ -146,7 +146,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get passwordHint => 'Digite sua senha';
 
   @override
-  String get pleaseEnterPassword => 'Por favor, digite sua senha';
+  String get pleaseEnterPassword => 'Por favor, digite uma senha';
 
   @override
   String get forgotPassword => 'Esqueceu sua senha?';
@@ -457,7 +457,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get currentPassword => 'Senha atual';
 
   @override
-  String get newPassword => 'Nova senha';
+  String get newPassword => 'Nova Senha';
 
   @override
   String get confirmNewPassword => 'Confirmar nova senha';
@@ -762,4 +762,63 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get reasonIsRequired => 'O motivo é obrigatório';
+
+  @override
+  String get forgotPasswordTitle => 'Esqueci minha Senha';
+
+  @override
+  String get resetYourPassword => 'Redefina sua senha';
+
+  @override
+  String get resetPasswordDescription =>
+      'Digite seu endereço de e-mail e enviaremos um código de verificação de 6 dígitos.';
+
+  @override
+  String get sendCode => 'Enviar Código';
+
+  @override
+  String get resetPasswordPageTitle => 'Redefinir Senha';
+
+  @override
+  String get checkYourEmail => 'Verifique seu e-mail';
+
+  @override
+  String codeSentToEmail(String email) {
+    return 'Enviamos um código de 6 dígitos para $email';
+  }
+
+  @override
+  String get codeExpiresIn => 'O código expira em 10 minutos';
+
+  @override
+  String get verificationCode => 'Código de Verificação';
+
+  @override
+  String get codeHint => '000000';
+
+  @override
+  String get pleaseEnterVerificationCode =>
+      'Por favor, digite o código de verificação';
+
+  @override
+  String get codeMustBeSixDigits => 'O código deve ter 6 dígitos';
+
+  @override
+  String get didntReceiveCodeResend => 'Não recebeu o código? Reenviar';
+
+  @override
+  String get minCharacters => 'Mín 8 caracteres';
+
+  @override
+  String get confirmPassword => 'Confirmar Senha';
+
+  @override
+  String get passwordMinLengthEight =>
+      'A senha deve ter pelo menos 8 caracteres';
+
+  @override
+  String get pleaseConfirmPassword => 'Por favor, confirme sua senha';
+
+  @override
+  String get resetPassword => 'Redefinir Senha';
 }

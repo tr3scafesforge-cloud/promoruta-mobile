@@ -975,5 +975,99 @@
   "reasonIsRequired": "La razón es requerida",
   "@reasonIsRequired": {
     "description": "Validation message for cancellation reason"
+  },
+  "forgotPasswordTitle": "Olvidé mi Contraseña",
+  "@forgotPasswordTitle": {
+    "description": "Title for forgot password page"
+  },
+  "resetYourPassword": "Restablecé tu contraseña",
+  "@resetYourPassword": {
+    "description": "Main title on forgot password page"
+  },
+  "resetPasswordDescription": "Ingresá tu dirección de correo y te enviaremos un código de verificación de 6 dígitos.",
+  "@resetPasswordDescription": {
+    "description": "Description text on forgot password page"
+  },
+  "emailHint": "usuario@ejemplo.com",
+  "@emailHint": {
+    "description": "Hint text for email input field"
+  },
+  "sendCode": "Enviar Código",
+  "@sendCode": {
+    "description": "Button text to send verification code"
+  },
+  "resetPasswordPageTitle": "Restablecer Contraseña",
+  "@resetPasswordPageTitle": {
+    "description": "Title for reset password page"
+  },
+  "checkYourEmail": "Revisá tu correo",
+  "@checkYourEmail": {
+    "description": "Title text on verify code page"
+  },
+  "codeSentToEmail": "Te enviamos un código de 6 dígitos a {email}",
+  "@codeSentToEmail": {
+    "description": "Message showing where code was sent",
+    "placeholders": {
+      "email": {
+        "type": "String",
+        "example": "usuario@ejemplo.com"
+      }
+    }
+  },
+  "codeExpiresIn": "El código expira en 10 minutos",
+  "@codeExpiresIn": {
+    "description": "Warning message about code expiration"
+  },
+  "verificationCode": "Código de Verificación",
+  "@verificationCode": {
+    "description": "Label for verification code input field"
+  },
+  "codeHint": "000000",
+  "@codeHint": {
+    "description": "Hint text for verification code field"
+  },
+  "pleaseEnterVerificationCode": "Por favor ingresá el código de verificación",
+  "@pleaseEnterVerificationCode": {
+    "description": "Validation error for empty code field"
+  },
+  "codeMustBeSixDigits": "El código debe tener 6 dígitos",
+  "@codeMustBeSixDigits": {
+    "description": "Validation error for invalid code length"
+  },
+  "didntReceiveCodeResend": "¿No recibiste el código? Reenviar",
+  "@didntReceiveCodeResend": {
+    "description": "Button text to resend verification code"
+  },
+  "newPassword": "Nueva Contraseña",
+  "@newPassword": {
+    "description": "Label for new password input field"
+  },
+  "minCharacters": "Mín 8 caracteres",
+  "@minCharacters": {
+    "description": "Hint text for password field minimum length"
+  },
+  "confirmPassword": "Confirmar Contraseña",
+  "@confirmPassword": {
+    "description": "Label for confirm password input field"
+  },
+  "pleaseEnterPassword": "Por favor ingresá una contraseña",
+  "@pleaseEnterPassword": {
+    "description": "Validation error for empty password field"
+  },
+  "passwordMinLengthEight": "La contraseña debe tener al menos 8 caracteres",
+  "@passwordMinLengthEight": {
+    "description": "Validation error for password too short"
+  },
+  "pleaseConfirmPassword": "Por favor confirmá tu contraseña",
+  "@pleaseConfirmPassword": {
+    "description": "Validation error for empty confirm password field"
+  },
+  "passwordsDoNotMatch": "Las contraseñas no coinciden",
+  "@passwordsDoNotMatch": {
+    "description": "Validation error when passwords don't match"
+  },
+  "resetPassword": "Restablecer Contraseña",
+  "@resetPassword": {
+    "description": "Button text to reset password"
   }
 }
