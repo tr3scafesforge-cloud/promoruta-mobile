@@ -12,6 +12,8 @@ import 'package:promoruta/features/auth/presentation/pages/login_page.dart';
 import 'package:promoruta/features/auth/presentation/pages/onboarding_page.dart';
 import 'package:promoruta/features/auth/presentation/pages/permissions_page.dart';
 import 'package:promoruta/features/auth/presentation/pages/start_page.dart';
+import 'package:promoruta/features/auth/presentation/pages/forgot_password_page.dart';
+import 'package:promoruta/features/auth/presentation/pages/verify_reset_code_page.dart';
 import 'package:promoruta/presentation/home_screen.dart';
 import 'package:promoruta/presentation/promotor/promoter_home_screen.dart';
 import 'package:promoruta/presentation/advertiser/pages/advertiser_security_settings_page.dart';
@@ -78,6 +80,32 @@ class LoginRoute extends GoRouteData with _$LoginRoute {
         ? model.UserRole.fromString(roleParam)
         : model.UserRole.promoter;
     return Login(role: userRole);
+  }
+}
+
+@TypedGoRoute<ForgotPasswordRoute>(
+  path: '/forgot-password',
+)
+class ForgotPasswordRoute extends GoRouteData with _$ForgotPasswordRoute {
+  const ForgotPasswordRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ForgotPasswordPage();
+  }
+}
+
+@TypedGoRoute<VerifyResetCodeRoute>(
+  path: '/verify-reset-code',
+)
+class VerifyResetCodeRoute extends GoRouteData with _$VerifyResetCodeRoute {
+  const VerifyResetCodeRoute({required this.email});
+
+  final String email;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return VerifyResetCodePage(email: email);
   }
 }
 

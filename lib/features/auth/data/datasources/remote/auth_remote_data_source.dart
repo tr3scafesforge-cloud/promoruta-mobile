@@ -168,4 +168,138 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
     }
   }
+
+  @override
+  Future<String> requestPasswordResetCode(String email) async {
+    try {
+      final response = await dio.post(
+        '/auth/mobile/forgot-password',
+        data: {'email': email},
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final data = response.data;
+        return data['message'] ?? 'Password reset code sent to your email';
+      } else if (response.statusCode == 422) {
+        final data = response.data;
+        final errors = data['errors'] as Map?;
+        if (errors != null && errors.isNotEmpty) {
+          final firstError = errors.values.first;
+          if (firstError is List && firstError.isNotEmpty) {
+            throw Exception(firstError.first.toString());
+          }
+        }
+        throw Exception(data['message'] ?? 'Validation error');
+      } else if (response.statusCode == 429) {
+        throw Exception('Too many requests. Please try again in a minute.');
+      } else {
+        throw Exception('An error occurred');
+      }
+    } on DioException catch (e) {
+      AppLogger.auth.e('Request password reset failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+
+      if (e.response != null) {
+        final statusCode = e.response!.statusCode;
+        final responseData = e.response!.data;
+
+        switch (statusCode) {
+          case 422:
+            if (responseData is Map && responseData.containsKey('errors')) {
+              final errors = responseData['errors'] as Map?;
+              if (errors != null && errors.isNotEmpty) {
+                final firstError = errors.values.first;
+                if (firstError is List && firstError.isNotEmpty) {
+                  throw Exception(firstError.first.toString());
+                }
+              }
+            }
+            throw Exception('Invalid email format. Please check your input.');
+          case 429:
+            throw Exception('Too many requests. Please try again in a minute.');
+          default:
+            throw Exception('Unable to request password reset. Please try again later.');
+        }
+      } else {
+        throw Exception('Network error. Please check your connection and try again.');
+      }
+    }
+  }
+
+  @override
+  Future<String> resetPasswordWithCode({
+    required String email,
+    required String code,
+    required String password,
+    required String passwordConfirmation,
+  }) async {
+    try {
+      final response = await dio.post(
+        '/auth/mobile/reset-password',
+        data: {
+          'email': email,
+          'code': code,
+          'password': password,
+          'password_confirmation': passwordConfirmation,
+        },
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final data = response.data;
+        return data['message'] ?? 'Your password has been reset!';
+      } else if (response.statusCode == 422) {
+        final data = response.data;
+        final errors = data['errors'] as Map?;
+        if (errors != null && errors.isNotEmpty) {
+          final firstError = errors.values.first;
+          if (firstError is List && firstError.isNotEmpty) {
+            throw Exception(firstError.first.toString());
+          }
+        }
+        throw Exception(data['message'] ?? 'Validation error');
+      } else if (response.statusCode == 429) {
+        throw Exception('Too many attempts. Please try again later.');
+      } else {
+        throw Exception('An error occurred');
+      }
+    } on DioException catch (e) {
+      AppLogger.auth.e('Reset password failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+
+      if (e.response != null) {
+        final statusCode = e.response!.statusCode;
+        final responseData = e.response!.data;
+
+        switch (statusCode) {
+          case 422:
+            if (responseData is Map && responseData.containsKey('errors')) {
+              final errors = responseData['errors'] as Map?;
+              if (errors != null && errors.isNotEmpty) {
+                final firstError = errors.values.first;
+                if (firstError is List && firstError.isNotEmpty) {
+                  throw Exception(firstError.first.toString());
+                }
+              }
+            }
+            throw Exception('Invalid code or password format. Please check your input.');
+          case 429:
+            throw Exception('Too many attempts. Please try again later.');
+          default:
+            throw Exception('Unable to reset password. Please try again later.');
+        }
+      } else {
+        throw Exception('Network error. Please check your connection and try again.');
+      }
+    }
+  }
 }

@@ -11,6 +11,8 @@ List<RouteBase> get $appRoutes => [
       $onboardingRoute,
       $homeRoute,
       $loginRoute,
+      $forgotPasswordRoute,
+      $verifyResetCodeRoute,
       $chooseRoleRoute,
       $permissionsRoute,
       $languageSettingsRoute,
@@ -161,6 +163,69 @@ T? _$convertMapValue<T>(
 extension<T extends Enum> on Map<T, String> {
   T? _$fromName(String? value) =>
       entries.where((element) => element.value == value).firstOrNull?.key;
+}
+
+RouteBase get $forgotPasswordRoute => GoRouteData.$route(
+      path: '/forgot-password',
+      factory: _$ForgotPasswordRoute._fromState,
+    );
+
+mixin _$ForgotPasswordRoute on GoRouteData {
+  static ForgotPasswordRoute _fromState(GoRouterState state) =>
+      const ForgotPasswordRoute();
+
+  @override
+  String get location => GoRouteData.$location(
+        '/forgot-password',
+      );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $verifyResetCodeRoute => GoRouteData.$route(
+      path: '/verify-reset-code',
+      factory: _$VerifyResetCodeRoute._fromState,
+    );
+
+mixin _$VerifyResetCodeRoute on GoRouteData {
+  static VerifyResetCodeRoute _fromState(GoRouterState state) =>
+      VerifyResetCodeRoute(
+        email: state.uri.queryParameters['email']!,
+      );
+
+  VerifyResetCodeRoute get _self => this as VerifyResetCodeRoute;
+
+  @override
+  String get location => GoRouteData.$location(
+        '/verify-reset-code',
+        queryParams: {
+          'email': _self.email,
+        },
+      );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
 }
 
 RouteBase get $chooseRoleRoute => GoRouteData.$route(

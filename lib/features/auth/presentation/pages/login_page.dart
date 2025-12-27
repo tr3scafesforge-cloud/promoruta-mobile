@@ -256,7 +256,7 @@ class _LoginState extends ConsumerState<Login> {
                           alignment: Alignment.centerRight,
                           child: TextButton(
                             onPressed: () {
-                              // TODO: Implement forgot password
+                              const ForgotPasswordRoute().push(context);
                             },
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.zero,

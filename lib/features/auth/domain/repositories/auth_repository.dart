@@ -25,6 +25,17 @@ abstract class AuthRepository {
 
   /// Changes the user's password.
   Future<void> changePassword(String currentPassword, String newPassword, String newPasswordConfirmation);
+
+  /// Requests a password reset code to be sent to the email.
+  Future<String> requestPasswordResetCode(String email);
+
+  /// Resets password using the verification code.
+  Future<String> resetPasswordWithCode({
+    required String email,
+    required String code,
+    required String password,
+    required String passwordConfirmation,
+  });
 }
 
 /// Abstract local data source for authentication.
@@ -54,4 +65,15 @@ abstract class AuthRemoteDataSource {
 
   /// Changes the user's password.
   Future<void> changePassword(String currentPassword, String newPassword, String newPasswordConfirmation);
+
+  /// Requests a password reset code to be sent to the email.
+  Future<String> requestPasswordResetCode(String email);
+
+  /// Resets password using the verification code.
+  Future<String> resetPasswordWithCode({
+    required String email,
+    required String code,
+    required String password,
+    required String passwordConfirmation,
+  });
 }

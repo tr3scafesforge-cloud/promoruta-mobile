@@ -129,4 +129,44 @@ class AuthRepositoryImpl implements AuthRepository {
       throw Exception('No internet connection for password change');
     }
   }
+
+  @override
+  Future<String> requestPasswordResetCode(String email) async {
+    final isConnected = await _connectivityService.isConnected;
+
+    if (isConnected) {
+      try {
+        return await _remoteDataSource.requestPasswordResetCode(email);
+      } catch (e) {
+        rethrow;
+      }
+    } else {
+      throw Exception('No internet connection. Please check your connection and try again.');
+    }
+  }
+
+  @override
+  Future<String> resetPasswordWithCode({
+    required String email,
+    required String code,
+    required String password,
+    required String passwordConfirmation,
+  }) async {
+    final isConnected = await _connectivityService.isConnected;
+
+    if (isConnected) {
+      try {
+        return await _remoteDataSource.resetPasswordWithCode(
+          email: email,
+          code: code,
+          password: password,
+          passwordConfirmation: passwordConfirmation,
+        );
+      } catch (e) {
+        rethrow;
+      }
+    } else {
+      throw Exception('No internet connection. Please check your connection and try again.');
+    }
+  }
 }
