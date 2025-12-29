@@ -342,6 +342,231 @@ class _SegmentButton extends StatelessWidget {
 }
 
 class _HistoricoView extends StatelessWidget {
+  final List<EarningTransaction> transactions = [
+    EarningTransaction(
+      campaignName: 'Promoción Cafetería',
+      promoterCompany: 'Promoter Company',
+      date: '2025-02-15',
+      amount: 48.20,
+      status: 'Pagada',
+      paymentMethod: 'Transferencia Bancaria',
+    ),
+    EarningTransaction(
+      campaignName: 'Promoción Cafetería',
+      promoterCompany: 'Promoter Company',
+      date: '2025-02-15',
+      amount: 148.20,
+      status: 'Pendiente',
+      paymentMethod: 'Paypal',
+    ),
+    EarningTransaction(
+      campaignName: 'Promoción Supermercado',
+      promoterCompany: 'Promoter Company',
+      date: '2025-02-10',
+      amount: 250.00,
+      status: 'Pagada',
+      paymentMethod: 'Transferencia Bancaria',
+    ),
+    EarningTransaction(
+      campaignName: 'Promoción Bebidas',
+      promoterCompany: 'Promoter Company',
+      date: '2025-02-08',
+      amount: 75.50,
+      status: 'Pagada',
+      paymentMethod: 'Paypal',
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: AppColors.grayLightStroke,
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Ganancias recientes',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              TextButton.icon(
+                onPressed: () {
+                  // Handle download report
+                },
+                icon: const Icon(Icons.download, size: 18),
+                label: const Text('Descargar Reporte'),
+                style: TextButton.styleFrom(
+                  foregroundColor: AppColors.secondary,
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          ...transactions.map((transaction) => Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: _TransactionItem(transaction: transaction),
+              )),
+        ],
+      ),
+    );
+  }
+}
+
+class _TransactionItem extends StatelessWidget {
+  final EarningTransaction transaction;
+
+  const _TransactionItem({required this.transaction});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isPaid = transaction.status == 'Pagada';
+
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: AppColors.grayLightStroke,
+          width: 1,
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: AppColors.secondary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(
+              Icons.attach_money,
+              color: AppColors.secondary,
+              size: 24,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  transaction.campaignName,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  transaction.promoterCompany,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.calendar_today,
+                      size: 12,
+                      color: AppColors.textSecondary,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      transaction.date,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: AppColors.textSecondary,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                '\$${transaction.amount.toStringAsFixed(2)}',
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: isPaid
+                      ? AppColors.green.withValues(alpha: 0.1)
+                      : AppColors.pendingOrangeColor.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (isPaid)
+                      Icon(
+                        Icons.check_circle,
+                        size: 12,
+                        color: AppColors.green,
+                      ),
+                    if (!isPaid)
+                      Icon(
+                        Icons.schedule,
+                        size: 12,
+                        color: AppColors.pendingOrangeColor,
+                      ),
+                    const SizedBox(width: 4),
+                    Text(
+                      transaction.status,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: isPaid ? AppColors.green : AppColors.pendingOrangeColor,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 11,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                transaction.paymentMethod,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: AppColors.textSecondary,
+                  fontSize: 11,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _EstadisticasView extends StatelessWidget {
   final List<MonthlyEarning> earnings = [
     MonthlyEarning('Ene', 485),
     MonthlyEarning('Dic', 432),
@@ -468,52 +693,6 @@ class _EarningBar extends StatelessWidget {
   }
 }
 
-class _EstadisticasView extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: AppColors.grayLightStroke,
-          width: 1,
-        ),
-      ),
-      child: Center(
-        child: Column(
-          children: [
-            Icon(
-              Icons.bar_chart_rounded,
-              size: 48,
-              color: AppColors.textSecondary,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'Estadísticas',
-              style: theme.textTheme.titleMedium?.copyWith(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Vista de estadísticas detalladas (pendiente)',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.textSecondary,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class _PagosView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -565,4 +744,22 @@ class MonthlyEarning {
   final int amount;
 
   MonthlyEarning(this.month, this.amount);
+}
+
+class EarningTransaction {
+  final String campaignName;
+  final String promoterCompany;
+  final String date;
+  final double amount;
+  final String status;
+  final String paymentMethod;
+
+  EarningTransaction({
+    required this.campaignName,
+    required this.promoterCompany,
+    required this.date,
+    required this.amount,
+    required this.status,
+    required this.paymentMethod,
+  });
 }
