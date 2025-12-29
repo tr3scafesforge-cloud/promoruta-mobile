@@ -397,22 +397,30 @@ class _HistoricoView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Ganancias recientes',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textPrimary,
+              Flexible(
+                child: Text(
+                  'Ganancias recientes',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textPrimary,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-              TextButton.icon(
-                onPressed: () {
-                  // Handle download report
-                },
-                icon: const Icon(Icons.download, size: 18),
-                label: const Text('Descargar Reporte'),
-                style: TextButton.styleFrom(
-                  foregroundColor: AppColors.secondary,
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              Flexible(
+                child: TextButton.icon(
+                  onPressed: () {
+                    // Handle download report
+                  },
+                  icon: const Icon(Icons.download, size: 18),
+                  label: const Text(
+                    'Descargar Reporte',
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppColors.secondary,
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  ),
                 ),
               ),
             ],
@@ -474,6 +482,7 @@ class _TransactionItem extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     color: AppColors.textPrimary,
                   ),
+                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 2),
                 Text(
@@ -481,6 +490,7 @@ class _TransactionItem extends StatelessWidget {
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
                   ),
+                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 4),
                 Row(
@@ -491,11 +501,14 @@ class _TransactionItem extends StatelessWidget {
                       color: AppColors.textSecondary,
                     ),
                     const SizedBox(width: 4),
-                    Text(
-                      transaction.date,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
-                        fontSize: 12,
+                    Flexible(
+                      child: Text(
+                        transaction.date,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: AppColors.textSecondary,
+                          fontSize: 12,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
@@ -557,6 +570,7 @@ class _TransactionItem extends StatelessWidget {
                   color: AppColors.textSecondary,
                   fontSize: 11,
                 ),
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
@@ -694,12 +708,27 @@ class _EarningBar extends StatelessWidget {
 }
 
 class _PagosView extends StatelessWidget {
+  final List<PaymentMethod> paymentMethods = [
+    PaymentMethod(
+      type: 'Transferencia Bancaria',
+      identifier: '****1234 - Santander',
+      icon: Icons.account_balance,
+      isPrimary: true,
+    ),
+    PaymentMethod(
+      type: 'Paypal',
+      identifier: 'john.doe@gmail.com',
+      icon: Icons.payment,
+      isPrimary: false,
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -708,32 +737,145 @@ class _PagosView extends StatelessWidget {
           width: 1,
         ),
       ),
-      child: Center(
-        child: Column(
-          children: [
-            Icon(
-              Icons.payment_rounded,
-              size: 48,
-              color: AppColors.textSecondary,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'Historial de Pagos',
-              style: theme.textTheme.titleMedium?.copyWith(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.w600,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: Text(
+                  'Métodos de pago',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textPrimary,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Vista de historial de pagos (pendiente)',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.textSecondary,
+              Flexible(
+                child: TextButton.icon(
+                  onPressed: () {
+                    // Handle add payment method
+                  },
+                  icon: const Icon(Icons.add, size: 18),
+                  label: const Text(
+                    'Agregar método de pago',
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppColors.secondary,
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  ),
+                ),
               ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+            ],
+          ),
+          const SizedBox(height: 16),
+          ...paymentMethods.map((method) => Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: _PaymentMethodItem(paymentMethod: method),
+              )),
+        ],
+      ),
+    );
+  }
+}
+
+class _PaymentMethodItem extends StatelessWidget {
+  final PaymentMethod paymentMethod;
+
+  const _PaymentMethodItem({required this.paymentMethod});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: AppColors.grayLightStroke,
+          width: 1,
         ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              color: AppColors.secondary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(
+              paymentMethod.icon,
+              color: AppColors.secondary,
+              size: 24,
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        paymentMethod.type,
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textPrimary,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    if (paymentMethod.isPrimary) ...[
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: AppColors.secondary.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          'Principal',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: AppColors.secondary,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 11,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  paymentMethod.identifier,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          TextButton(
+            onPressed: () {
+              // Handle edit payment method
+            },
+            style: TextButton.styleFrom(
+              foregroundColor: AppColors.secondary,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            ),
+            child: const Text('Editar'),
+          ),
+        ],
       ),
     );
   }
@@ -761,5 +903,19 @@ class EarningTransaction {
     required this.amount,
     required this.status,
     required this.paymentMethod,
+  });
+}
+
+class PaymentMethod {
+  final String type;
+  final String identifier;
+  final IconData icon;
+  final bool isPrimary;
+
+  PaymentMethod({
+    required this.type,
+    required this.identifier,
+    required this.icon,
+    required this.isPrimary,
   });
 }
