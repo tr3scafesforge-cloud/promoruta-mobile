@@ -1,12 +1,568 @@
 import 'package:flutter/material.dart';
+import 'package:promoruta/core/constants/colors.dart';
 
-class PromoterEarningsPage extends StatelessWidget {
+class PromoterEarningsPage extends StatefulWidget {
   const PromoterEarningsPage({super.key});
 
   @override
+  State<PromoterEarningsPage> createState() => _PromoterEarningsPageState();
+}
+
+class _PromoterEarningsPageState extends State<PromoterEarningsPage> {
+  int _selectedSegment = 0;
+
+  @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Ganancias (pendiente)', style: TextStyle(fontSize: 18)),
+    final theme = Theme.of(context);
+
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header
+              Text(
+                'Ingresos',
+                style: theme.textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Segui tus ingresos por campañas y gestioná tus cobros',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              // Total Earnings Card
+              _EarningsCard(
+                title: 'Ganancias totales',
+                amount: '\$2,847.50',
+                subtitle: 'Acumulado',
+                icon: Icons.attach_money,
+              ),
+              const SizedBox(height: 12),
+
+              // This Month Card
+              _EarningsCard(
+                title: 'Este mes',
+                amount: '\$547.50',
+                subtitle: '23.5% más que el mes pasado',
+                subtitleColor: AppColors.green,
+                icon: Icons.trending_up,
+              ),
+              const SizedBox(height: 12),
+
+              // Available Card with Button
+              _AvailableEarningsCard(),
+              const SizedBox(height: 16),
+
+              // Pending Earnings Warning
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFF4E6),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: const Color(0xFFFFE0B2),
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.info_outline,
+                      color: Colors.orange.shade700,
+                      size: 24,
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Ganancias pendientes: \$156.23',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: Colors.orange.shade900,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Disponible para retiro al finalizar la campaña.',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: Colors.orange.shade800,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              // Segmented Control
+              Container(
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: _SegmentButton(
+                        label: 'Histórico',
+                        isSelected: _selectedSegment == 0,
+                        onTap: () => setState(() => _selectedSegment = 0),
+                      ),
+                    ),
+                    Expanded(
+                      child: _SegmentButton(
+                        label: 'Estadísticas',
+                        isSelected: _selectedSegment == 1,
+                        onTap: () => setState(() => _selectedSegment = 1),
+                      ),
+                    ),
+                    Expanded(
+                      child: _SegmentButton(
+                        label: 'Pagos',
+                        isSelected: _selectedSegment == 2,
+                        onTap: () => setState(() => _selectedSegment = 2),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              // Content based on selected segment
+              if (_selectedSegment == 0) _HistoricoView(),
+              if (_selectedSegment == 1) _EstadisticasView(),
+              if (_selectedSegment == 2) _PagosView(),
+            ],
+          ),
+        ),
+      ),
     );
   }
+}
+
+class _EarningsCard extends StatelessWidget {
+  final String title;
+  final String amount;
+  final String subtitle;
+  final Color? subtitleColor;
+  final IconData icon;
+
+  const _EarningsCard({
+    required this.title,
+    required this.amount,
+    required this.subtitle,
+    this.subtitleColor,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: AppColors.grayLightStroke,
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                title,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+              ),
+              Icon(
+                icon,
+                color: AppColors.textSecondary,
+                size: 20,
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            amount,
+            style: theme.textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            subtitle,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: subtitleColor ?? AppColors.textSecondary,
+              fontWeight: subtitleColor != null ? FontWeight.w500 : null,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AvailableEarningsCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: AppColors.grayLightStroke,
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Disponible',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+              ),
+              Icon(
+                Icons.account_balance_wallet_outlined,
+                color: AppColors.textSecondary,
+                size: 20,
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '\$5,473.50',
+            style: theme.textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                // Handle withdraw action
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.secondary,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text(
+                'Retirar fondos',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SegmentButton extends StatelessWidget {
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const _SegmentButton({
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.white : Colors.transparent,
+          borderRadius: BorderRadius.circular(6),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ]
+              : null,
+        ),
+        child: Text(
+          label,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: isSelected ? AppColors.textPrimary : AppColors.textSecondary,
+            fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+            fontSize: 14,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _HistoricoView extends StatelessWidget {
+  final List<MonthlyEarning> earnings = [
+    MonthlyEarning('Ene', 485),
+    MonthlyEarning('Dic', 432),
+    MonthlyEarning('Nov', 380),
+    MonthlyEarning('Oct', 520),
+    MonthlyEarning('Sept', 290),
+    MonthlyEarning('Ago', 410),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final maxValue = earnings.map((e) => e.amount).reduce((a, b) => a > b ? a : b);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: AppColors.grayLightStroke,
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Ganancias por mes',
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Últimos 6 meses',
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: AppColors.textSecondary,
+            ),
+          ),
+          const SizedBox(height: 24),
+          ...earnings.map((earning) => Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: _EarningBar(
+                  month: earning.month,
+                  amount: earning.amount,
+                  maxValue: maxValue.toDouble(),
+                ),
+              )),
+        ],
+      ),
+    );
+  }
+}
+
+class _EarningBar extends StatelessWidget {
+  final String month;
+  final int amount;
+  final double maxValue;
+
+  const _EarningBar({
+    required this.month,
+    required this.amount,
+    required this.maxValue,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final percentage = amount / maxValue;
+
+    return Row(
+      children: [
+        SizedBox(
+          width: 40,
+          child: Text(
+            month,
+            style: const TextStyle(
+              color: AppColors.textPrimary,
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Stack(
+            children: [
+              Container(
+                height: 24,
+                decoration: BoxDecoration(
+                  color: AppColors.grayLightStroke,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
+              FractionallySizedBox(
+                widthFactor: percentage,
+                child: Container(
+                  height: 24,
+                  decoration: BoxDecoration(
+                    color: AppColors.secondary,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: 12),
+        SizedBox(
+          width: 50,
+          child: Text(
+            '\$$amount',
+            textAlign: TextAlign.right,
+            style: const TextStyle(
+              color: AppColors.textPrimary,
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _EstadisticasView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: AppColors.grayLightStroke,
+          width: 1,
+        ),
+      ),
+      child: Center(
+        child: Column(
+          children: [
+            Icon(
+              Icons.bar_chart_rounded,
+              size: 48,
+              color: AppColors.textSecondary,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Estadísticas',
+              style: theme.textTheme.titleMedium?.copyWith(
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Vista de estadísticas detalladas (pendiente)',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: AppColors.textSecondary,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PagosView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: AppColors.grayLightStroke,
+          width: 1,
+        ),
+      ),
+      child: Center(
+        child: Column(
+          children: [
+            Icon(
+              Icons.payment_rounded,
+              size: 48,
+              color: AppColors.textSecondary,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Historial de Pagos',
+              style: theme.textTheme.titleMedium?.copyWith(
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Vista de historial de pagos (pendiente)',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: AppColors.textSecondary,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MonthlyEarning {
+  final String month;
+  final int amount;
+
+  MonthlyEarning(this.month, this.amount);
 }
