@@ -278,7 +278,9 @@ class _AvailableEarningsCard extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
-                // Handle withdraw action
+                ScaffoldMessenger.of(context).showSnackBar(
+                     SnackBar(content: Text('${l10n.withdrawFunds} (WIP)')),
+                  );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.secondary,
