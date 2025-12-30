@@ -1187,5 +1187,76 @@
   "edit": "Editar",
   "@edit": {
     "description": "Button text to edit"
+  },
+  "activeJobs": "Trabajos activos",
+  "@activeJobs": {
+    "description": "Title for active jobs page"
+  },
+  "controlYourCampaigns": "Controlá tus campañas en ejecución",
+  "@controlYourCampaigns": {
+    "description": "Subtitle for active jobs page"
+  },
+  "activeJobsCount": "Trabajos Activos",
+  "@activeJobsCount": {
+    "description": "Label for active jobs count"
+  },
+  "earningsToday": "Ganancias hoy",
+  "@earningsToday": {
+    "description": "Label for today's earnings"
+  },
+  "hoursWorked": "Horas trabajadas",
+  "@hoursWorked": {
+    "description": "Label for hours worked"
+  },
+  "inProgress": "En curso",
+  "@inProgress": {
+    "description": "Label for in-progress tab"
+  },
+  "completedToday": "Completados hoy",
+  "@completedToday": {
+    "description": "Label for completed today tab"
+  },
+  "inProgressStatus": "En progreso",
+  "@inProgressStatus": {
+    "description": "Status badge for in-progress campaign"
+  },
+  "hoursCount": "{count} horas",
+  "@hoursCount": {
+    "description": "Label for hours count",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "progress": "Progreso",
+  "@progress": {
+    "description": "Label for progress section"
+  },
+  "timeRemaining": "{time} restantes",
+  "@timeRemaining": {
+    "description": "Label for remaining time",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "percentageCompleted": "{percentage}% completado",
+  "@percentageCompleted": {
+    "description": "Label for completion percentage",
+    "placeholders": {
+      "percentage": {
+        "type": "String"
+      }
+    }
+  },
+  "pausePromotion": "Pausar promoción",
+  "@pausePromotion": {
+    "description": "Button text to pause promotion"
+  },
+  "noCampaignsCompletedToday": "No hay campañas completadas hoy",
+  "@noCampaignsCompletedToday": {
+    "description": "Message when no campaigns completed today"
   }
 }

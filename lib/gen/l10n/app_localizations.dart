@@ -1761,6 +1761,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit'**
   String get edit;
+
+  /// Title for active jobs page
+  ///
+  /// In en, this message translates to:
+  /// **'Active jobs'**
+  String get activeJobs;
+
+  /// Subtitle for active jobs page
+  ///
+  /// In en, this message translates to:
+  /// **'Control your campaigns in progress'**
+  String get controlYourCampaigns;
+
+  /// Label for active jobs count
+  ///
+  /// In en, this message translates to:
+  /// **'Active Jobs'**
+  String get activeJobsCount;
+
+  /// Label for today's earnings
+  ///
+  /// In en, this message translates to:
+  /// **'Earnings today'**
+  String get earningsToday;
+
+  /// Label for hours worked
+  ///
+  /// In en, this message translates to:
+  /// **'Hours worked'**
+  String get hoursWorked;
+
+  /// Label for in-progress tab
+  ///
+  /// In en, this message translates to:
+  /// **'In progress'**
+  String get inProgress;
+
+  /// Label for completed today tab
+  ///
+  /// In en, this message translates to:
+  /// **'Completed today'**
+  String get completedToday;
+
+  /// Status badge for in-progress campaign
+  ///
+  /// In en, this message translates to:
+  /// **'In progress'**
+  String get inProgressStatus;
+
+  /// Label for hours count
+  ///
+  /// In en, this message translates to:
+  /// **'{count} hours'**
+  String hoursCount(String count);
+
+  /// Label for progress section
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get progress;
+
+  /// Label for remaining time
+  ///
+  /// In en, this message translates to:
+  /// **'{time} remaining'**
+  String timeRemaining(String time);
+
+  /// Label for completion percentage
+  ///
+  /// In en, this message translates to:
+  /// **'{percentage}% completed'**
+  String percentageCompleted(String percentage);
+
+  /// Button text to pause promotion
+  ///
+  /// In en, this message translates to:
+  /// **'Pause promotion'**
+  String get pausePromotion;
+
+  /// Message when no campaigns completed today
+  ///
+  /// In en, this message translates to:
+  /// **'No campaigns completed today'**
+  String get noCampaignsCompletedToday;
 }
 
 class _AppLocalizationsDelegate

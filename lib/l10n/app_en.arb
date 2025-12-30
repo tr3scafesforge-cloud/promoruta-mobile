@@ -1187,5 +1187,76 @@
   "edit": "Edit",
   "@edit": {
     "description": "Button text to edit"
+  },
+  "activeJobs": "Active jobs",
+  "@activeJobs": {
+    "description": "Title for active jobs page"
+  },
+  "controlYourCampaigns": "Control your campaigns in progress",
+  "@controlYourCampaigns": {
+    "description": "Subtitle for active jobs page"
+  },
+  "activeJobsCount": "Active Jobs",
+  "@activeJobsCount": {
+    "description": "Label for active jobs count"
+  },
+  "earningsToday": "Earnings today",
+  "@earningsToday": {
+    "description": "Label for today's earnings"
+  },
+  "hoursWorked": "Hours worked",
+  "@hoursWorked": {
+    "description": "Label for hours worked"
+  },
+  "inProgress": "In progress",
+  "@inProgress": {
+    "description": "Label for in-progress tab"
+  },
+  "completedToday": "Completed today",
+  "@completedToday": {
+    "description": "Label for completed today tab"
+  },
+  "inProgressStatus": "In progress",
+  "@inProgressStatus": {
+    "description": "Status badge for in-progress campaign"
+  },
+  "hoursCount": "{count} hours",
+  "@hoursCount": {
+    "description": "Label for hours count",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "progress": "Progress",
+  "@progress": {
+    "description": "Label for progress section"
+  },
+  "timeRemaining": "{time} remaining",
+  "@timeRemaining": {
+    "description": "Label for remaining time",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "percentageCompleted": "{percentage}% completed",
+  "@percentageCompleted": {
+    "description": "Label for completion percentage",
+    "placeholders": {
+      "percentage": {
+        "type": "String"
+      }
+    }
+  },
+  "pausePromotion": "Pause promotion",
+  "@pausePromotion": {
+    "description": "Button text to pause promotion"
+  },
+  "noCampaignsCompletedToday": "No campaigns completed today",
+  "@noCampaignsCompletedToday": {
+    "description": "Message when no campaigns completed today"
   }
 }

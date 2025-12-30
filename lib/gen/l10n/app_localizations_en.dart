@@ -904,4 +904,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get edit => 'Edit';
+
+  @override
+  String get activeJobs => 'Active jobs';
+
+  @override
+  String get controlYourCampaigns => 'Control your campaigns in progress';
+
+  @override
+  String get activeJobsCount => 'Active Jobs';
+
+  @override
+  String get earningsToday => 'Earnings today';
+
+  @override
+  String get hoursWorked => 'Hours worked';
+
+  @override
+  String get inProgress => 'In progress';
+
+  @override
+  String get completedToday => 'Completed today';
+
+  @override
+  String get inProgressStatus => 'In progress';
+
+  @override
+  String hoursCount(String count) {
+    return '$count hours';
+  }
+
+  @override
+  String get progress => 'Progress';
+
+  @override
+  String timeRemaining(String time) {
+    return '$time remaining';
+  }
+
+  @override
+  String percentageCompleted(String percentage) {
+    return '$percentage% completed';
+  }
+
+  @override
+  String get pausePromotion => 'Pause promotion';
+
+  @override
+  String get noCampaignsCompletedToday => 'No campaigns completed today';
 }

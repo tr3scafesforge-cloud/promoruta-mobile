@@ -1175,5 +1175,76 @@
   "edit": "Editar",
   "@edit": {
     "description": "Button text to edit"
+  },
+  "activeJobs": "Trabalhos ativos",
+  "@activeJobs": {
+    "description": "Title for active jobs page"
+  },
+  "controlYourCampaigns": "Controle suas campanhas em execução",
+  "@controlYourCampaigns": {
+    "description": "Subtitle for active jobs page"
+  },
+  "activeJobsCount": "Trabalhos Ativos",
+  "@activeJobsCount": {
+    "description": "Label for active jobs count"
+  },
+  "earningsToday": "Ganhos hoje",
+  "@earningsToday": {
+    "description": "Label for today's earnings"
+  },
+  "hoursWorked": "Horas trabalhadas",
+  "@hoursWorked": {
+    "description": "Label for hours worked"
+  },
+  "inProgress": "Em andamento",
+  "@inProgress": {
+    "description": "Label for in-progress tab"
+  },
+  "completedToday": "Concluídos hoje",
+  "@completedToday": {
+    "description": "Label for completed today tab"
+  },
+  "inProgressStatus": "Em progresso",
+  "@inProgressStatus": {
+    "description": "Status badge for in-progress campaign"
+  },
+  "hoursCount": "{count} horas",
+  "@hoursCount": {
+    "description": "Label for hours count",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "progress": "Progresso",
+  "@progress": {
+    "description": "Label for progress section"
+  },
+  "timeRemaining": "{time} restantes",
+  "@timeRemaining": {
+    "description": "Label for remaining time",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "percentageCompleted": "{percentage}% concluído",
+  "@percentageCompleted": {
+    "description": "Label for completion percentage",
+    "placeholders": {
+      "percentage": {
+        "type": "String"
+      }
+    }
+  },
+  "pausePromotion": "Pausar promoção",
+  "@pausePromotion": {
+    "description": "Button text to pause promotion"
+  },
+  "noCampaignsCompletedToday": "Nenhuma campanha concluída hoje",
+  "@noCampaignsCompletedToday": {
+    "description": "Message when no campaigns completed today"
   }
 }

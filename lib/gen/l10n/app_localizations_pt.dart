@@ -908,4 +908,52 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get edit => 'Editar';
+
+  @override
+  String get activeJobs => 'Trabalhos ativos';
+
+  @override
+  String get controlYourCampaigns => 'Controle suas campanhas em execução';
+
+  @override
+  String get activeJobsCount => 'Trabalhos Ativos';
+
+  @override
+  String get earningsToday => 'Ganhos hoje';
+
+  @override
+  String get hoursWorked => 'Horas trabalhadas';
+
+  @override
+  String get inProgress => 'Em andamento';
+
+  @override
+  String get completedToday => 'Concluídos hoje';
+
+  @override
+  String get inProgressStatus => 'Em progresso';
+
+  @override
+  String hoursCount(String count) {
+    return '$count horas';
+  }
+
+  @override
+  String get progress => 'Progresso';
+
+  @override
+  String timeRemaining(String time) {
+    return '$time restantes';
+  }
+
+  @override
+  String percentageCompleted(String percentage) {
+    return '$percentage% concluído';
+  }
+
+  @override
+  String get pausePromotion => 'Pausar promoção';
+
+  @override
+  String get noCampaignsCompletedToday => 'Nenhuma campanha concluída hoje';
 }
