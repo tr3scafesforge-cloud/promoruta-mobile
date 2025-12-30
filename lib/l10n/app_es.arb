@@ -1069,5 +1069,123 @@
   "resetPassword": "Restablecer Contraseña",
   "@resetPassword": {
     "description": "Button text to reset password"
+  },
+  "earningsPageTitle": "Ingresos",
+  "@earningsPageTitle": {
+    "description": "Title for earnings page"
+  },
+  "earningsPageSubtitle": "Segui tus ingresos por campañas y gestioná tus cobros",
+  "@earningsPageSubtitle": {
+    "description": "Subtitle for earnings page"
+  },
+  "totalEarnings": "Ganancias totales",
+  "@totalEarnings": {
+    "description": "Label for total earnings"
+  },
+  "thisMonth": "Este mes",
+  "@thisMonth": {
+    "description": "Label for this month earnings"
+  },
+  "percentageMoreThanLastMonth": "{percentage}% más que el mes pasado",
+  "@percentageMoreThanLastMonth": {
+    "description": "Percentage increase from last month",
+    "placeholders": {
+      "percentage": {
+        "type": "String"
+      }
+    }
+  },
+  "available": "Disponible",
+  "@available": {
+    "description": "Label for available earnings"
+  },
+  "withdrawFunds": "Retirar fondos",
+  "@withdrawFunds": {
+    "description": "Button text to withdraw funds"
+  },
+  "pendingEarningsAmount": "Ganancias pendientes: {amount}",
+  "@pendingEarningsAmount": {
+    "description": "Label for pending earnings with amount",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "availableAfterCampaign": "Disponible para retiro al finalizar la campaña.",
+  "@availableAfterCampaign": {
+    "description": "Message indicating funds available after campaign ends"
+  },
+  "historical": "Histórico",
+  "@historical": {
+    "description": "Label for historical tab"
+  },
+  "statistics": "Estadísticas",
+  "@statistics": {
+    "description": "Label for statistics tab"
+  },
+  "payments": "Pagos",
+  "@payments": {
+    "description": "Label for payments tab"
+  },
+  "recentEarnings": "Ganancias recientes",
+  "@recentEarnings": {
+    "description": "Label for recent earnings section"
+  },
+  "downloadReport": "Descargar Reporte",
+  "@downloadReport": {
+    "description": "Button text to download report"
+  },
+  "paid": "Pagada",
+  "@paid": {
+    "description": "Status label for paid transaction"
+  },
+  "bankTransfer": "Transferencia Bancaria",
+  "@bankTransfer": {
+    "description": "Label for bank transfer payment method"
+  },
+  "earningsPerMonth": "Ganancias por mes",
+  "@earningsPerMonth": {
+    "description": "Label for earnings per month chart"
+  },
+  "lastSixMonths": "Últimos 6 meses",
+  "@lastSixMonths": {
+    "description": "Label for last 6 months period"
+  },
+  "monthJan": "Ene",
+  "@monthJan": {
+    "description": "Abbreviation for January"
+  },
+  "monthDec": "Dic",
+  "@monthDec": {
+    "description": "Abbreviation for December"
+  },
+  "monthNov": "Nov",
+  "@monthNov": {
+    "description": "Abbreviation for November"
+  },
+  "monthOct": "Oct",
+  "@monthOct": {
+    "description": "Abbreviation for October"
+  },
+  "monthSep": "Sept",
+  "@monthSep": {
+    "description": "Abbreviation for September"
+  },
+  "monthAug": "Ago",
+  "@monthAug": {
+    "description": "Abbreviation for August"
+  },
+  "addPaymentMethod": "Agregar método de pago",
+  "@addPaymentMethod": {
+    "description": "Button text to add payment method"
+  },
+  "primary": "Principal",
+  "@primary": {
+    "description": "Label for primary payment method"
+  },
+  "edit": "Editar",
+  "@edit": {
+    "description": "Button text to edit"
   }
 }

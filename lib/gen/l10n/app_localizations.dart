@@ -1599,6 +1599,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reset Password'**
   String get resetPassword;
+
+  /// Title for earnings page
+  ///
+  /// In en, this message translates to:
+  /// **'Earnings'**
+  String get earningsPageTitle;
+
+  /// Subtitle for earnings page
+  ///
+  /// In en, this message translates to:
+  /// **'Track your campaign earnings and manage your payments'**
+  String get earningsPageSubtitle;
+
+  /// Label for total earnings
+  ///
+  /// In en, this message translates to:
+  /// **'Total earnings'**
+  String get totalEarnings;
+
+  /// Label for this month earnings
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get thisMonth;
+
+  /// Percentage increase from last month
+  ///
+  /// In en, this message translates to:
+  /// **'{percentage}% more than last month'**
+  String percentageMoreThanLastMonth(String percentage);
+
+  /// Label for available earnings
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get available;
+
+  /// Button text to withdraw funds
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw funds'**
+  String get withdrawFunds;
+
+  /// Label for pending earnings with amount
+  ///
+  /// In en, this message translates to:
+  /// **'Pending earnings: {amount}'**
+  String pendingEarningsAmount(String amount);
+
+  /// Message indicating funds available after campaign ends
+  ///
+  /// In en, this message translates to:
+  /// **'Available for withdrawal when the campaign ends.'**
+  String get availableAfterCampaign;
+
+  /// Label for historical tab
+  ///
+  /// In en, this message translates to:
+  /// **'Historical'**
+  String get historical;
+
+  /// Label for statistics tab
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get statistics;
+
+  /// Label for payments tab
+  ///
+  /// In en, this message translates to:
+  /// **'Payments'**
+  String get payments;
+
+  /// Label for recent earnings section
+  ///
+  /// In en, this message translates to:
+  /// **'Recent earnings'**
+  String get recentEarnings;
+
+  /// Button text to download report
+  ///
+  /// In en, this message translates to:
+  /// **'Download Report'**
+  String get downloadReport;
+
+  /// Status label for paid transaction
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get paid;
+
+  /// Label for bank transfer payment method
+  ///
+  /// In en, this message translates to:
+  /// **'Bank Transfer'**
+  String get bankTransfer;
+
+  /// Label for earnings per month chart
+  ///
+  /// In en, this message translates to:
+  /// **'Earnings per month'**
+  String get earningsPerMonth;
+
+  /// Label for last 6 months period
+  ///
+  /// In en, this message translates to:
+  /// **'Last 6 months'**
+  String get lastSixMonths;
+
+  /// Abbreviation for January
+  ///
+  /// In en, this message translates to:
+  /// **'Jan'**
+  String get monthJan;
+
+  /// Abbreviation for December
+  ///
+  /// In en, this message translates to:
+  /// **'Dec'**
+  String get monthDec;
+
+  /// Abbreviation for November
+  ///
+  /// In en, this message translates to:
+  /// **'Nov'**
+  String get monthNov;
+
+  /// Abbreviation for October
+  ///
+  /// In en, this message translates to:
+  /// **'Oct'**
+  String get monthOct;
+
+  /// Abbreviation for September
+  ///
+  /// In en, this message translates to:
+  /// **'Sep'**
+  String get monthSep;
+
+  /// Abbreviation for August
+  ///
+  /// In en, this message translates to:
+  /// **'Aug'**
+  String get monthAug;
+
+  /// Button text to add payment method
+  ///
+  /// In en, this message translates to:
+  /// **'Add payment method'**
+  String get addPaymentMethod;
+
+  /// Label for primary payment method
+  ///
+  /// In en, this message translates to:
+  /// **'Primary'**
+  String get primary;
+
+  /// Button text to edit
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
 }
 
 class _AppLocalizationsDelegate

@@ -1069,5 +1069,123 @@
   "resetPassword": "Reset Password",
   "@resetPassword": {
     "description": "Button text to reset password"
+  },
+  "earningsPageTitle": "Earnings",
+  "@earningsPageTitle": {
+    "description": "Title for earnings page"
+  },
+  "earningsPageSubtitle": "Track your campaign earnings and manage your payments",
+  "@earningsPageSubtitle": {
+    "description": "Subtitle for earnings page"
+  },
+  "totalEarnings": "Total earnings",
+  "@totalEarnings": {
+    "description": "Label for total earnings"
+  },
+  "thisMonth": "This month",
+  "@thisMonth": {
+    "description": "Label for this month earnings"
+  },
+  "percentageMoreThanLastMonth": "{percentage}% more than last month",
+  "@percentageMoreThanLastMonth": {
+    "description": "Percentage increase from last month",
+    "placeholders": {
+      "percentage": {
+        "type": "String"
+      }
+    }
+  },
+  "available": "Available",
+  "@available": {
+    "description": "Label for available earnings"
+  },
+  "withdrawFunds": "Withdraw funds",
+  "@withdrawFunds": {
+    "description": "Button text to withdraw funds"
+  },
+  "pendingEarningsAmount": "Pending earnings: {amount}",
+  "@pendingEarningsAmount": {
+    "description": "Label for pending earnings with amount",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "availableAfterCampaign": "Available for withdrawal when the campaign ends.",
+  "@availableAfterCampaign": {
+    "description": "Message indicating funds available after campaign ends"
+  },
+  "historical": "Historical",
+  "@historical": {
+    "description": "Label for historical tab"
+  },
+  "statistics": "Statistics",
+  "@statistics": {
+    "description": "Label for statistics tab"
+  },
+  "payments": "Payments",
+  "@payments": {
+    "description": "Label for payments tab"
+  },
+  "recentEarnings": "Recent earnings",
+  "@recentEarnings": {
+    "description": "Label for recent earnings section"
+  },
+  "downloadReport": "Download Report",
+  "@downloadReport": {
+    "description": "Button text to download report"
+  },
+  "paid": "Paid",
+  "@paid": {
+    "description": "Status label for paid transaction"
+  },
+  "bankTransfer": "Bank Transfer",
+  "@bankTransfer": {
+    "description": "Label for bank transfer payment method"
+  },
+  "earningsPerMonth": "Earnings per month",
+  "@earningsPerMonth": {
+    "description": "Label for earnings per month chart"
+  },
+  "lastSixMonths": "Last 6 months",
+  "@lastSixMonths": {
+    "description": "Label for last 6 months period"
+  },
+  "monthJan": "Jan",
+  "@monthJan": {
+    "description": "Abbreviation for January"
+  },
+  "monthDec": "Dec",
+  "@monthDec": {
+    "description": "Abbreviation for December"
+  },
+  "monthNov": "Nov",
+  "@monthNov": {
+    "description": "Abbreviation for November"
+  },
+  "monthOct": "Oct",
+  "@monthOct": {
+    "description": "Abbreviation for October"
+  },
+  "monthSep": "Sep",
+  "@monthSep": {
+    "description": "Abbreviation for September"
+  },
+  "monthAug": "Aug",
+  "@monthAug": {
+    "description": "Abbreviation for August"
+  },
+  "addPaymentMethod": "Add payment method",
+  "@addPaymentMethod": {
+    "description": "Button text to add payment method"
+  },
+  "primary": "Primary",
+  "@primary": {
+    "description": "Label for primary payment method"
+  },
+  "edit": "Edit",
+  "@edit": {
+    "description": "Button text to edit"
   }
 }

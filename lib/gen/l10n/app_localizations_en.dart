@@ -817,4 +817,91 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resetPassword => 'Reset Password';
+
+  @override
+  String get earningsPageTitle => 'Earnings';
+
+  @override
+  String get earningsPageSubtitle =>
+      'Track your campaign earnings and manage your payments';
+
+  @override
+  String get totalEarnings => 'Total earnings';
+
+  @override
+  String get thisMonth => 'This month';
+
+  @override
+  String percentageMoreThanLastMonth(String percentage) {
+    return '$percentage% more than last month';
+  }
+
+  @override
+  String get available => 'Available';
+
+  @override
+  String get withdrawFunds => 'Withdraw funds';
+
+  @override
+  String pendingEarningsAmount(String amount) {
+    return 'Pending earnings: $amount';
+  }
+
+  @override
+  String get availableAfterCampaign =>
+      'Available for withdrawal when the campaign ends.';
+
+  @override
+  String get historical => 'Historical';
+
+  @override
+  String get statistics => 'Statistics';
+
+  @override
+  String get payments => 'Payments';
+
+  @override
+  String get recentEarnings => 'Recent earnings';
+
+  @override
+  String get downloadReport => 'Download Report';
+
+  @override
+  String get paid => 'Paid';
+
+  @override
+  String get bankTransfer => 'Bank Transfer';
+
+  @override
+  String get earningsPerMonth => 'Earnings per month';
+
+  @override
+  String get lastSixMonths => 'Last 6 months';
+
+  @override
+  String get monthJan => 'Jan';
+
+  @override
+  String get monthDec => 'Dec';
+
+  @override
+  String get monthNov => 'Nov';
+
+  @override
+  String get monthOct => 'Oct';
+
+  @override
+  String get monthSep => 'Sep';
+
+  @override
+  String get monthAug => 'Aug';
+
+  @override
+  String get addPaymentMethod => 'Add payment method';
+
+  @override
+  String get primary => 'Primary';
+
+  @override
+  String get edit => 'Edit';
 }

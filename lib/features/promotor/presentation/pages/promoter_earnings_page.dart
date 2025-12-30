@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/core/constants/colors.dart';
 
 class PromoterEarningsPage extends StatefulWidget {
@@ -14,6 +15,7 @@ class _PromoterEarningsPageState extends State<PromoterEarningsPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -25,7 +27,7 @@ class _PromoterEarningsPageState extends State<PromoterEarningsPage> {
             children: [
               // Header
               Text(
-                'Ingresos',
+                l10n.earningsPageTitle,
                 style: theme.textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: AppColors.textPrimary,
@@ -33,7 +35,7 @@ class _PromoterEarningsPageState extends State<PromoterEarningsPage> {
               ),
               const SizedBox(height: 4),
               Text(
-                'Segui tus ingresos por campañas y gestioná tus cobros',
+                l10n.earningsPageSubtitle,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: AppColors.textSecondary,
                 ),
@@ -42,25 +44,25 @@ class _PromoterEarningsPageState extends State<PromoterEarningsPage> {
 
               // Total Earnings Card
               _EarningsCard(
-                title: 'Ganancias totales',
+                title: l10n.totalEarnings,
                 amount: '\$2,847.50',
-                subtitle: 'Acumulado',
+                subtitle: l10n.accumulated,
                 icon: Icons.attach_money,
               ),
               const SizedBox(height: 12),
 
               // This Month Card
               _EarningsCard(
-                title: 'Este mes',
+                title: l10n.thisMonth,
                 amount: '\$547.50',
-                subtitle: '23.5% más que el mes pasado',
+                subtitle: l10n.percentageMoreThanLastMonth('23.5'),
                 subtitleColor: AppColors.green,
                 icon: Icons.trending_up,
               ),
               const SizedBox(height: 12),
 
               // Available Card with Button
-              _AvailableEarningsCard(),
+              _AvailableEarningsCard(l10n: l10n),
               const SizedBox(height: 16),
 
               // Pending Earnings Warning
@@ -87,7 +89,7 @@ class _PromoterEarningsPageState extends State<PromoterEarningsPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Ganancias pendientes: \$156.23',
+                            l10n.pendingEarningsAmount('\$156.23'),
                             style: theme.textTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.w600,
                               color: Colors.orange.shade900,
@@ -95,7 +97,7 @@ class _PromoterEarningsPageState extends State<PromoterEarningsPage> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            'Disponible para retiro al finalizar la campaña.',
+                            l10n.availableAfterCampaign,
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: Colors.orange.shade800,
                             ),
@@ -119,21 +121,21 @@ class _PromoterEarningsPageState extends State<PromoterEarningsPage> {
                   children: [
                     Expanded(
                       child: _SegmentButton(
-                        label: 'Histórico',
+                        label: l10n.historical,
                         isSelected: _selectedSegment == 0,
                         onTap: () => setState(() => _selectedSegment = 0),
                       ),
                     ),
                     Expanded(
                       child: _SegmentButton(
-                        label: 'Estadísticas',
+                        label: l10n.statistics,
                         isSelected: _selectedSegment == 1,
                         onTap: () => setState(() => _selectedSegment = 1),
                       ),
                     ),
                     Expanded(
                       child: _SegmentButton(
-                        label: 'Pagos',
+                        label: l10n.payments,
                         isSelected: _selectedSegment == 2,
                         onTap: () => setState(() => _selectedSegment = 2),
                       ),
@@ -144,9 +146,9 @@ class _PromoterEarningsPageState extends State<PromoterEarningsPage> {
               const SizedBox(height: 24),
 
               // Content based on selected segment
-              if (_selectedSegment == 0) _HistoricoView(),
-              if (_selectedSegment == 1) _EstadisticasView(),
-              if (_selectedSegment == 2) _PagosView(),
+              if (_selectedSegment == 0) _HistoricoView(l10n: l10n),
+              if (_selectedSegment == 1) _EstadisticasView(l10n: l10n),
+              if (_selectedSegment == 2) _PagosView(l10n: l10n),
             ],
           ),
         ),
@@ -226,6 +228,10 @@ class _EarningsCard extends StatelessWidget {
 }
 
 class _AvailableEarningsCard extends StatelessWidget {
+  final AppLocalizations l10n;
+
+  const _AvailableEarningsCard({required this.l10n});
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -247,7 +253,7 @@ class _AvailableEarningsCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Disponible',
+                l10n.available,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: AppColors.textSecondary,
                 ),
@@ -282,9 +288,9 @@ class _AvailableEarningsCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: const Text(
-                'Retirar fondos',
-                style: TextStyle(
+              child: Text(
+                l10n.withdrawFunds,
+                style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 15,
                 ),
@@ -342,6 +348,10 @@ class _SegmentButton extends StatelessWidget {
 }
 
 class _HistoricoView extends StatelessWidget {
+  final AppLocalizations l10n;
+
+  _HistoricoView({required this.l10n});
+
   final List<EarningTransaction> transactions = [
     EarningTransaction(
       campaignName: 'Promoción Cafetería',
@@ -399,7 +409,7 @@ class _HistoricoView extends StatelessWidget {
             children: [
               Flexible(
                 child: Text(
-                  'Ganancias recientes',
+                  l10n.recentEarnings,
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                     color: AppColors.textPrimary,
@@ -413,8 +423,8 @@ class _HistoricoView extends StatelessWidget {
                     // Handle download report
                   },
                   icon: const Icon(Icons.download, size: 18),
-                  label: const Text(
-                    'Descargar Reporte',
+                  label: Text(
+                    l10n.downloadReport,
                     overflow: TextOverflow.ellipsis,
                   ),
                   style: TextButton.styleFrom(
@@ -428,7 +438,7 @@ class _HistoricoView extends StatelessWidget {
           const SizedBox(height: 16),
           ...transactions.map((transaction) => Padding(
                 padding: const EdgeInsets.only(bottom: 12),
-                child: _TransactionItem(transaction: transaction),
+                child: _TransactionItem(transaction: transaction, l10n: l10n),
               )),
         ],
       ),
@@ -438,8 +448,9 @@ class _HistoricoView extends StatelessWidget {
 
 class _TransactionItem extends StatelessWidget {
   final EarningTransaction transaction;
+  final AppLocalizations l10n;
 
-  const _TransactionItem({required this.transaction});
+  const _TransactionItem({required this.transaction, required this.l10n});
 
   @override
   Widget build(BuildContext context) {
@@ -553,7 +564,7 @@ class _TransactionItem extends StatelessWidget {
                       ),
                     const SizedBox(width: 4),
                     Text(
-                      transaction.status,
+                      isPaid ? l10n.paid : l10n.pending,
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: isPaid ? AppColors.green : AppColors.pendingOrangeColor,
                         fontWeight: FontWeight.w600,
@@ -581,6 +592,10 @@ class _TransactionItem extends StatelessWidget {
 }
 
 class _EstadisticasView extends StatelessWidget {
+  final AppLocalizations l10n;
+
+  _EstadisticasView({required this.l10n});
+
   final List<MonthlyEarning> earnings = [
     MonthlyEarning('Ene', 485),
     MonthlyEarning('Dic', 432),
@@ -609,7 +624,7 @@ class _EstadisticasView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Ganancias por mes',
+            l10n.earningsPerMonth,
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w600,
               color: AppColors.textPrimary,
@@ -617,7 +632,7 @@ class _EstadisticasView extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'Últimos 6 meses',
+            l10n.lastSixMonths,
             style: theme.textTheme.bodySmall?.copyWith(
               color: AppColors.textSecondary,
             ),
@@ -708,6 +723,10 @@ class _EarningBar extends StatelessWidget {
 }
 
 class _PagosView extends StatelessWidget {
+  final AppLocalizations l10n;
+
+  _PagosView({required this.l10n});
+
   final List<PaymentMethod> paymentMethods = [
     PaymentMethod(
       type: 'Transferencia Bancaria',
@@ -745,7 +764,7 @@ class _PagosView extends StatelessWidget {
             children: [
               Flexible(
                 child: Text(
-                  'Métodos de pago',
+                  l10n.paymentMethods,
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                     color: AppColors.textPrimary,
@@ -759,8 +778,8 @@ class _PagosView extends StatelessWidget {
                     // Handle add payment method
                   },
                   icon: const Icon(Icons.add, size: 18),
-                  label: const Text(
-                    'Agregar método de pago',
+                  label: Text(
+                    l10n.addPaymentMethod,
                     overflow: TextOverflow.ellipsis,
                   ),
                   style: TextButton.styleFrom(
@@ -774,7 +793,7 @@ class _PagosView extends StatelessWidget {
           const SizedBox(height: 16),
           ...paymentMethods.map((method) => Padding(
                 padding: const EdgeInsets.only(bottom: 12),
-                child: _PaymentMethodItem(paymentMethod: method),
+                child: _PaymentMethodItem(paymentMethod: method, l10n: l10n),
               )),
         ],
       ),
@@ -784,8 +803,9 @@ class _PagosView extends StatelessWidget {
 
 class _PaymentMethodItem extends StatelessWidget {
   final PaymentMethod paymentMethod;
+  final AppLocalizations l10n;
 
-  const _PaymentMethodItem({required this.paymentMethod});
+  const _PaymentMethodItem({required this.paymentMethod, required this.l10n});
 
   @override
   Widget build(BuildContext context) {
@@ -842,7 +862,7 @@ class _PaymentMethodItem extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
-                          'Principal',
+                          l10n.primary,
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: AppColors.secondary,
                             fontWeight: FontWeight.w600,
@@ -873,7 +893,7 @@ class _PaymentMethodItem extends StatelessWidget {
               foregroundColor: AppColors.secondary,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             ),
-            child: const Text('Editar'),
+            child: Text(l10n.edit),
           ),
         ],
       ),

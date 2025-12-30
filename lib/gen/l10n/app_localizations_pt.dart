@@ -821,4 +821,91 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get resetPassword => 'Redefinir Senha';
+
+  @override
+  String get earningsPageTitle => 'Ganhos';
+
+  @override
+  String get earningsPageSubtitle =>
+      'Acompanhe seus ganhos de campanhas e gerencie seus pagamentos';
+
+  @override
+  String get totalEarnings => 'Ganhos totais';
+
+  @override
+  String get thisMonth => 'Este mês';
+
+  @override
+  String percentageMoreThanLastMonth(String percentage) {
+    return '$percentage% a mais que o mês passado';
+  }
+
+  @override
+  String get available => 'Disponível';
+
+  @override
+  String get withdrawFunds => 'Retirar fundos';
+
+  @override
+  String pendingEarningsAmount(String amount) {
+    return 'Ganhos pendentes: $amount';
+  }
+
+  @override
+  String get availableAfterCampaign =>
+      'Disponível para saque ao finalizar a campanha.';
+
+  @override
+  String get historical => 'Histórico';
+
+  @override
+  String get statistics => 'Estatísticas';
+
+  @override
+  String get payments => 'Pagamentos';
+
+  @override
+  String get recentEarnings => 'Ganhos recentes';
+
+  @override
+  String get downloadReport => 'Baixar Relatório';
+
+  @override
+  String get paid => 'Paga';
+
+  @override
+  String get bankTransfer => 'Transferência Bancária';
+
+  @override
+  String get earningsPerMonth => 'Ganhos por mês';
+
+  @override
+  String get lastSixMonths => 'Últimos 6 meses';
+
+  @override
+  String get monthJan => 'Jan';
+
+  @override
+  String get monthDec => 'Dez';
+
+  @override
+  String get monthNov => 'Nov';
+
+  @override
+  String get monthOct => 'Out';
+
+  @override
+  String get monthSep => 'Set';
+
+  @override
+  String get monthAug => 'Ago';
+
+  @override
+  String get addPaymentMethod => 'Adicionar método de pagamento';
+
+  @override
+  String get primary => 'Principal';
+
+  @override
+  String get edit => 'Editar';
 }
