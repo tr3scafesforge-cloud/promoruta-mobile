@@ -995,4 +995,31 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get viewDetails => 'Ver detalles';
+
+  @override
+  String get jobDetails => 'Detalles del trabajo';
+
+  @override
+  String get completedCampaignInfo => 'Info de la campaña finalizada';
+
+  @override
+  String get localMerchant => 'Comerciante local';
+
+  @override
+  String get location => 'Lugar';
+
+  @override
+  String get duration => 'Duración';
+
+  @override
+  String get completedLabel => 'Completada';
+
+  @override
+  String get customerOpinion => 'Opinión del cliente';
+
+  @override
+  String get rating => 'Valoración';
+
+  @override
+  String get comment => 'Comentario';
 }

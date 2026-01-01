@@ -1317,5 +1317,45 @@
   "viewDetails": "View details",
   "@viewDetails": {
     "description": "Button text to view details"
+  },
+  "jobDetails": "Job details",
+  "@jobDetails": {
+    "description": "Title for job details page"
+  },
+  "completedCampaignInfo": "Completed campaign info",
+  "@completedCampaignInfo": {
+    "description": "Subtitle for completed campaign info"
+  },
+  "localMerchant": "Local merchant",
+  "@localMerchant": {
+    "description": "Label for local merchant"
+  },
+  "location": "Location",
+  "@location": {
+    "description": "Label for location"
+  },
+  "duration": "Duration",
+  "@duration": {
+    "description": "Label for duration"
+  },
+  "earnings": "Earnings",
+  "@earnings": {
+    "description": "Label for earnings"
+  },
+  "completedLabel": "Completed",
+  "@completedLabel": {
+    "description": "Label for completed time"
+  },
+  "customerOpinion": "Customer opinion",
+  "@customerOpinion": {
+    "description": "Label for customer opinion section"
+  },
+  "rating": "Rating",
+  "@rating": {
+    "description": "Label for rating"
+  },
+  "comment": "Comment",
+  "@comment": {
+    "description": "Label for comment"
   }
 }

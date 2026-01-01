@@ -992,4 +992,31 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get viewDetails => 'Ver detalhes';
+
+  @override
+  String get jobDetails => 'Detalhes do trabalho';
+
+  @override
+  String get completedCampaignInfo => 'Info da campanha finalizada';
+
+  @override
+  String get localMerchant => 'Comerciante local';
+
+  @override
+  String get location => 'Localização';
+
+  @override
+  String get duration => 'Duração';
+
+  @override
+  String get completedLabel => 'Concluída';
+
+  @override
+  String get customerOpinion => 'Opinião do cliente';
+
+  @override
+  String get rating => 'Avaliação';
+
+  @override
+  String get comment => 'Comentário';
 }

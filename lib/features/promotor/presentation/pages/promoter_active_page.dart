@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/features/promotor/presentation/pages/active_campaign_map_view.dart';
+import 'package:promoruta/features/promotor/presentation/pages/completed_campaign_details_page.dart';
 
 class PromoterActivePage extends StatefulWidget {
   const PromoterActivePage({super.key});
@@ -243,6 +244,10 @@ class _CompletedTodayView extends StatelessWidget {
         location: 'Montevideo shopping',
         earned: 250.00,
         completedAt: '11:30 AM',
+        startTime: '09:30',
+        endTime: '11:30 AM',
+        rating: 4.0,
+        comment: 'Servicio muy bueno',
       ),
     ];
 
@@ -608,8 +613,20 @@ class _CompletedCampaignCard extends StatelessWidget {
             width: double.infinity,
             child: OutlinedButton(
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('${l10n.viewDetails} (WIP)')),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CompletedCampaignDetailsPage(
+                      campaignName: campaign.name,
+                      location: campaign.location,
+                      startTime: campaign.startTime,
+                      endTime: campaign.endTime,
+                      earned: campaign.earned,
+                      completedAt: campaign.completedAt,
+                      rating: campaign.rating,
+                      comment: campaign.comment,
+                    ),
+                  ),
                 );
               },
               style: OutlinedButton.styleFrom(
@@ -656,11 +673,19 @@ class CompletedCampaign {
   final String location;
   final double earned;
   final String completedAt;
+  final String startTime;
+  final String endTime;
+  final double rating;
+  final String? comment;
 
   CompletedCampaign({
     required this.name,
     required this.location,
     required this.earned,
     required this.completedAt,
+    required this.startTime,
+    required this.endTime,
+    required this.rating,
+    this.comment,
   });
 }

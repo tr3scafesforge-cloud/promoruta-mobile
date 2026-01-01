@@ -1402,7 +1402,7 @@ abstract class AppLocalizations {
   /// **'Active'**
   String get activeSingular;
 
-  /// Bottom navigation label for earnings
+  /// Label for earnings
   ///
   /// In en, this message translates to:
   /// **'Earnings'**
@@ -1905,6 +1905,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'View details'**
   String get viewDetails;
+
+  /// Title for job details page
+  ///
+  /// In en, this message translates to:
+  /// **'Job details'**
+  String get jobDetails;
+
+  /// Subtitle for completed campaign info
+  ///
+  /// In en, this message translates to:
+  /// **'Completed campaign info'**
+  String get completedCampaignInfo;
+
+  /// Label for local merchant
+  ///
+  /// In en, this message translates to:
+  /// **'Local merchant'**
+  String get localMerchant;
+
+  /// Label for location
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get location;
+
+  /// Label for duration
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get duration;
+
+  /// Label for completed time
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completedLabel;
+
+  /// Label for customer opinion section
+  ///
+  /// In en, this message translates to:
+  /// **'Customer opinion'**
+  String get customerOpinion;
+
+  /// Label for rating
+  ///
+  /// In en, this message translates to:
+  /// **'Rating'**
+  String get rating;
+
+  /// Label for comment
+  ///
+  /// In en, this message translates to:
+  /// **'Comment'**
+  String get comment;
 }
 
 class _AppLocalizationsDelegate

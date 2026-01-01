@@ -1317,5 +1317,45 @@
   "viewDetails": "Ver detalles",
   "@viewDetails": {
     "description": "Button text to view details"
+  },
+  "jobDetails": "Detalles del trabajo",
+  "@jobDetails": {
+    "description": "Title for job details page"
+  },
+  "completedCampaignInfo": "Info de la campaña finalizada",
+  "@completedCampaignInfo": {
+    "description": "Subtitle for completed campaign info"
+  },
+  "localMerchant": "Comerciante local",
+  "@localMerchant": {
+    "description": "Label for local merchant"
+  },
+  "location": "Lugar",
+  "@location": {
+    "description": "Label for location"
+  },
+  "duration": "Duración",
+  "@duration": {
+    "description": "Label for duration"
+  },
+  "earnings": "Ganancias",
+  "@earnings": {
+    "description": "Label for earnings"
+  },
+  "completedLabel": "Completada",
+  "@completedLabel": {
+    "description": "Label for completed time"
+  },
+  "customerOpinion": "Opinión del cliente",
+  "@customerOpinion": {
+    "description": "Label for customer opinion section"
+  },
+  "rating": "Valoración",
+  "@rating": {
+    "description": "Label for rating"
+  },
+  "comment": "Comentario",
+  "@comment": {
+    "description": "Label for comment"
   }
 }

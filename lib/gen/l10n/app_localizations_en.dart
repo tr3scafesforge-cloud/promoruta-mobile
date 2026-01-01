@@ -988,4 +988,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get viewDetails => 'View details';
+
+  @override
+  String get jobDetails => 'Job details';
+
+  @override
+  String get completedCampaignInfo => 'Completed campaign info';
+
+  @override
+  String get localMerchant => 'Local merchant';
+
+  @override
+  String get location => 'Location';
+
+  @override
+  String get duration => 'Duration';
+
+  @override
+  String get completedLabel => 'Completed';
+
+  @override
+  String get customerOpinion => 'Customer opinion';
+
+  @override
+  String get rating => 'Rating';
+
+  @override
+  String get comment => 'Comment';
 }
