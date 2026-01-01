@@ -883,7 +883,7 @@ abstract class AppLocalizations {
   /// Placeholder text for map location
   ///
   /// In en, this message translates to:
-  /// **'Map Location in real time'**
+  /// **'Map location in real time'**
   String get mapLocationRealTime;
 
   /// Label for live indicator
@@ -1845,6 +1845,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No campaigns completed today'**
   String get noCampaignsCompletedToday;
+
+  /// Close button text
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// Label for local business
+  ///
+  /// In en, this message translates to:
+  /// **'Local Business'**
+  String get localBusiness;
+
+  /// Label for navigation route
+  ///
+  /// In en, this message translates to:
+  /// **'Navigation Route'**
+  String get navigationRoute;
+
+  /// Label for campaign audio
+  ///
+  /// In en, this message translates to:
+  /// **'Campaign audio'**
+  String get campaignAudio;
+
+  /// Label for next direction
+  ///
+  /// In en, this message translates to:
+  /// **'Next direction'**
+  String get nextDirection;
+
+  /// Direction instruction to turn right
+  ///
+  /// In en, this message translates to:
+  /// **'Turn right in {distance} m'**
+  String turnRightIn(String distance);
 }
 
 class _AppLocalizationsDelegate

@@ -423,7 +423,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get mapLocationRealTime => 'Localización en mapa en tiempo real';
+  String get mapLocationRealTime => 'Ubicación en el mapa en tiempo real';
 
   @override
   String get liveLabel => 'EN VIVO';
@@ -959,4 +959,24 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get noCampaignsCompletedToday => 'No hay campañas completadas hoy';
+
+  @override
+  String get close => 'Cerrar';
+
+  @override
+  String get localBusiness => 'Comercio local';
+
+  @override
+  String get navigationRoute => 'Ruta Navegación';
+
+  @override
+  String get campaignAudio => 'Audio de la campaña';
+
+  @override
+  String get nextDirection => 'Próxima indicación';
+
+  @override
+  String turnRightIn(String distance) {
+    return 'Dobla a la derecha en $distance m';
+  }
 }

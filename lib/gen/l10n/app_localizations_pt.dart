@@ -956,4 +956,24 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get noCampaignsCompletedToday => 'Nenhuma campanha concluída hoje';
+
+  @override
+  String get close => 'Fechar';
+
+  @override
+  String get localBusiness => 'Comércio local';
+
+  @override
+  String get navigationRoute => 'Rota de Navegação';
+
+  @override
+  String get campaignAudio => 'Áudio da campanha';
+
+  @override
+  String get nextDirection => 'Próxima indicação';
+
+  @override
+  String turnRightIn(String distance) {
+    return 'Vire à direita em $distance m';
+  }
 }

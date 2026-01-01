@@ -1258,5 +1258,38 @@
   "noCampaignsCompletedToday": "No campaigns completed today",
   "@noCampaignsCompletedToday": {
     "description": "Message when no campaigns completed today"
+  },
+  "close": "Close",
+  "@close": {
+    "description": "Close button text"
+  },
+  "localBusiness": "Local Business",
+  "@localBusiness": {
+    "description": "Label for local business"
+  },
+  "navigationRoute": "Navigation Route",
+  "@navigationRoute": {
+    "description": "Label for navigation route"
+  },
+  "mapLocationRealTime": "Map location in real time",
+  "@mapLocationRealTime": {
+    "description": "Placeholder text for map location"
+  },
+  "campaignAudio": "Campaign audio",
+  "@campaignAudio": {
+    "description": "Label for campaign audio"
+  },
+  "nextDirection": "Next direction",
+  "@nextDirection": {
+    "description": "Label for next direction"
+  },
+  "turnRightIn": "Turn right in {distance} m",
+  "@turnRightIn": {
+    "description": "Direction instruction to turn right",
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
   }
 }

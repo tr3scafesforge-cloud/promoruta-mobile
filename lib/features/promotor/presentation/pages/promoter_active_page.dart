@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/core/constants/colors.dart';
+import 'package:promoruta/features/promotor/presentation/pages/active_campaign_map_view.dart';
 
 class PromoterActivePage extends StatefulWidget {
   const PromoterActivePage({super.key});
@@ -437,8 +438,14 @@ class _ActiveCampaignCard extends StatelessWidget {
               const SizedBox(width: 12),
               OutlinedButton(
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Map view (WIP)')),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ActiveCampaignMapView(
+                        campaignName: campaign.name,
+                        location: campaign.location,
+                      ),
+                    ),
                   );
                 },
                 style: OutlinedButton.styleFrom(

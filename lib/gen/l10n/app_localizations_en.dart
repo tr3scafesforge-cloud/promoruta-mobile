@@ -422,7 +422,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get mapLocationRealTime => 'Map Location in real time';
+  String get mapLocationRealTime => 'Map location in real time';
 
   @override
   String get liveLabel => 'LIVE';
@@ -952,4 +952,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noCampaignsCompletedToday => 'No campaigns completed today';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get localBusiness => 'Local Business';
+
+  @override
+  String get navigationRoute => 'Navigation Route';
+
+  @override
+  String get campaignAudio => 'Campaign audio';
+
+  @override
+  String get nextDirection => 'Next direction';
+
+  @override
+  String turnRightIn(String distance) {
+    return 'Turn right in $distance m';
+  }
 }
