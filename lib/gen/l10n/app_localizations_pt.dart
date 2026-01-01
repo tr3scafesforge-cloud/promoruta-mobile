@@ -976,4 +976,20 @@ class AppLocalizationsPt extends AppLocalizations {
   String turnRightIn(String distance) {
     return 'Vire à direita em $distance m';
   }
+
+  @override
+  String get completedStatus => 'Concluída';
+
+  @override
+  String earned(String amount) {
+    return '$amount ganhos';
+  }
+
+  @override
+  String completedAt(String time) {
+    return 'Concluído às $time';
+  }
+
+  @override
+  String get viewDetails => 'Ver detalhes';
 }

@@ -1881,6 +1881,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Turn right in {distance} m'**
   String turnRightIn(String distance);
+
+  /// Status label for completed campaign
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completedStatus;
+
+  /// Label for earned amount
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} earned'**
+  String earned(String amount);
+
+  /// Label for completion time
+  ///
+  /// In en, this message translates to:
+  /// **'Completed at {time}'**
+  String completedAt(String time);
+
+  /// Button text to view details
+  ///
+  /// In en, this message translates to:
+  /// **'View details'**
+  String get viewDetails;
 }
 
 class _AppLocalizationsDelegate

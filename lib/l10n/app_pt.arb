@@ -1279,5 +1279,31 @@
         "type": "String"
       }
     }
+  },
+  "completedStatus": "Concluída",
+  "@completedStatus": {
+    "description": "Status label for completed campaign"
+  },
+  "earned": "{amount} ganhos",
+  "@earned": {
+    "description": "Label for earned amount",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "completedAt": "Concluído às {time}",
+  "@completedAt": {
+    "description": "Label for completion time",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "viewDetails": "Ver detalhes",
+  "@viewDetails": {
+    "description": "Button text to view details"
   }
 }

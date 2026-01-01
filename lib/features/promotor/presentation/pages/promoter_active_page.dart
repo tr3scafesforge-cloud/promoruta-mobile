@@ -237,16 +237,36 @@ class _CompletedTodayView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Text(
-          l10n.noCampaignsCompletedToday,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: AppColors.textSecondary,
-              ),
-        ),
+    final completedCampaigns = [
+      CompletedCampaign(
+        name: 'Promoción de Apertura de tienda',
+        location: 'Montevideo shopping',
+        earned: 250.00,
+        completedAt: '11:30 AM',
       ),
+    ];
+
+    if (completedCampaigns.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Text(
+            l10n.noCampaignsCompletedToday,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+          ),
+        ),
+      );
+    }
+
+    return Column(
+      children: completedCampaigns
+          .map((campaign) => Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: _CompletedCampaignCard(campaign: campaign, l10n: l10n),
+              ))
+          .toList(),
     );
   }
 }
@@ -467,6 +487,148 @@ class _ActiveCampaignCard extends StatelessWidget {
   }
 }
 
+class _CompletedCampaignCard extends StatelessWidget {
+  final CompletedCampaign campaign;
+  final AppLocalizations l10n;
+
+  const _CompletedCampaignCard({
+    required this.campaign,
+    required this.l10n,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: AppColors.grayLightStroke,
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Campaign name and status
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  campaign.name,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: AppColors.grayLightStroke,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Text(
+                  l10n.completedStatus,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          // Location
+          Row(
+            children: [
+              Icon(
+                Icons.location_on_outlined,
+                size: 16,
+                color: AppColors.textSecondary,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                campaign.location,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+
+          // Earned amount
+          Row(
+            children: [
+              Icon(
+                Icons.attach_money,
+                size: 16,
+                color: AppColors.green,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                l10n.earned('\$${campaign.earned.toStringAsFixed(2)}'),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: AppColors.green,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+
+          // Completed time
+          Row(
+            children: [
+              Icon(
+                Icons.access_time,
+                size: 16,
+                color: AppColors.textSecondary,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                l10n.completedAt(campaign.completedAt),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          // View details button
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton(
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('${l10n.viewDetails} (WIP)')),
+                );
+              },
+              style: OutlinedButton.styleFrom(
+                foregroundColor: AppColors.textPrimary,
+                side: BorderSide(color: AppColors.grayLightStroke),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: Text(l10n.viewDetails),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class ActiveCampaign {
   final String name;
   final String location;
@@ -486,5 +648,19 @@ class ActiveCampaign {
     required this.hours,
     required this.progress,
     required this.timeRemaining,
+  });
+}
+
+class CompletedCampaign {
+  final String name;
+  final String location;
+  final double earned;
+  final String completedAt;
+
+  CompletedCampaign({
+    required this.name,
+    required this.location,
+    required this.earned,
+    required this.completedAt,
   });
 }

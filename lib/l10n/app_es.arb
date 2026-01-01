@@ -1291,5 +1291,31 @@
         "type": "String"
       }
     }
+  },
+  "completedStatus": "Completada",
+  "@completedStatus": {
+    "description": "Status label for completed campaign"
+  },
+  "earned": "{amount} ganados",
+  "@earned": {
+    "description": "Label for earned amount",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "completedAt": "Completado a las {time}",
+  "@completedAt": {
+    "description": "Label for completion time",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "viewDetails": "Ver detalles",
+  "@viewDetails": {
+    "description": "Button text to view details"
   }
 }
