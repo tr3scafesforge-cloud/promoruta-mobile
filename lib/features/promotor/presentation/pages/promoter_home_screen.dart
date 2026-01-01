@@ -8,6 +8,7 @@ import 'package:promoruta/presentation/promotor/pages/promoter_nearby_page.dart'
 import 'package:promoruta/features/promotor/presentation/pages/promoter_active_page.dart';
 import 'package:promoruta/shared/widgets/promoter_app_bar.dart';
 import 'package:promoruta/shared/providers/providers.dart';
+import 'package:promoruta/gen/l10n/app_localizations.dart';
 
 class PromoterHomeScreen extends ConsumerStatefulWidget {
   const PromoterHomeScreen({super.key});
@@ -129,6 +130,8 @@ class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
   }
 
   PreferredSizeWidget _buildAppBar(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     switch (_currentIndex) {
       case 0: // Home
         return PromoterAppBar(
@@ -138,7 +141,10 @@ class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
       case 1: // Nearby
         return PromoterAppBar(title: 'En tu zona');
       case 2: // Active
-        return PromoterAppBar(title: 'Activa');
+        return PromoterAppBar(
+          title: l10n.activeJobs,
+          subtitle: l10n.controlYourCampaigns,
+        );
       case 3: // Earnings
         return PromoterAppBar(title: 'Ganancias');
       case 4: // Profile

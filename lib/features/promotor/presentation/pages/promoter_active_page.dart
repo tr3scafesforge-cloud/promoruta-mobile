@@ -14,7 +14,6 @@ class _PromoterActivePageState extends State<PromoterActivePage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
@@ -25,23 +24,6 @@ class _PromoterActivePageState extends State<PromoterActivePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
-              Text(
-                l10n.activeJobs,
-                style: theme.textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                l10n.controlYourCampaigns,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textSecondary,
-                ),
-              ),
-              const SizedBox(height: 24),
-
               // Stats Cards
               _StatCard(
                 title: l10n.activeJobsCount,
