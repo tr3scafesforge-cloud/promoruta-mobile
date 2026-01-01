@@ -146,7 +146,10 @@ class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
           subtitle: l10n.controlYourCampaigns,
         );
       case 3: // Earnings
-        return PromoterAppBar(title: 'Ganancias');
+        return PromoterAppBar(
+          title: l10n.earningsPageTitle,
+          subtitle: l10n.earningsPageSubtitle,
+        );
       case 4: // Profile
         return PromoterAppBar(title: 'Perfil');
       default:

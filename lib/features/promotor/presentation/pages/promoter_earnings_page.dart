@@ -25,23 +25,6 @@ class _PromoterEarningsPageState extends State<PromoterEarningsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
-              Text(
-                l10n.earningsPageTitle,
-                style: theme.textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                l10n.earningsPageSubtitle,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textSecondary,
-                ),
-              ),
-              const SizedBox(height: 24),
-
               // Total Earnings Card
               _EarningsCard(
                 title: l10n.totalEarnings,
