@@ -72,6 +72,10 @@
   "@locationPermissionExplanation": {
     "description": "Explanation for why location permission is needed"
   },
+  "criticalPermissionsRequired": "Location and notifications are required to continue",
+  "@criticalPermissionsRequired": {
+    "description": "Message when critical permissions (location and notifications) are not granted"
+  },
   "cancel": "Cancel",
   "@cancel": {
     "description": "Button text to cancel an action"

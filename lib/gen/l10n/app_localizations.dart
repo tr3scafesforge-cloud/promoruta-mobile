@@ -208,6 +208,12 @@ abstract class AppLocalizations {
   /// **'We need access to your location to show you campaigns near you and help with navigation.'**
   String get locationPermissionExplanation;
 
+  /// Message when critical permissions (location and notifications) are not granted
+  ///
+  /// In en, this message translates to:
+  /// **'Location and notifications are required to continue'**
+  String get criticalPermissionsRequired;
+
   /// Button text to cancel an action
   ///
   /// In en, this message translates to:

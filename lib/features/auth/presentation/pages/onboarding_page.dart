@@ -38,11 +38,11 @@ class _OnboardingPageViewState extends ConsumerState<OnboardingPageView> {
     if (_currentPage == 1) {
       final permissionState = ref.read(permissionNotifierProvider);
       if (!permissionState.allCriticalPermissionsGranted) {
-        // Show a message that location permission is required
+        // Show a message that location and notifications permissions are required
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              AppLocalizations.of(context).locationPermissionRequiredTitle,
+              AppLocalizations.of(context).criticalPermissionsRequired,
             ),
             backgroundColor: Colors.orange,
             duration: const Duration(seconds: 3),
@@ -82,6 +82,11 @@ class _OnboardingPageViewState extends ConsumerState<OnboardingPageView> {
               setState(() {
                 _currentPage = index;
               });
+              // Auto-request all permissions when landing on Permissions page
+              if (index == 1) {
+                final permissionNotifier = ref.read(permissionNotifierProvider.notifier);
+                permissionNotifier.requestAllPermissions();
+              }
             },
             children: _pages,
           ),

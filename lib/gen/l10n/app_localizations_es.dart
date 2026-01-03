@@ -70,6 +70,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'Necesitamos acceso a tu ubicación para mostrarte campañas cerca de ti y ayudarte con la navegación.';
 
   @override
+  String get criticalPermissionsRequired =>
+      'Se requieren permisos de ubicación y notificaciones para continuar';
+
+  @override
   String get cancel => 'Cancelar';
 
   @override

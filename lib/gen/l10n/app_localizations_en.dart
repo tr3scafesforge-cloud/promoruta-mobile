@@ -69,6 +69,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'We need access to your location to show you campaigns near you and help with navigation.';
 
   @override
+  String get criticalPermissionsRequired =>
+      'Location and notifications are required to continue';
+
+  @override
   String get cancel => 'Cancel';
 
   @override

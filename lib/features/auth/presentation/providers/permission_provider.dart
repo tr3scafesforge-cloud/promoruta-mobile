@@ -29,8 +29,8 @@ class PermissionState {
     );
   }
 
-  // Check if all critical permissions are granted
-  bool get allCriticalPermissionsGranted => locationGranted;
+  // Check if all critical permissions are granted (location + notifications)
+  bool get allCriticalPermissionsGranted => locationGranted && notificationGranted;
 
   // Check if all permissions are granted
   bool get allPermissionsGranted =>
