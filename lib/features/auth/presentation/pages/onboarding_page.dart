@@ -1,30 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../providers/permission_provider.dart';
 import 'choose_role_page.dart';
-import 'permissions_page.dart';
 import 'start_page.dart';
 
-class OnboardingPageView extends ConsumerStatefulWidget {
+class OnboardingPageView extends StatefulWidget {
   const OnboardingPageView({super.key});
 
   @override
-  ConsumerState<OnboardingPageView> createState() => _OnboardingPageViewState();
+  State<OnboardingPageView> createState() => _OnboardingPageViewState();
 }
 
-class _OnboardingPageViewState extends ConsumerState<OnboardingPageView> {
+class _OnboardingPageViewState extends State<OnboardingPageView> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
-  final List<Widget> _pages = [
-    const StartPage(),
-    Permissions(),
-    const ChooseRole(),
+  final List<Widget> _pages = const [
+    StartPage(),
+    ChooseRole(),
   ];
 
   @override
@@ -34,24 +30,6 @@ class _OnboardingPageViewState extends ConsumerState<OnboardingPageView> {
   }
 
   void _nextPage() {
-    // Check if we're on the Permissions page (index 1)
-    if (_currentPage == 1) {
-      final permissionState = ref.read(permissionNotifierProvider);
-      if (!permissionState.allCriticalPermissionsGranted) {
-        // Show a message that location and notifications permissions are required
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context).criticalPermissionsRequired,
-            ),
-            backgroundColor: Colors.orange,
-            duration: const Duration(seconds: 3),
-          ),
-        );
-        return;
-      }
-    }
-
     if (_currentPage < _pages.length - 1) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 300),
