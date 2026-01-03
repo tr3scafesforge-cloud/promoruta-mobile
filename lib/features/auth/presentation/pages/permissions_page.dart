@@ -124,32 +124,6 @@ class Permissions extends ConsumerWidget {
                               ),
                       ),
                     ),
-                    const SizedBox(height: 12),
-                    if (permissionState.allCriticalPermissionsGranted)
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            context
-                                .go('/home'); // or wherever you want to go next
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF4CAF50),
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: Text(
-                            AppLocalizations.of(context).continueButton,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ),
                     const SizedBox(height: 40),
                   ],
                 ),
