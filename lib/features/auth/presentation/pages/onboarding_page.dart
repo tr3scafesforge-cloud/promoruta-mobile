@@ -21,10 +21,10 @@ class _OnboardingPageViewState extends ConsumerState<OnboardingPageView> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
-  final List<Widget> _pages = const [
-    StartPage(),
+  final List<Widget> _pages = [
+    const StartPage(),
     Permissions(),
-    ChooseRole(),
+    const ChooseRole(),
   ];
 
   @override
@@ -82,11 +82,6 @@ class _OnboardingPageViewState extends ConsumerState<OnboardingPageView> {
               setState(() {
                 _currentPage = index;
               });
-              // Auto-request all permissions when landing on Permissions page
-              if (index == 1) {
-                final permissionNotifier = ref.read(permissionNotifierProvider.notifier);
-                permissionNotifier.requestAllPermissions();
-              }
             },
             children: _pages,
           ),

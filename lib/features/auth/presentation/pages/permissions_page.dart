@@ -6,11 +6,25 @@ import 'package:promoruta/gen/l10n/app_localizations.dart';
 import '../providers/permission_provider.dart';
 import '../widgets/permission_card.dart';
 
-class Permissions extends ConsumerWidget {
+class Permissions extends ConsumerStatefulWidget {
   const Permissions({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<Permissions> createState() => _PermissionsState();
+}
+
+class _PermissionsState extends ConsumerState<Permissions> {
+  @override
+  void initState() {
+    super.initState();
+    // Request permissions after the widget is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(permissionNotifierProvider.notifier).autoRequestPermissions();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final permissionState = ref.watch(permissionNotifierProvider);
     final permissionNotifier = ref.read(permissionNotifierProvider.notifier);
 
@@ -95,7 +109,7 @@ class Permissions extends ConsumerWidget {
                             ? null
                             : () async {
                                 await permissionNotifier
-                                    .requestAllPermissions();
+                                    .manualRequestAllPermissions();
                               },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.blueDark,

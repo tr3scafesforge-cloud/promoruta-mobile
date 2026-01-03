@@ -7,12 +7,14 @@ class PermissionState {
   final bool notificationGranted;
   final bool microphoneGranted;
   final bool isLoading;
+  final bool hasAutoRequested;
 
   const PermissionState({
     this.locationGranted = false,
     this.notificationGranted = false,
     this.microphoneGranted = false,
     this.isLoading = false,
+    this.hasAutoRequested = false,
   });
 
   PermissionState copyWith({
@@ -20,12 +22,14 @@ class PermissionState {
     bool? notificationGranted,
     bool? microphoneGranted,
     bool? isLoading,
+    bool? hasAutoRequested,
   }) {
     return PermissionState(
       locationGranted: locationGranted ?? this.locationGranted,
       notificationGranted: notificationGranted ?? this.notificationGranted,
       microphoneGranted: microphoneGranted ?? this.microphoneGranted,
       isLoading: isLoading ?? this.isLoading,
+      hasAutoRequested: hasAutoRequested ?? this.hasAutoRequested,
     );
   }
 
@@ -102,26 +106,45 @@ class PermissionNotifier extends StateNotifier<PermissionState> {
     }
   }
 
-  // Request all permissions at once
+  // Request all permissions sequentially to avoid conflicts
   Future<void> requestAllPermissions() async {
     state = state.copyWith(isLoading: true);
 
     try {
-      final permissions = await [
-        Permission.locationWhenInUse,
-        Permission.notification,
-        Permission.microphone,
-      ].request();
+      // Request permissions one by one to avoid dialog conflicts
+      // Add small delays between requests to ensure dialogs don't conflict
+      final locationStatus = await Permission.locationWhenInUse.request();
+      state = state.copyWith(locationGranted: locationStatus.isGranted);
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      final notificationStatus = await Permission.notification.request();
+      state = state.copyWith(notificationGranted: notificationStatus.isGranted);
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      final microphoneStatus = await Permission.microphone.request();
 
       state = state.copyWith(
-        locationGranted: permissions[Permission.locationWhenInUse]?.isGranted ?? false,
-        notificationGranted: permissions[Permission.notification]?.isGranted ?? false,
-        microphoneGranted: permissions[Permission.microphone]?.isGranted ?? false,
+        microphoneGranted: microphoneStatus.isGranted,
         isLoading: false,
+        hasAutoRequested: true,
       );
     } catch (e) {
-      state = state.copyWith(isLoading: false);
+      state = state.copyWith(isLoading: false, hasAutoRequested: true);
     }
+  }
+
+  // Auto-request permissions only once per session
+  Future<void> autoRequestPermissions() async {
+    if (!state.hasAutoRequested) {
+      await requestAllPermissions();
+    }
+  }
+
+  // Manual request - always requests regardless of hasAutoRequested flag
+  Future<void> manualRequestAllPermissions() async {
+    // Reset the flag to allow re-requesting
+    state = state.copyWith(hasAutoRequested: false);
+    await requestAllPermissions();
   }
 
   // Open app settings
