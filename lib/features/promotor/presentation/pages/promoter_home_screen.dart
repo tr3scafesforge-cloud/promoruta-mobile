@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/core/constants/colors.dart';
+import 'package:promoruta/features/promotor/campaign_browsing/presentation/pages/promoter_nearby_page.dart';
 import 'package:promoruta/features/promotor/presentation/pages/promoter_earnings_page.dart';
 import 'package:promoruta/presentation/promotor/pages/promoter_profile_page.dart';
 import 'package:promoruta/presentation/promotor/pages/promoter_home_page.dart';
-import 'package:promoruta/presentation/promotor/pages/promoter_nearby_page.dart';
 import 'package:promoruta/features/promotor/presentation/pages/promoter_active_page.dart';
 import 'package:promoruta/shared/widgets/promoter_app_bar.dart';
 import 'package:promoruta/shared/providers/providers.dart';
