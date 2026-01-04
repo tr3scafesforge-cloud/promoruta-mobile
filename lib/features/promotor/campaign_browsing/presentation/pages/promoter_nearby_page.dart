@@ -67,23 +67,6 @@ class _PromoterNearbyPageState extends State<PromoterNearbyPage> {
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
       children: [
-        // Header
-        Text(
-          l10n.nearbyCampaignsTitle,
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.w700,
-                color: Colors.black87,
-              ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          l10n.discoverNearbyCampaigns,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Colors.grey[600],
-              ),
-        ),
-        const SizedBox(height: 20),
-
         // Search bar
         TextField(
           controller: _searchController,

@@ -141,7 +141,10 @@ class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
           subtitle: l10n.takeCampaignsNearbyStartPromo,
         );
       case 1: // Nearby
-        return PromoterAppBar(title: l10n.inYourArea);
+        return PromoterAppBar(
+          title: l10n.nearbyCampaignsTitle,
+          subtitle: l10n.discoverNearbyCampaigns,
+        );
       case 2: // Active
         return PromoterAppBar(
           title: l10n.activeJobs,
