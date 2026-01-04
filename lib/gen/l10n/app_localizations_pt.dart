@@ -368,6 +368,15 @@ class AppLocalizationsPt extends AppLocalizations {
   String get campaignFilterCancelled => 'Canceladas';
 
   @override
+  String get campaignFilterUrgent => 'Urgentes';
+
+  @override
+  String get campaignFilterNearby => 'Próximas';
+
+  @override
+  String get campaignFilterBestPaid => 'Melhor pagas';
+
+  @override
   String get activePromoters => 'Promotores Ativos';
 
   @override
@@ -710,6 +719,24 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get nearbyCampaigns => 'Campanhas próximas';
+
+  @override
+  String get nearbyCampaignsTitle => 'Campanhas próximas';
+
+  @override
+  String get discoverNearbyCampaigns => 'Descubra campanhas perto de você';
+
+  @override
+  String availableCampaignsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Campanhas disponíveis ($count)',
+      one: 'Campanha disponível ($count)',
+      zero: 'Nenhuma campanha disponível',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get viewMap => 'Ver Mapa';

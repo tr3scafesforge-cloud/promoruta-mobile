@@ -784,6 +784,24 @@ abstract class AppLocalizations {
   /// **'Cancelled'**
   String get campaignFilterCancelled;
 
+  /// Filter option for urgent campaigns
+  ///
+  /// In en, this message translates to:
+  /// **'Urgent'**
+  String get campaignFilterUrgent;
+
+  /// Filter option for nearby campaigns
+  ///
+  /// In en, this message translates to:
+  /// **'Nearby'**
+  String get campaignFilterNearby;
+
+  /// Filter option for best paid campaigns
+  ///
+  /// In en, this message translates to:
+  /// **'Best paid'**
+  String get campaignFilterBestPaid;
+
   /// Tab label for active promoters
   ///
   /// In en, this message translates to:
@@ -1389,6 +1407,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Nearby campaigns'**
   String get nearbyCampaigns;
+
+  /// Page title for nearby campaigns
+  ///
+  /// In en, this message translates to:
+  /// **'Nearby campaigns'**
+  String get nearbyCampaignsTitle;
+
+  /// Subtitle for nearby campaigns page
+  ///
+  /// In en, this message translates to:
+  /// **'Discover campaigns near you'**
+  String get discoverNearbyCampaigns;
+
+  /// Label for available campaigns count with plural support
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No available campaigns} one{Available campaign ({count})} other{Available campaigns ({count})}}'**
+  String availableCampaignsCount(int count);
 
   /// Button text to view map
   ///

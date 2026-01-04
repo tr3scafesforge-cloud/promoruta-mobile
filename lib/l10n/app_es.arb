@@ -461,6 +461,18 @@
   "@campaignFilterCancelled": {
     "description": "Filter option for cancelled campaigns"
   },
+  "campaignFilterUrgent": "Urgentes",
+  "@campaignFilterUrgent": {
+    "description": "Filter option for urgent campaigns"
+  },
+  "campaignFilterNearby": "Cercanas",
+  "@campaignFilterNearby": {
+    "description": "Filter option for nearby campaigns"
+  },
+  "campaignFilterBestPaid": "Mejor pagadas",
+  "@campaignFilterBestPaid": {
+    "description": "Filter option for best paid campaigns"
+  },
   "activePromoters": "Promotores Activos",
   "@activePromoters": {
     "description": "Tab label for active promoters"
@@ -895,6 +907,23 @@
   "nearbyCampaigns": "Campañas cerca tuyo",
   "@nearbyCampaigns": {
     "description": "Section header for nearby campaigns"
+  },
+  "nearbyCampaignsTitle": "Campañas cercanas",
+  "@nearbyCampaignsTitle": {
+    "description": "Page title for nearby campaigns"
+  },
+  "discoverNearbyCampaigns": "Descubrí campañas cerca tuyo",
+  "@discoverNearbyCampaigns": {
+    "description": "Subtitle for nearby campaigns page"
+  },
+  "availableCampaignsCount": "{count, plural, =0{No hay campañas disponibles} one{Campaña disponible ({count})} other{Campañas disponibles ({count})}}",
+  "@availableCampaignsCount": {
+    "description": "Label for available campaigns count with plural support",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "viewMap": "Ver Mapa",
   "@viewMap": {

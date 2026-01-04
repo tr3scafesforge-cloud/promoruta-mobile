@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/shared/widgets/multi_switch.dart';
+import 'package:promoruta/gen/l10n/app_localizations.dart';
 
 class PromoterNearbyPage extends StatefulWidget {
   const PromoterNearbyPage({super.key});
@@ -13,6 +14,46 @@ class _PromoterNearbyPageState extends State<PromoterNearbyPage> {
   int _selectedTabIndex = 0;
   final TextEditingController _searchController = TextEditingController();
 
+  // Sample campaigns data
+  final List<Map<String, dynamic>> _campaigns = [
+    {
+      'title': 'Apertura Tienda',
+      'description': 'Promocionar la apertura de la tienda',
+      'location': 'Nuevo Centro',
+      'distance': '2.4km',
+      'audioDuration': '45s',
+      'budget': '\$2000.00',
+      'urgencyMessage': 'Cierra en 2 h',
+    },
+    {
+      'title': 'Promoción Restaurante',
+      'description': 'Promoción especial de almuerzo',
+      'location': 'Centro',
+      'distance': '1.8km',
+      'audioDuration': '30s',
+      'budget': '\$1500.00',
+      'urgencyMessage': null,
+    },
+    {
+      'title': 'Cafetería Nueva',
+      'description': 'Apertura de nueva sucursal',
+      'location': 'Villa Morra',
+      'distance': '3.2km',
+      'audioDuration': '50s',
+      'budget': '\$1800.00',
+      'urgencyMessage': 'Cierra en 5 h',
+    },
+    {
+      'title': 'Supermercado Ofertas',
+      'description': 'Ofertas de fin de semana',
+      'location': 'San Lorenzo',
+      'distance': '4.1km',
+      'audioDuration': '40s',
+      'budget': '\$2200.00',
+      'urgencyMessage': null,
+    },
+  ];
+
   @override
   void dispose() {
     _searchController.dispose();
@@ -21,12 +62,14 @@ class _PromoterNearbyPageState extends State<PromoterNearbyPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
       children: [
         // Header
         Text(
-          'Campañas cercanas',
+          l10n.nearbyCampaignsTitle,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.w700,
                 color: Colors.black87,
@@ -34,7 +77,7 @@ class _PromoterNearbyPageState extends State<PromoterNearbyPage> {
         ),
         const SizedBox(height: 4),
         Text(
-          'Descubrí campañas cerca tuyo',
+          l10n.discoverNearbyCampaigns,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Colors.grey[600],
               ),
@@ -45,7 +88,7 @@ class _PromoterNearbyPageState extends State<PromoterNearbyPage> {
         TextField(
           controller: _searchController,
           decoration: InputDecoration(
-            hintText: 'Buscar campañas',
+            hintText: l10n.searchCampaigns,
             hintStyle: TextStyle(color: Colors.grey[500]),
             prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
             filled: true,
@@ -69,7 +112,12 @@ class _PromoterNearbyPageState extends State<PromoterNearbyPage> {
 
         // Tab switcher
         MultiSwitch(
-          options: const ['Todas', 'Urgentes', 'Cercanas', 'Mejor pagadas'],
+          options: [
+            l10n.campaignFilterAll,
+            l10n.campaignFilterUrgent,
+            l10n.campaignFilterNearby,
+            l10n.campaignFilterBestPaid,
+          ],
           initialIndex: _selectedTabIndex,
           onChanged: (index) {
             setState(() {
@@ -88,7 +136,7 @@ class _PromoterNearbyPageState extends State<PromoterNearbyPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Campañas disponibles (4)',
+              l10n.availableCampaignsCount(_campaigns.length),
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
@@ -98,45 +146,23 @@ class _PromoterNearbyPageState extends State<PromoterNearbyPage> {
         const SizedBox(height: 16),
 
         // Campaign cards
-        const _CampaignCard(
-          title: 'Apertura Tienda',
-          description: 'Promocionar la apertura de la tienda',
-          location: 'Nuevo Centro',
-          distance: '2.4km',
-          audioDuration: '45s',
-          budget: '\$2000.00',
-          urgencyMessage: 'Cierra en 2 h',
-        ),
-        const SizedBox(height: 12),
-        const _CampaignCard(
-          title: 'Promoción Restaurante',
-          description: 'Promoción especial de almuerzo',
-          location: 'Centro',
-          distance: '1.8km',
-          audioDuration: '30s',
-          budget: '\$1500.00',
-          urgencyMessage: null,
-        ),
-        const SizedBox(height: 12),
-        const _CampaignCard(
-          title: 'Cafetería Nueva',
-          description: 'Apertura de nueva sucursal',
-          location: 'Villa Morra',
-          distance: '3.2km',
-          audioDuration: '50s',
-          budget: '\$1800.00',
-          urgencyMessage: 'Cierra en 5 h',
-        ),
-        const SizedBox(height: 12),
-        const _CampaignCard(
-          title: 'Supermercado Ofertas',
-          description: 'Ofertas de fin de semana',
-          location: 'San Lorenzo',
-          distance: '4.1km',
-          audioDuration: '40s',
-          budget: '\$2200.00',
-          urgencyMessage: null,
-        ),
+        ..._campaigns.asMap().entries.map((entry) {
+          final campaign = entry.value;
+          return Padding(
+            padding: EdgeInsets.only(
+              bottom: entry.key < _campaigns.length - 1 ? 12 : 0,
+            ),
+            child: _CampaignCard(
+              title: campaign['title'] as String,
+              description: campaign['description'] as String,
+              location: campaign['location'] as String,
+              distance: campaign['distance'] as String,
+              audioDuration: campaign['audioDuration'] as String,
+              budget: campaign['budget'] as String,
+              urgencyMessage: campaign['urgencyMessage'] as String?,
+            ),
+          );
+        }),
       ],
     );
   }

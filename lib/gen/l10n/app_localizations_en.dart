@@ -366,6 +366,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get campaignFilterCancelled => 'Cancelled';
 
   @override
+  String get campaignFilterUrgent => 'Urgent';
+
+  @override
+  String get campaignFilterNearby => 'Nearby';
+
+  @override
+  String get campaignFilterBestPaid => 'Best paid';
+
+  @override
   String get activePromoters => 'Active Promoters';
 
   @override
@@ -707,6 +716,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get nearbyCampaigns => 'Nearby campaigns';
+
+  @override
+  String get nearbyCampaignsTitle => 'Nearby campaigns';
+
+  @override
+  String get discoverNearbyCampaigns => 'Discover campaigns near you';
+
+  @override
+  String availableCampaignsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Available campaigns ($count)',
+      one: 'Available campaign ($count)',
+      zero: 'No available campaigns',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get viewMap => 'View Map';
