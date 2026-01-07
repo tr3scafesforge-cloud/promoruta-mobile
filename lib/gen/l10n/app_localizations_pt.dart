@@ -1050,4 +1050,12 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get comment => 'Comentário';
+
+  @override
+  String closesInHours(int hours) {
+    return 'Fecha em $hours h';
+  }
+
+  @override
+  String get acceptCampaign => 'Aceitar campanha';
 }

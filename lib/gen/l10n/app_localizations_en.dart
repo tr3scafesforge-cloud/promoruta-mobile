@@ -1046,4 +1046,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get comment => 'Comment';
+
+  @override
+  String closesInHours(int hours) {
+    return 'Closes in $hours h';
+  }
+
+  @override
+  String get acceptCampaign => 'Accept campaign';
 }

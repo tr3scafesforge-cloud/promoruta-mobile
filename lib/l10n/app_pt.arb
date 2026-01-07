@@ -1378,5 +1378,19 @@
   "comment": "Comentário",
   "@comment": {
     "description": "Label for comment"
+  },
+  "closesInHours": "Fecha em {hours} h",
+  "@closesInHours": {
+    "description": "Message showing campaign closes in X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "acceptCampaign": "Aceitar campanha",
+  "@acceptCampaign": {
+    "description": "Label for accept campaign button"
   }
 }

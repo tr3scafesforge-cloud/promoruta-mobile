@@ -2001,6 +2001,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Comment'**
   String get comment;
+
+  /// Message showing campaign closes in X hours
+  ///
+  /// In en, this message translates to:
+  /// **'Closes in {hours} h'**
+  String closesInHours(int hours);
+
+  /// Label for accept campaign button
+  ///
+  /// In en, this message translates to:
+  /// **'Accept campaign'**
+  String get acceptCampaign;
 }
 
 class _AppLocalizationsDelegate

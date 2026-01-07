@@ -1053,4 +1053,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get comment => 'Comentario';
+
+  @override
+  String closesInHours(int hours) {
+    return 'Cierra en $hours h';
+  }
+
+  @override
+  String get acceptCampaign => 'Aceptar campaña';
 }

@@ -229,12 +229,14 @@ class _CampaignCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     // Check if campaign is urgent (bid deadline is within 3 hours)
     final now = DateTime.now();
     final timeUntilDeadline = campaign.bidDeadline.difference(now);
     final isUrgent = timeUntilDeadline.inHours < 3 && timeUntilDeadline.inHours >= 0;
     final urgencyMessage = isUrgent
-        ? 'Cierra en ${timeUntilDeadline.inHours} h'
+        ? l10n.closesInHours(timeUntilDeadline.inHours)
         : null;
 
     return Card(
@@ -287,19 +289,19 @@ class _CampaignCard extends StatelessWidget {
                 Expanded(
                   child: _DetailItem(
                     value: '${campaign.distance.toStringAsFixed(1)}km',
-                    label: 'Ruta',
+                    label: l10n.route,
                   ),
                 ),
                 Expanded(
                   child: _DetailItem(
                     value: '${campaign.audioDuration}s',
-                    label: 'Audio',
+                    label: l10n.audio,
                   ),
                 ),
                 Expanded(
                   child: _DetailItem(
                     value: '\$${campaign.suggestedPrice.toStringAsFixed(2)}',
-                    label: 'Presupuesto',
+                    label: l10n.budget,
                   ),
                 ),
               ],
@@ -335,12 +337,12 @@ class _CampaignCard extends StatelessWidget {
                 ),
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Aceptar campaña: ${campaign.title} (WIP)')),
+                    SnackBar(content: Text('${l10n.acceptCampaign}: ${campaign.title} (WIP)')),
                   );
                 },
-                child: const Text(
-                  'Aceptar campaña',
-                  style: TextStyle(
+                child: Text(
+                  l10n.acceptCampaign,
+                  style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 15,
                   ),
