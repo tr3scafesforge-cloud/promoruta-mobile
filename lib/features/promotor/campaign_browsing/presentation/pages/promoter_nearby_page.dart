@@ -1,58 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/core/constants/colors.dart';
-import 'package:promoruta/shared/widgets/multi_switch.dart';
+import 'package:promoruta/core/models/campaign.dart';
+import 'package:promoruta/features/advertiser/campaign_management/domain/use_cases/campaign_use_cases.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
+import 'package:promoruta/shared/shared.dart';
 
-class PromoterNearbyPage extends StatefulWidget {
+// Provider for nearby campaigns (first 15)
+final nearbyCampaignsProvider = FutureProvider.autoDispose<List<Campaign>>((ref) async {
+  final getCampaignsUseCase = ref.watch(getCampaignsUseCaseProvider);
+  return await getCampaignsUseCase(const GetCampaignsParams(perPage: 15));
+});
+
+class PromoterNearbyPage extends ConsumerStatefulWidget {
   const PromoterNearbyPage({super.key});
 
   @override
-  State<PromoterNearbyPage> createState() => _PromoterNearbyPageState();
+  ConsumerState<PromoterNearbyPage> createState() => _PromoterNearbyPageState();
 }
 
-class _PromoterNearbyPageState extends State<PromoterNearbyPage> {
+class _PromoterNearbyPageState extends ConsumerState<PromoterNearbyPage> {
   int _selectedTabIndex = 0;
   final TextEditingController _searchController = TextEditingController();
-
-  // Sample campaigns data
-  final List<Map<String, dynamic>> _campaigns = [
-    {
-      'title': 'Apertura Tienda',
-      'description': 'Promocionar la apertura de la tienda',
-      'location': 'Nuevo Centro',
-      'distance': '2.4km',
-      'audioDuration': '45s',
-      'budget': '\$2000.00',
-      'urgencyMessage': 'Cierra en 2 h',
-    },
-    {
-      'title': 'Promoción Restaurante',
-      'description': 'Promoción especial de almuerzo',
-      'location': 'Centro',
-      'distance': '1.8km',
-      'audioDuration': '30s',
-      'budget': '\$1500.00',
-      'urgencyMessage': null,
-    },
-    {
-      'title': 'Cafetería Nueva',
-      'description': 'Apertura de nueva sucursal',
-      'location': 'Villa Morra',
-      'distance': '3.2km',
-      'audioDuration': '50s',
-      'budget': '\$1800.00',
-      'urgencyMessage': 'Cierra en 5 h',
-    },
-    {
-      'title': 'Supermercado Ofertas',
-      'description': 'Ofertas de fin de semana',
-      'location': 'San Lorenzo',
-      'distance': '4.1km',
-      'audioDuration': '40s',
-      'budget': '\$2200.00',
-      'urgencyMessage': null,
-    },
-  ];
 
   @override
   void dispose() {
@@ -63,90 +32,124 @@ class _PromoterNearbyPageState extends State<PromoterNearbyPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final campaignsAsync = ref.watch(nearbyCampaignsProvider);
 
-    return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
-      children: [
-        // Search bar
-        TextField(
-          controller: _searchController,
-          decoration: InputDecoration(
-            hintText: l10n.searchCampaigns,
-            hintStyle: TextStyle(color: Colors.grey[500]),
-            prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
-            filled: true,
-            fillColor: Colors.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.grey[300]!),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.grey[300]!),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.activeCampaignColor, width: 2),
-            ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+    return campaignsAsync.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stack) => Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.error_outline, size: 60, color: Colors.red[300]),
+              const SizedBox(height: 16),
+              Text(
+                'Error loading campaigns: $error',
+                style: TextStyle(color: Colors.red),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
-        const SizedBox(height: 20),
-
-        // Tab switcher
-        MultiSwitch(
-          options: [
-            l10n.campaignFilterAll,
-            l10n.campaignFilterUrgent,
-            l10n.campaignFilterNearby,
-            l10n.campaignFilterBestPaid,
-          ],
-          initialIndex: _selectedTabIndex,
-          onChanged: (index) {
-            setState(() {
-              _selectedTabIndex = index;
-            });
-          },
-        ),
-        const SizedBox(height: 20),
-
-        // Map section
-        const _MapSection(),
-        const SizedBox(height: 24),
-
-        // Campaign list header
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      ),
+      data: (campaigns) {
+        return ListView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
           children: [
-            Text(
-              l10n.availableCampaignsCount(_campaigns.length),
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+            // Search bar
+            TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: l10n.searchCampaigns,
+                hintStyle: TextStyle(color: Colors.grey[500]),
+                prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: Colors.grey[300]!),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: Colors.grey[300]!),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: AppColors.activeCampaignColor, width: 2),
+                ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              ),
             ),
-          ],
-        ),
-        const SizedBox(height: 16),
+            const SizedBox(height: 20),
 
-        // Campaign cards
-        ..._campaigns.asMap().entries.map((entry) {
-          final campaign = entry.value;
-          return Padding(
-            padding: EdgeInsets.only(
-              bottom: entry.key < _campaigns.length - 1 ? 12 : 0,
+            // Tab switcher
+            MultiSwitch(
+              options: [
+                l10n.campaignFilterAll,
+                l10n.campaignFilterUrgent,
+                l10n.campaignFilterNearby,
+                l10n.campaignFilterBestPaid,
+              ],
+              initialIndex: _selectedTabIndex,
+              onChanged: (index) {
+                setState(() {
+                  _selectedTabIndex = index;
+                });
+              },
             ),
-            child: _CampaignCard(
-              title: campaign['title'] as String,
-              description: campaign['description'] as String,
-              location: campaign['location'] as String,
-              distance: campaign['distance'] as String,
-              audioDuration: campaign['audioDuration'] as String,
-              budget: campaign['budget'] as String,
-              urgencyMessage: campaign['urgencyMessage'] as String?,
+            const SizedBox(height: 20),
+
+            // Map section
+            const _MapSection(),
+            const SizedBox(height: 24),
+
+            // Campaign list header
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  l10n.availableCampaignsCount(campaigns.length),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+              ],
             ),
-          );
-        }),
-      ],
+            const SizedBox(height: 16),
+
+            // Campaign cards or empty state
+            if (campaigns.isEmpty)
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(32.0),
+                  child: Column(
+                    children: [
+                      Icon(Icons.campaign_outlined, size: 60, color: Colors.grey[400]),
+                      const SizedBox(height: 16),
+                      Text(
+                        l10n.noCampaignsFound,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Colors.grey[600],
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            else
+              ...campaigns.asMap().entries.map((entry) {
+                final campaign = entry.value;
+                return Padding(
+                  padding: EdgeInsets.only(
+                    bottom: entry.key < campaigns.length - 1 ? 12 : 0,
+                  ),
+                  child: _CampaignCard(campaign: campaign),
+                );
+              }),
+          ],
+        );
+      },
     );
   }
 }
@@ -218,26 +221,22 @@ class _MapSection extends StatelessWidget {
 }
 
 class _CampaignCard extends StatelessWidget {
-  final String title;
-  final String description;
-  final String location;
-  final String distance;
-  final String audioDuration;
-  final String budget;
-  final String? urgencyMessage;
+  final Campaign campaign;
 
   const _CampaignCard({
-    required this.title,
-    required this.description,
-    required this.location,
-    required this.distance,
-    required this.audioDuration,
-    required this.budget,
-    this.urgencyMessage,
+    required this.campaign,
   });
 
   @override
   Widget build(BuildContext context) {
+    // Check if campaign is urgent (bid deadline is within 3 hours)
+    final now = DateTime.now();
+    final timeUntilDeadline = campaign.bidDeadline.difference(now);
+    final isUrgent = timeUntilDeadline.inHours < 3 && timeUntilDeadline.inHours >= 0;
+    final urgencyMessage = isUrgent
+        ? 'Cierra en ${timeUntilDeadline.inHours} h'
+        : null;
+
     return Card(
       elevation: 0,
       color: Colors.white,
@@ -259,17 +258,19 @@ class _CampaignCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        title,
+                        campaign.title,
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.w700,
                             ),
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        description,
+                        campaign.description ?? '',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: Colors.grey[600],
                             ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),
@@ -280,7 +281,7 @@ class _CampaignCard extends StatelessWidget {
                     Icon(Icons.location_on, size: 16, color: Colors.grey[600]),
                     const SizedBox(width: 2),
                     Text(
-                      location,
+                      campaign.zone,
                       style: TextStyle(
                         fontSize: 13,
                         color: Colors.grey[700],
@@ -297,19 +298,19 @@ class _CampaignCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: _DetailItem(
-                    value: distance,
+                    value: '${campaign.distance.toStringAsFixed(1)}km',
                     label: 'Ruta',
                   ),
                 ),
                 Expanded(
                   child: _DetailItem(
-                    value: audioDuration,
+                    value: '${campaign.audioDuration}s',
                     label: 'Audio',
                   ),
                 ),
                 Expanded(
                   child: _DetailItem(
-                    value: budget,
+                    value: '\$${campaign.suggestedPrice.toStringAsFixed(2)}',
                     label: 'Presupuesto',
                   ),
                 ),
@@ -320,7 +321,7 @@ class _CampaignCard extends StatelessWidget {
             if (urgencyMessage != null) ...[
               const SizedBox(height: 12),
               Text(
-                urgencyMessage!,
+                urgencyMessage,
                 style: TextStyle(
                   color: AppColors.deepOrange,
                   fontSize: 13,
@@ -346,7 +347,7 @@ class _CampaignCard extends StatelessWidget {
                 ),
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Aceptar campaña: $title (WIP)')),
+                    SnackBar(content: Text('Aceptar campaña: ${campaign.title} (WIP)')),
                   );
                 },
                 child: const Text(
