@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/core/constants/colors.dart';
+import 'package:promoruta/core/models/campaign.dart';
+import 'package:promoruta/features/advertiser/campaign_management/domain/use_cases/campaign_use_cases.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
+
+// Provider for nearby campaigns (first 15)
+final nearbyCampaignsProvider = FutureProvider.autoDispose<List<Campaign>>((ref) async {
+  final getCampaignsUseCase = ref.watch(getCampaignsUseCaseProvider);
+  return await getCampaignsUseCase(const GetCampaignsParams(perPage: 15));
+});
 
 class PromoterHomePage extends StatelessWidget {
   const PromoterHomePage({super.key});
@@ -19,6 +27,7 @@ class _PromoterHomeContent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final kpiStatsAsync = ref.watch(promoterKpiStatsProvider);
+    final nearbyCampaignsAsync = ref.watch(nearbyCampaignsProvider);
     final l10n = AppLocalizations.of(context);
 
     return ListView(
@@ -107,22 +116,46 @@ class _PromoterHomeContent extends ConsumerWidget {
         ),
 
         // Nearby campaign cards
-        const _NearbyCampaignCard(
-          title: 'Promoción Cafetería Centro',
-          amountRight: '\$18.00',
-          amountRightSub: 'Estimado',
-          distance: '1.4km',
-          duration: '35 min',
-          audio: '45s',
-        ),
-        const SizedBox(height: 12),
-        const _NearbyCampaignCard(
-          title: 'Promoción Cafetería',
-          amountRight: '\$48.20',
-          amountRightSub: 'Estimado',
-          distance: '2.4km',
-          duration: '35 min',
-          audio: '45s',
+        nearbyCampaignsAsync.when(
+          loading: () => const Center(
+            child: Padding(
+              padding: EdgeInsets.all(32.0),
+              child: CircularProgressIndicator(),
+            ),
+          ),
+          error: (error, stack) => Center(
+            child: Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Text(
+                'Error loading campaigns: $error',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ),
+          data: (campaigns) {
+            if (campaigns.isEmpty) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(32.0),
+                  child: Text(
+                    l10n.noCampaignsFound,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Colors.grey[600],
+                        ),
+                  ),
+                ),
+              );
+            }
+
+            return Column(
+              children: [
+                for (int i = 0; i < campaigns.length; i++) ...[
+                  _NearbyCampaignCard(campaign: campaigns[i]),
+                  if (i < campaigns.length - 1) const SizedBox(height: 12),
+                ],
+              ],
+            );
+          },
         ),
 
         const SizedBox(height: 16),
@@ -135,26 +168,19 @@ class _PromoterHomeContent extends ConsumerWidget {
 }
 
 class _NearbyCampaignCard extends StatelessWidget {
-  final String title;
-  final String amountRight;
-  final String amountRightSub;
-  final String distance;
-  final String duration;
-  final String audio;
+  final Campaign campaign;
 
   const _NearbyCampaignCard({
-    required this.title,
-    required this.amountRight,
-    required this.amountRightSub,
-    required this.distance,
-    required this.duration,
-    required this.audio,
+    required this.campaign,
   });
 
   static const Color _accent = Color(0xFFFF7A1A);
 
   @override
   Widget build(BuildContext context) {
+    // Calculate duration estimate (placeholder - could be enhanced with routing API)
+    final durationMinutes = (campaign.distance * 15).round(); // Rough estimate: 15 min per km
+
     return Card(
       elevation: 0,
       color: Colors.white,
@@ -170,14 +196,14 @@ class _NearbyCampaignCard extends StatelessWidget {
                 const CircleAvatar(
                   radius: 18,
                   backgroundColor: Color(0xFFEFF7F5),
-                  child: Icon(Icons.local_cafe_rounded, color: Colors.black87),
+                  child: Icon(Icons.campaign_rounded, color: Colors.black87),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(title,
+                      Text(campaign.title,
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                 fontWeight: FontWeight.w700,
                               )),
@@ -187,7 +213,7 @@ class _NearbyCampaignCard extends StatelessWidget {
                           Icon(Icons.near_me_rounded,
                               size: 16, color: Colors.grey[700]),
                           const SizedBox(width: 4),
-                          Text('A 0.8km de distancia',
+                          Text('A ${campaign.distance.toStringAsFixed(1)}km de distancia',
                               style: Theme.of(context)
                                   .textTheme
                                   .labelMedium
@@ -200,11 +226,11 @@ class _NearbyCampaignCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(amountRight,
+                    Text('\$${campaign.suggestedPrice.toStringAsFixed(2)}',
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
                               fontWeight: FontWeight.w800,
                             )),
-                    Text(amountRightSub,
+                    Text('Estimado',
                         style: Theme.of(context)
                             .textTheme
                             .labelSmall
@@ -218,9 +244,9 @@ class _NearbyCampaignCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _miniMetric(Icons.alt_route_rounded, distance, 'Ruta'),
-                _miniMetric(Icons.timer_outlined, duration, 'Duración'),
-                _miniMetric(Icons.graphic_eq_rounded, audio, 'Audio'),
+                _miniMetric(Icons.alt_route_rounded, '${campaign.distance.toStringAsFixed(1)}km', 'Ruta'),
+                _miniMetric(Icons.timer_outlined, '$durationMinutes min', 'Duración'),
+                _miniMetric(Icons.graphic_eq_rounded, '${campaign.audioDuration}s', 'Audio'),
               ],
             ),
             const SizedBox(height: 12),
@@ -264,7 +290,7 @@ class _NearbyCampaignCard extends StatelessWidget {
                     },
                     child: Text(
                       AppLocalizations.of(context).acceptPromotion,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 13,
                       ),
