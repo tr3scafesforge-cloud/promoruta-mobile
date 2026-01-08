@@ -135,57 +135,44 @@ class _PromoterNearbyPageState extends ConsumerState<PromoterNearbyPage> {
     final campaignsAsync = ref.watch(filteredCampaignsProvider);
     final userLocationAsync = ref.watch(userLocationProvider);
 
-    return campaignsAsync.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => Center(
-        child: Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.error_outline, size: 60, color: Colors.red[300]),
-              const SizedBox(height: 16),
-              Text(
-                'Error loading campaigns: $error',
-                style: TextStyle(color: Colors.red),
-                textAlign: TextAlign.center,
-              ),
-            ],
+    final isLoading = campaignsAsync.isLoading;
+
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+      children: [
+        // Search bar
+        TextField(
+          controller: _searchController,
+          enabled: !isLoading,
+          decoration: InputDecoration(
+            hintText: l10n.searchCampaigns,
+            hintStyle: TextStyle(color: Colors.grey[500]),
+            prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
+            filled: true,
+            fillColor: isLoading ? Colors.grey[100] : Colors.white,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey[300]!),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey[300]!),
+            ),
+            disabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey[200]!),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: AppColors.activeCampaignColor, width: 2),
+            ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           ),
         ),
-      ),
-      data: (campaigns) {
-        return ListView(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
-          children: [
-            // Search bar
-            TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: l10n.searchCampaigns,
-                hintStyle: TextStyle(color: Colors.grey[500]),
-                prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: Colors.grey[300]!),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: Colors.grey[300]!),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: AppColors.activeCampaignColor, width: 2),
-                ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-              ),
-            ),
-            const SizedBox(height: 16),
+        const SizedBox(height: 16),
 
-            // Location status indicator (only for nearby filter)
-            if (selectedFilter == CampaignFilter.nearby)
+        // Location status indicator (only for nearby filter)
+        if (selectedFilter == CampaignFilter.nearby)
               userLocationAsync.when(
                 loading: () => Container(
                   padding: const EdgeInsets.all(12),
@@ -283,10 +270,14 @@ class _PromoterNearbyPageState extends ConsumerState<PromoterNearbyPage> {
                   );
                 },
               ),
-            if (selectedFilter == CampaignFilter.nearby) const SizedBox(height: 16),
+        if (selectedFilter == CampaignFilter.nearby) const SizedBox(height: 16),
 
-            // Tab switcher
-            MultiSwitch(
+        // Tab switcher
+        IgnorePointer(
+          ignoring: isLoading,
+          child: Opacity(
+            opacity: isLoading ? 0.5 : 1.0,
+            child: MultiSwitch(
               options: [
                 l10n.campaignFilterAll,
                 l10n.campaignFilterUrgent,
@@ -296,61 +287,110 @@ class _PromoterNearbyPageState extends ConsumerState<PromoterNearbyPage> {
               initialIndex: selectedFilter.index,
               onChanged: _onTabChanged,
             ),
-            const SizedBox(height: 20),
+          ),
+        ),
+        const SizedBox(height: 20),
 
-            // Map section
-            const _MapSection(),
-            const SizedBox(height: 24),
-
-            // Campaign list header
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  l10n.availableCampaignsCount(campaigns.length),
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
+        // Content area - show loading or data
+        campaignsAsync.when(
+          loading: () => Column(
+            children: [
+              // Map section placeholder
+              Card(
+                elevation: 0,
+                color: Colors.grey[100],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  side: BorderSide(color: Colors.grey[200]!),
                 ),
-              ],
-            ),
-            const SizedBox(height: 16),
-
-            // Campaign cards or empty state
-            if (campaigns.isEmpty)
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(32.0),
-                  child: Column(
-                    children: [
-                      Icon(Icons.campaign_outlined, size: 60, color: Colors.grey[400]),
-                      const SizedBox(height: 16),
-                      Text(
-                        l10n.noCampaignsFound,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Colors.grey[600],
-                            ),
-                      ),
-                    ],
+                child: SizedBox(
+                  height: 250,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.activeCampaignColor,
+                    ),
                   ),
                 ),
-              )
-            else
-              ...campaigns.asMap().entries.map((entry) {
-                final campaign = entry.value;
-                return Padding(
-                  padding: EdgeInsets.only(
-                    bottom: entry.key < campaigns.length - 1 ? 12 : 0,
+              ),
+              const SizedBox(height: 24),
+              // Loading text
+              Text(
+                'Loading campaigns...',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Colors.grey[600],
+                    ),
+              ),
+            ],
+          ),
+          error: (error, stack) => Column(
+            children: [
+              const SizedBox(height: 32),
+              Icon(Icons.error_outline, size: 60, color: Colors.red[300]),
+              const SizedBox(height: 16),
+              Text(
+                'Error loading campaigns: $error',
+                style: TextStyle(color: Colors.red),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+          data: (campaigns) => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Map section
+              const _MapSection(),
+              const SizedBox(height: 24),
+
+              // Campaign list header
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    l10n.availableCampaignsCount(campaigns.length),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
                   ),
-                  child: _CampaignCard(
-                    campaign: campaign,
-                    userLocation: userLocationAsync.value,
+                ],
+              ),
+              const SizedBox(height: 16),
+
+              // Campaign cards or empty state
+              if (campaigns.isEmpty)
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(32.0),
+                    child: Column(
+                      children: [
+                        Icon(Icons.campaign_outlined, size: 60, color: Colors.grey[400]),
+                        const SizedBox(height: 16),
+                        Text(
+                          l10n.noCampaignsFound,
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: Colors.grey[600],
+                              ),
+                        ),
+                      ],
+                    ),
                   ),
-                );
-              }),
-          ],
-        );
-      },
+                )
+              else
+                ...campaigns.asMap().entries.map((entry) {
+                  final campaign = entry.value;
+                  return Padding(
+                    padding: EdgeInsets.only(
+                      bottom: entry.key < campaigns.length - 1 ? 12 : 0,
+                    ),
+                    child: _CampaignCard(
+                      campaign: campaign,
+                      userLocation: userLocationAsync.value,
+                    ),
+                  );
+                }),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
