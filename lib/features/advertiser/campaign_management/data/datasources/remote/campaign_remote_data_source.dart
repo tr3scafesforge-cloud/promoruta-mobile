@@ -22,6 +22,15 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
     String? status,
     String? zone,
     String? createdBy,
+    String? acceptedBy,
+    bool? upcoming,
+    DateTime? startTimeFrom,
+    DateTime? startTimeTo,
+    String? sortBy,
+    String? sortOrder,
+    double? lat,
+    double? lng,
+    double? radius,
     int? perPage,
   }) async {
     try {
@@ -29,6 +38,15 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
       if (status != null) filters.add('status=$status');
       if (zone != null) filters.add('zone=$zone');
       if (createdBy != null) filters.add('created_by=$createdBy');
+      if (acceptedBy != null) filters.add('accepted_by=$acceptedBy');
+      if (upcoming != null) filters.add('upcoming=$upcoming');
+      if (startTimeFrom != null) filters.add('start_time_from=${startTimeFrom.toIso8601String()}');
+      if (startTimeTo != null) filters.add('start_time_to=${startTimeTo.toIso8601String()}');
+      if (sortBy != null) filters.add('sort_by=$sortBy');
+      if (sortOrder != null) filters.add('sort_order=$sortOrder');
+      if (lat != null) filters.add('lat=$lat');
+      if (lng != null) filters.add('lng=$lng');
+      if (radius != null) filters.add('radius=$radius');
       if (perPage != null) filters.add('per_page=$perPage');
 
       AppLogger.auth.i('Fetching campaigns list${filters.isNotEmpty ? ' with filters: ${filters.join(', ')}' : ''}');
@@ -37,6 +55,15 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
       if (status != null) queryParameters['status'] = status;
       if (zone != null) queryParameters['zone'] = zone;
       if (createdBy != null) queryParameters['created_by'] = createdBy;
+      if (acceptedBy != null) queryParameters['accepted_by'] = acceptedBy;
+      if (upcoming != null) queryParameters['upcoming'] = upcoming;
+      if (startTimeFrom != null) queryParameters['start_time_from'] = startTimeFrom.toIso8601String();
+      if (startTimeTo != null) queryParameters['start_time_to'] = startTimeTo.toIso8601String();
+      if (sortBy != null) queryParameters['sort_by'] = sortBy;
+      if (sortOrder != null) queryParameters['sort_order'] = sortOrder;
+      if (lat != null) queryParameters['lat'] = lat;
+      if (lng != null) queryParameters['lng'] = lng;
+      if (radius != null) queryParameters['radius'] = radius;
       if (perPage != null) queryParameters['per_page'] = perPage;
 
       final response = await dio.get(

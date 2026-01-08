@@ -6,16 +6,35 @@ import 'package:promoruta/shared/shared.dart';
 /// Parameters for getting campaigns
 ///
 /// Available status values: pending, created, accepted, in_progress, completed, cancelled, expired
+/// Sort by values: created_at, start_time, suggested_price
 class GetCampaignsParams {
   final String? status;
   final String? zone;
   final String? createdBy;
+  final String? acceptedBy;
+  final bool? upcoming;
+  final DateTime? startTimeFrom;
+  final DateTime? startTimeTo;
+  final String? sortBy;
+  final String? sortOrder;
+  final double? lat;
+  final double? lng;
+  final double? radius;
   final int? perPage;
 
   const GetCampaignsParams({
     this.status,
     this.zone,
     this.createdBy,
+    this.acceptedBy,
+    this.upcoming,
+    this.startTimeFrom,
+    this.startTimeTo,
+    this.sortBy,
+    this.sortOrder,
+    this.lat,
+    this.lng,
+    this.radius,
     this.perPage,
   });
 }
@@ -32,6 +51,15 @@ class GetCampaignsUseCase implements UseCase<List<model.Campaign>, GetCampaignsP
       status: params?.status,
       zone: params?.zone,
       createdBy: params?.createdBy,
+      acceptedBy: params?.acceptedBy,
+      upcoming: params?.upcoming,
+      startTimeFrom: params?.startTimeFrom,
+      startTimeTo: params?.startTimeTo,
+      sortBy: params?.sortBy,
+      sortOrder: params?.sortOrder,
+      lat: params?.lat,
+      lng: params?.lng,
+      radius: params?.radius,
       perPage: params?.perPage,
     );
   }

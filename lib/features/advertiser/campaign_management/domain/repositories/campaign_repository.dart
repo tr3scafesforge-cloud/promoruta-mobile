@@ -8,6 +8,15 @@ abstract class CampaignRepository {
     String? status,
     String? zone,
     String? createdBy,
+    String? acceptedBy,
+    bool? upcoming,
+    DateTime? startTimeFrom,
+    DateTime? startTimeTo,
+    String? sortBy,
+    String? sortOrder,
+    double? lat,
+    double? lng,
+    double? radius,
     int? perPage,
   });
   Future<Campaign> getCampaign(String id);
@@ -34,6 +43,15 @@ abstract class CampaignRemoteDataSource {
     String? status,
     String? zone,
     String? createdBy,
+    String? acceptedBy,
+    bool? upcoming,
+    DateTime? startTimeFrom,
+    DateTime? startTimeTo,
+    String? sortBy,
+    String? sortOrder,
+    double? lat,
+    double? lng,
+    double? radius,
     int? perPage,
   });
   Future<Campaign> getCampaign(String id);

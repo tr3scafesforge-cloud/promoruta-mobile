@@ -1,15 +1,110 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/core/models/campaign.dart';
 import 'package:promoruta/features/advertiser/campaign_management/domain/use_cases/campaign_use_cases.dart';
+import 'package:promoruta/features/location/data/providers/location_provider.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
 
-// Provider for nearby campaigns (first 15)
-final nearbyCampaignsProvider = FutureProvider.autoDispose<List<Campaign>>((ref) async {
+// Filter types enum
+enum CampaignFilter {
+  all,
+  urgent,
+  nearby,
+  bestPaid,
+}
+
+// Provider for campaign filter parameters
+final campaignFilterParamsProvider = StateProvider.autoDispose<GetCampaignsParams>((ref) {
+  return const GetCampaignsParams(perPage: 15);
+});
+
+// Provider for selected filter tab
+final selectedFilterProvider = StateProvider.autoDispose<CampaignFilter>((ref) {
+  return CampaignFilter.all;
+});
+
+// Provider for user location
+final userLocationProvider = FutureProvider.autoDispose<LatLng?>((ref) async {
+  final locationService = ref.watch(locationServiceProvider);
+
+  // Check if location services are enabled
+  final isEnabled = await locationService.isLocationServiceEnabled();
+  if (!isEnabled) {
+    return null;
+  }
+
+  // Request location permission if not granted
+  final hasPermission = await locationService.hasLocationPermission();
+  if (!hasPermission) {
+    final granted = await locationService.requestLocationPermission();
+    if (!granted) {
+      return null;
+    }
+  }
+
+  // Get current location
+  return await locationService.getCurrentLocation();
+});
+
+// Provider for filtered campaigns based on selected tab
+final filteredCampaignsProvider = FutureProvider.autoDispose<List<Campaign>>((ref) async {
   final getCampaignsUseCase = ref.watch(getCampaignsUseCaseProvider);
-  return await getCampaignsUseCase(const GetCampaignsParams(perPage: 15));
+  final selectedFilter = ref.watch(selectedFilterProvider);
+  final userLocation = await ref.watch(userLocationProvider.future);
+
+  GetCampaignsParams params;
+
+  switch (selectedFilter) {
+    case CampaignFilter.all:
+      params = const GetCampaignsParams(
+        perPage: 15,
+        sortBy: 'created_at',
+        sortOrder: 'desc',
+      );
+      break;
+
+    case CampaignFilter.urgent:
+      params = const GetCampaignsParams(
+        perPage: 15,
+        upcoming: true,
+        sortBy: 'start_time',
+        sortOrder: 'asc',
+      );
+      break;
+
+    case CampaignFilter.nearby:
+      if (userLocation != null) {
+        params = GetCampaignsParams(
+          perPage: 15,
+          lat: userLocation.latitude,
+          lng: userLocation.longitude,
+          radius: 10, // 10km radius
+          sortBy: 'start_time',
+          sortOrder: 'asc',
+        );
+      } else {
+        // Fallback to all campaigns if location not available
+        params = const GetCampaignsParams(
+          perPage: 15,
+          sortBy: 'created_at',
+          sortOrder: 'desc',
+        );
+      }
+      break;
+
+    case CampaignFilter.bestPaid:
+      params = const GetCampaignsParams(
+        perPage: 15,
+        sortBy: 'suggested_price',
+        sortOrder: 'desc',
+      );
+      break;
+  }
+
+  return await getCampaignsUseCase(params);
 });
 
 class PromoterNearbyPage extends ConsumerStatefulWidget {
@@ -20,7 +115,6 @@ class PromoterNearbyPage extends ConsumerStatefulWidget {
 }
 
 class _PromoterNearbyPageState extends ConsumerState<PromoterNearbyPage> {
-  int _selectedTabIndex = 0;
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -29,10 +123,17 @@ class _PromoterNearbyPageState extends ConsumerState<PromoterNearbyPage> {
     super.dispose();
   }
 
+  void _onTabChanged(int index) {
+    final filter = CampaignFilter.values[index];
+    ref.read(selectedFilterProvider.notifier).state = filter;
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final campaignsAsync = ref.watch(nearbyCampaignsProvider);
+    final selectedFilter = ref.watch(selectedFilterProvider);
+    final campaignsAsync = ref.watch(filteredCampaignsProvider);
+    final userLocationAsync = ref.watch(userLocationProvider);
 
     return campaignsAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
@@ -81,7 +182,108 @@ class _PromoterNearbyPageState extends ConsumerState<PromoterNearbyPage> {
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
+
+            // Location status indicator (only for nearby filter)
+            if (selectedFilter == CampaignFilter.nearby)
+              userLocationAsync.when(
+                loading: () => Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.blue[50],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.blue[700]!),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Getting your location...',
+                        style: TextStyle(
+                          color: Colors.blue[700],
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                error: (error, stack) => Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.orange[50],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.location_off, color: Colors.orange[700], size: 16),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          'Location unavailable. Enable location services for nearby campaigns.',
+                          style: TextStyle(
+                            color: Colors.orange[700],
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                data: (location) {
+                  if (location == null) {
+                    return Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.orange[50],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.location_off, color: Colors.orange[700], size: 16),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              'Location permission required for nearby campaigns.',
+                              style: TextStyle(
+                                color: Colors.orange[700],
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  return Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.green[50],
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.location_on, color: Colors.green[700], size: 16),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Showing campaigns within 10km of your location',
+                          style: TextStyle(
+                            color: Colors.green[700],
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            if (selectedFilter == CampaignFilter.nearby) const SizedBox(height: 16),
 
             // Tab switcher
             MultiSwitch(
@@ -91,12 +293,8 @@ class _PromoterNearbyPageState extends ConsumerState<PromoterNearbyPage> {
                 l10n.campaignFilterNearby,
                 l10n.campaignFilterBestPaid,
               ],
-              initialIndex: _selectedTabIndex,
-              onChanged: (index) {
-                setState(() {
-                  _selectedTabIndex = index;
-                });
-              },
+              initialIndex: selectedFilter.index,
+              onChanged: _onTabChanged,
             ),
             const SizedBox(height: 20),
 
@@ -144,7 +342,10 @@ class _PromoterNearbyPageState extends ConsumerState<PromoterNearbyPage> {
                   padding: EdgeInsets.only(
                     bottom: entry.key < campaigns.length - 1 ? 12 : 0,
                   ),
-                  child: _CampaignCard(campaign: campaign),
+                  child: _CampaignCard(
+                    campaign: campaign,
+                    userLocation: userLocationAsync.value,
+                  ),
                 );
               }),
           ],
@@ -220,16 +421,19 @@ class _MapSection extends StatelessWidget {
   }
 }
 
-class _CampaignCard extends StatelessWidget {
+class _CampaignCard extends ConsumerWidget {
   final Campaign campaign;
+  final LatLng? userLocation;
 
   const _CampaignCard({
     required this.campaign,
+    this.userLocation,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
+    final locationService = ref.watch(locationServiceProvider);
 
     // Check if campaign is urgent (bid deadline is within 3 hours)
     final now = DateTime.now();
@@ -238,6 +442,16 @@ class _CampaignCard extends StatelessWidget {
     final urgencyMessage = isUrgent
         ? l10n.closesInHours(timeUntilDeadline.inHours)
         : null;
+
+    // Calculate distance from user location if available
+    double? distanceFromUser;
+    if (userLocation != null && campaign.routeCoordinates.isNotEmpty) {
+      final campaignLocation = LatLng(
+        campaign.routeCoordinates.first.lat,
+        campaign.routeCoordinates.first.lng,
+      );
+      distanceFromUser = locationService.calculateDistance(userLocation!, campaignLocation) / 1000; // Convert to km
+    }
 
     return Card(
       elevation: 0,
@@ -281,6 +495,24 @@ class _CampaignCard extends StatelessWidget {
                 ),
               ],
             ),
+            if (distanceFromUser != null) ...[
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: AppColors.activeCampaignColor.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  '${distanceFromUser.toStringAsFixed(1)} km away',
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: AppColors.activeCampaignColor,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
             const SizedBox(height: 16),
 
             // Campaign details

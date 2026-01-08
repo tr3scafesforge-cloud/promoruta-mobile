@@ -23,6 +23,15 @@ class CampaignRepositoryImpl implements CampaignRepository {
     String? status,
     String? zone,
     String? createdBy,
+    String? acceptedBy,
+    bool? upcoming,
+    DateTime? startTimeFrom,
+    DateTime? startTimeTo,
+    String? sortBy,
+    String? sortOrder,
+    double? lat,
+    double? lng,
+    double? radius,
     int? perPage,
   }) async {
     final isConnected = await _connectivityService.isConnected;
@@ -34,6 +43,15 @@ class CampaignRepositoryImpl implements CampaignRepository {
           status: status,
           zone: zone,
           createdBy: createdBy,
+          acceptedBy: acceptedBy,
+          upcoming: upcoming,
+          startTimeFrom: startTimeFrom,
+          startTimeTo: startTimeTo,
+          sortBy: sortBy,
+          sortOrder: sortOrder,
+          lat: lat,
+          lng: lng,
+          radius: radius,
           perPage: perPage,
         );
 
