@@ -192,7 +192,7 @@ class _PromoterNearbyPageState extends ConsumerState<PromoterNearbyPage> {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        'Getting your location...',
+                        l10n.gettingYourLocation,
                         style: TextStyle(
                           color: Colors.blue[700],
                           fontSize: 13,
@@ -213,7 +213,7 @@ class _PromoterNearbyPageState extends ConsumerState<PromoterNearbyPage> {
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          'Location unavailable. Enable location services for nearby campaigns.',
+                          l10n.locationUnavailableEnableServices,
                           style: TextStyle(
                             color: Colors.orange[700],
                             fontSize: 13,
@@ -237,7 +237,7 @@ class _PromoterNearbyPageState extends ConsumerState<PromoterNearbyPage> {
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                              'Location permission required for nearby campaigns.',
+                              l10n.locationPermissionRequired,
                               style: TextStyle(
                                 color: Colors.orange[700],
                                 fontSize: 13,
@@ -259,7 +259,7 @@ class _PromoterNearbyPageState extends ConsumerState<PromoterNearbyPage> {
                         Icon(Icons.location_on, color: Colors.green[700], size: 16),
                         const SizedBox(width: 8),
                         Text(
-                          'Showing campaigns within 10km of your location',
+                          l10n.showingCampaignsWithinRadius,
                           style: TextStyle(
                             color: Colors.green[700],
                             fontSize: 13,
@@ -315,7 +315,7 @@ class _PromoterNearbyPageState extends ConsumerState<PromoterNearbyPage> {
               const SizedBox(height: 24),
               // Loading text
               Text(
-                'Loading campaigns...',
+                l10n.loadingCampaigns,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Colors.grey[600],
                     ),
@@ -400,6 +400,8 @@ class _MapSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Card(
       elevation: 0,
       color: Colors.white,
@@ -419,7 +421,7 @@ class _MapSection extends StatelessWidget {
                      size: 20),
                 const SizedBox(width: 8),
                 Text(
-                  'Ver en mapa',
+                  l10n.viewOnMap,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
@@ -444,7 +446,7 @@ class _MapSection extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Map Location in real time',
+                      l10n.mapLocationRealTime,
                       style: TextStyle(
                         color: Colors.grey[600],
                         fontSize: 14,
@@ -544,7 +546,7 @@ class _CampaignCard extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
-                  '${distanceFromUser.toStringAsFixed(1)} km away',
+                  l10n.kmAway(distanceFromUser.toStringAsFixed(1)),
                   style: TextStyle(
                     fontSize: 11,
                     color: AppColors.activeCampaignColor,

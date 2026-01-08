@@ -1392,5 +1392,39 @@
   "acceptCampaign": "Aceitar campanha",
   "@acceptCampaign": {
     "description": "Label for accept campaign button"
+  },
+  "gettingYourLocation": "Obtendo sua localização...",
+  "@gettingYourLocation": {
+    "description": "Message while fetching user location"
+  },
+  "locationUnavailableEnableServices": "Localização indisponível. Ative os serviços de localização para campanhas próximas.",
+  "@locationUnavailableEnableServices": {
+    "description": "Error message when location services are disabled"
+  },
+  "locationPermissionRequired": "Permissão de localização necessária para campanhas próximas.",
+  "@locationPermissionRequired": {
+    "description": "Error message when location permission is denied"
+  },
+  "showingCampaignsWithinRadius": "Mostrando campanhas dentro de 10km da sua localização",
+  "@showingCampaignsWithinRadius": {
+    "description": "Success message showing campaigns within radius"
+  },
+  "loadingCampaigns": "Carregando campanhas...",
+  "@loadingCampaigns": {
+    "description": "Loading message while fetching campaigns"
+  },
+  "viewOnMap": "Ver no mapa",
+  "@viewOnMap": {
+    "description": "Button text to view on map"
+  },
+  "kmAway": "{distance} km de distância",
+  "@kmAway": {
+    "description": "Distance indicator from user location",
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "2.5"
+      }
+    }
   }
 }

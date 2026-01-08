@@ -2013,6 +2013,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Accept campaign'**
   String get acceptCampaign;
+
+  /// Message while fetching user location
+  ///
+  /// In en, this message translates to:
+  /// **'Getting your location...'**
+  String get gettingYourLocation;
+
+  /// Error message when location services are disabled
+  ///
+  /// In en, this message translates to:
+  /// **'Location unavailable. Enable location services for nearby campaigns.'**
+  String get locationUnavailableEnableServices;
+
+  /// Error message when location permission is denied
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission required for nearby campaigns.'**
+  String get locationPermissionRequired;
+
+  /// Success message showing campaigns within radius
+  ///
+  /// In en, this message translates to:
+  /// **'Showing campaigns within 10km of your location'**
+  String get showingCampaignsWithinRadius;
+
+  /// Loading message while fetching campaigns
+  ///
+  /// In en, this message translates to:
+  /// **'Loading campaigns...'**
+  String get loadingCampaigns;
+
+  /// Button text to view on map
+  ///
+  /// In en, this message translates to:
+  /// **'View on map'**
+  String get viewOnMap;
+
+  /// Distance indicator from user location
+  ///
+  /// In en, this message translates to:
+  /// **'{distance} km away'**
+  String kmAway(String distance);
 }
 
 class _AppLocalizationsDelegate

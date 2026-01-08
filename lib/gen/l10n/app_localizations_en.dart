@@ -1054,4 +1054,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get acceptCampaign => 'Accept campaign';
+
+  @override
+  String get gettingYourLocation => 'Getting your location...';
+
+  @override
+  String get locationUnavailableEnableServices =>
+      'Location unavailable. Enable location services for nearby campaigns.';
+
+  @override
+  String get locationPermissionRequired =>
+      'Location permission required for nearby campaigns.';
+
+  @override
+  String get showingCampaignsWithinRadius =>
+      'Showing campaigns within 10km of your location';
+
+  @override
+  String get loadingCampaigns => 'Loading campaigns...';
+
+  @override
+  String get viewOnMap => 'View on map';
+
+  @override
+  String kmAway(String distance) {
+    return '$distance km away';
+  }
 }
