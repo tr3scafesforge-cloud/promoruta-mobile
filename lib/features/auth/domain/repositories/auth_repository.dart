@@ -1,4 +1,5 @@
 import 'package:promoruta/core/core.dart';
+import '../models/two_factor_models.dart';
 
 /// Abstract repository for authentication operations.
 /// Handles login, logout, and user session management with offline support.
@@ -36,6 +37,32 @@ abstract class AuthRepository {
     required String password,
     required String passwordConfirmation,
   });
+
+  // Two-Factor Authentication methods
+
+  /// Starts the process of enabling 2FA by generating a secret and QR code.
+  Future<TwoFactorEnableResponse> enable2FA();
+
+  /// Confirms and enables 2FA by verifying the code from the authenticator app.
+  Future<TwoFactorConfirmResponse> confirm2FA(String secret, String code);
+
+  /// Disables 2FA for the user (requires password confirmation).
+  Future<String> disable2FA(String password);
+
+  /// Verifies 2FA code during login.
+  /// Returns User with tokens if successful.
+  Future<User> verify2FACode({
+    required String email,
+    required String password,
+    String? code,
+    String? recoveryCode,
+  });
+
+  /// Gets the current recovery codes.
+  Future<RecoveryCodesResponse> getRecoveryCodes();
+
+  /// Regenerates recovery codes (requires password confirmation).
+  Future<RecoveryCodesResponse> regenerateRecoveryCodes(String password);
 }
 
 /// Abstract local data source for authentication.
@@ -76,4 +103,29 @@ abstract class AuthRemoteDataSource {
     required String password,
     required String passwordConfirmation,
   });
+
+  // Two-Factor Authentication methods
+
+  /// Starts the process of enabling 2FA by generating a secret and QR code.
+  Future<TwoFactorEnableResponse> enable2FA();
+
+  /// Confirms and enables 2FA by verifying the code from the authenticator app.
+  Future<TwoFactorConfirmResponse> confirm2FA(String secret, String code);
+
+  /// Disables 2FA for the user (requires password confirmation).
+  Future<String> disable2FA(String password);
+
+  /// Verifies 2FA code during login.
+  Future<User> verify2FACode({
+    required String email,
+    required String password,
+    String? code,
+    String? recoveryCode,
+  });
+
+  /// Gets the current recovery codes.
+  Future<RecoveryCodesResponse> getRecoveryCodes();
+
+  /// Regenerates recovery codes (requires password confirmation).
+  Future<RecoveryCodesResponse> regenerateRecoveryCodes(String password);
 }

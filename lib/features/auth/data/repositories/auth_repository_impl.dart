@@ -4,6 +4,7 @@ import 'package:promoruta/core/utils/logger.dart';
 import 'package:promoruta/shared/services/connectivity_service.dart';
 
 import '../../domain/repositories/auth_repository.dart';
+import '../../domain/models/two_factor_models.dart';
 
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -162,6 +163,110 @@ class AuthRepositoryImpl implements AuthRepository {
           password: password,
           passwordConfirmation: passwordConfirmation,
         );
+      } catch (e) {
+        rethrow;
+      }
+    } else {
+      throw Exception('No internet connection. Please check your connection and try again.');
+    }
+  }
+
+  // Two-Factor Authentication methods
+
+  @override
+  Future<TwoFactorEnableResponse> enable2FA() async {
+    final isConnected = await _connectivityService.isConnected;
+
+    if (isConnected) {
+      try {
+        return await _remoteDataSource.enable2FA();
+      } catch (e) {
+        rethrow;
+      }
+    } else {
+      throw Exception('No internet connection. Please check your connection and try again.');
+    }
+  }
+
+  @override
+  Future<TwoFactorConfirmResponse> confirm2FA(String secret, String code) async {
+    final isConnected = await _connectivityService.isConnected;
+
+    if (isConnected) {
+      try {
+        return await _remoteDataSource.confirm2FA(secret, code);
+      } catch (e) {
+        rethrow;
+      }
+    } else {
+      throw Exception('No internet connection. Please check your connection and try again.');
+    }
+  }
+
+  @override
+  Future<String> disable2FA(String password) async {
+    final isConnected = await _connectivityService.isConnected;
+
+    if (isConnected) {
+      try {
+        return await _remoteDataSource.disable2FA(password);
+      } catch (e) {
+        rethrow;
+      }
+    } else {
+      throw Exception('No internet connection. Please check your connection and try again.');
+    }
+  }
+
+  @override
+  Future<model.User> verify2FACode({
+    required String email,
+    required String password,
+    String? code,
+    String? recoveryCode,
+  }) async {
+    final isConnected = await _connectivityService.isConnected;
+
+    if (isConnected) {
+      try {
+        final user = await _remoteDataSource.verify2FACode(
+          email: email,
+          password: password,
+          code: code,
+          recoveryCode: recoveryCode,
+        );
+        await _localDataSource.saveUser(user);
+        return user;
+      } catch (e) {
+        rethrow;
+      }
+    } else {
+      throw Exception('No internet connection. 2FA requires network access.');
+    }
+  }
+
+  @override
+  Future<RecoveryCodesResponse> getRecoveryCodes() async {
+    final isConnected = await _connectivityService.isConnected;
+
+    if (isConnected) {
+      try {
+        return await _remoteDataSource.getRecoveryCodes();
+      } catch (e) {
+        rethrow;
+      }
+    } else {
+      throw Exception('No internet connection. Please check your connection and try again.');
+    }
+  }
+
+  @override
+  Future<RecoveryCodesResponse> regenerateRecoveryCodes(String password) async {
+    final isConnected = await _connectivityService.isConnected;
+
+    if (isConnected) {
+      try {
+        return await _remoteDataSource.regenerateRecoveryCodes(password);
       } catch (e) {
         rethrow;
       }

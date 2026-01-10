@@ -3,6 +3,7 @@ import 'package:promoruta/core/core.dart';
 import 'package:promoruta/core/utils/logger.dart';
 
 import '../../../domain/repositories/auth_repository.dart';
+import '../../../domain/models/two_factor_models.dart';
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final Dio dio;
@@ -26,6 +27,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       if (response.statusCode == 200) {
         final data = response.data;
+
+        // Check if 2FA is required
+        if (data['requires_2fa'] == true) {
+          // Throw special exception to indicate 2FA is required
+          throw TwoFactorRequiredException(
+            email: data['email'] as String,
+            message: data['message'] as String,
+          );
+        }
+
         final userData = data['user'];
         final expiresIn = data['expires_in'] as int;
         final tokenExpiry = DateTime.now().add(Duration(seconds: expiresIn));
@@ -47,6 +58,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           refreshExpiresIn: refreshExpiresIn,
           username: userData['name'],
           photoUrl: null, // API doesn't provide photoUrl
+          twoFactorEnabled: userData['two_factor_enabled'] as bool? ?? false,
+          twoFactorConfirmedAt: userData['two_factor_confirmed_at'] != null
+              ? DateTime.parse(userData['two_factor_confirmed_at'])
+              : null,
         );
       } else {
         throw Exception('Login failed: ${response.statusMessage}');
@@ -296,6 +311,369 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
             throw Exception('Too many attempts. Please try again later.');
           default:
             throw Exception('Unable to reset password. Please try again later.');
+        }
+      } else {
+        throw Exception('Network error. Please check your connection and try again.');
+      }
+    }
+  }
+
+  // Two-Factor Authentication methods
+
+  @override
+  Future<TwoFactorEnableResponse> enable2FA() async {
+    try {
+      final response = await dio.post(
+        '/auth/2fa/enable',
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return TwoFactorEnableResponse.fromJson(response.data);
+      } else {
+        throw Exception('Failed to enable 2FA: ${response.statusMessage}');
+      }
+    } on DioException catch (e) {
+      AppLogger.auth.e('Enable 2FA failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+
+      if (e.response != null) {
+        final statusCode = e.response!.statusCode;
+        final responseData = e.response!.data;
+
+        switch (statusCode) {
+          case 401:
+            throw Exception('Unauthorized. Please log in again.');
+          case 422:
+            if (responseData is Map && responseData.containsKey('errors')) {
+              final errors = responseData['errors'] as Map?;
+              if (errors != null && errors.isNotEmpty) {
+                final firstError = errors.values.first;
+                if (firstError is List && firstError.isNotEmpty) {
+                  throw Exception(firstError.first.toString());
+                }
+              }
+            }
+            throw Exception('Validation error. Please try again.');
+          default:
+            throw Exception('Unable to enable 2FA. Please try again later.');
+        }
+      } else {
+        throw Exception('Network error. Please check your connection and try again.');
+      }
+    }
+  }
+
+  @override
+  Future<TwoFactorConfirmResponse> confirm2FA(String secret, String code) async {
+    try {
+      final response = await dio.post(
+        '/auth/2fa/confirm',
+        data: {
+          'secret': secret,
+          'code': code,
+        },
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        // Update local user to reflect 2FA is now enabled
+        final user = await _localDataSource.getUser();
+        if (user != null) {
+          final updatedUser = user.copyWith(
+            twoFactorEnabled: true,
+            twoFactorConfirmedAt: DateTime.now(),
+          );
+          await _localDataSource.saveUser(updatedUser);
+        }
+
+        return TwoFactorConfirmResponse.fromJson(response.data);
+      } else {
+        throw Exception('Failed to confirm 2FA: ${response.statusMessage}');
+      }
+    } on DioException catch (e) {
+      AppLogger.auth.e('Confirm 2FA failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+
+      if (e.response != null) {
+        final statusCode = e.response!.statusCode;
+        final responseData = e.response!.data;
+
+        switch (statusCode) {
+          case 401:
+            throw Exception('Unauthorized. Please log in again.');
+          case 422:
+            if (responseData is Map && responseData.containsKey('errors')) {
+              final errors = responseData['errors'] as Map?;
+              if (errors != null && errors.isNotEmpty) {
+                final firstError = errors.values.first;
+                if (firstError is List && firstError.isNotEmpty) {
+                  throw Exception(firstError.first.toString());
+                }
+              }
+            }
+            throw Exception('Invalid verification code. Please try again.');
+          default:
+            throw Exception('Unable to confirm 2FA. Please try again later.');
+        }
+      } else {
+        throw Exception('Network error. Please check your connection and try again.');
+      }
+    }
+  }
+
+  @override
+  Future<String> disable2FA(String password) async {
+    try {
+      final response = await dio.post(
+        '/auth/2fa/disable',
+        data: {'password': password},
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        // Update local user to reflect 2FA is now disabled
+        final user = await _localDataSource.getUser();
+        if (user != null) {
+          final updatedUser = user.copyWith(
+            twoFactorEnabled: false,
+            twoFactorConfirmedAt: null,
+          );
+          await _localDataSource.saveUser(updatedUser);
+        }
+
+        final data = response.data;
+        return data['message'] ?? 'Two-factor authentication has been disabled.';
+      } else {
+        throw Exception('Failed to disable 2FA: ${response.statusMessage}');
+      }
+    } on DioException catch (e) {
+      AppLogger.auth.e('Disable 2FA failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+
+      if (e.response != null) {
+        final statusCode = e.response!.statusCode;
+        final responseData = e.response!.data;
+
+        switch (statusCode) {
+          case 401:
+            throw Exception('Unauthorized. Please log in again.');
+          case 422:
+            if (responseData is Map && responseData.containsKey('errors')) {
+              final errors = responseData['errors'] as Map?;
+              if (errors != null && errors.isNotEmpty) {
+                final firstError = errors.values.first;
+                if (firstError is List && firstError.isNotEmpty) {
+                  throw Exception(firstError.first.toString());
+                }
+              }
+            }
+            throw Exception('Invalid password. Please try again.');
+          default:
+            throw Exception('Unable to disable 2FA. Please try again later.');
+        }
+      } else {
+        throw Exception('Network error. Please check your connection and try again.');
+      }
+    }
+  }
+
+  @override
+  Future<User> verify2FACode({
+    required String email,
+    required String password,
+    String? code,
+    String? recoveryCode,
+  }) async {
+    try {
+      final Map<String, dynamic> data = {
+        'email': email,
+        'password': password,
+      };
+
+      if (code != null) {
+        data['code'] = code;
+      } else if (recoveryCode != null) {
+        data['recovery_code'] = recoveryCode;
+      } else {
+        throw Exception('Either code or recovery code must be provided');
+      }
+
+      final response = await dio.post(
+        '/auth/2fa/verify',
+        data: data,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = response.data;
+        final userData = responseData['user'];
+        final expiresIn = responseData['expires_in'] as int;
+        final tokenExpiry = DateTime.now().add(Duration(seconds: expiresIn));
+        final refreshExpiresIn = responseData['refresh_expires_in'] != null
+            ? DateTime.now().add(Duration(seconds: responseData['refresh_expires_in'] as int))
+            : null;
+
+        return User(
+          id: userData['id'],
+          name: userData['name'],
+          email: userData['email'],
+          emailVerifiedAt: userData['email_verified_at'] != null
+              ? DateTime.parse(userData['email_verified_at'])
+              : null,
+          role: UserRole.fromString(userData['role']),
+          createdAt: userData['created_at'] != null
+              ? DateTime.parse(userData['created_at'])
+              : null,
+          updatedAt: userData['updated_at'] != null
+              ? DateTime.parse(userData['updated_at'])
+              : null,
+          accessToken: responseData['access_token'],
+          tokenExpiry: tokenExpiry,
+          refreshToken: responseData['refresh_token'],
+          refreshExpiresIn: refreshExpiresIn,
+          username: userData['name'],
+          photoUrl: null,
+          twoFactorEnabled: true, // User has 2FA enabled if they got here
+          twoFactorConfirmedAt: userData['two_factor_confirmed_at'] != null
+              ? DateTime.parse(userData['two_factor_confirmed_at'])
+              : null,
+        );
+      } else {
+        throw Exception('2FA verification failed: ${response.statusMessage}');
+      }
+    } on DioException catch (e) {
+      AppLogger.auth.e('Verify 2FA code failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+
+      if (e.response != null) {
+        final statusCode = e.response!.statusCode;
+        final responseData = e.response!.data;
+
+        switch (statusCode) {
+          case 403:
+            throw Exception('Email not verified. Please verify your email first.');
+          case 422:
+            if (responseData is Map && responseData.containsKey('errors')) {
+              final errors = responseData['errors'] as Map?;
+              if (errors != null && errors.isNotEmpty) {
+                final firstError = errors.values.first;
+                if (firstError is List && firstError.isNotEmpty) {
+                  throw Exception(firstError.first.toString());
+                }
+              }
+            }
+            throw Exception('Invalid verification code or credentials. Please try again.');
+          case 429:
+            throw Exception('Too many attempts. Please try again later.');
+          default:
+            throw Exception('Unable to verify 2FA code. Please try again later.');
+        }
+      } else {
+        throw Exception('Network error. Please check your connection and try again.');
+      }
+    }
+  }
+
+  @override
+  Future<RecoveryCodesResponse> getRecoveryCodes() async {
+    try {
+      final response = await dio.get(
+        '/auth/2fa/recovery-codes',
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return RecoveryCodesResponse.fromJson(response.data);
+      } else {
+        throw Exception('Failed to get recovery codes: ${response.statusMessage}');
+      }
+    } on DioException catch (e) {
+      AppLogger.auth.e('Get recovery codes failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+
+      if (e.response != null) {
+        final statusCode = e.response!.statusCode;
+        final responseData = e.response!.data;
+
+        switch (statusCode) {
+          case 400:
+            throw Exception('Two-factor authentication is not enabled for your account.');
+          case 401:
+            throw Exception('Unauthorized. Please log in again.');
+          default:
+            throw Exception('Unable to retrieve recovery codes. Please try again later.');
+        }
+      } else {
+        throw Exception('Network error. Please check your connection and try again.');
+      }
+    }
+  }
+
+  @override
+  Future<RecoveryCodesResponse> regenerateRecoveryCodes(String password) async {
+    try {
+      final response = await dio.post(
+        '/auth/2fa/recovery-codes/regenerate',
+        data: {'password': password},
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return RecoveryCodesResponse.fromJson(response.data);
+      } else {
+        throw Exception('Failed to regenerate recovery codes: ${response.statusMessage}');
+      }
+    } on DioException catch (e) {
+      AppLogger.auth.e('Regenerate recovery codes failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+
+      if (e.response != null) {
+        final statusCode = e.response!.statusCode;
+        final responseData = e.response!.data;
+
+        switch (statusCode) {
+          case 400:
+            throw Exception('Two-factor authentication is not enabled for your account.');
+          case 401:
+            throw Exception('Unauthorized. Please log in again.');
+          case 422:
+            if (responseData is Map && responseData.containsKey('errors')) {
+              final errors = responseData['errors'] as Map?;
+              if (errors != null && errors.isNotEmpty) {
+                final firstError = errors.values.first;
+                if (firstError is List && firstError.isNotEmpty) {
+                  throw Exception(firstError.first.toString());
+                }
+              }
+            }
+            throw Exception('Invalid password. Please try again.');
+          default:
+            throw Exception('Unable to regenerate recovery codes. Please try again later.');
         }
       } else {
         throw Exception('Network error. Please check your connection and try again.');

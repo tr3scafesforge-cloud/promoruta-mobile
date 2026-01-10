@@ -34,6 +34,7 @@ import 'package:promoruta/features/auth/data/datasources/remote/auth_remote_data
 import 'package:promoruta/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:promoruta/features/auth/domain/repositories/auth_repository.dart';
 import 'package:promoruta/features/auth/domain/use_cases/auth_use_cases.dart';
+import 'package:promoruta/features/auth/domain/use_cases/two_factor_use_cases.dart';
 import 'package:promoruta/app/routes/app_router.dart';
 import 'package:promoruta/shared/services/notification_service.dart';
 import 'package:promoruta/shared/services/overlay_notification_service.dart';
@@ -289,6 +290,37 @@ final mediaRepositoryProvider = Provider<MediaRepository>((ref) {
 final changePasswordUseCaseProvider = Provider<ChangePasswordUseCase>((ref) {
   final repository = ref.watch(authRepositoryProvider);
   return ChangePasswordUseCase(repository);
+});
+
+// 2FA Use Case Providers
+final enable2FAUseCaseProvider = Provider<Enable2FAUseCase>((ref) {
+  final repository = ref.watch(authRepositoryProvider);
+  return Enable2FAUseCase(repository);
+});
+
+final confirm2FAUseCaseProvider = Provider<Confirm2FAUseCase>((ref) {
+  final repository = ref.watch(authRepositoryProvider);
+  return Confirm2FAUseCase(repository);
+});
+
+final disable2FAUseCaseProvider = Provider<Disable2FAUseCase>((ref) {
+  final repository = ref.watch(authRepositoryProvider);
+  return Disable2FAUseCase(repository);
+});
+
+final verify2FACodeUseCaseProvider = Provider<Verify2FACodeUseCase>((ref) {
+  final repository = ref.watch(authRepositoryProvider);
+  return Verify2FACodeUseCase(repository);
+});
+
+final getRecoveryCodesUseCaseProvider = Provider<GetRecoveryCodesUseCase>((ref) {
+  final repository = ref.watch(authRepositoryProvider);
+  return GetRecoveryCodesUseCase(repository);
+});
+
+final regenerateRecoveryCodesUseCaseProvider = Provider<RegenerateRecoveryCodesUseCase>((ref) {
+  final repository = ref.watch(authRepositoryProvider);
+  return RegenerateRecoveryCodesUseCase(repository);
 });
 
 final getCampaignsUseCaseProvider = Provider<GetCampaignsUseCase>((ref) {

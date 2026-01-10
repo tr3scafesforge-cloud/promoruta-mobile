@@ -82,6 +82,22 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   late final GeneratedColumn<String> refreshToken = GeneratedColumn<String>(
       'refresh_token', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _twoFactorEnabledMeta =
+      const VerificationMeta('twoFactorEnabled');
+  @override
+  late final GeneratedColumn<bool> twoFactorEnabled = GeneratedColumn<bool>(
+      'two_factor_enabled', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("two_factor_enabled" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  static const VerificationMeta _twoFactorConfirmedAtMeta =
+      const VerificationMeta('twoFactorConfirmedAt');
+  @override
+  late final GeneratedColumn<DateTime> twoFactorConfirmedAt =
+      GeneratedColumn<DateTime>('two_factor_confirmed_at', aliasedName, true,
+          type: DriftSqlType.dateTime, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -96,7 +112,9 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
         username,
         photoUrl,
         refreshExpiresIn,
-        refreshToken
+        refreshToken,
+        twoFactorEnabled,
+        twoFactorConfirmedAt
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -171,6 +189,18 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
           refreshToken.isAcceptableOrUnknown(
               data['refresh_token']!, _refreshTokenMeta));
     }
+    if (data.containsKey('two_factor_enabled')) {
+      context.handle(
+          _twoFactorEnabledMeta,
+          twoFactorEnabled.isAcceptableOrUnknown(
+              data['two_factor_enabled']!, _twoFactorEnabledMeta));
+    }
+    if (data.containsKey('two_factor_confirmed_at')) {
+      context.handle(
+          _twoFactorConfirmedAtMeta,
+          twoFactorConfirmedAt.isAcceptableOrUnknown(
+              data['two_factor_confirmed_at']!, _twoFactorConfirmedAtMeta));
+    }
     return context;
   }
 
@@ -206,6 +236,11 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
           DriftSqlType.dateTime, data['${effectivePrefix}refresh_expires_in']),
       refreshToken: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}refresh_token']),
+      twoFactorEnabled: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool, data['${effectivePrefix}two_factor_enabled'])!,
+      twoFactorConfirmedAt: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime,
+          data['${effectivePrefix}two_factor_confirmed_at']),
     );
   }
 
@@ -232,6 +267,8 @@ class User extends DataClass implements Insertable<User> {
   final String? photoUrl;
   final DateTime? refreshExpiresIn;
   final String? refreshToken;
+  final bool twoFactorEnabled;
+  final DateTime? twoFactorConfirmedAt;
   const User(
       {required this.id,
       required this.name,
@@ -245,7 +282,9 @@ class User extends DataClass implements Insertable<User> {
       this.username,
       this.photoUrl,
       this.refreshExpiresIn,
-      this.refreshToken});
+      this.refreshToken,
+      required this.twoFactorEnabled,
+      this.twoFactorConfirmedAt});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -281,6 +320,10 @@ class User extends DataClass implements Insertable<User> {
     }
     if (!nullToAbsent || refreshToken != null) {
       map['refresh_token'] = Variable<String>(refreshToken);
+    }
+    map['two_factor_enabled'] = Variable<bool>(twoFactorEnabled);
+    if (!nullToAbsent || twoFactorConfirmedAt != null) {
+      map['two_factor_confirmed_at'] = Variable<DateTime>(twoFactorConfirmedAt);
     }
     return map;
   }
@@ -318,6 +361,10 @@ class User extends DataClass implements Insertable<User> {
       refreshToken: refreshToken == null && nullToAbsent
           ? const Value.absent()
           : Value(refreshToken),
+      twoFactorEnabled: Value(twoFactorEnabled),
+      twoFactorConfirmedAt: twoFactorConfirmedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(twoFactorConfirmedAt),
     );
   }
 
@@ -339,6 +386,9 @@ class User extends DataClass implements Insertable<User> {
       refreshExpiresIn:
           serializer.fromJson<DateTime?>(json['refreshExpiresIn']),
       refreshToken: serializer.fromJson<String?>(json['refreshToken']),
+      twoFactorEnabled: serializer.fromJson<bool>(json['twoFactorEnabled']),
+      twoFactorConfirmedAt:
+          serializer.fromJson<DateTime?>(json['twoFactorConfirmedAt']),
     );
   }
   @override
@@ -358,6 +408,9 @@ class User extends DataClass implements Insertable<User> {
       'photoUrl': serializer.toJson<String?>(photoUrl),
       'refreshExpiresIn': serializer.toJson<DateTime?>(refreshExpiresIn),
       'refreshToken': serializer.toJson<String?>(refreshToken),
+      'twoFactorEnabled': serializer.toJson<bool>(twoFactorEnabled),
+      'twoFactorConfirmedAt':
+          serializer.toJson<DateTime?>(twoFactorConfirmedAt),
     };
   }
 
@@ -374,7 +427,9 @@ class User extends DataClass implements Insertable<User> {
           Value<String?> username = const Value.absent(),
           Value<String?> photoUrl = const Value.absent(),
           Value<DateTime?> refreshExpiresIn = const Value.absent(),
-          Value<String?> refreshToken = const Value.absent()}) =>
+          Value<String?> refreshToken = const Value.absent(),
+          bool? twoFactorEnabled,
+          Value<DateTime?> twoFactorConfirmedAt = const Value.absent()}) =>
       User(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -394,6 +449,10 @@ class User extends DataClass implements Insertable<User> {
             : this.refreshExpiresIn,
         refreshToken:
             refreshToken.present ? refreshToken.value : this.refreshToken,
+        twoFactorEnabled: twoFactorEnabled ?? this.twoFactorEnabled,
+        twoFactorConfirmedAt: twoFactorConfirmedAt.present
+            ? twoFactorConfirmedAt.value
+            : this.twoFactorConfirmedAt,
       );
   User copyWithCompanion(UsersCompanion data) {
     return User(
@@ -418,6 +477,12 @@ class User extends DataClass implements Insertable<User> {
       refreshToken: data.refreshToken.present
           ? data.refreshToken.value
           : this.refreshToken,
+      twoFactorEnabled: data.twoFactorEnabled.present
+          ? data.twoFactorEnabled.value
+          : this.twoFactorEnabled,
+      twoFactorConfirmedAt: data.twoFactorConfirmedAt.present
+          ? data.twoFactorConfirmedAt.value
+          : this.twoFactorConfirmedAt,
     );
   }
 
@@ -436,7 +501,9 @@ class User extends DataClass implements Insertable<User> {
           ..write('username: $username, ')
           ..write('photoUrl: $photoUrl, ')
           ..write('refreshExpiresIn: $refreshExpiresIn, ')
-          ..write('refreshToken: $refreshToken')
+          ..write('refreshToken: $refreshToken, ')
+          ..write('twoFactorEnabled: $twoFactorEnabled, ')
+          ..write('twoFactorConfirmedAt: $twoFactorConfirmedAt')
           ..write(')'))
         .toString();
   }
@@ -455,7 +522,9 @@ class User extends DataClass implements Insertable<User> {
       username,
       photoUrl,
       refreshExpiresIn,
-      refreshToken);
+      refreshToken,
+      twoFactorEnabled,
+      twoFactorConfirmedAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -472,7 +541,9 @@ class User extends DataClass implements Insertable<User> {
           other.username == this.username &&
           other.photoUrl == this.photoUrl &&
           other.refreshExpiresIn == this.refreshExpiresIn &&
-          other.refreshToken == this.refreshToken);
+          other.refreshToken == this.refreshToken &&
+          other.twoFactorEnabled == this.twoFactorEnabled &&
+          other.twoFactorConfirmedAt == this.twoFactorConfirmedAt);
 }
 
 class UsersCompanion extends UpdateCompanion<User> {
@@ -489,6 +560,8 @@ class UsersCompanion extends UpdateCompanion<User> {
   final Value<String?> photoUrl;
   final Value<DateTime?> refreshExpiresIn;
   final Value<String?> refreshToken;
+  final Value<bool> twoFactorEnabled;
+  final Value<DateTime?> twoFactorConfirmedAt;
   final Value<int> rowid;
   const UsersCompanion({
     this.id = const Value.absent(),
@@ -504,6 +577,8 @@ class UsersCompanion extends UpdateCompanion<User> {
     this.photoUrl = const Value.absent(),
     this.refreshExpiresIn = const Value.absent(),
     this.refreshToken = const Value.absent(),
+    this.twoFactorEnabled = const Value.absent(),
+    this.twoFactorConfirmedAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   UsersCompanion.insert({
@@ -520,6 +595,8 @@ class UsersCompanion extends UpdateCompanion<User> {
     this.photoUrl = const Value.absent(),
     this.refreshExpiresIn = const Value.absent(),
     this.refreshToken = const Value.absent(),
+    this.twoFactorEnabled = const Value.absent(),
+    this.twoFactorConfirmedAt = const Value.absent(),
     this.rowid = const Value.absent(),
   })  : id = Value(id),
         name = Value(name),
@@ -539,6 +616,8 @@ class UsersCompanion extends UpdateCompanion<User> {
     Expression<String>? photoUrl,
     Expression<DateTime>? refreshExpiresIn,
     Expression<String>? refreshToken,
+    Expression<bool>? twoFactorEnabled,
+    Expression<DateTime>? twoFactorConfirmedAt,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -555,6 +634,9 @@ class UsersCompanion extends UpdateCompanion<User> {
       if (photoUrl != null) 'photo_url': photoUrl,
       if (refreshExpiresIn != null) 'refresh_expires_in': refreshExpiresIn,
       if (refreshToken != null) 'refresh_token': refreshToken,
+      if (twoFactorEnabled != null) 'two_factor_enabled': twoFactorEnabled,
+      if (twoFactorConfirmedAt != null)
+        'two_factor_confirmed_at': twoFactorConfirmedAt,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -573,6 +655,8 @@ class UsersCompanion extends UpdateCompanion<User> {
       Value<String?>? photoUrl,
       Value<DateTime?>? refreshExpiresIn,
       Value<String?>? refreshToken,
+      Value<bool>? twoFactorEnabled,
+      Value<DateTime?>? twoFactorConfirmedAt,
       Value<int>? rowid}) {
     return UsersCompanion(
       id: id ?? this.id,
@@ -588,6 +672,8 @@ class UsersCompanion extends UpdateCompanion<User> {
       photoUrl: photoUrl ?? this.photoUrl,
       refreshExpiresIn: refreshExpiresIn ?? this.refreshExpiresIn,
       refreshToken: refreshToken ?? this.refreshToken,
+      twoFactorEnabled: twoFactorEnabled ?? this.twoFactorEnabled,
+      twoFactorConfirmedAt: twoFactorConfirmedAt ?? this.twoFactorConfirmedAt,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -635,6 +721,13 @@ class UsersCompanion extends UpdateCompanion<User> {
     if (refreshToken.present) {
       map['refresh_token'] = Variable<String>(refreshToken.value);
     }
+    if (twoFactorEnabled.present) {
+      map['two_factor_enabled'] = Variable<bool>(twoFactorEnabled.value);
+    }
+    if (twoFactorConfirmedAt.present) {
+      map['two_factor_confirmed_at'] =
+          Variable<DateTime>(twoFactorConfirmedAt.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -657,6 +750,8 @@ class UsersCompanion extends UpdateCompanion<User> {
           ..write('photoUrl: $photoUrl, ')
           ..write('refreshExpiresIn: $refreshExpiresIn, ')
           ..write('refreshToken: $refreshToken, ')
+          ..write('twoFactorEnabled: $twoFactorEnabled, ')
+          ..write('twoFactorConfirmedAt: $twoFactorConfirmedAt, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1827,6 +1922,8 @@ typedef $$UsersTableCreateCompanionBuilder = UsersCompanion Function({
   Value<String?> photoUrl,
   Value<DateTime?> refreshExpiresIn,
   Value<String?> refreshToken,
+  Value<bool> twoFactorEnabled,
+  Value<DateTime?> twoFactorConfirmedAt,
   Value<int> rowid,
 });
 typedef $$UsersTableUpdateCompanionBuilder = UsersCompanion Function({
@@ -1843,6 +1940,8 @@ typedef $$UsersTableUpdateCompanionBuilder = UsersCompanion Function({
   Value<String?> photoUrl,
   Value<DateTime?> refreshExpiresIn,
   Value<String?> refreshToken,
+  Value<bool> twoFactorEnabled,
+  Value<DateTime?> twoFactorConfirmedAt,
   Value<int> rowid,
 });
 
@@ -1896,6 +1995,14 @@ class $$UsersTableFilterComposer extends Composer<_$AppDatabase, $UsersTable> {
 
   ColumnFilters<String> get refreshToken => $composableBuilder(
       column: $table.refreshToken, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get twoFactorEnabled => $composableBuilder(
+      column: $table.twoFactorEnabled,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get twoFactorConfirmedAt => $composableBuilder(
+      column: $table.twoFactorConfirmedAt,
+      builder: (column) => ColumnFilters(column));
 }
 
 class $$UsersTableOrderingComposer
@@ -1948,6 +2055,14 @@ class $$UsersTableOrderingComposer
   ColumnOrderings<String> get refreshToken => $composableBuilder(
       column: $table.refreshToken,
       builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get twoFactorEnabled => $composableBuilder(
+      column: $table.twoFactorEnabled,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get twoFactorConfirmedAt => $composableBuilder(
+      column: $table.twoFactorConfirmedAt,
+      builder: (column) => ColumnOrderings(column));
 }
 
 class $$UsersTableAnnotationComposer
@@ -1997,6 +2112,12 @@ class $$UsersTableAnnotationComposer
 
   GeneratedColumn<String> get refreshToken => $composableBuilder(
       column: $table.refreshToken, builder: (column) => column);
+
+  GeneratedColumn<bool> get twoFactorEnabled => $composableBuilder(
+      column: $table.twoFactorEnabled, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get twoFactorConfirmedAt => $composableBuilder(
+      column: $table.twoFactorConfirmedAt, builder: (column) => column);
 }
 
 class $$UsersTableTableManager extends RootTableManager<
@@ -2035,6 +2156,8 @@ class $$UsersTableTableManager extends RootTableManager<
             Value<String?> photoUrl = const Value.absent(),
             Value<DateTime?> refreshExpiresIn = const Value.absent(),
             Value<String?> refreshToken = const Value.absent(),
+            Value<bool> twoFactorEnabled = const Value.absent(),
+            Value<DateTime?> twoFactorConfirmedAt = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               UsersCompanion(
@@ -2051,6 +2174,8 @@ class $$UsersTableTableManager extends RootTableManager<
             photoUrl: photoUrl,
             refreshExpiresIn: refreshExpiresIn,
             refreshToken: refreshToken,
+            twoFactorEnabled: twoFactorEnabled,
+            twoFactorConfirmedAt: twoFactorConfirmedAt,
             rowid: rowid,
           ),
           createCompanionCallback: ({
@@ -2067,6 +2192,8 @@ class $$UsersTableTableManager extends RootTableManager<
             Value<String?> photoUrl = const Value.absent(),
             Value<DateTime?> refreshExpiresIn = const Value.absent(),
             Value<String?> refreshToken = const Value.absent(),
+            Value<bool> twoFactorEnabled = const Value.absent(),
+            Value<DateTime?> twoFactorConfirmedAt = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               UsersCompanion.insert(
@@ -2083,6 +2210,8 @@ class $$UsersTableTableManager extends RootTableManager<
             photoUrl: photoUrl,
             refreshExpiresIn: refreshExpiresIn,
             refreshToken: refreshToken,
+            twoFactorEnabled: twoFactorEnabled,
+            twoFactorConfirmedAt: twoFactorConfirmedAt,
             rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0

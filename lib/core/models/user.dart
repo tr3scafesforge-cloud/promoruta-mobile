@@ -42,6 +42,8 @@ class User {
   final DateTime? refreshExpiresIn;
   final String? username;
   final String? photoUrl;
+  final bool twoFactorEnabled;
+  final DateTime? twoFactorConfirmedAt;
 
   const User({
     required this.id,
@@ -57,6 +59,8 @@ class User {
     this.refreshExpiresIn,
     this.username,
     this.photoUrl,
+    this.twoFactorEnabled = false,
+    this.twoFactorConfirmedAt,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -74,6 +78,8 @@ class User {
       refreshExpiresIn: json['refreshExpiresIn'] != null ? DateTime.parse(json['refreshExpiresIn'] as String) : null,
       username: json['username'] as String?,
       photoUrl: json['photoUrl'] as String?,
+      twoFactorEnabled: json['two_factor_enabled'] as bool? ?? false,
+      twoFactorConfirmedAt: json['two_factor_confirmed_at'] != null ? DateTime.parse(json['two_factor_confirmed_at'] as String) : null,
     );
   }
 
@@ -92,6 +98,45 @@ class User {
       'refreshExpiresIn': refreshExpiresIn?.toIso8601String(),
       'username': username,
       'photoUrl': photoUrl,
+      'two_factor_enabled': twoFactorEnabled,
+      'two_factor_confirmed_at': twoFactorConfirmedAt?.toIso8601String(),
     };
+  }
+
+  /// Create a copy of this User with some fields replaced
+  User copyWith({
+    String? id,
+    String? name,
+    String? email,
+    DateTime? emailVerifiedAt,
+    UserRole? role,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? accessToken,
+    DateTime? tokenExpiry,
+    String? refreshToken,
+    DateTime? refreshExpiresIn,
+    String? username,
+    String? photoUrl,
+    bool? twoFactorEnabled,
+    DateTime? twoFactorConfirmedAt,
+  }) {
+    return User(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      emailVerifiedAt: emailVerifiedAt ?? this.emailVerifiedAt,
+      role: role ?? this.role,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      accessToken: accessToken ?? this.accessToken,
+      tokenExpiry: tokenExpiry ?? this.tokenExpiry,
+      refreshToken: refreshToken ?? this.refreshToken,
+      refreshExpiresIn: refreshExpiresIn ?? this.refreshExpiresIn,
+      username: username ?? this.username,
+      photoUrl: photoUrl ?? this.photoUrl,
+      twoFactorEnabled: twoFactorEnabled ?? this.twoFactorEnabled,
+      twoFactorConfirmedAt: twoFactorConfirmedAt ?? this.twoFactorConfirmedAt,
+    );
   }
 }

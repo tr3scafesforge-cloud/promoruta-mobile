@@ -42,6 +42,8 @@ class Users extends Table {
   TextColumn get photoUrl => text().nullable()();
   DateTimeColumn get refreshExpiresIn => dateTime().nullable()();
   TextColumn get refreshToken => text().nullable()();
+  BoolColumn get twoFactorEnabled => boolean().withDefault(const Constant(false))();
+  DateTimeColumn get twoFactorConfirmedAt => dateTime().nullable()();
 
   @override
   Set<Column> get primaryKey => {id};
@@ -79,7 +81,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration {
@@ -136,10 +138,15 @@ class AppDatabase extends _$AppDatabase {
                 await m.addColumn(schema.users, schema.users.name);
                 await m.addColumn(schema.users, schema.users.emailVerifiedAt);
                 await m.addColumn(schema.users, schema.users.updatedAt);
-              }, from4To5: (Migrator m, Schema5 schema) async { 
+              },
+              from4To5: (Migrator m, Schema5 schema) async {
                 await m.addColumn(schema.users, schema.users.refreshExpiresIn);
                 await m.addColumn(schema.users, schema.users.refreshToken);
-               },
+              },
+              from5To6: (Migrator m, Schema6 schema) async {
+                await m.addColumn(schema.users, schema.users.twoFactorEnabled);
+                await m.addColumn(schema.users, schema.users.twoFactorConfirmedAt);
+              },
               
             ),
           ),
