@@ -91,6 +91,17 @@ class AppLogger {
     ), debug: '[ROUTER] ', info: '[ROUTER] ', warning: '[ROUTER] ', error: '[ROUTER] '),
   );
 
+  static final Logger database = Logger(
+    printer: PrefixPrinter(PrettyPrinter(
+      methodCount: 2,
+      errorMethodCount: 8,
+      lineLength: 120,
+      colors: true,
+      printEmojis: true,
+      dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
+    ), debug: '[DATABASE] ', info: '[DATABASE] ', warning: '[DATABASE] ', error: '[DATABASE] '),
+  );
+
   // General logger for uncategorized logs
   static Logger get general => _logger;
 

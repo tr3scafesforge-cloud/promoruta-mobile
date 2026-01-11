@@ -5,6 +5,7 @@ import 'package:drift/native.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:promoruta/core/core.dart';
+import 'package:promoruta/core/utils/logger.dart';
 import 'package:drift/internal/versioned_schema.dart';
 
 import 'db_migration.dart';
@@ -88,9 +89,12 @@ class AppDatabase extends _$AppDatabase {
     return MigrationStrategy(
       onCreate: (m) async {
         /// Create all tables
+        AppLogger.database.i('Creating database schema version $schemaVersion');
         m.createAll();
       },
       onUpgrade: (m, from, to) async {
+        AppLogger.database.i('Migrating database from version $from to $to');
+
         /// Run migration steps without foreign keys and re-enable them later
         /// (https://drift.simonbinder.eu/docs/advanced-features/migrations/#tips)
         await customStatement('PRAGMA foreign_keys = OFF');
@@ -127,34 +131,51 @@ class AppDatabase extends _$AppDatabase {
           }
         }
 
-        /// Use versioned schema approach for migrations from version 3 onwards
-        await transaction(
-          () => VersionedSchema.runMigrationSteps(
-            migrator: m,
-            from: from > 2 ? from : 3,
-            to: to,
-            steps: migrationSteps(
-              from3To4: (Migrator m, Schema4 schema) async {
-                await m.addColumn(schema.users, schema.users.name);
-                await m.addColumn(schema.users, schema.users.emailVerifiedAt);
-                await m.addColumn(schema.users, schema.users.updatedAt);
-              },
-              from4To5: (Migrator m, Schema5 schema) async {
-                await m.addColumn(schema.users, schema.users.refreshExpiresIn);
-                await m.addColumn(schema.users, schema.users.refreshToken);
-              },
-              from5To6: (Migrator m, Schema6 schema) async {
-                await m.addColumn(schema.users, schema.users.twoFactorEnabled);
-                await m.addColumn(schema.users, schema.users.twoFactorConfirmedAt);
-              },
-              
+        /// Use versioned schema approach for migrations from version 3 to 5
+        if (from >= 3 && from < 5) {
+          AppLogger.database.i('Running versioned migrations from $from to ${to >= 5 ? 5 : to}');
+          await transaction(
+            () => VersionedSchema.runMigrationSteps(
+              migrator: m,
+              from: from,
+              to: to >= 5 ? 5 : to,
+              steps: migrationSteps(
+                from3To4: (Migrator m, Schema4 schema) async {
+                  AppLogger.database.i('Migration 3→4: Adding name, emailVerifiedAt, updatedAt to Users');
+                  await m.addColumn(schema.users, schema.users.name);
+                  await m.addColumn(schema.users, schema.users.emailVerifiedAt);
+                  await m.addColumn(schema.users, schema.users.updatedAt);
+                },
+                from4To5: (Migrator m, Schema5 schema) async {
+                  AppLogger.database.i('Migration 4→5: Adding refreshExpiresIn, refreshToken to Users');
+                  await m.addColumn(schema.users, schema.users.refreshExpiresIn);
+                  await m.addColumn(schema.users, schema.users.refreshToken);
+                },
+              ),
             ),
-          ),
-        );
+          );
+        }
+
+        /// Handle migration from version 5 to 6 (add 2FA columns)
+        if (from <= 5 && to >= 6) {
+          AppLogger.database.i('Migration 5→6: Adding 2FA columns to Users');
+          await transaction(() async {
+            await m.addColumn(users, users.twoFactorEnabled);
+            await m.addColumn(users, users.twoFactorConfirmedAt);
+          });
+        }
+
+        AppLogger.database.i('Database migration completed successfully');
       },
       beforeOpen: (details) async {
         /// Enable foreign_keys
         await customStatement('PRAGMA foreign_keys = ON');
+
+        if (details.wasCreated) {
+          AppLogger.database.i('Database created with schema version $schemaVersion');
+        } else if (details.hadUpgrade) {
+          AppLogger.database.i('Database upgraded from ${details.versionBefore} to ${details.versionNow}');
+        }
       },
     );
   }
