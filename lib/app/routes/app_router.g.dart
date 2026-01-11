@@ -24,6 +24,8 @@ List<RouteBase> get $appRoutes => [
       $promoterHomeRoute,
       $advertiserHomeRoute,
       $advertiserSecuritySettingsRoute,
+      $advertiser2FASetupRoute,
+      $advertiserRecoveryCodesRoute,
       $createCampaignRoute,
       $campaignDetailsRoute,
     ];
@@ -520,6 +522,62 @@ mixin _$AdvertiserSecuritySettingsRoute on GoRouteData {
   @override
   String get location => GoRouteData.$location(
         '/advertiser-security-settings',
+      );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $advertiser2FASetupRoute => GoRouteData.$route(
+      path: '/advertiser-2fa-setup',
+      factory: _$Advertiser2FASetupRoute._fromState,
+    );
+
+mixin _$Advertiser2FASetupRoute on GoRouteData {
+  static Advertiser2FASetupRoute _fromState(GoRouterState state) =>
+      const Advertiser2FASetupRoute();
+
+  @override
+  String get location => GoRouteData.$location(
+        '/advertiser-2fa-setup',
+      );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $advertiserRecoveryCodesRoute => GoRouteData.$route(
+      path: '/advertiser-recovery-codes',
+      factory: _$AdvertiserRecoveryCodesRoute._fromState,
+    );
+
+mixin _$AdvertiserRecoveryCodesRoute on GoRouteData {
+  static AdvertiserRecoveryCodesRoute _fromState(GoRouterState state) =>
+      const AdvertiserRecoveryCodesRoute();
+
+  @override
+  String get location => GoRouteData.$location(
+        '/advertiser-recovery-codes',
       );
 
   @override

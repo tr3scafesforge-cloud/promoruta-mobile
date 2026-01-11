@@ -1,18 +1,132 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:promoruta/shared/providers/providers.dart';
+import 'package:toastification/toastification.dart';
+import 'package:promoruta/features/auth/domain/use_cases/two_factor_use_cases.dart';
 
-class TwoFactorAuthPage extends StatefulWidget {
+class TwoFactorAuthPage extends ConsumerStatefulWidget {
   const TwoFactorAuthPage({super.key});
 
   @override
-  State<TwoFactorAuthPage> createState() => _TwoFactorAuthPageState();
+  ConsumerState<TwoFactorAuthPage> createState() => _TwoFactorAuthPageState();
 }
 
-class _TwoFactorAuthPageState extends State<TwoFactorAuthPage> {
-  bool _isEnabled = false;
+class _TwoFactorAuthPageState extends ConsumerState<TwoFactorAuthPage> {
+  bool _isLoading = false;
+
+  Future<void> _handleToggle2FA(bool enable) async {
+    if (enable) {
+      // Navigate to setup page to enable 2FA
+      context.push('/advertiser-2fa-setup');
+    } else {
+      // Show confirmation dialog and disable 2FA
+      _showDisable2FADialog();
+    }
+  }
+
+  Future<void> _showDisable2FADialog() async {
+    final passwordController = TextEditingController();
+
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Desactivar 2FA'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('Ingresa tu contraseña para desactivar la autenticación de dos factores:'),
+            const SizedBox(height: 16),
+            TextField(
+              controller: passwordController,
+              obscureText: true,
+              decoration: const InputDecoration(
+                labelText: 'Contraseña',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancelar'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Desactivar'),
+          ),
+        ],
+      ),
+    );
+
+    if (result == true && passwordController.text.isNotEmpty) {
+      await _disable2FA(passwordController.text);
+    }
+  }
+
+  Future<void> _disable2FA(String password) async {
+    setState(() => _isLoading = true);
+
+    try {
+      final disable2FAUseCase = ref.read(disable2FAUseCaseProvider);
+      final message = await disable2FAUseCase(Disable2FAParams(password: password));
+
+      if (mounted) {
+        // Refresh user data
+        ref.invalidate(authStateProvider);
+
+        toastification.show(
+          context: context,
+          type: ToastificationType.success,
+          title: const Text('2FA Desactivada'),
+          description: Text(message),
+          autoCloseDuration: const Duration(seconds: 3),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        toastification.show(
+          context: context,
+          type: ToastificationType.error,
+          title: const Text('Error'),
+          description: Text('Error al desactivar 2FA: $e'),
+          autoCloseDuration: const Duration(seconds: 3),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final userAsync = ref.watch(authStateProvider);
+
+    return userAsync.when(
+      data: (user) => _buildContent(context, user?.twoFactorEnabled ?? false),
+      loading: () => _buildLoadingState(),
+      error: (error, stack) => _buildErrorState(error),
+    );
+  }
+
+  Widget _buildLoadingState() {
+    return const Scaffold(
+      body: Center(child: CircularProgressIndicator()),
+    );
+  }
+
+  Widget _buildErrorState(Object error) {
+    return Scaffold(
+      body: Center(
+        child: Text('Error: $error'),
+      ),
+    );
+  }
+
+  Widget _buildContent(BuildContext context, bool isEnabled) {
     const bg = Color(0xFFF3F5F7);
 
     return Scaffold(
@@ -35,17 +149,23 @@ class _TwoFactorAuthPageState extends State<TwoFactorAuthPage> {
                 _SettingsTile(
                   icon: Icons.lock_outline,
                   title: 'Autenticación de dos factores',
-                  subtitle: _isEnabled ? 'Activada' : 'Desactivada',
-                  trailing: Switch(
-                    value: _isEnabled,
-                    onChanged: (value) => setState(() => _isEnabled = value),
-                    activeThumbColor: const Color(0xFF11A192),
-                  ),
+                  subtitle: isEnabled ? 'Activada' : 'Desactivada',
+                  trailing: _isLoading
+                      ? const SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : Switch(
+                          value: isEnabled,
+                          onChanged: _handleToggle2FA,
+                          activeThumbColor: const Color(0xFF11A192),
+                        ),
                 ),
               ],
             ),
             const SizedBox(height: 16),
-            if (_isEnabled) ...[
+            if (isEnabled) ...[
               _SettingsCard(
                 children: [
                   _SettingsTile(
@@ -53,26 +173,25 @@ class _TwoFactorAuthPageState extends State<TwoFactorAuthPage> {
                     title: 'Aplicación de autenticación',
                     subtitle: 'Google Authenticator',
                     onTap: () {
-                      // TODO: Navigate to setup authenticator app
+                      // Show info or reconfigure
+                      _showAuthenticatorInfo();
                     },
                   ),
                   const _RowDivider(),
                   _SettingsTile(
                     icon: Icons.sms,
                     title: 'SMS',
-                    subtitle: '+598 ** *** ** 34',
-                    onTap: () {
-                      // TODO: Navigate to setup SMS
-                    },
+                    subtitle: 'No disponible',
+                    enabled: false,
+                    onTap: null,
                   ),
                   const _RowDivider(),
                   _SettingsTile(
                     icon: Icons.email,
                     title: 'Email',
-                    subtitle: 'm*****.d*****@mail.com',
-                    onTap: () {
-                      // TODO: Navigate to setup email
-                    },
+                    subtitle: 'No disponible',
+                    enabled: false,
+                    onTap: null,
                   ),
                 ],
               ),
@@ -82,9 +201,9 @@ class _TwoFactorAuthPageState extends State<TwoFactorAuthPage> {
                   _SettingsTile(
                     icon: Icons.backup,
                     title: 'Códigos de respaldo',
-                    subtitle: 'Generar códigos de respaldo',
+                    subtitle: 'Ver o regenerar códigos de respaldo',
                     onTap: () {
-                      // TODO: Navigate to backup codes
+                      context.push('/advertiser-recovery-codes');
                     },
                   ),
                 ],
@@ -110,11 +229,24 @@ class _TwoFactorAuthPageState extends State<TwoFactorAuthPage> {
                     const SizedBox(height: 8),
                     Text(
                       'La autenticación de dos factores añade una capa extra de seguridad a tu cuenta. '
-                      'Además de tu contraseña, necesitarás un código generado por tu dispositivo '
-                      'o enviado a tu teléfono/email.',
+                      'Además de tu contraseña, necesitarás un código generado por tu dispositivo.',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: Colors.black54,
                           ),
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        onPressed: () => context.push('/advertiser-2fa-setup'),
+                        icon: const Icon(Icons.shield),
+                        label: const Text('Activar 2FA'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF11A192),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -122,6 +254,25 @@ class _TwoFactorAuthPageState extends State<TwoFactorAuthPage> {
             ],
           ],
         ),
+      ),
+    );
+  }
+
+  void _showAuthenticatorInfo() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Aplicación de autenticación'),
+        content: const Text(
+          'Tu aplicación de autenticación está configurada correctamente. '
+          'Úsala para generar códigos cuando inicies sesión.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cerrar'),
+          ),
+        ],
       ),
     );
   }
@@ -160,6 +311,7 @@ class _SettingsTile extends StatelessWidget {
     this.subtitle,
     this.onTap,
     this.trailing,
+    this.enabled = true,
   });
 
   final IconData icon;
@@ -167,25 +319,26 @@ class _SettingsTile extends StatelessWidget {
   final String? subtitle;
   final VoidCallback? onTap;
   final Widget? trailing;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
     final titleStyle = Theme.of(context).textTheme.titleMedium?.copyWith(
           fontWeight: FontWeight.w700,
-          color: Colors.black87,
+          color: enabled ? Colors.black87 : Colors.black38,
         );
     final subtitleStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
-          color: Colors.black54,
+          color: enabled ? Colors.black54 : Colors.black26,
         );
 
     return InkWell(
-      onTap: onTap,
+      onTap: enabled ? onTap : null,
       borderRadius: BorderRadius.circular(12),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
         child: Row(
           children: [
-            Icon(icon, size: 24, color: Colors.black87),
+            Icon(icon, size: 24, color: enabled ? Colors.black87 : Colors.black38),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -200,7 +353,7 @@ class _SettingsTile extends StatelessWidget {
               ),
             ),
             if (trailing != null) trailing!,
-            if (trailing == null && onTap != null)
+            if (trailing == null && onTap != null && enabled)
               const Icon(Icons.chevron_right, color: Colors.black54),
           ],
         ),

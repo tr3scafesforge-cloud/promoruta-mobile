@@ -21,6 +21,8 @@ import 'package:promoruta/presentation/advertiser/pages/language_settings_page.d
 import 'package:promoruta/presentation/advertiser/pages/payment_methods_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/change_password_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/two_factor_auth_page.dart';
+import 'package:promoruta/presentation/advertiser/pages/two_factor_setup_page.dart';
+import 'package:promoruta/presentation/advertiser/pages/recovery_codes_page.dart';
 import 'package:promoruta/features/advertiser/campaign_creation/presentation/pages/create_campaign_page.dart';
 import 'package:promoruta/features/advertiser/presentation/pages/campaign_details_page.dart';
 import 'package:promoruta/shared/shared.dart';
@@ -274,6 +276,54 @@ class AdvertiserSecuritySettingsRoute extends GoRouteData
     return CustomTransitionPage(
       key: state.pageKey,
       child: const SecuritySettingsPage(),
+      opaque: true,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return _slideTransition(
+          animation: animation,
+          child: child,
+          direction: SlideDirection.fromRight,
+        );
+      },
+    );
+  }
+}
+
+@TypedGoRoute<Advertiser2FASetupRoute>(
+  path: '/advertiser-2fa-setup',
+)
+class Advertiser2FASetupRoute extends GoRouteData
+    with _$Advertiser2FASetupRoute {
+  const Advertiser2FASetupRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage(
+      key: state.pageKey,
+      child: const TwoFactorSetupPage(),
+      opaque: true,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return _slideTransition(
+          animation: animation,
+          child: child,
+          direction: SlideDirection.fromRight,
+        );
+      },
+    );
+  }
+}
+
+@TypedGoRoute<AdvertiserRecoveryCodesRoute>(
+  path: '/advertiser-recovery-codes',
+)
+class AdvertiserRecoveryCodesRoute extends GoRouteData
+    with _$AdvertiserRecoveryCodesRoute {
+  const AdvertiserRecoveryCodesRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage(
+      key: state.pageKey,
+      child: const RecoveryCodesPage(),
       opaque: true,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return _slideTransition(

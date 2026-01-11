@@ -49,6 +49,8 @@ class RouteGuards {
     // Advertiser-only routes
     '/advertiser-home': advertiserOnly,
     '/advertiser-security-settings': advertiserOnly,
+    '/advertiser-2fa-setup': advertiserOnly,
+    '/advertiser-recovery-codes': advertiserOnly,
     '/payment-methods': advertiserOnly,
     '/change-password': advertiserOnly,
     '/two-factor-auth': advertiserOnly,
