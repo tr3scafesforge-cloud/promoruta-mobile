@@ -13,5 +13,4 @@ export 'presentation/pages/user_profile_page.dart';
 export 'presentation/pages/security_settings_page.dart';
 export 'presentation/pages/change_password_page.dart';
 export 'presentation/pages/language_settings_page.dart';
-export 'presentation/pages/two_factor_auth_page.dart';
 export 'presentation/widgets/profile_widgets.dart';
