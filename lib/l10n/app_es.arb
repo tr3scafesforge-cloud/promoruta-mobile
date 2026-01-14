@@ -1438,5 +1438,171 @@
         "example": "2.5"
       }
     }
+  },
+  "disable2FA": "Desactivar 2FA",
+  "@disable2FA": {
+    "description": "Title for disable 2FA dialog"
+  },
+  "enterPasswordToDisable2FA": "Ingresa tu contraseña para desactivar la autenticación de dos factores:",
+  "@enterPasswordToDisable2FA": {
+    "description": "Message to enter password to disable 2FA"
+  },
+  "password": "Contraseña",
+  "@password": {
+    "description": "Label for password field"
+  },
+  "disable": "Desactivar",
+  "@disable": {
+    "description": "Button text to disable"
+  },
+  "twoFactorAuthDisabled": "2FA Desactivada",
+  "@twoFactorAuthDisabled": {
+    "description": "Success message when 2FA is disabled"
+  },
+  "errorDisabling2FA": "Error al desactivar 2FA: {error}",
+  "@errorDisabling2FA": {
+    "description": "Error message when disabling 2FA fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "twoFactorAuthentication": "Autenticación de dos factores",
+  "@twoFactorAuthentication": {
+    "description": "Label for two-factor authentication"
+  },
+  "enabled": "Activada",
+  "@enabled": {
+    "description": "Status label for enabled state"
+  },
+  "disabled": "Desactivada",
+  "@disabled": {
+    "description": "Status label for disabled state"
+  },
+  "authenticatorApp": "Aplicación de autenticación",
+  "@authenticatorApp": {
+    "description": "Label for authenticator app"
+  },
+  "googleAuthenticator": "Google Authenticator",
+  "@googleAuthenticator": {
+    "description": "Google Authenticator app name"
+  },
+  "sms": "SMS",
+  "@sms": {
+    "description": "Label for SMS option"
+  },
+  "notAvailable": "No disponible",
+  "@notAvailable": {
+    "description": "Label for unavailable option"
+  },
+  "recoveryCodes": "Códigos de respaldo",
+  "@recoveryCodes": {
+    "description": "Label for recovery codes"
+  },
+  "viewOrRegenerateRecoveryCodes": "Ver o regenerar códigos de respaldo",
+  "@viewOrRegenerateRecoveryCodes": {
+    "description": "Description for recovery codes option"
+  },
+  "whyEnable2FA": "¿Por qué activar la autenticación de dos factores?",
+  "@whyEnable2FA": {
+    "description": "Title asking why enable 2FA"
+  },
+  "twoFactorAuthDescription": "La autenticación de dos factores añade una capa extra de seguridad a tu cuenta. Además de tu contraseña, necesitarás un código generado por tu dispositivo.",
+  "@twoFactorAuthDescription": {
+    "description": "Description explaining what 2FA does"
+  },
+  "enable2FA": "Activar 2FA",
+  "@enable2FA": {
+    "description": "Button text to enable 2FA"
+  },
+  "authenticatorConfiguredMessage": "Tu aplicación de autenticación está configurada correctamente. Úsala para generar códigos cuando inicies sesión.",
+  "@authenticatorConfiguredMessage": {
+    "description": "Message shown when authenticator is already configured"
+  },
+  "invalidCode": "Código inválido",
+  "@invalidCode": {
+    "description": "Error title for invalid code"
+  },
+  "codeMustBeSixDigits": "El código debe tener 6 dígitos",
+  "@codeMustBeSixDigits": {
+    "description": "Error message for code not being 6 digits"
+  },
+  "incorrectCode": "Código incorrecto: {error}",
+  "@incorrectCode": {
+    "description": "Error message for incorrect code",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "saveRecoveryCodesMessage": "Guarda estos códigos en un lugar seguro. Los necesitarás si pierdes acceso a tu dispositivo:",
+  "@saveRecoveryCodesMessage": {
+    "description": "Message to save recovery codes"
+  },
+  "codesCopied": "Códigos copiados",
+  "@codesCopied": {
+    "description": "Success message when codes are copied"
+  },
+  "copyCodes": "Copiar códigos",
+  "@copyCodes": {
+    "description": "Button text to copy codes"
+  },
+  "setup2FA": "Configurar 2FA",
+  "@setup2FA": {
+    "description": "Title for 2FA setup page"
+  },
+  "errorSettingUp2FA": "Error al configurar 2FA",
+  "@errorSettingUp2FA": {
+    "description": "Error message when setting up 2FA fails"
+  },
+  "unknownError": "Error desconocido",
+  "@unknownError": {
+    "description": "Generic unknown error message"
+  },
+  "retry": "Reintentar",
+  "@retry": {
+    "description": "Button text to retry"
+  },
+  "downloadAuthenticatorApp": "Descarga una aplicación de autenticación",
+  "@downloadAuthenticatorApp": {
+    "description": "Step 1 title for 2FA setup"
+  },
+  "weRecommend": "Recomendamos:",
+  "@weRecommend": {
+    "description": "Text before list of recommended apps"
+  },
+  "scanQRCode": "Escanea este código QR",
+  "@scanQRCode": {
+    "description": "Step 2 title for 2FA setup"
+  },
+  "orEnterKeyManually": "O ingresa esta clave manualmente:",
+  "@orEnterKeyManually": {
+    "description": "Alternative to scanning QR code"
+  },
+  "keyCopied": "Clave copiada",
+  "@keyCopied": {
+    "description": "Success message when key is copied"
+  },
+  "enterVerificationCode": "Ingresa el código de verificación",
+  "@enterVerificationCode": {
+    "description": "Step 3 title for 2FA setup"
+  },
+  "enterSixDigitCode": "Ingresa el código de 6 dígitos que aparece en tu aplicación:",
+  "@enterSixDigitCode": {
+    "description": "Instruction to enter 6-digit code"
+  },
+  "verifyAndEnable": "Verificar y Activar",
+  "@verifyAndEnable": {
+    "description": "Button text to verify and enable 2FA"
+  },
+  "microsoftAuthenticator": "Microsoft Authenticator",
+  "@microsoftAuthenticator": {
+    "description": "Microsoft Authenticator app name"
+  },
+  "authy": "Authy",
+  "@authy": {
+    "description": "Authy app name"
   }
 }

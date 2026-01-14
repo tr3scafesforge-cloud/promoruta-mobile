@@ -1084,4 +1084,128 @@ class AppLocalizationsPt extends AppLocalizations {
   String kmAway(String distance) {
     return '$distance km de distância';
   }
+
+  @override
+  String get disable2FA => 'Desativar 2FA';
+
+  @override
+  String get enterPasswordToDisable2FA =>
+      'Digite sua senha para desativar a autenticação de dois fatores:';
+
+  @override
+  String get password => 'Senha';
+
+  @override
+  String get disable => 'Desativar';
+
+  @override
+  String get twoFactorAuthDisabled => '2FA Desativada';
+
+  @override
+  String errorDisabling2FA(String error) {
+    return 'Erro ao desativar 2FA: $error';
+  }
+
+  @override
+  String get twoFactorAuthentication => 'Autenticação de dois fatores';
+
+  @override
+  String get enabled => 'Ativada';
+
+  @override
+  String get disabled => 'Desativada';
+
+  @override
+  String get authenticatorApp => 'Aplicativo autenticador';
+
+  @override
+  String get googleAuthenticator => 'Google Authenticator';
+
+  @override
+  String get sms => 'SMS';
+
+  @override
+  String get notAvailable => 'Não disponível';
+
+  @override
+  String get recoveryCodes => 'Códigos de recuperação';
+
+  @override
+  String get viewOrRegenerateRecoveryCodes =>
+      'Ver ou regenerar códigos de recuperação';
+
+  @override
+  String get whyEnable2FA => 'Por que ativar a autenticação de dois fatores?';
+
+  @override
+  String get twoFactorAuthDescription =>
+      'A autenticação de dois fatores adiciona uma camada extra de segurança à sua conta. Além da sua senha, você precisará de um código gerado pelo seu dispositivo.';
+
+  @override
+  String get enable2FA => 'Ativar 2FA';
+
+  @override
+  String get authenticatorConfiguredMessage =>
+      'Seu aplicativo autenticador está configurado corretamente. Use-o para gerar códigos quando você fizer login.';
+
+  @override
+  String get invalidCode => 'Código inválido';
+
+  @override
+  String incorrectCode(String error) {
+    return 'Código incorreto: $error';
+  }
+
+  @override
+  String get saveRecoveryCodesMessage =>
+      'Salve esses códigos em um lugar seguro. Você precisará deles se perder o acesso ao seu dispositivo:';
+
+  @override
+  String get codesCopied => 'Códigos copiados';
+
+  @override
+  String get copyCodes => 'Copiar códigos';
+
+  @override
+  String get setup2FA => 'Configurar 2FA';
+
+  @override
+  String get errorSettingUp2FA => 'Erro ao configurar 2FA';
+
+  @override
+  String get unknownError => 'Erro desconhecido';
+
+  @override
+  String get retry => 'Tentar novamente';
+
+  @override
+  String get downloadAuthenticatorApp => 'Baixe um aplicativo autenticador';
+
+  @override
+  String get weRecommend => 'Recomendamos:';
+
+  @override
+  String get scanQRCode => 'Escaneie este código QR';
+
+  @override
+  String get orEnterKeyManually => 'Ou digite esta chave manualmente:';
+
+  @override
+  String get keyCopied => 'Chave copiada';
+
+  @override
+  String get enterVerificationCode => 'Digite o código de verificação';
+
+  @override
+  String get enterSixDigitCode =>
+      'Digite o código de 6 dígitos que aparece no seu aplicativo:';
+
+  @override
+  String get verifyAndEnable => 'Verificar e Ativar';
+
+  @override
+  String get microsoftAuthenticator => 'Microsoft Authenticator';
+
+  @override
+  String get authy => 'Authy';
 }
