@@ -7,6 +7,7 @@ import 'package:promoruta/features/auth/domain/models/two_factor_models.dart';
 import 'package:promoruta/features/auth/domain/use_cases/two_factor_use_cases.dart';
 import 'package:promoruta/shared/providers/providers.dart';
 import 'package:toastification/toastification.dart';
+import 'package:promoruta/gen/l10n/app_localizations.dart';
 
 class TwoFactorSetupPage extends ConsumerStatefulWidget {
   const TwoFactorSetupPage({super.key});
@@ -57,12 +58,13 @@ class _TwoFactorSetupPageState extends ConsumerState<TwoFactorSetupPage> {
   }
 
   Future<void> _verifyAndEnable() async {
+    final l10n = AppLocalizations.of(context);
     if (_codeController.text.length != 6) {
       toastification.show(
         context: context,
         type: ToastificationType.error,
-        title: const Text('Código inválido'),
-        description: const Text('El código debe tener 6 dígitos'),
+        title: Text(l10n.invalidCode),
+        description: Text(l10n.codeMustBeSixDigits),
         autoCloseDuration: const Duration(seconds: 3),
       );
       return;
@@ -93,11 +95,12 @@ class _TwoFactorSetupPageState extends ConsumerState<TwoFactorSetupPage> {
       }
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context);
         toastification.show(
           context: context,
           type: ToastificationType.error,
-          title: const Text('Error'),
-          description: Text('Código incorrecto: $e'),
+          title: Text(l10n.error),
+          description: Text(l10n.incorrectCode(e.toString())),
           autoCloseDuration: const Duration(seconds: 3),
         );
       }
@@ -109,18 +112,19 @@ class _TwoFactorSetupPageState extends ConsumerState<TwoFactorSetupPage> {
   }
 
   Future<void> _showRecoveryCodes(List<String> codes) async {
+    final l10n = AppLocalizations.of(context);
     await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: const Text('Códigos de recuperación'),
+        title: Text(l10n.recoveryCodes),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Guarda estos códigos en un lugar seguro. Los necesitarás si pierdes acceso a tu dispositivo:',
-              style: TextStyle(fontWeight: FontWeight.w600),
+            Text(
+              l10n.saveRecoveryCodesMessage,
+              style: const TextStyle(fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 16),
             Container(
@@ -150,15 +154,16 @@ class _TwoFactorSetupPageState extends ConsumerState<TwoFactorSetupPage> {
         actions: [
           ElevatedButton(
             onPressed: () {
+              final l10n = AppLocalizations.of(context);
               Clipboard.setData(ClipboardData(text: codes.join('\n')));
               toastification.show(
                 context: context,
                 type: ToastificationType.success,
-                title: const Text('Códigos copiados'),
+                title: Text(l10n.codesCopied),
                 autoCloseDuration: const Duration(seconds: 2),
               );
             },
-            child: const Text('Copiar códigos'),
+            child: Text(l10n.copyCodes),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context),
@@ -166,7 +171,7 @@ class _TwoFactorSetupPageState extends ConsumerState<TwoFactorSetupPage> {
               backgroundColor: const Color(0xFF11A192),
               foregroundColor: Colors.white,
             ),
-            child: const Text('Continuar'),
+            child: Text(l10n.continueButton),
           ),
         ],
       ),
@@ -176,6 +181,7 @@ class _TwoFactorSetupPageState extends ConsumerState<TwoFactorSetupPage> {
   @override
   Widget build(BuildContext context) {
     const bg = Color(0xFFF3F5F7);
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: bg,
@@ -186,9 +192,9 @@ class _TwoFactorSetupPageState extends ConsumerState<TwoFactorSetupPage> {
           icon: const Icon(Icons.arrow_back, color: Colors.black87),
           onPressed: () => context.pop(),
         ),
-        title: const Text(
-          'Configurar 2FA',
-          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w700),
+        title: Text(
+          l10n.setup2FA,
+          style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w700),
         ),
       ),
       body: _isLoading
@@ -200,6 +206,7 @@ class _TwoFactorSetupPageState extends ConsumerState<TwoFactorSetupPage> {
   }
 
   Widget _buildErrorState() {
+    final l10n = AppLocalizations.of(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24),
@@ -209,19 +216,19 @@ class _TwoFactorSetupPageState extends ConsumerState<TwoFactorSetupPage> {
             const Icon(Icons.error_outline, size: 64, color: Colors.red),
             const SizedBox(height: 16),
             Text(
-              'Error al configurar 2FA',
+              l10n.errorSettingUp2FA,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 8),
             Text(
-              _error ?? 'Error desconocido',
+              _error ?? l10n.unknownError,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: _initializeSetup,
-              child: const Text('Reintentar'),
+              child: Text(l10n.retry),
             ),
           ],
         ),
@@ -230,6 +237,7 @@ class _TwoFactorSetupPageState extends ConsumerState<TwoFactorSetupPage> {
   }
 
   Widget _buildSetupContent() {
+    final l10n = AppLocalizations.of(context);
     return SafeArea(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
@@ -239,15 +247,15 @@ class _TwoFactorSetupPageState extends ConsumerState<TwoFactorSetupPage> {
             // Step 1: Download App
             _buildStepCard(
               stepNumber: '1',
-              title: 'Descarga una aplicación de autenticación',
-              content: const Column(
+              title: l10n.downloadAuthenticatorApp,
+              content: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Recomendamos:'),
-                  SizedBox(height: 8),
-                  Text('• Google Authenticator'),
-                  Text('• Microsoft Authenticator'),
-                  Text('• Authy'),
+                  Text(l10n.weRecommend),
+                  const SizedBox(height: 8),
+                  Text('• ${l10n.googleAuthenticator}'),
+                  Text('• ${l10n.microsoftAuthenticator}'),
+                  Text('• ${l10n.authy}'),
                 ],
               ),
             ),
@@ -256,7 +264,7 @@ class _TwoFactorSetupPageState extends ConsumerState<TwoFactorSetupPage> {
             // Step 2: Scan QR Code
             _buildStepCard(
               stepNumber: '2',
-              title: 'Escanea este código QR',
+              title: l10n.scanQRCode,
               content: Column(
                 children: [
                   if (_setupData?.qrCodeSvg != null) ...[
@@ -273,9 +281,9 @@ class _TwoFactorSetupPageState extends ConsumerState<TwoFactorSetupPage> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    const Text(
-                      'O ingresa esta clave manualmente:',
-                      style: TextStyle(fontWeight: FontWeight.w600),
+                    Text(
+                      l10n.orEnterKeyManually,
+                      style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(height: 8),
                     Container(
@@ -305,7 +313,7 @@ class _TwoFactorSetupPageState extends ConsumerState<TwoFactorSetupPage> {
                               toastification.show(
                                 context: context,
                                 type: ToastificationType.success,
-                                title: const Text('Clave copiada'),
+                                title: Text(l10n.keyCopied),
                                 autoCloseDuration: const Duration(seconds: 2),
                               );
                             },
@@ -322,13 +330,11 @@ class _TwoFactorSetupPageState extends ConsumerState<TwoFactorSetupPage> {
             // Step 3: Enter Code
             _buildStepCard(
               stepNumber: '3',
-              title: 'Ingresa el código de verificación',
+              title: l10n.enterVerificationCode,
               content: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Ingresa el código de 6 dígitos que aparece en tu aplicación:',
-                  ),
+                  Text(l10n.enterSixDigitCode),
                   const SizedBox(height: 12),
                   TextField(
                     controller: _codeController,
@@ -372,9 +378,9 @@ class _TwoFactorSetupPageState extends ConsumerState<TwoFactorSetupPage> {
                           valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                         ),
                       )
-                    : const Text(
-                        'Verificar y Activar',
-                        style: TextStyle(
+                    : Text(
+                        l10n.verifyAndEnable,
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),

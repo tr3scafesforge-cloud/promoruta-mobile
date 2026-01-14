@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:promoruta/shared/providers/providers.dart';
 import 'package:toastification/toastification.dart';
 import 'package:promoruta/features/auth/domain/use_cases/two_factor_use_cases.dart';
+import 'package:promoruta/gen/l10n/app_localizations.dart';
 
 class TwoFactorAuthPage extends ConsumerStatefulWidget {
   const TwoFactorAuthPage({super.key});
@@ -27,22 +28,23 @@ class _TwoFactorAuthPageState extends ConsumerState<TwoFactorAuthPage> {
 
   Future<void> _showDisable2FADialog() async {
     final passwordController = TextEditingController();
+    final l10n = AppLocalizations.of(context);
 
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Desactivar 2FA'),
+        title: Text(l10n.disable2FA),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('Ingresa tu contraseña para desactivar la autenticación de dos factores:'),
+            Text(l10n.enterPasswordToDisable2FA),
             const SizedBox(height: 16),
             TextField(
               controller: passwordController,
               obscureText: true,
-              decoration: const InputDecoration(
-                labelText: 'Contraseña',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: l10n.password,
+                border: const OutlineInputBorder(),
               ),
             ),
           ],
@@ -50,11 +52,11 @@ class _TwoFactorAuthPageState extends ConsumerState<TwoFactorAuthPage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancelar'),
+            child: Text(l10n.cancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Desactivar'),
+            child: Text(l10n.disable),
           ),
         ],
       ),
@@ -73,24 +75,26 @@ class _TwoFactorAuthPageState extends ConsumerState<TwoFactorAuthPage> {
       final message = await disable2FAUseCase(Disable2FAParams(password: password));
 
       if (mounted) {
+        final l10n = AppLocalizations.of(context);
         // Refresh user data
         ref.invalidate(authStateProvider);
 
         toastification.show(
           context: context,
           type: ToastificationType.success,
-          title: const Text('2FA Desactivada'),
+          title: Text(l10n.twoFactorAuthDisabled),
           description: Text(message),
           autoCloseDuration: const Duration(seconds: 3),
         );
       }
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context);
         toastification.show(
           context: context,
           type: ToastificationType.error,
-          title: const Text('Error'),
-          description: Text('Error al desactivar 2FA: $e'),
+          title: Text(l10n.error),
+          description: Text(l10n.errorDisabling2FA(e.toString())),
           autoCloseDuration: const Duration(seconds: 3),
         );
       }
@@ -128,6 +132,7 @@ class _TwoFactorAuthPageState extends ConsumerState<TwoFactorAuthPage> {
 
   Widget _buildContent(BuildContext context, bool isEnabled) {
     const bg = Color(0xFFF3F5F7);
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: bg,
@@ -148,8 +153,8 @@ class _TwoFactorAuthPageState extends ConsumerState<TwoFactorAuthPage> {
               children: [
                 _SettingsTile(
                   icon: Icons.lock_outline,
-                  title: 'Autenticación de dos factores',
-                  subtitle: isEnabled ? 'Activada' : 'Desactivada',
+                  title: l10n.twoFactorAuthentication,
+                  subtitle: isEnabled ? l10n.enabled : l10n.disabled,
                   trailing: _isLoading
                       ? const SizedBox(
                           width: 24,
@@ -170,8 +175,8 @@ class _TwoFactorAuthPageState extends ConsumerState<TwoFactorAuthPage> {
                 children: [
                   _SettingsTile(
                     icon: Icons.smartphone,
-                    title: 'Aplicación de autenticación',
-                    subtitle: 'Google Authenticator',
+                    title: l10n.authenticatorApp,
+                    subtitle: l10n.googleAuthenticator,
                     onTap: () {
                       // Show info or reconfigure
                       _showAuthenticatorInfo();
@@ -180,16 +185,16 @@ class _TwoFactorAuthPageState extends ConsumerState<TwoFactorAuthPage> {
                   const _RowDivider(),
                   _SettingsTile(
                     icon: Icons.sms,
-                    title: 'SMS',
-                    subtitle: 'No disponible',
+                    title: l10n.sms,
+                    subtitle: l10n.notAvailable,
                     enabled: false,
                     onTap: null,
                   ),
                   const _RowDivider(),
                   _SettingsTile(
                     icon: Icons.email,
-                    title: 'Email',
-                    subtitle: 'No disponible',
+                    title: l10n.email,
+                    subtitle: l10n.notAvailable,
                     enabled: false,
                     onTap: null,
                   ),
@@ -200,8 +205,8 @@ class _TwoFactorAuthPageState extends ConsumerState<TwoFactorAuthPage> {
                 children: [
                   _SettingsTile(
                     icon: Icons.backup,
-                    title: 'Códigos de respaldo',
-                    subtitle: 'Ver o regenerar códigos de respaldo',
+                    title: l10n.recoveryCodes,
+                    subtitle: l10n.viewOrRegenerateRecoveryCodes,
                     onTap: () {
                       context.push('/advertiser-recovery-codes');
                     },
@@ -220,7 +225,7 @@ class _TwoFactorAuthPageState extends ConsumerState<TwoFactorAuthPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '¿Por qué activar la autenticación de dos factores?',
+                      l10n.whyEnable2FA,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w700,
                             color: Colors.black87,
@@ -228,8 +233,7 @@ class _TwoFactorAuthPageState extends ConsumerState<TwoFactorAuthPage> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'La autenticación de dos factores añade una capa extra de seguridad a tu cuenta. '
-                      'Además de tu contraseña, necesitarás un código generado por tu dispositivo.',
+                      l10n.twoFactorAuthDescription,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: Colors.black54,
                           ),
@@ -240,7 +244,7 @@ class _TwoFactorAuthPageState extends ConsumerState<TwoFactorAuthPage> {
                       child: ElevatedButton.icon(
                         onPressed: () => context.push('/advertiser-2fa-setup'),
                         icon: const Icon(Icons.shield),
-                        label: const Text('Activar 2FA'),
+                        label: Text(l10n.enable2FA),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF11A192),
                           foregroundColor: Colors.white,
@@ -259,18 +263,16 @@ class _TwoFactorAuthPageState extends ConsumerState<TwoFactorAuthPage> {
   }
 
   void _showAuthenticatorInfo() {
+    final l10n = AppLocalizations.of(context);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Aplicación de autenticación'),
-        content: const Text(
-          'Tu aplicación de autenticación está configurada correctamente. '
-          'Úsala para generar códigos cuando inicies sesión.',
-        ),
+        title: Text(l10n.authenticatorApp),
+        content: Text(l10n.authenticatorConfiguredMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cerrar'),
+            child: Text(l10n.close),
           ),
         ],
       ),
