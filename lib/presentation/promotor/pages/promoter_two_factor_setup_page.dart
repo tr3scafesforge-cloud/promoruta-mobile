@@ -340,7 +340,7 @@ class _PromoterTwoFactorSetupPageState extends ConsumerState<PromoterTwoFactorSe
                     controller: _codeController,
                     keyboardType: TextInputType.number,
                     maxLength: 6,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: '000000',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
