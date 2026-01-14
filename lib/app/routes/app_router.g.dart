@@ -28,6 +28,10 @@ List<RouteBase> get $appRoutes => [
       $advertiserRecoveryCodesRoute,
       $createCampaignRoute,
       $campaignDetailsRoute,
+      $promoterSecuritySettingsRoute,
+      $promoterTwoFactorAuthRoute,
+      $promoter2FASetupRoute,
+      $promoterRecoveryCodesRoute,
     ];
 
 RouteBase get $appStartupRoute => GoRouteData.$route(
@@ -638,6 +642,118 @@ mixin _$CampaignDetailsRoute on GoRouteData {
   @override
   String get location => GoRouteData.$location(
         '/campaign-details/${Uri.encodeComponent(_self.campaignId)}',
+      );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $promoterSecuritySettingsRoute => GoRouteData.$route(
+      path: '/promoter-security-settings',
+      factory: _$PromoterSecuritySettingsRoute._fromState,
+    );
+
+mixin _$PromoterSecuritySettingsRoute on GoRouteData {
+  static PromoterSecuritySettingsRoute _fromState(GoRouterState state) =>
+      const PromoterSecuritySettingsRoute();
+
+  @override
+  String get location => GoRouteData.$location(
+        '/promoter-security-settings',
+      );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $promoterTwoFactorAuthRoute => GoRouteData.$route(
+      path: '/promoter-two-factor-auth',
+      factory: _$PromoterTwoFactorAuthRoute._fromState,
+    );
+
+mixin _$PromoterTwoFactorAuthRoute on GoRouteData {
+  static PromoterTwoFactorAuthRoute _fromState(GoRouterState state) =>
+      const PromoterTwoFactorAuthRoute();
+
+  @override
+  String get location => GoRouteData.$location(
+        '/promoter-two-factor-auth',
+      );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $promoter2FASetupRoute => GoRouteData.$route(
+      path: '/promoter-2fa-setup',
+      factory: _$Promoter2FASetupRoute._fromState,
+    );
+
+mixin _$Promoter2FASetupRoute on GoRouteData {
+  static Promoter2FASetupRoute _fromState(GoRouterState state) =>
+      const Promoter2FASetupRoute();
+
+  @override
+  String get location => GoRouteData.$location(
+        '/promoter-2fa-setup',
+      );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $promoterRecoveryCodesRoute => GoRouteData.$route(
+      path: '/promoter-recovery-codes',
+      factory: _$PromoterRecoveryCodesRoute._fromState,
+    );
+
+mixin _$PromoterRecoveryCodesRoute on GoRouteData {
+  static PromoterRecoveryCodesRoute _fromState(GoRouterState state) =>
+      const PromoterRecoveryCodesRoute();
+
+  @override
+  String get location => GoRouteData.$location(
+        '/promoter-recovery-codes',
       );
 
   @override

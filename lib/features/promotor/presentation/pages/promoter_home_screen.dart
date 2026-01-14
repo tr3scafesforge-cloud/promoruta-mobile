@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/features/promotor/campaign_browsing/presentation/pages/promoter_nearby_page.dart';
 import 'package:promoruta/features/promotor/presentation/pages/promoter_earnings_page.dart';
@@ -9,6 +10,7 @@ import 'package:promoruta/features/promotor/presentation/pages/promoter_active_p
 import 'package:promoruta/shared/widgets/promoter_app_bar.dart';
 import 'package:promoruta/shared/providers/providers.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
+import 'package:promoruta/app/routes/app_router.dart';
 
 class PromoterHomeScreen extends ConsumerStatefulWidget {
   const PromoterHomeScreen({super.key});
@@ -125,6 +127,8 @@ class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
                   isDark ? ThemeMode.dark : ThemeMode.light,
                 );
           },
+          onTapSecurity: () => const PromoterSecuritySettingsRoute().push(context),
+          onTapLanguage: () => const LanguageSettingsRoute().push(context),
         );
       default:
         return const PromoterHomePage();

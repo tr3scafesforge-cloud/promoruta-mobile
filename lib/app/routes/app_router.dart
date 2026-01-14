@@ -23,6 +23,9 @@ import 'package:promoruta/presentation/advertiser/pages/change_password_page.dar
 import 'package:promoruta/presentation/advertiser/pages/two_factor_auth_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/two_factor_setup_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/recovery_codes_page.dart';
+import 'package:promoruta/presentation/promotor/pages/promoter_security_settings_page.dart';
+import 'package:promoruta/presentation/promotor/pages/promoter_two_factor_auth_page.dart';
+import 'package:promoruta/presentation/promotor/pages/promoter_two_factor_setup_page.dart';
 import 'package:promoruta/features/advertiser/campaign_creation/presentation/pages/create_campaign_page.dart';
 import 'package:promoruta/features/advertiser/presentation/pages/campaign_details_page.dart';
 import 'package:promoruta/shared/shared.dart';
@@ -372,6 +375,102 @@ class CampaignDetailsRoute extends GoRouteData with _$CampaignDetailsRoute {
     return CustomTransitionPage(
       key: state.pageKey,
       child: CampaignDetailsPage(campaignId: campaignId),
+      opaque: true,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return _slideTransition(
+          animation: animation,
+          child: child,
+          direction: SlideDirection.fromRight,
+        );
+      },
+    );
+  }
+}
+
+@TypedGoRoute<PromoterSecuritySettingsRoute>(
+  path: '/promoter-security-settings',
+)
+class PromoterSecuritySettingsRoute extends GoRouteData
+    with _$PromoterSecuritySettingsRoute {
+  const PromoterSecuritySettingsRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage(
+      key: state.pageKey,
+      child: const PromoterSecuritySettingsPage(),
+      opaque: true,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return _slideTransition(
+          animation: animation,
+          child: child,
+          direction: SlideDirection.fromRight,
+        );
+      },
+    );
+  }
+}
+
+@TypedGoRoute<PromoterTwoFactorAuthRoute>(
+  path: '/promoter-two-factor-auth',
+)
+class PromoterTwoFactorAuthRoute extends GoRouteData
+    with _$PromoterTwoFactorAuthRoute {
+  const PromoterTwoFactorAuthRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage(
+      key: state.pageKey,
+      child: const PromoterTwoFactorAuthPage(),
+      opaque: true,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return _slideTransition(
+          animation: animation,
+          child: child,
+          direction: SlideDirection.fromRight,
+        );
+      },
+    );
+  }
+}
+
+@TypedGoRoute<Promoter2FASetupRoute>(
+  path: '/promoter-2fa-setup',
+)
+class Promoter2FASetupRoute extends GoRouteData
+    with _$Promoter2FASetupRoute {
+  const Promoter2FASetupRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage(
+      key: state.pageKey,
+      child: const PromoterTwoFactorSetupPage(),
+      opaque: true,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return _slideTransition(
+          animation: animation,
+          child: child,
+          direction: SlideDirection.fromRight,
+        );
+      },
+    );
+  }
+}
+
+@TypedGoRoute<PromoterRecoveryCodesRoute>(
+  path: '/promoter-recovery-codes',
+)
+class PromoterRecoveryCodesRoute extends GoRouteData
+    with _$PromoterRecoveryCodesRoute {
+  const PromoterRecoveryCodesRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage(
+      key: state.pageKey,
+      child: const RecoveryCodesPage(),
       opaque: true,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return _slideTransition(
