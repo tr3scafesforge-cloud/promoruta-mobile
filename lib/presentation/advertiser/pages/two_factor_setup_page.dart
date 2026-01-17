@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/features/auth/domain/models/two_factor_models.dart';
 import 'package:promoruta/features/auth/domain/use_cases/two_factor_use_cases.dart';
 import 'package:promoruta/shared/providers/providers.dart';
@@ -228,6 +229,13 @@ class _TwoFactorSetupPageState extends ConsumerState<TwoFactorSetupPage> {
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: _initializeSetup,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.secondary,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
               child: Text(l10n.retry),
             ),
           ],
