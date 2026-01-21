@@ -421,7 +421,7 @@ class _LoginState extends ConsumerState<Login> {
                             ),
                             TextButton(
                               onPressed: () {
-                                // TODO: Navigate to register screen
+                                SignUpRoute(role: widget.role).go(context);
                               },
                               style: TextButton.styleFrom(
                                 padding: EdgeInsets.zero,

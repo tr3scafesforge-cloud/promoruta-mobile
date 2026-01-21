@@ -15,6 +15,8 @@ import 'package:promoruta/features/auth/presentation/pages/permissions_page.dart
 import 'package:promoruta/features/auth/presentation/pages/start_page.dart';
 import 'package:promoruta/features/auth/presentation/pages/forgot_password_page.dart';
 import 'package:promoruta/features/auth/presentation/pages/verify_reset_code_page.dart';
+import 'package:promoruta/features/auth/presentation/pages/sign_up_page.dart';
+import 'package:promoruta/features/auth/presentation/pages/verify_email_page.dart';
 import 'package:promoruta/presentation/home_screen.dart';
 import 'package:promoruta/presentation/advertiser/pages/advertiser_security_settings_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/language_settings_page.dart';
@@ -85,6 +87,43 @@ class LoginRoute extends GoRouteData with _$LoginRoute {
         ? model.UserRole.fromString(roleParam)
         : model.UserRole.promoter;
     return Login(role: userRole);
+  }
+}
+
+@TypedGoRoute<SignUpRoute>(
+  path: '/sign-up',
+)
+class SignUpRoute extends GoRouteData with _$SignUpRoute {
+  const SignUpRoute({this.role});
+
+  final model.UserRole? role;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    final roleParam = state.uri.queryParameters['role'];
+    final userRole = roleParam != null
+        ? model.UserRole.fromString(roleParam)
+        : role;
+    return SignUpPage(role: userRole);
+  }
+}
+
+@TypedGoRoute<VerifyEmailRoute>(
+  path: '/verify-email',
+)
+class VerifyEmailRoute extends GoRouteData with _$VerifyEmailRoute {
+  const VerifyEmailRoute({required this.email, this.role});
+
+  final String email;
+  final model.UserRole? role;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    final roleParam = state.uri.queryParameters['role'];
+    final userRole = roleParam != null
+        ? model.UserRole.fromString(roleParam)
+        : role;
+    return VerifyEmailPage(email: email, role: userRole);
   }
 }
 

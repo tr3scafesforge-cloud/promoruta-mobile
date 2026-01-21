@@ -11,6 +11,8 @@ List<RouteBase> get $appRoutes => [
       $onboardingRoute,
       $homeRoute,
       $loginRoute,
+      $signUpRoute,
+      $verifyEmailRoute,
       $forgotPasswordRoute,
       $verifyResetCodeRoute,
       $chooseRoleRoute,
@@ -169,6 +171,78 @@ T? _$convertMapValue<T>(
 extension<T extends Enum> on Map<T, String> {
   T? _$fromName(String? value) =>
       entries.where((element) => element.value == value).firstOrNull?.key;
+}
+
+RouteBase get $signUpRoute => GoRouteData.$route(
+      path: '/sign-up',
+      factory: _$SignUpRoute._fromState,
+    );
+
+mixin _$SignUpRoute on GoRouteData {
+  static SignUpRoute _fromState(GoRouterState state) => SignUpRoute(
+        role: _$convertMapValue(
+            'role', state.uri.queryParameters, _$UserRoleEnumMap._$fromName),
+      );
+
+  SignUpRoute get _self => this as SignUpRoute;
+
+  @override
+  String get location => GoRouteData.$location(
+        '/sign-up',
+        queryParams: {
+          if (_self.role != null) 'role': _$UserRoleEnumMap[_self.role!],
+        },
+      );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $verifyEmailRoute => GoRouteData.$route(
+      path: '/verify-email',
+      factory: _$VerifyEmailRoute._fromState,
+    );
+
+mixin _$VerifyEmailRoute on GoRouteData {
+  static VerifyEmailRoute _fromState(GoRouterState state) => VerifyEmailRoute(
+        email: state.uri.queryParameters['email']!,
+        role: _$convertMapValue(
+            'role', state.uri.queryParameters, _$UserRoleEnumMap._$fromName),
+      );
+
+  VerifyEmailRoute get _self => this as VerifyEmailRoute;
+
+  @override
+  String get location => GoRouteData.$location(
+        '/verify-email',
+        queryParams: {
+          'email': _self.email,
+          if (_self.role != null) 'role': _$UserRoleEnumMap[_self.role!],
+        },
+      );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
 }
 
 RouteBase get $forgotPasswordRoute => GoRouteData.$route(

@@ -4,6 +4,7 @@ import 'package:promoruta/core/utils/logger.dart';
 
 import '../../../domain/repositories/auth_repository.dart';
 import '../../../domain/models/two_factor_models.dart';
+import '../../models/registration_models.dart';
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final Dio dio;
@@ -674,6 +675,186 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
             throw Exception('Invalid password. Please try again.');
           default:
             throw Exception('Unable to regenerate recovery codes. Please try again later.');
+        }
+      } else {
+        throw Exception('Network error. Please check your connection and try again.');
+      }
+    }
+  }
+
+  // Registration methods
+
+  @override
+  Future<RegistrationResponse> register({
+    required String name,
+    required String email,
+    required String password,
+    required String passwordConfirmation,
+    required String role,
+  }) async {
+    try {
+      final response = await dio.post(
+        '/auth/register',
+        data: {
+          'name': name,
+          'email': email,
+          'password': password,
+          'password_confirmation': passwordConfirmation,
+          'role': role,
+        },
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return RegistrationResponse.fromJson(response.data);
+      } else {
+        throw Exception('Registration failed: ${response.statusMessage}');
+      }
+    } on DioException catch (e) {
+      AppLogger.auth.e('Registration failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+
+      if (e.response != null) {
+        final statusCode = e.response!.statusCode;
+        final responseData = e.response!.data;
+
+        switch (statusCode) {
+          case 422:
+            if (responseData is Map && responseData.containsKey('errors')) {
+              final errors = responseData['errors'] as Map?;
+              if (errors != null && errors.isNotEmpty) {
+                // Check for email already taken error
+                if (errors.containsKey('email')) {
+                  final emailErrors = errors['email'];
+                  if (emailErrors is List && emailErrors.isNotEmpty) {
+                    throw Exception(emailErrors.first.toString());
+                  }
+                }
+                final firstError = errors.values.first;
+                if (firstError is List && firstError.isNotEmpty) {
+                  throw Exception(firstError.first.toString());
+                }
+              }
+            }
+            throw Exception('Invalid registration data. Please check your input.');
+          case 429:
+            throw Exception('Too many attempts. Please try again later.');
+          default:
+            throw Exception('Unable to register. Please try again later.');
+        }
+      } else {
+        throw Exception('Network error. Please check your connection and try again.');
+      }
+    }
+  }
+
+  @override
+  Future<VerifyEmailResponse> verifyEmail({
+    required String email,
+    required String code,
+  }) async {
+    try {
+      final response = await dio.post(
+        '/auth/email/verify',
+        data: {
+          'email': email,
+          'code': code,
+        },
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return VerifyEmailResponse.fromJson(response.data);
+      } else {
+        throw Exception('Email verification failed: ${response.statusMessage}');
+      }
+    } on DioException catch (e) {
+      AppLogger.auth.e('Email verification failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+
+      if (e.response != null) {
+        final statusCode = e.response!.statusCode;
+        final responseData = e.response!.data;
+
+        switch (statusCode) {
+          case 400:
+            throw Exception('Invalid or expired verification code.');
+          case 422:
+            if (responseData is Map && responseData.containsKey('errors')) {
+              final errors = responseData['errors'] as Map?;
+              if (errors != null && errors.isNotEmpty) {
+                final firstError = errors.values.first;
+                if (firstError is List && firstError.isNotEmpty) {
+                  throw Exception(firstError.first.toString());
+                }
+              }
+            }
+            if (responseData is Map && responseData.containsKey('message')) {
+              throw Exception(responseData['message'] as String);
+            }
+            throw Exception('Invalid verification code. Please try again.');
+          case 429:
+            throw Exception('Too many attempts. Please try again later.');
+          default:
+            throw Exception('Unable to verify email. Please try again later.');
+        }
+      } else {
+        throw Exception('Network error. Please check your connection and try again.');
+      }
+    }
+  }
+
+  @override
+  Future<String> resendVerificationCode(String email) async {
+    try {
+      final response = await dio.post(
+        '/auth/email/resend',
+        data: {'email': email},
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final data = response.data;
+        return data['message'] ?? 'Verification code sent';
+      } else {
+        throw Exception('Failed to resend code: ${response.statusMessage}');
+      }
+    } on DioException catch (e) {
+      AppLogger.auth.e('Resend verification code failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+
+      if (e.response != null) {
+        final statusCode = e.response!.statusCode;
+        final responseData = e.response!.data;
+
+        switch (statusCode) {
+          case 422:
+            if (responseData is Map && responseData.containsKey('errors')) {
+              final errors = responseData['errors'] as Map?;
+              if (errors != null && errors.isNotEmpty) {
+                final firstError = errors.values.first;
+                if (firstError is List && firstError.isNotEmpty) {
+                  throw Exception(firstError.first.toString());
+                }
+              }
+            }
+            throw Exception('Invalid email. Please check your input.');
+          case 429:
+            throw Exception('Too many requests. Please wait before requesting a new code.');
+          default:
+            throw Exception('Unable to resend code. Please try again later.');
         }
       } else {
         throw Exception('Network error. Please check your connection and try again.');

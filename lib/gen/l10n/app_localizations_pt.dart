@@ -1208,4 +1208,98 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get authy => 'Authy';
+
+  @override
+  String get signUpTitle => 'Criar Conta';
+
+  @override
+  String get createYourAccount => 'Crie sua conta';
+
+  @override
+  String get signUpSubtitle => 'Digite suas informações para começar';
+
+  @override
+  String get fullName => 'Nome completo';
+
+  @override
+  String get fullNameHint => 'Digite seu nome completo';
+
+  @override
+  String get nameRequired => 'O nome é obrigatório';
+
+  @override
+  String get confirmPasswordLabel => 'Confirmar senha';
+
+  @override
+  String get confirmPasswordHint => 'Digite sua senha novamente';
+
+  @override
+  String get selectRole => 'Selecione seu papel';
+
+  @override
+  String get roleRequired => 'Por favor selecione um papel';
+
+  @override
+  String get promoter => 'Promotor';
+
+  @override
+  String get advertiser => 'Anunciante';
+
+  @override
+  String get promoterRoleDescription =>
+      'Ganhe renda executando campanhas de publicidade sonora';
+
+  @override
+  String get advertiserRoleDescription =>
+      'Crie e gerencie campanhas publicitárias';
+
+  @override
+  String get alreadyHaveAccount => 'Já tem uma conta? ';
+
+  @override
+  String get logIn => 'Entrar';
+
+  @override
+  String get verifyEmailTitle => 'Verifique seu email';
+
+  @override
+  String get verifyEmailSubtitle => 'Enviamos um código de verificação para';
+
+  @override
+  String get enterVerificationCodeEmail =>
+      'Digite o código de 6 dígitos para verificar seu email:';
+
+  @override
+  String get verify => 'Verificar';
+
+  @override
+  String get resendCode => 'Reenviar código';
+
+  @override
+  String get didntReceiveCode => 'Não recebeu o código? ';
+
+  @override
+  String resendInSeconds(int seconds) {
+    return 'Reenviar em ${seconds}s';
+  }
+
+  @override
+  String get verificationCodeSent => 'Código de verificação enviado';
+
+  @override
+  String get emailVerified => 'Email verificado com sucesso';
+
+  @override
+  String get invalidVerificationCode => 'Código de verificação inválido';
+
+  @override
+  String get verificationCodeExpired =>
+      'O código expirou. Por favor solicite um novo';
+
+  @override
+  String get registrationSuccessful =>
+      'Registro bem-sucedido! Por favor verifique seu email.';
+
+  @override
+  String get emailAlreadyRegistered => 'Este email já está registrado';
 }

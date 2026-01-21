@@ -5,6 +5,7 @@ import 'package:promoruta/shared/services/connectivity_service.dart';
 
 import '../../domain/repositories/auth_repository.dart';
 import '../../domain/models/two_factor_models.dart';
+import '../models/registration_models.dart';
 
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -267,6 +268,74 @@ class AuthRepositoryImpl implements AuthRepository {
     if (isConnected) {
       try {
         return await _remoteDataSource.regenerateRecoveryCodes(password);
+      } catch (e) {
+        rethrow;
+      }
+    } else {
+      throw Exception('No internet connection. Please check your connection and try again.');
+    }
+  }
+
+  // Registration methods
+
+  @override
+  Future<RegistrationResponse> register({
+    required String name,
+    required String email,
+    required String password,
+    required String passwordConfirmation,
+    required String role,
+  }) async {
+    final isConnected = await _connectivityService.isConnected;
+
+    if (isConnected) {
+      try {
+        return await _remoteDataSource.register(
+          name: name,
+          email: email,
+          password: password,
+          passwordConfirmation: passwordConfirmation,
+          role: role,
+        );
+      } catch (e) {
+        rethrow;
+      }
+    } else {
+      throw Exception('No internet connection. Please check your connection and try again.');
+    }
+  }
+
+  @override
+  Future<model.User> verifyEmail({
+    required String email,
+    required String code,
+  }) async {
+    final isConnected = await _connectivityService.isConnected;
+
+    if (isConnected) {
+      try {
+        final response = await _remoteDataSource.verifyEmail(
+          email: email,
+          code: code,
+        );
+        // Save the user after successful verification
+        await _localDataSource.saveUser(response.user);
+        return response.user;
+      } catch (e) {
+        rethrow;
+      }
+    } else {
+      throw Exception('No internet connection. Please check your connection and try again.');
+    }
+  }
+
+  @override
+  Future<String> resendVerificationCode(String email) async {
+    final isConnected = await _connectivityService.isConnected;
+
+    if (isConnected) {
+      try {
+        return await _remoteDataSource.resendVerificationCode(email);
       } catch (e) {
         rethrow;
       }

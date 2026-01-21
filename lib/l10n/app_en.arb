@@ -1604,5 +1604,126 @@
   "authy": "Authy",
   "@authy": {
     "description": "Authy app name"
+  },
+  "signUpTitle": "Create Account",
+  "@signUpTitle": {
+    "description": "Title for sign up page"
+  },
+  "createYourAccount": "Create your account",
+  "@createYourAccount": {
+    "description": "Main heading for sign up page"
+  },
+  "signUpSubtitle": "Enter your information to get started",
+  "@signUpSubtitle": {
+    "description": "Subtitle for sign up page"
+  },
+  "fullName": "Full name",
+  "@fullName": {
+    "description": "Label for full name field"
+  },
+  "fullNameHint": "Enter your full name",
+  "@fullNameHint": {
+    "description": "Hint for full name field"
+  },
+  "nameRequired": "Name is required",
+  "@nameRequired": {
+    "description": "Validation error for empty name field"
+  },
+  "confirmPasswordLabel": "Confirm password",
+  "@confirmPasswordLabel": {
+    "description": "Label for confirm password field"
+  },
+  "confirmPasswordHint": "Re-enter your password",
+  "@confirmPasswordHint": {
+    "description": "Hint for confirm password field"
+  },
+  "selectRole": "Select your role",
+  "@selectRole": {
+    "description": "Label for role selection"
+  },
+  "roleRequired": "Please select a role",
+  "@roleRequired": {
+    "description": "Validation error for no role selected"
+  },
+  "promoter": "Promoter",
+  "@promoter": {
+    "description": "Promoter role option"
+  },
+  "advertiser": "Advertiser",
+  "@advertiser": {
+    "description": "Advertiser role option"
+  },
+  "promoterRoleDescription": "Earn income by executing sound advertising campaigns",
+  "@promoterRoleDescription": {
+    "description": "Description for promoter role"
+  },
+  "advertiserRoleDescription": "Create and manage advertising campaigns",
+  "@advertiserRoleDescription": {
+    "description": "Description for advertiser role"
+  },
+  "alreadyHaveAccount": "Already have an account? ",
+  "@alreadyHaveAccount": {
+    "description": "Text before login link on sign up page"
+  },
+  "logIn": "Log in",
+  "@logIn": {
+    "description": "Login link text"
+  },
+  "verifyEmailTitle": "Verify your email",
+  "@verifyEmailTitle": {
+    "description": "Title for email verification page"
+  },
+  "verifyEmailSubtitle": "We've sent a verification code to",
+  "@verifyEmailSubtitle": {
+    "description": "Subtitle for email verification page"
+  },
+  "enterVerificationCodeEmail": "Enter the 6-digit code to verify your email:",
+  "@enterVerificationCodeEmail": {
+    "description": "Instruction to enter verification code"
+  },
+  "verify": "Verify",
+  "@verify": {
+    "description": "Verify button text"
+  },
+  "resendCode": "Resend code",
+  "@resendCode": {
+    "description": "Resend code button text"
+  },
+  "didntReceiveCode": "Didn't receive the code? ",
+  "@didntReceiveCode": {
+    "description": "Text before resend code link"
+  },
+  "resendInSeconds": "Resend in {seconds}s",
+  "@resendInSeconds": {
+    "description": "Countdown text for resend button",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "verificationCodeSent": "Verification code sent",
+  "@verificationCodeSent": {
+    "description": "Success message when verification code is resent"
+  },
+  "emailVerified": "Email verified successfully",
+  "@emailVerified": {
+    "description": "Success message when email is verified"
+  },
+  "invalidVerificationCode": "Invalid verification code",
+  "@invalidVerificationCode": {
+    "description": "Error message for invalid verification code"
+  },
+  "verificationCodeExpired": "Code has expired. Please request a new one",
+  "@verificationCodeExpired": {
+    "description": "Error message for expired verification code"
+  },
+  "registrationSuccessful": "Registration successful! Please verify your email.",
+  "@registrationSuccessful": {
+    "description": "Success message after registration"
+  },
+  "emailAlreadyRegistered": "This email is already registered",
+  "@emailAlreadyRegistered": {
+    "description": "Error message for duplicate email"
   }
 }

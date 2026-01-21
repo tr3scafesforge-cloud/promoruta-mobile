@@ -2283,6 +2283,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Authy'**
   String get authy;
+
+  /// Title for sign up page
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get signUpTitle;
+
+  /// Main heading for sign up page
+  ///
+  /// In en, this message translates to:
+  /// **'Create your account'**
+  String get createYourAccount;
+
+  /// Subtitle for sign up page
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your information to get started'**
+  String get signUpSubtitle;
+
+  /// Label for full name field
+  ///
+  /// In en, this message translates to:
+  /// **'Full name'**
+  String get fullName;
+
+  /// Hint for full name field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your full name'**
+  String get fullNameHint;
+
+  /// Validation error for empty name field
+  ///
+  /// In en, this message translates to:
+  /// **'Name is required'**
+  String get nameRequired;
+
+  /// Label for confirm password field
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm password'**
+  String get confirmPasswordLabel;
+
+  /// Hint for confirm password field
+  ///
+  /// In en, this message translates to:
+  /// **'Re-enter your password'**
+  String get confirmPasswordHint;
+
+  /// Label for role selection
+  ///
+  /// In en, this message translates to:
+  /// **'Select your role'**
+  String get selectRole;
+
+  /// Validation error for no role selected
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a role'**
+  String get roleRequired;
+
+  /// Promoter role option
+  ///
+  /// In en, this message translates to:
+  /// **'Promoter'**
+  String get promoter;
+
+  /// Advertiser role option
+  ///
+  /// In en, this message translates to:
+  /// **'Advertiser'**
+  String get advertiser;
+
+  /// Description for promoter role
+  ///
+  /// In en, this message translates to:
+  /// **'Earn income by executing sound advertising campaigns'**
+  String get promoterRoleDescription;
+
+  /// Description for advertiser role
+  ///
+  /// In en, this message translates to:
+  /// **'Create and manage advertising campaigns'**
+  String get advertiserRoleDescription;
+
+  /// Text before login link on sign up page
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? '**
+  String get alreadyHaveAccount;
+
+  /// Login link text
+  ///
+  /// In en, this message translates to:
+  /// **'Log in'**
+  String get logIn;
+
+  /// Title for email verification page
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your email'**
+  String get verifyEmailTitle;
+
+  /// Subtitle for email verification page
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ve sent a verification code to'**
+  String get verifyEmailSubtitle;
+
+  /// Instruction to enter verification code
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit code to verify your email:'**
+  String get enterVerificationCodeEmail;
+
+  /// Verify button text
+  ///
+  /// In en, this message translates to:
+  /// **'Verify'**
+  String get verify;
+
+  /// Resend code button text
+  ///
+  /// In en, this message translates to:
+  /// **'Resend code'**
+  String get resendCode;
+
+  /// Text before resend code link
+  ///
+  /// In en, this message translates to:
+  /// **'Didn\'t receive the code? '**
+  String get didntReceiveCode;
+
+  /// Countdown text for resend button
+  ///
+  /// In en, this message translates to:
+  /// **'Resend in {seconds}s'**
+  String resendInSeconds(int seconds);
+
+  /// Success message when verification code is resent
+  ///
+  /// In en, this message translates to:
+  /// **'Verification code sent'**
+  String get verificationCodeSent;
+
+  /// Success message when email is verified
+  ///
+  /// In en, this message translates to:
+  /// **'Email verified successfully'**
+  String get emailVerified;
+
+  /// Error message for invalid verification code
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid verification code'**
+  String get invalidVerificationCode;
+
+  /// Error message for expired verification code
+  ///
+  /// In en, this message translates to:
+  /// **'Code has expired. Please request a new one'**
+  String get verificationCodeExpired;
+
+  /// Success message after registration
+  ///
+  /// In en, this message translates to:
+  /// **'Registration successful! Please verify your email.'**
+  String get registrationSuccessful;
+
+  /// Error message for duplicate email
+  ///
+  /// In en, this message translates to:
+  /// **'This email is already registered'**
+  String get emailAlreadyRegistered;
 }
 
 class _AppLocalizationsDelegate

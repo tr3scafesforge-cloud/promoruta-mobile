@@ -9,11 +9,11 @@ Implementation tasks for user registration and email verification features.
 
 ### Task 1.1: Add registration models
 **File:** `lib/features/auth/data/models/registration_models.dart`
-- [ ] Create `RegistrationRequest` model (name, email, password, password_confirmation, role)
-- [ ] Create `RegistrationResponse` model (user, message, requires_verification)
-- [ ] Create `VerifyEmailRequest` model (email, code)
-- [ ] Create `VerifyEmailResponse` model (user, access_token, refresh_token)
-- [ ] Create `ResendVerificationRequest` model (email)
+- [x] Create `RegistrationRequest` model (name, email, password, password_confirmation, role)
+- [x] Create `RegistrationResponse` model (user, message, requires_verification)
+- [x] Create `VerifyEmailRequest` model (email, code)
+- [x] Create `VerifyEmailResponse` model (user, access_token, refresh_token)
+- [x] Create `ResendVerificationRequest` model (email)
 
 **Validation:** Models compile and serialize/deserialize correctly
 
@@ -21,9 +21,9 @@ Implementation tasks for user registration and email verification features.
 
 ### Task 1.2: Add registration endpoints to remote data source
 **File:** `lib/features/auth/data/datasources/remote/auth_remote_data_source.dart`
-- [ ] Add `register(RegistrationRequest)` method → POST `/auth/register`
-- [ ] Add `verifyEmail(VerifyEmailRequest)` method → POST `/auth/email/verify`
-- [ ] Add `resendVerificationCode(String email)` method → POST `/auth/email/resend`
+- [x] Add `register(RegistrationRequest)` method → POST `/auth/register`
+- [x] Add `verifyEmail(VerifyEmailRequest)` method → POST `/auth/email/verify`
+- [x] Add `resendVerificationCode(String email)` method → POST `/auth/email/resend`
 
 **Validation:** Endpoints can be called (test with backend)
 
@@ -36,10 +36,10 @@ Implementation tasks for user registration and email verification features.
 - `lib/features/auth/domain/repositories/auth_repository.dart` (interface)
 - `lib/features/auth/data/repositories/auth_repository_impl.dart` (implementation)
 
-- [ ] Add `register(...)` method signature to interface
-- [ ] Add `verifyEmail(...)` method signature to interface
-- [ ] Add `resendVerificationCode(...)` method signature to interface
-- [ ] Implement methods in `AuthRepositoryImpl`
+- [x] Add `register(...)` method signature to interface
+- [x] Add `verifyEmail(...)` method signature to interface
+- [x] Add `resendVerificationCode(...)` method signature to interface
+- [x] Implement methods in `AuthRepositoryImpl`
 
 **Validation:** Repository methods call data source correctly
 
@@ -49,9 +49,9 @@ Implementation tasks for user registration and email verification features.
 
 ### Task 2.1: Create registration use cases
 **File:** `lib/features/auth/domain/use_cases/registration_use_cases.dart`
-- [ ] Create `RegisterUseCase` with input validation
-- [ ] Create `VerifyEmailUseCase`
-- [ ] Create `ResendVerificationCodeUseCase`
+- [x] Create `RegisterUseCase` with input validation
+- [x] Create `VerifyEmailUseCase`
+- [x] Create `ResendVerificationCodeUseCase`
 
 **Validation:** Use cases handle success and error cases
 
@@ -59,9 +59,9 @@ Implementation tasks for user registration and email verification features.
 
 ### Task 2.2: Add providers for registration
 **File:** `lib/shared/providers/providers.dart` or feature-specific provider file
-- [ ] Add `registerUseCaseProvider`
-- [ ] Add `verifyEmailUseCaseProvider`
-- [ ] Add `resendVerificationCodeUseCaseProvider`
+- [x] Add `registerUseCaseProvider`
+- [x] Add `verifyEmailUseCaseProvider`
+- [x] Add `resendVerificationCodeUseCaseProvider`
 
 **Validation:** Providers are accessible in widgets
 
@@ -71,9 +71,9 @@ Implementation tasks for user registration and email verification features.
 
 ### Task 3.1: Add sign-up and verification routes
 **File:** `lib/app/routes/app_router.dart`
-- [ ] Add `SignUpRoute` at `/sign-up`
-- [ ] Add `VerifyEmailRoute` at `/verify-email` (accepts email parameter)
-- [ ] Run code generation: `flutter pub run build_runner build -d`
+- [x] Add `SignUpRoute` at `/sign-up`
+- [x] Add `VerifyEmailRoute` at `/verify-email` (accepts email parameter)
+- [x] Run code generation: `flutter pub run build_runner build -d`
 
 **Validation:** Routes are navigable, generated files compile
 
@@ -87,11 +87,11 @@ Implementation tasks for user registration and email verification features.
 - `lib/l10n/app_es.arb`
 - `lib/l10n/app_pt.arb`
 
-- [ ] Add sign-up page strings (title, labels, buttons, hints)
-- [ ] Add email verification page strings
-- [ ] Add validation error messages
-- [ ] Add success/error notification messages
-- [ ] Run: `flutter gen-l10n`
+- [x] Add sign-up page strings (title, labels, buttons, hints)
+- [x] Add email verification page strings
+- [x] Add validation error messages
+- [x] Add success/error notification messages
+- [x] Run: `flutter gen-l10n`
 
 **Validation:** All strings appear correctly in all languages
 
@@ -101,16 +101,16 @@ Implementation tasks for user registration and email verification features.
 
 ### Task 5.1: Create sign-up page
 **File:** `lib/features/auth/presentation/pages/sign_up_page.dart`
-- [ ] Create `SignUpPage` widget
-- [ ] Add form with name, email, password, confirm password fields
-- [ ] Add role selection (promoter/advertiser toggle/chips)
-- [ ] Add password visibility toggle
-- [ ] Add form validation
-- [ ] Add "Sign Up" button with loading state
-- [ ] Add "Already have an account? Log in" link
-- [ ] Connect to registration use case
-- [ ] Handle success → navigate to verify email
-- [ ] Handle errors → show toast/snackbar
+- [x] Create `SignUpPage` widget
+- [x] Add form with name, email, password, confirm password fields
+- [x] Add role selection (promoter/advertiser toggle/chips)
+- [x] Add password visibility toggle
+- [x] Add form validation
+- [x] Add "Sign Up" button with loading state
+- [x] Add "Already have an account? Log in" link
+- [x] Connect to registration use case
+- [x] Handle success → navigate to verify email
+- [x] Handle errors → show toast/snackbar
 
 **Validation:** Form submits and navigates correctly
 
@@ -118,13 +118,13 @@ Implementation tasks for user registration and email verification features.
 
 ### Task 5.2: Create email verification page
 **File:** `lib/features/auth/presentation/pages/verify_email_page.dart`
-- [ ] Create `VerifyEmailPage` widget
-- [ ] Add verification code input (6 digits)
-- [ ] Add "Verify" button with loading state
-- [ ] Add "Resend code" link with cooldown timer
-- [ ] Connect to verify/resend use cases
-- [ ] Handle success → save user, navigate to home
-- [ ] Handle errors → show appropriate message
+- [x] Create `VerifyEmailPage` widget
+- [x] Add verification code input (6 digits)
+- [x] Add "Verify" button with loading state
+- [x] Add "Resend code" link with cooldown timer
+- [x] Connect to verify/resend use cases
+- [x] Handle success → save user, navigate to home
+- [x] Handle errors → show appropriate message
 
 **Validation:** Verification flow completes successfully
 
@@ -132,8 +132,8 @@ Implementation tasks for user registration and email verification features.
 
 ### Task 5.3: Update login page with sign-up navigation
 **File:** `lib/features/auth/presentation/pages/login_page.dart`
-- [ ] Replace TODO comment with actual navigation to SignUpRoute
-- [ ] Ensure role is passed if selected on login page
+- [x] Replace TODO comment with actual navigation to SignUpRoute
+- [x] Ensure role is passed if selected on login page
 
 **Validation:** Login page links to sign-up correctly
 
@@ -181,11 +181,11 @@ Phase 4 (Localization) ←────────→ Phase 5 (Presentation)
 ---
 
 ## Estimated Work Items
-- **Data Layer:** 3 tasks
-- **Domain Layer:** 2 tasks
-- **Routing:** 1 task
-- **Localization:** 1 task
-- **Presentation:** 3 tasks
-- **Testing:** 2 tasks
+- **Data Layer:** 3 tasks ✅
+- **Domain Layer:** 2 tasks ✅
+- **Routing:** 1 task ✅
+- **Localization:** 1 task ✅
+- **Presentation:** 3 tasks ✅
+- **Testing:** 2 tasks (pending manual testing)
 
-**Total:** 12 tasks
+**Total:** 12 tasks (10 completed, 2 pending testing)

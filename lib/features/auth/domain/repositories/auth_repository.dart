@@ -1,4 +1,5 @@
 import 'package:promoruta/core/core.dart';
+import '../../data/models/registration_models.dart';
 import '../models/two_factor_models.dart';
 
 /// Abstract repository for authentication operations.
@@ -63,6 +64,26 @@ abstract class AuthRepository {
 
   /// Regenerates recovery codes (requires password confirmation).
   Future<RecoveryCodesResponse> regenerateRecoveryCodes(String password);
+
+  // Registration methods
+
+  /// Registers a new user.
+  Future<RegistrationResponse> register({
+    required String name,
+    required String email,
+    required String password,
+    required String passwordConfirmation,
+    required String role,
+  });
+
+  /// Verifies email with the verification code.
+  Future<User> verifyEmail({
+    required String email,
+    required String code,
+  });
+
+  /// Resends the verification code to the email.
+  Future<String> resendVerificationCode(String email);
 }
 
 /// Abstract local data source for authentication.
@@ -83,6 +104,24 @@ abstract class AuthLocalDataSource {
 abstract class AuthRemoteDataSource {
   /// Logs in via API.
   Future<User> login(String email, String password);
+
+  /// Registers a new user.
+  Future<RegistrationResponse> register({
+    required String name,
+    required String email,
+    required String password,
+    required String passwordConfirmation,
+    required String role,
+  });
+
+  /// Verifies email with the verification code.
+  Future<VerifyEmailResponse> verifyEmail({
+    required String email,
+    required String code,
+  });
+
+  /// Resends the verification code to the email.
+  Future<String> resendVerificationCode(String email);
 
   /// Refreshes the access token.
   Future<User> refreshToken(String accessToken);

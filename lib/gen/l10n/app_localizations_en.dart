@@ -1204,4 +1204,98 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authy => 'Authy';
+
+  @override
+  String get signUpTitle => 'Create Account';
+
+  @override
+  String get createYourAccount => 'Create your account';
+
+  @override
+  String get signUpSubtitle => 'Enter your information to get started';
+
+  @override
+  String get fullName => 'Full name';
+
+  @override
+  String get fullNameHint => 'Enter your full name';
+
+  @override
+  String get nameRequired => 'Name is required';
+
+  @override
+  String get confirmPasswordLabel => 'Confirm password';
+
+  @override
+  String get confirmPasswordHint => 'Re-enter your password';
+
+  @override
+  String get selectRole => 'Select your role';
+
+  @override
+  String get roleRequired => 'Please select a role';
+
+  @override
+  String get promoter => 'Promoter';
+
+  @override
+  String get advertiser => 'Advertiser';
+
+  @override
+  String get promoterRoleDescription =>
+      'Earn income by executing sound advertising campaigns';
+
+  @override
+  String get advertiserRoleDescription =>
+      'Create and manage advertising campaigns';
+
+  @override
+  String get alreadyHaveAccount => 'Already have an account? ';
+
+  @override
+  String get logIn => 'Log in';
+
+  @override
+  String get verifyEmailTitle => 'Verify your email';
+
+  @override
+  String get verifyEmailSubtitle => 'We\'ve sent a verification code to';
+
+  @override
+  String get enterVerificationCodeEmail =>
+      'Enter the 6-digit code to verify your email:';
+
+  @override
+  String get verify => 'Verify';
+
+  @override
+  String get resendCode => 'Resend code';
+
+  @override
+  String get didntReceiveCode => 'Didn\'t receive the code? ';
+
+  @override
+  String resendInSeconds(int seconds) {
+    return 'Resend in ${seconds}s';
+  }
+
+  @override
+  String get verificationCodeSent => 'Verification code sent';
+
+  @override
+  String get emailVerified => 'Email verified successfully';
+
+  @override
+  String get invalidVerificationCode => 'Invalid verification code';
+
+  @override
+  String get verificationCodeExpired =>
+      'Code has expired. Please request a new one';
+
+  @override
+  String get registrationSuccessful =>
+      'Registration successful! Please verify your email.';
+
+  @override
+  String get emailAlreadyRegistered => 'This email is already registered';
 }

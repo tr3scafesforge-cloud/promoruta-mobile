@@ -35,6 +35,7 @@ import 'package:promoruta/features/auth/data/repositories/auth_repository_impl.d
 import 'package:promoruta/features/auth/domain/repositories/auth_repository.dart';
 import 'package:promoruta/features/auth/domain/use_cases/auth_use_cases.dart';
 import 'package:promoruta/features/auth/domain/use_cases/two_factor_use_cases.dart';
+import 'package:promoruta/features/auth/domain/use_cases/registration_use_cases.dart';
 import 'package:promoruta/app/routes/app_router.dart';
 import 'package:promoruta/shared/services/notification_service.dart';
 import 'package:promoruta/shared/services/overlay_notification_service.dart';
@@ -321,6 +322,22 @@ final getRecoveryCodesUseCaseProvider = Provider<GetRecoveryCodesUseCase>((ref) 
 final regenerateRecoveryCodesUseCaseProvider = Provider<RegenerateRecoveryCodesUseCase>((ref) {
   final repository = ref.watch(authRepositoryProvider);
   return RegenerateRecoveryCodesUseCase(repository);
+});
+
+// Registration Use Case Providers
+final registerUseCaseProvider = Provider<RegisterUseCase>((ref) {
+  final repository = ref.watch(authRepositoryProvider);
+  return RegisterUseCase(repository);
+});
+
+final verifyEmailUseCaseProvider = Provider<VerifyEmailUseCase>((ref) {
+  final repository = ref.watch(authRepositoryProvider);
+  return VerifyEmailUseCase(repository);
+});
+
+final resendVerificationCodeUseCaseProvider = Provider<ResendVerificationCodeUseCase>((ref) {
+  final repository = ref.watch(authRepositoryProvider);
+  return ResendVerificationCodeUseCase(repository);
 });
 
 final getCampaignsUseCaseProvider = Provider<GetCampaignsUseCase>((ref) {
