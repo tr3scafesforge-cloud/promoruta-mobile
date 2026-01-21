@@ -26,8 +26,6 @@ import 'package:promoruta/presentation/advertiser/pages/two_factor_auth_page.dar
 import 'package:promoruta/presentation/advertiser/pages/two_factor_setup_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/recovery_codes_page.dart';
 import 'package:promoruta/presentation/promotor/pages/promoter_security_settings_page.dart';
-import 'package:promoruta/presentation/promotor/pages/promoter_two_factor_auth_page.dart';
-import 'package:promoruta/presentation/promotor/pages/promoter_two_factor_setup_page.dart';
 import 'package:promoruta/features/advertiser/campaign_creation/presentation/pages/create_campaign_page.dart';
 import 'package:promoruta/features/advertiser/presentation/pages/campaign_details_page.dart';
 import 'package:promoruta/shared/shared.dart';
@@ -257,7 +255,11 @@ class TwoFactorAuthRoute extends GoRouteData with _$TwoFactorAuthRoute {
   Page<void> buildPage(BuildContext context, GoRouterState state) {
     return CustomTransitionPage(
       key: state.pageKey,
-      child: const TwoFactorAuthPage(),
+      child: const TwoFactorAuthPage(
+        setupRoute: '/advertiser-2fa-setup',
+        securitySettingsRoute: '/advertiser-security-settings',
+        recoveryCodesRoute: '/advertiser-recovery-codes',
+      ),
       opaque: true,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return _slideTransition(
@@ -341,7 +343,9 @@ class Advertiser2FASetupRoute extends GoRouteData
   Page<void> buildPage(BuildContext context, GoRouterState state) {
     return CustomTransitionPage(
       key: state.pageKey,
-      child: const TwoFactorSetupPage(),
+      child: const TwoFactorSetupPage(
+        securitySettingsRoute: '/advertiser-security-settings',
+      ),
       opaque: true,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return _slideTransition(
@@ -461,7 +465,11 @@ class PromoterTwoFactorAuthRoute extends GoRouteData
   Page<void> buildPage(BuildContext context, GoRouterState state) {
     return CustomTransitionPage(
       key: state.pageKey,
-      child: const PromoterTwoFactorAuthPage(),
+      child: const TwoFactorAuthPage(
+        setupRoute: '/promoter-2fa-setup',
+        securitySettingsRoute: '/promoter-security-settings',
+        recoveryCodesRoute: '/promoter-recovery-codes',
+      ),
       opaque: true,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return _slideTransition(
@@ -485,7 +493,9 @@ class Promoter2FASetupRoute extends GoRouteData
   Page<void> buildPage(BuildContext context, GoRouterState state) {
     return CustomTransitionPage(
       key: state.pageKey,
-      child: const PromoterTwoFactorSetupPage(),
+      child: const TwoFactorSetupPage(
+        securitySettingsRoute: '/promoter-security-settings',
+      ),
       opaque: true,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return _slideTransition(

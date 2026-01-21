@@ -7,7 +7,16 @@ import 'package:promoruta/features/auth/domain/use_cases/two_factor_use_cases.da
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 
 class TwoFactorAuthPage extends ConsumerStatefulWidget {
-  const TwoFactorAuthPage({super.key});
+  final String setupRoute;
+  final String securitySettingsRoute;
+  final String recoveryCodesRoute;
+
+  const TwoFactorAuthPage({
+    super.key,
+    required this.setupRoute,
+    required this.securitySettingsRoute,
+    required this.recoveryCodesRoute,
+  });
 
   @override
   ConsumerState<TwoFactorAuthPage> createState() => _TwoFactorAuthPageState();
@@ -19,7 +28,7 @@ class _TwoFactorAuthPageState extends ConsumerState<TwoFactorAuthPage> {
   Future<void> _handleToggle2FA(bool enable) async {
     if (enable) {
       // Navigate to setup page to enable 2FA
-      context.push('/advertiser-2fa-setup');
+      context.push(widget.setupRoute);
     } else {
       // Show confirmation dialog and disable 2FA
       _showDisable2FADialog();
@@ -141,7 +150,7 @@ class _TwoFactorAuthPageState extends ConsumerState<TwoFactorAuthPage> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black87),
-          onPressed: () => context.canPop() ? context.pop() : context.go('/advertiser-security-settings'),
+          onPressed: () => context.canPop() ? context.pop() : context.go(widget.securitySettingsRoute),
         ),
         title: const SizedBox.shrink(),
       ),
@@ -208,7 +217,7 @@ class _TwoFactorAuthPageState extends ConsumerState<TwoFactorAuthPage> {
                     title: l10n.recoveryCodes,
                     subtitle: l10n.viewOrRegenerateRecoveryCodes,
                     onTap: () {
-                      context.push('/advertiser-recovery-codes');
+                      context.push(widget.recoveryCodesRoute);
                     },
                   ),
                 ],
@@ -242,7 +251,7 @@ class _TwoFactorAuthPageState extends ConsumerState<TwoFactorAuthPage> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton.icon(
-                        onPressed: () => context.push('/advertiser-2fa-setup'),
+                        onPressed: () => context.push(widget.setupRoute),
                         icon: const Icon(Icons.shield),
                         label: Text(l10n.enable2FA),
                         style: ElevatedButton.styleFrom(

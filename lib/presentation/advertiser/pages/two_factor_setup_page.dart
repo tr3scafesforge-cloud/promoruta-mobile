@@ -11,7 +11,12 @@ import 'package:toastification/toastification.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 
 class TwoFactorSetupPage extends ConsumerStatefulWidget {
-  const TwoFactorSetupPage({super.key});
+  final String securitySettingsRoute;
+
+  const TwoFactorSetupPage({
+    super.key,
+    required this.securitySettingsRoute,
+  });
 
   @override
   ConsumerState<TwoFactorSetupPage> createState() => _TwoFactorSetupPageState();
@@ -91,7 +96,7 @@ class _TwoFactorSetupPageState extends ConsumerState<TwoFactorSetupPage> {
 
         // Navigate back
         if (context.mounted) {
-          context.go('/advertiser-security-settings');
+          context.go(widget.securitySettingsRoute);
         }
       }
     } catch (e) {
