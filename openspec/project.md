@@ -97,7 +97,7 @@ Monthly or annual subscription plans that offer:
 ### Backend (Separate Repository)
 
 - **Framework:** Laravel (PHP)
-- **Database:** PostgreSQL or MySQL
+- **Database:** PostgreSQL
 - **Authentication:** JWT with refresh tokens, 2FA support
 
 ### Key Dependencies
