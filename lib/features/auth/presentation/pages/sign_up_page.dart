@@ -71,11 +71,11 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
         ),
       );
 
-      // Navigate to email verification page
+      // Navigate to email verification page (push to keep sign-up in stack for back navigation)
       VerifyEmailRoute(
         email: _emailController.text.trim().toLowerCase(),
         role: _selectedRole,
-      ).go(context);
+      ).push(context);
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -358,7 +358,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        LoginRoute(role: _selectedRole).go(context);
+                        Navigator.of(context).pop();
                       },
                       child: Text(
                         l10n.logIn,

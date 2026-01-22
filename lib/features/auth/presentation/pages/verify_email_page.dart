@@ -46,6 +46,10 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
     setState(() => _resendCooldown = 60);
     _cooldownTimer?.cancel();
     _cooldownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
       if (_resendCooldown > 0) {
         setState(() => _resendCooldown--);
       } else {

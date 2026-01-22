@@ -421,7 +421,7 @@ class _LoginState extends ConsumerState<Login> {
                             ),
                             TextButton(
                               onPressed: () {
-                                SignUpRoute(role: widget.role).go(context);
+                                SignUpRoute(role: widget.role).push(context);
                               },
                               style: TextButton.styleFrom(
                                 padding: EdgeInsets.zero,
