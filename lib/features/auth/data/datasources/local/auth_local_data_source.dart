@@ -25,7 +25,9 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
         username: Value(user.username),
         photoUrl: Value(user.photoUrl),
         refreshExpiresIn:  Value(user.refreshExpiresIn!),
-        refreshToken:  Value(user.refreshToken!)
+        refreshToken:  Value(user.refreshToken!),
+        twoFactorEnabled: Value(user.twoFactorEnabled),
+        twoFactorConfirmedAt: Value(user.twoFactorConfirmedAt),
       ),
     );
   }
@@ -49,6 +51,8 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       photoUrl: userRow.photoUrl,
       refreshExpiresIn: userRow.refreshExpiresIn,
       refreshToken: userRow.refreshToken,
+      twoFactorEnabled: userRow.twoFactorEnabled,
+      twoFactorConfirmedAt: userRow.twoFactorConfirmedAt,
     );
   }
 
