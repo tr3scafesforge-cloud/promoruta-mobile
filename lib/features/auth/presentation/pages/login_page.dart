@@ -5,6 +5,9 @@ import 'package:promoruta/app/routes/app_router.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
 
+/// Set to true when social login is implemented
+const bool _kSocialLoginEnabled = false;
+
 class Login extends ConsumerStatefulWidget {
   const Login({super.key, required this.role});
 
@@ -357,54 +360,53 @@ class _LoginState extends ConsumerState<Login> {
                         ),
                         const SizedBox(height: 24),
 
-                        // Divider
-                        Row(
-                          children: [
-                            Expanded(child: Divider(color: Theme.of(context).dividerColor)),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              child: Text(
-                                AppLocalizations.of(context).orContinueWith,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                        // Social Login Section
+                        if (_kSocialLoginEnabled) ...[
+                          Row(
+                            children: [
+                              Expanded(child: Divider(color: Theme.of(context).dividerColor)),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16),
+                                child: Text(
+                                  AppLocalizations.of(context).orContinueWith,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                ),
                               ),
-                            ),
-                            Expanded(child: Divider(color: Theme.of(context).dividerColor)),
-                          ],
-                        ),
-                        const SizedBox(height: 24),
-
-                        // Social Login Buttons
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            _SocialLoginButton(
-                              icon: Icons.g_mobiledata,
-                              onPressed: () {
-                                // TODO: Implement Google login
-                              },
-                            ),
-                            _SocialLoginButton(
-                              icon: Icons.facebook,
-                              onPressed: () {
-                                // TODO: Implement Facebook login
-                              },
-                            ),
-                            _SocialLoginButton(
-                              icon: Icons.apple,
-                              onPressed: () {
-                                // TODO: Implement Apple login
-                              },
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 32),
+                              Expanded(child: Divider(color: Theme.of(context).dividerColor)),
+                            ],
+                          ),
+                          const SizedBox(height: 24),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _SocialLoginButton(
+                                icon: Icons.g_mobiledata,
+                                onPressed: () {
+                                  // TODO: Implement Google login
+                                },
+                              ),
+                              _SocialLoginButton(
+                                icon: Icons.facebook,
+                                onPressed: () {
+                                  // TODO: Implement Facebook login
+                                },
+                              ),
+                              _SocialLoginButton(
+                                icon: Icons.apple,
+                                onPressed: () {
+                                  // TODO: Implement Apple login
+                                },
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 32),
+                        ],
 
                         // Register Link
                         Row(
