@@ -261,12 +261,14 @@ class _RecoveryCodesPageState extends ConsumerState<RecoveryCodesPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Tus códigos de recuperación:',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black87,
+                      Flexible(
+                        child: Text(
+                          'Tus códigos de recuperación:',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black87,
+                          ),
                         ),
                       ),
                       TextButton.icon(
