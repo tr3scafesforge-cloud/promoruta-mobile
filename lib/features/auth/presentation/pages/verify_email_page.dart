@@ -174,13 +174,13 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
                   width: 80,
                   height: 80,
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withValues(alpha: 0.1),
+                    color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     Icons.mark_email_unread_outlined,
                     size: 40,
-                    color: AppColors.primary,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
                 const SizedBox(height: 32),
@@ -274,7 +274,7 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
-                              color: AppColors.primary,
+                              color: Theme.of(context).colorScheme.primary,
                               width: 2,
                             ),
                           ),
@@ -293,12 +293,12 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
                         child: ElevatedButton(
                           onPressed: _isLoading ? null : _handleVerify,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primary,
-                            foregroundColor: Colors.white,
+                            backgroundColor: Theme.of(context).colorScheme.primary,
+                            foregroundColor: Theme.of(context).colorScheme.onPrimary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            elevation: 0,
+                            elevation: 2,
                           ),
                           child: _isLoading
                               ? const SizedBox(
@@ -357,7 +357,7 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
                                   ?.copyWith(
                                     color: _resendCooldown > 0
                                         ? AppColors.textSecondary
-                                        : AppColors.primary,
+                                        : Theme.of(context).colorScheme.primary,
                                     fontWeight: FontWeight.bold,
                                   ),
                             ),

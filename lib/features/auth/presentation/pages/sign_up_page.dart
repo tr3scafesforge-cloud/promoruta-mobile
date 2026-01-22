@@ -4,7 +4,6 @@ import 'package:promoruta/core/core.dart';
 import 'package:promoruta/app/routes/app_router.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
-import 'package:promoruta/features/auth/domain/use_cases/registration_use_cases.dart';
 
 class SignUpPage extends ConsumerStatefulWidget {
   const SignUpPage({super.key, this.role});
@@ -314,12 +313,12 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           child: ElevatedButton(
                             onPressed: _isLoading ? null : _handleSignUp,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.primary,
-                              foregroundColor: Colors.white,
+                              backgroundColor: Theme.of(context).colorScheme.primary,
+                              foregroundColor: Theme.of(context).colorScheme.onPrimary,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              elevation: 0,
+                              elevation: 2,
                             ),
                             child: _isLoading
                                 ? const SizedBox(
@@ -364,7 +363,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                       child: Text(
                         l10n.logIn,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: AppColors.primary,
+                              color: Theme.of(context).colorScheme.primary,
                               fontWeight: FontWeight.bold,
                             ),
                       ),
@@ -396,6 +395,8 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
     required IconData prefixIcon,
     Widget? suffixIcon,
   }) {
+    final outline = AppColors.primaryDark;
+
     return InputDecoration(
       filled: true,
       fillColor: Theme.of(context).colorScheme.surface,
@@ -405,19 +406,19 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
       suffixIcon: suffixIcon,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
+        borderSide: BorderSide(color: AppColors.surfaceDark),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
+        borderSide: BorderSide(color: AppColors.surfaceDark),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: AppColors.primary, width: 2),
+        borderSide: BorderSide(color: outline, width: 2),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: Theme.of(context).colorScheme.error),
+        borderSide: BorderSide(color: AppColors.error),
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
     );
@@ -431,6 +432,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
     required IconData icon,
   }) {
     final isSelected = _selectedRole == role;
+    final primaryColor = AppColors.primaryDark;
 
     return GestureDetector(
       onTap: () {
@@ -440,11 +442,11 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.primary.withValues(alpha: 0.1)
+              ? primaryColor.withValues(alpha: 0.1)
               : Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? AppColors.primary : Theme.of(context).colorScheme.outline,
+            color: isSelected ? primaryColor : Theme.of(context).colorScheme.outline,
             width: isSelected ? 2 : 1,
           ),
         ),
@@ -453,7 +455,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
             Icon(
               icon,
               size: 32,
-              color: isSelected ? AppColors.primary : AppColors.textSecondary,
+              color: isSelected ? primaryColor : AppColors.textSecondary,
             ),
             const SizedBox(height: 8),
             Text(
@@ -461,7 +463,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: isSelected
-                        ? AppColors.primary
+                        ? primaryColor
                         : Theme.of(context).colorScheme.onSurface,
                   ),
             ),
