@@ -1326,4 +1326,53 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get loginSuccessful => 'Login realizado com sucesso';
+
+  @override
+  String get recoveryCodesPageTitle => 'Códigos de recuperação';
+
+  @override
+  String get regenerateCodes => 'Regenerar códigos';
+
+  @override
+  String get regenerateCodesWarning =>
+      'Os códigos atuais deixarão de funcionar. Digite sua senha para continuar:';
+
+  @override
+  String get regenerate => 'Regenerar';
+
+  @override
+  String get codesRegenerated => 'Códigos regenerados';
+
+  @override
+  String get newRecoveryCodesReady =>
+      'Seus novos códigos de recuperação estão prontos';
+
+  @override
+  String errorRegeneratingCodes(String error) {
+    return 'Erro ao regenerar códigos: $error';
+  }
+
+  @override
+  String get allCodesCopied =>
+      'Todos os códigos foram copiados para a área de transferência';
+
+  @override
+  String get errorLoadingCodes => 'Erro ao carregar os códigos';
+
+  @override
+  String get recoveryCodesWarning =>
+      'Guarde estes códigos em um lugar seguro. Você precisará deles se perder o acesso ao seu dispositivo de autenticação.';
+
+  @override
+  String get yourRecoveryCodes => 'Seus códigos de recuperação:';
+
+  @override
+  String get copyAll => 'Copiar todos';
+
+  @override
+  String get howToUseCodes => 'Como usar os códigos';
+
+  @override
+  String get recoveryCodesInstructions =>
+      '• Cada código só pode ser usado uma vez\n• Use-os quando não tiver acesso ao seu aplicativo de autenticação\n• Baixe ou imprima estes códigos para guardá-los de forma segura\n• Você pode regenerar novos códigos a qualquer momento';
 }

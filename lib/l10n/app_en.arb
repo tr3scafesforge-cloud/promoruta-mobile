@@ -1753,5 +1753,66 @@
   "loginSuccessful": "Login successful",
   "@loginSuccessful": {
     "description": "Success message after login"
+  },
+  "recoveryCodesPageTitle": "Recovery codes",
+  "@recoveryCodesPageTitle": {
+    "description": "Title for recovery codes page"
+  },
+  "regenerateCodes": "Regenerate codes",
+  "@regenerateCodes": {
+    "description": "Button/dialog title for regenerating recovery codes"
+  },
+  "regenerateCodesWarning": "Current codes will stop working. Enter your password to continue:",
+  "@regenerateCodesWarning": {
+    "description": "Warning message when regenerating recovery codes"
+  },
+  "regenerate": "Regenerate",
+  "@regenerate": {
+    "description": "Button text to regenerate"
+  },
+  "codesRegenerated": "Codes regenerated",
+  "@codesRegenerated": {
+    "description": "Success message when codes are regenerated"
+  },
+  "newRecoveryCodesReady": "Your new recovery codes are ready",
+  "@newRecoveryCodesReady": {
+    "description": "Success description when codes are regenerated"
+  },
+  "errorRegeneratingCodes": "Error regenerating codes: {error}",
+  "@errorRegeneratingCodes": {
+    "description": "Error message when regenerating codes fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "allCodesCopied": "All codes have been copied to clipboard",
+  "@allCodesCopied": {
+    "description": "Success message when all codes are copied"
+  },
+  "errorLoadingCodes": "Error loading codes",
+  "@errorLoadingCodes": {
+    "description": "Error message when loading recovery codes fails"
+  },
+  "recoveryCodesWarning": "Save these codes in a safe place. You will need them if you lose access to your authentication device.",
+  "@recoveryCodesWarning": {
+    "description": "Warning about saving recovery codes safely"
+  },
+  "yourRecoveryCodes": "Your recovery codes:",
+  "@yourRecoveryCodes": {
+    "description": "Section title for recovery codes list"
+  },
+  "copyAll": "Copy all",
+  "@copyAll": {
+    "description": "Button text to copy all codes"
+  },
+  "howToUseCodes": "How to use the codes",
+  "@howToUseCodes": {
+    "description": "Title for instructions on using recovery codes"
+  },
+  "recoveryCodesInstructions": "• Each code can only be used once\n• Use them when you don't have access to your authentication app\n• Download or print these codes to store them safely\n• You can regenerate new codes at any time",
+  "@recoveryCodesInstructions": {
+    "description": "Instructions on how to use recovery codes"
   }
 }

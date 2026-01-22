@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:promoruta/features/auth/domain/use_cases/two_factor_use_cases.dart';
+import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/providers/providers.dart';
 import 'package:toastification/toastification.dart';
 
@@ -48,42 +49,40 @@ class _RecoveryCodesPageState extends ConsumerState<RecoveryCodesPage> {
   }
 
   Future<void> _regenerateCodes() async {
+    final l10n = AppLocalizations.of(context)!;
     final passwordController = TextEditingController();
 
     final result = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Regenerar códigos'),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.regenerateCodes),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              'Los códigos actuales dejarán de funcionar. '
-              'Ingresa tu contraseña para continuar:',
-            ),
+            Text(l10n.regenerateCodesWarning),
             const SizedBox(height: 16),
             TextField(
               controller: passwordController,
               obscureText: true,
-              decoration: const InputDecoration(
-                labelText: 'Contraseña',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: l10n.password,
+                border: const OutlineInputBorder(),
               ),
             ),
           ],
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancelar'),
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: Text(l10n.cancel),
           ),
           ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
+            onPressed: () => Navigator.pop(dialogContext, true),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF11A192),
               foregroundColor: Colors.white,
             ),
-            child: const Text('Regenerar'),
+            child: Text(l10n.regenerate),
           ),
         ],
       ),
@@ -95,6 +94,7 @@ class _RecoveryCodesPageState extends ConsumerState<RecoveryCodesPage> {
   }
 
   Future<void> _performRegeneration(String password) async {
+    final l10n = AppLocalizations.of(context)!;
     setState(() => _isRegenerating = true);
 
     try {
@@ -112,8 +112,8 @@ class _RecoveryCodesPageState extends ConsumerState<RecoveryCodesPage> {
         toastification.show(
           context: context,
           type: ToastificationType.success,
-          title: const Text('Códigos regenerados'),
-          description: const Text('Tus nuevos códigos de recuperación están listos'),
+          title: Text(l10n.codesRegenerated),
+          description: Text(l10n.newRecoveryCodesReady),
           autoCloseDuration: const Duration(seconds: 3),
         );
       }
@@ -124,8 +124,8 @@ class _RecoveryCodesPageState extends ConsumerState<RecoveryCodesPage> {
         toastification.show(
           context: context,
           type: ToastificationType.error,
-          title: const Text('Error'),
-          description: Text('Error al regenerar códigos: $e'),
+          title: Text(l10n.error),
+          description: Text(l10n.errorRegeneratingCodes(e.toString())),
           autoCloseDuration: const Duration(seconds: 3),
         );
       }
@@ -133,18 +133,20 @@ class _RecoveryCodesPageState extends ConsumerState<RecoveryCodesPage> {
   }
 
   void _copyAllCodes() {
+    final l10n = AppLocalizations.of(context)!;
     Clipboard.setData(ClipboardData(text: _recoveryCodes.join('\n')));
     toastification.show(
       context: context,
       type: ToastificationType.success,
-      title: const Text('Códigos copiados'),
-      description: const Text('Todos los códigos han sido copiados al portapapeles'),
+      title: Text(l10n.codesCopied),
+      description: Text(l10n.allCodesCopied),
       autoCloseDuration: const Duration(seconds: 2),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     const bg = Color(0xFFF3F5F7);
 
     return Scaffold(
@@ -156,16 +158,16 @@ class _RecoveryCodesPageState extends ConsumerState<RecoveryCodesPage> {
           icon: const Icon(Icons.arrow_back, color: Colors.black87),
           onPressed: () => context.pop(),
         ),
-        title: const Text(
-          'Códigos de recuperación',
-          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w700),
+        title: Text(
+          l10n.recoveryCodesPageTitle,
+          style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w700),
         ),
         actions: [
           if (!_isLoading && _recoveryCodes.isNotEmpty)
             IconButton(
               icon: const Icon(Icons.refresh, color: Colors.black87),
               onPressed: _isRegenerating ? null : _regenerateCodes,
-              tooltip: 'Regenerar códigos',
+              tooltip: l10n.regenerateCodes,
             ),
         ],
       ),
@@ -178,6 +180,7 @@ class _RecoveryCodesPageState extends ConsumerState<RecoveryCodesPage> {
   }
 
   Widget _buildErrorState() {
+    final l10n = AppLocalizations.of(context)!;
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24),
@@ -187,19 +190,19 @@ class _RecoveryCodesPageState extends ConsumerState<RecoveryCodesPage> {
             const Icon(Icons.error_outline, size: 64, color: Colors.red),
             const SizedBox(height: 16),
             Text(
-              'Error al cargar los códigos',
+              l10n.errorLoadingCodes,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 8),
             Text(
-              _error ?? 'Error desconocido',
+              _error ?? l10n.unknownError,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: _loadRecoveryCodes,
-              child: const Text('Reintentar'),
+              child: Text(l10n.retry),
             ),
           ],
         ),
@@ -208,6 +211,7 @@ class _RecoveryCodesPageState extends ConsumerState<RecoveryCodesPage> {
   }
 
   Widget _buildCodesContent() {
+    final l10n = AppLocalizations.of(context)!;
     return SafeArea(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
@@ -228,7 +232,7 @@ class _RecoveryCodesPageState extends ConsumerState<RecoveryCodesPage> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'Guarda estos códigos en un lugar seguro. Los necesitarás si pierdes acceso a tu dispositivo de autenticación.',
+                      l10n.recoveryCodesWarning,
                       style: TextStyle(
                         color: Colors.orange.shade900,
                         fontWeight: FontWeight.w600,
@@ -263,7 +267,7 @@ class _RecoveryCodesPageState extends ConsumerState<RecoveryCodesPage> {
                     children: [
                       Flexible(
                         child: Text(
-                          'Tus códigos de recuperación:',
+                          l10n.yourRecoveryCodes,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
@@ -274,7 +278,7 @@ class _RecoveryCodesPageState extends ConsumerState<RecoveryCodesPage> {
                       TextButton.icon(
                         onPressed: _copyAllCodes,
                         icon: const Icon(Icons.copy, size: 18),
-                        label: const Text('Copiar todos'),
+                        label: Text(l10n.copyAll),
                       ),
                     ],
                   ),
@@ -351,7 +355,7 @@ class _RecoveryCodesPageState extends ConsumerState<RecoveryCodesPage> {
                       Icon(Icons.info_outline, color: Colors.blue.shade700),
                       const SizedBox(width: 8),
                       Text(
-                        'Cómo usar los códigos',
+                        l10n.howToUseCodes,
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           color: Colors.blue.shade900,
@@ -361,10 +365,7 @@ class _RecoveryCodesPageState extends ConsumerState<RecoveryCodesPage> {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    '• Cada código solo puede usarse una vez\n'
-                    '• Úsalos cuando no tengas acceso a tu aplicación de autenticación\n'
-                    '• Descarga o imprime estos códigos para guardarlos de forma segura\n'
-                    '• Puedes regenerar nuevos códigos en cualquier momento',
+                    l10n.recoveryCodesInstructions,
                     style: TextStyle(color: Colors.blue.shade900),
                   ),
                 ],

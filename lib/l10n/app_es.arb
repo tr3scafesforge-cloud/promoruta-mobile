@@ -1640,5 +1640,66 @@
   "pleaseEnterRecoveryCode": "Por favor ingresa tu código de recuperación",
   "useRecoveryCode": "Usar código de recuperación",
   "useAuthenticatorCode": "Usar código de autenticador",
-  "loginSuccessful": "Inicio de sesión exitoso"
+  "loginSuccessful": "Inicio de sesión exitoso",
+  "recoveryCodesPageTitle": "Códigos de recuperación",
+  "@recoveryCodesPageTitle": {
+    "description": "Title for recovery codes page"
+  },
+  "regenerateCodes": "Regenerar códigos",
+  "@regenerateCodes": {
+    "description": "Button/dialog title for regenerating recovery codes"
+  },
+  "regenerateCodesWarning": "Los códigos actuales dejarán de funcionar. Ingresa tu contraseña para continuar:",
+  "@regenerateCodesWarning": {
+    "description": "Warning message when regenerating recovery codes"
+  },
+  "regenerate": "Regenerar",
+  "@regenerate": {
+    "description": "Button text to regenerate"
+  },
+  "codesRegenerated": "Códigos regenerados",
+  "@codesRegenerated": {
+    "description": "Success message when codes are regenerated"
+  },
+  "newRecoveryCodesReady": "Tus nuevos códigos de recuperación están listos",
+  "@newRecoveryCodesReady": {
+    "description": "Success description when codes are regenerated"
+  },
+  "errorRegeneratingCodes": "Error al regenerar códigos: {error}",
+  "@errorRegeneratingCodes": {
+    "description": "Error message when regenerating codes fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "allCodesCopied": "Todos los códigos han sido copiados al portapapeles",
+  "@allCodesCopied": {
+    "description": "Success message when all codes are copied"
+  },
+  "errorLoadingCodes": "Error al cargar los códigos",
+  "@errorLoadingCodes": {
+    "description": "Error message when loading recovery codes fails"
+  },
+  "recoveryCodesWarning": "Guarda estos códigos en un lugar seguro. Los necesitarás si pierdes acceso a tu dispositivo de autenticación.",
+  "@recoveryCodesWarning": {
+    "description": "Warning about saving recovery codes safely"
+  },
+  "yourRecoveryCodes": "Tus códigos de recuperación:",
+  "@yourRecoveryCodes": {
+    "description": "Section title for recovery codes list"
+  },
+  "copyAll": "Copiar todos",
+  "@copyAll": {
+    "description": "Button text to copy all codes"
+  },
+  "howToUseCodes": "Cómo usar los códigos",
+  "@howToUseCodes": {
+    "description": "Title for instructions on using recovery codes"
+  },
+  "recoveryCodesInstructions": "• Cada código solo puede usarse una vez\n• Úsalos cuando no tengas acceso a tu aplicación de autenticación\n• Descarga o imprime estos códigos para guardarlos de forma segura\n• Puedes regenerar nuevos códigos en cualquier momento",
+  "@recoveryCodesInstructions": {
+    "description": "Instructions on how to use recovery codes"
+  }
 }

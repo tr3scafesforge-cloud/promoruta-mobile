@@ -2499,6 +2499,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Login successful'**
   String get loginSuccessful;
+
+  /// Title for recovery codes page
+  ///
+  /// In en, this message translates to:
+  /// **'Recovery codes'**
+  String get recoveryCodesPageTitle;
+
+  /// Button/dialog title for regenerating recovery codes
+  ///
+  /// In en, this message translates to:
+  /// **'Regenerate codes'**
+  String get regenerateCodes;
+
+  /// Warning message when regenerating recovery codes
+  ///
+  /// In en, this message translates to:
+  /// **'Current codes will stop working. Enter your password to continue:'**
+  String get regenerateCodesWarning;
+
+  /// Button text to regenerate
+  ///
+  /// In en, this message translates to:
+  /// **'Regenerate'**
+  String get regenerate;
+
+  /// Success message when codes are regenerated
+  ///
+  /// In en, this message translates to:
+  /// **'Codes regenerated'**
+  String get codesRegenerated;
+
+  /// Success description when codes are regenerated
+  ///
+  /// In en, this message translates to:
+  /// **'Your new recovery codes are ready'**
+  String get newRecoveryCodesReady;
+
+  /// Error message when regenerating codes fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error regenerating codes: {error}'**
+  String errorRegeneratingCodes(String error);
+
+  /// Success message when all codes are copied
+  ///
+  /// In en, this message translates to:
+  /// **'All codes have been copied to clipboard'**
+  String get allCodesCopied;
+
+  /// Error message when loading recovery codes fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading codes'**
+  String get errorLoadingCodes;
+
+  /// Warning about saving recovery codes safely
+  ///
+  /// In en, this message translates to:
+  /// **'Save these codes in a safe place. You will need them if you lose access to your authentication device.'**
+  String get recoveryCodesWarning;
+
+  /// Section title for recovery codes list
+  ///
+  /// In en, this message translates to:
+  /// **'Your recovery codes:'**
+  String get yourRecoveryCodes;
+
+  /// Button text to copy all codes
+  ///
+  /// In en, this message translates to:
+  /// **'Copy all'**
+  String get copyAll;
+
+  /// Title for instructions on using recovery codes
+  ///
+  /// In en, this message translates to:
+  /// **'How to use the codes'**
+  String get howToUseCodes;
+
+  /// Instructions on how to use recovery codes
+  ///
+  /// In en, this message translates to:
+  /// **'• Each code can only be used once\n• Use them when you don\'t have access to your authentication app\n• Download or print these codes to store them safely\n• You can regenerate new codes at any time'**
+  String get recoveryCodesInstructions;
 }
 
 class _AppLocalizationsDelegate
