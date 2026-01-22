@@ -1621,5 +1621,12 @@
   "invalidVerificationCode": "Código de verificação inválido",
   "verificationCodeExpired": "O código expirou. Por favor solicite um novo",
   "registrationSuccessful": "Registro bem-sucedido! Por favor verifique seu email.",
-  "emailAlreadyRegistered": "Este email já está registrado"
+  "emailAlreadyRegistered": "Este email já está registrado",
+  "enter2FACodeDescription": "Digite o código de 6 dígitos do seu aplicativo autenticador para continuar.",
+  "enterRecoveryCodeDescription": "Digite um dos seus códigos de recuperação para continuar.",
+  "enterRecoveryCode": "Digite seu código de recuperação:",
+  "pleaseEnterRecoveryCode": "Por favor digite seu código de recuperação",
+  "useRecoveryCode": "Usar código de recuperação",
+  "useAuthenticatorCode": "Usar código do autenticador",
+  "loginSuccessful": "Login realizado com sucesso"
 }

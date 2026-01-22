@@ -4,6 +4,7 @@ import 'package:promoruta/core/core.dart';
 import 'package:promoruta/app/routes/app_router.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
+import 'package:promoruta/features/auth/domain/models/two_factor_models.dart';
 
 /// Set to true when social login is implemented
 const bool _kSocialLoginEnabled = false;
@@ -323,6 +324,14 @@ class _LoginState extends ConsumerState<Login> {
                                         );
                                       },
                                     );
+                                  }
+                                } on TwoFactorRequiredException catch (e) {
+                                  // 2FA is required - redirect to 2FA verification page
+                                  if (context.mounted) {
+                                    TwoFactorLoginRoute(
+                                      email: e.email,
+                                      password: _passwordController.text,
+                                    ).push(context);
                                   }
                                 } catch (e) {
                                   // Show error message

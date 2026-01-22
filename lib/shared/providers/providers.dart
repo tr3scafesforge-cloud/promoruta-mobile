@@ -36,6 +36,7 @@ import 'package:promoruta/features/auth/domain/repositories/auth_repository.dart
 import 'package:promoruta/features/auth/domain/use_cases/auth_use_cases.dart';
 import 'package:promoruta/features/auth/domain/use_cases/two_factor_use_cases.dart';
 import 'package:promoruta/features/auth/domain/use_cases/registration_use_cases.dart';
+import 'package:promoruta/features/auth/domain/models/two_factor_models.dart';
 import 'package:promoruta/app/routes/app_router.dart';
 import 'package:promoruta/shared/services/notification_service.dart';
 import 'package:promoruta/shared/services/overlay_notification_service.dart';
@@ -557,10 +558,18 @@ class AuthNotifier extends StateNotifier<AsyncValue<model.User?>> {
       if (mounted) {
         state = AsyncValue.data(user);
       }
+    } on TwoFactorRequiredException {
+      // Reset state to data(null) when 2FA is required
+      // so the UI can redirect to 2FA page
+      if (mounted) {
+        state = const AsyncValue.data(null);
+      }
+      rethrow;
     } catch (e, stack) {
       if (mounted) {
         state = AsyncValue.error(e, stack);
       }
+      rethrow;
     }
   }
 

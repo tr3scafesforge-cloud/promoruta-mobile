@@ -1633,5 +1633,12 @@
   "invalidVerificationCode": "Código de verificación inválido",
   "verificationCodeExpired": "El código ha expirado. Por favor solicita uno nuevo",
   "registrationSuccessful": "¡Registro exitoso! Por favor verifica tu correo.",
-  "emailAlreadyRegistered": "Este correo ya está registrado"
+  "emailAlreadyRegistered": "Este correo ya está registrado",
+  "enter2FACodeDescription": "Ingresa el código de 6 dígitos de tu aplicación de autenticación para continuar.",
+  "enterRecoveryCodeDescription": "Ingresa uno de tus códigos de recuperación para continuar.",
+  "enterRecoveryCode": "Ingresa tu código de recuperación:",
+  "pleaseEnterRecoveryCode": "Por favor ingresa tu código de recuperación",
+  "useRecoveryCode": "Usar código de recuperación",
+  "useAuthenticatorCode": "Usar código de autenticador",
+  "loginSuccessful": "Inicio de sesión exitoso"
 }

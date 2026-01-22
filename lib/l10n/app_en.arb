@@ -1725,5 +1725,33 @@
   "emailAlreadyRegistered": "This email is already registered",
   "@emailAlreadyRegistered": {
     "description": "Error message for duplicate email"
+  },
+  "enter2FACodeDescription": "Enter the 6-digit code from your authenticator app to continue signing in.",
+  "@enter2FACodeDescription": {
+    "description": "Description for entering 2FA code during login"
+  },
+  "enterRecoveryCodeDescription": "Enter one of your recovery codes to continue signing in.",
+  "@enterRecoveryCodeDescription": {
+    "description": "Description for entering recovery code during login"
+  },
+  "enterRecoveryCode": "Enter your recovery code:",
+  "@enterRecoveryCode": {
+    "description": "Label for recovery code input"
+  },
+  "pleaseEnterRecoveryCode": "Please enter your recovery code",
+  "@pleaseEnterRecoveryCode": {
+    "description": "Validation error for empty recovery code"
+  },
+  "useRecoveryCode": "Use a recovery code instead",
+  "@useRecoveryCode": {
+    "description": "Button text to switch to recovery code mode"
+  },
+  "useAuthenticatorCode": "Use authenticator code instead",
+  "@useAuthenticatorCode": {
+    "description": "Button text to switch to authenticator code mode"
+  },
+  "loginSuccessful": "Login successful",
+  "@loginSuccessful": {
+    "description": "Success message after login"
   }
 }

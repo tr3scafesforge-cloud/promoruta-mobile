@@ -1302,4 +1302,28 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get emailAlreadyRegistered => 'Este email já está registrado';
+
+  @override
+  String get enter2FACodeDescription =>
+      'Digite o código de 6 dígitos do seu aplicativo autenticador para continuar.';
+
+  @override
+  String get enterRecoveryCodeDescription =>
+      'Digite um dos seus códigos de recuperação para continuar.';
+
+  @override
+  String get enterRecoveryCode => 'Digite seu código de recuperação:';
+
+  @override
+  String get pleaseEnterRecoveryCode =>
+      'Por favor digite seu código de recuperação';
+
+  @override
+  String get useRecoveryCode => 'Usar código de recuperação';
+
+  @override
+  String get useAuthenticatorCode => 'Usar código do autenticador';
+
+  @override
+  String get loginSuccessful => 'Login realizado com sucesso';
 }

@@ -2457,6 +2457,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This email is already registered'**
   String get emailAlreadyRegistered;
+
+  /// Description for entering 2FA code during login
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit code from your authenticator app to continue signing in.'**
+  String get enter2FACodeDescription;
+
+  /// Description for entering recovery code during login
+  ///
+  /// In en, this message translates to:
+  /// **'Enter one of your recovery codes to continue signing in.'**
+  String get enterRecoveryCodeDescription;
+
+  /// Label for recovery code input
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your recovery code:'**
+  String get enterRecoveryCode;
+
+  /// Validation error for empty recovery code
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your recovery code'**
+  String get pleaseEnterRecoveryCode;
+
+  /// Button text to switch to recovery code mode
+  ///
+  /// In en, this message translates to:
+  /// **'Use a recovery code instead'**
+  String get useRecoveryCode;
+
+  /// Button text to switch to authenticator code mode
+  ///
+  /// In en, this message translates to:
+  /// **'Use authenticator code instead'**
+  String get useAuthenticatorCode;
+
+  /// Success message after login
+  ///
+  /// In en, this message translates to:
+  /// **'Login successful'**
+  String get loginSuccessful;
 }
 
 class _AppLocalizationsDelegate

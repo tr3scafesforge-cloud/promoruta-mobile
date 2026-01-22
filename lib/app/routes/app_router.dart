@@ -17,6 +17,7 @@ import 'package:promoruta/features/auth/presentation/pages/forgot_password_page.
 import 'package:promoruta/features/auth/presentation/pages/verify_reset_code_page.dart';
 import 'package:promoruta/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:promoruta/features/auth/presentation/pages/verify_email_page.dart';
+import 'package:promoruta/features/auth/presentation/pages/two_factor_login_page.dart';
 import 'package:promoruta/presentation/home_screen.dart';
 import 'package:promoruta/presentation/advertiser/pages/advertiser_security_settings_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/language_settings_page.dart';
@@ -148,6 +149,21 @@ class VerifyResetCodeRoute extends GoRouteData with _$VerifyResetCodeRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return VerifyResetCodePage(email: email);
+  }
+}
+
+@TypedGoRoute<TwoFactorLoginRoute>(
+  path: '/two-factor-login',
+)
+class TwoFactorLoginRoute extends GoRouteData with _$TwoFactorLoginRoute {
+  const TwoFactorLoginRoute({required this.email, required this.password});
+
+  final String email;
+  final String password;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return TwoFactorLoginPage(email: email, password: password);
   }
 }
 

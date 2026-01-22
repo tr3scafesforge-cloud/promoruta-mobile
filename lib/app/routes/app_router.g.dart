@@ -15,6 +15,7 @@ List<RouteBase> get $appRoutes => [
       $verifyEmailRoute,
       $forgotPasswordRoute,
       $verifyResetCodeRoute,
+      $twoFactorLoginRoute,
       $chooseRoleRoute,
       $permissionsRoute,
       $languageSettingsRoute,
@@ -291,6 +292,43 @@ mixin _$VerifyResetCodeRoute on GoRouteData {
         '/verify-reset-code',
         queryParams: {
           'email': _self.email,
+        },
+      );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $twoFactorLoginRoute => GoRouteData.$route(
+      path: '/two-factor-login',
+      factory: _$TwoFactorLoginRoute._fromState,
+    );
+
+mixin _$TwoFactorLoginRoute on GoRouteData {
+  static TwoFactorLoginRoute _fromState(GoRouterState state) =>
+      TwoFactorLoginRoute(
+        email: state.uri.queryParameters['email']!,
+        password: state.uri.queryParameters['password']!,
+      );
+
+  TwoFactorLoginRoute get _self => this as TwoFactorLoginRoute;
+
+  @override
+  String get location => GoRouteData.$location(
+        '/two-factor-login',
+        queryParams: {
+          'email': _self.email,
+          'password': _self.password,
         },
       );
 
