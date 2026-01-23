@@ -41,33 +41,48 @@ class _TwoFactorAuthPageState extends ConsumerState<TwoFactorAuthPage> {
 
     final result = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.disable2FA),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(l10n.enterPasswordToDisable2FA),
-            const SizedBox(height: 16),
-            TextField(
-              controller: passwordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: l10n.password,
-                border: const OutlineInputBorder(),
-              ),
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) {
+          final hasPassword = passwordController.text.isNotEmpty;
+
+          return AlertDialog(
+            title: Text(l10n.disable2FA),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(l10n.enterPasswordToDisable2FA),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: passwordController,
+                  obscureText: true,
+                  onChanged: (_) => setDialogState(() {}),
+                  decoration: InputDecoration(
+                    labelText: l10n.password,
+                    border: const OutlineInputBorder(),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(l10n.cancel),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: Text(l10n.disable),
-          ),
-        ],
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: Text(l10n.cancel),
+              ),
+              ElevatedButton(
+                onPressed: hasPassword
+                    ? () => Navigator.pop(context, true)
+                    : null,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: hasPassword ? Colors.red : Colors.grey.shade300,
+                  foregroundColor: hasPassword ? Colors.white : Colors.grey.shade500,
+                  disabledBackgroundColor: Colors.grey.shade300,
+                  disabledForegroundColor: Colors.grey.shade500,
+                ),
+                child: Text(l10n.disable),
+              ),
+            ],
+          );
+        },
       ),
     );
 
