@@ -50,6 +50,9 @@ import 'package:promoruta/shared/services/location_service.dart';
 import 'package:promoruta/features/promotor/route_execution/domain/models/campaign_execution_state.dart';
 import 'package:promoruta/features/promotor/route_execution/presentation/providers/campaign_execution_notifier.dart';
 import 'package:promoruta/features/promotor/route_execution/domain/use_cases/sync_gps_points_use_case.dart';
+import 'package:promoruta/features/advertiser/campaign_management/data/datasources/remote/advertiser_live_remote_data_source.dart';
+import 'package:promoruta/features/advertiser/campaign_management/data/repositories/advertiser_live_repository_impl.dart';
+import 'package:promoruta/features/advertiser/campaign_management/domain/repositories/advertiser_live_repository.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:logger/logger.dart';
 
@@ -331,6 +334,19 @@ final mediaRepositoryProvider = Provider<MediaRepository>((ref) {
   return MediaRepositoryImpl(
     remoteDataSource: remoteDataSource,
   );
+});
+
+// Advertiser Live Repository
+final advertiserLiveRemoteDataSourceProvider =
+    Provider<AdvertiserLiveRemoteDataSource>((ref) {
+  final dio = ref.watch(dioProvider);
+  return AdvertiserLiveRemoteDataSourceImpl(dio: dio);
+});
+
+final advertiserLiveRepositoryProvider =
+    Provider<AdvertiserLiveRepository>((ref) {
+  final remoteDataSource = ref.watch(advertiserLiveRemoteDataSourceProvider);
+  return AdvertiserLiveRepositoryImpl(remoteDataSource: remoteDataSource);
 });
 
 // Use Cases

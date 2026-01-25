@@ -8,7 +8,7 @@ import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/widgets/bottom_navigation_item.dart';
 import '../widgets/advertiser_app_bar.dart';
 import 'package:promoruta/features/advertiser/campaign_management/presentation/pages/advertiser_campaigns_page.dart';
-import 'package:promoruta/presentation/advertiser/pages/advertiser_live_page.dart';
+import 'package:promoruta/features/advertiser/campaign_management/presentation/pages/advertiser_live_map_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/advertiser_history_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/advertiser_profile_page.dart';
 import 'package:promoruta/shared/providers/providers.dart';
@@ -143,7 +143,7 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
       case 1:
         return const AdvertiserCampaignsPage();
       case 2:
-        return const AdvertiserLivePage();
+        return const AdvertiserLiveMapPage();
       case 3:
         return const AdvertiserHistoryPage();
       case 4:
@@ -196,8 +196,11 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
             ),
           ],
         );
-      case 2: // Live
-        return AdvertiserAppBar(title: l10n.live);
+      case 2: // Live - uses custom header in the page itself
+        return const PreferredSize(
+          preferredSize: Size.zero,
+          child: SizedBox.shrink(),
+        );
       case 3: // History
         return AdvertiserAppBar(title: l10n.history);
       case 4: // Profile

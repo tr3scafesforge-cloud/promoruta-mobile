@@ -1797,5 +1797,17 @@
   "campaignAudio": "Áudio da Campanha",
   "@campaignAudio": {
     "description": "Label for campaign audio section"
+  },
+  "waitingForPromoter": "Aguardando promotor",
+  "@waitingForPromoter": {
+    "description": "Message when campaign has no assigned promoter yet"
+  },
+  "markAllAsRead": "Marcar tudo como lido",
+  "@markAllAsRead": {
+    "description": "Button text to mark all alerts as read"
+  },
+  "followMode": "Modo seguir",
+  "@followMode": {
+    "description": "Label for follow mode toggle"
   }
 }

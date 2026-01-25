@@ -2739,6 +2739,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to load audio'**
   String get audioLoadFailed;
+
+  /// Message when campaign has no assigned promoter yet
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for promoter'**
+  String get waitingForPromoter;
+
+  /// Button text to mark all alerts as read
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all as read'**
+  String get markAllAsRead;
+
+  /// Label for follow mode toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Follow mode'**
+  String get followMode;
 }
 
 class _AppLocalizationsDelegate

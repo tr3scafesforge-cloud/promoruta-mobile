@@ -1456,4 +1456,13 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get audioLoadFailed => 'Falha ao carregar áudio';
+
+  @override
+  String get waitingForPromoter => 'Aguardando promotor';
+
+  @override
+  String get markAllAsRead => 'Marcar tudo como lido';
+
+  @override
+  String get followMode => 'Modo seguir';
 }

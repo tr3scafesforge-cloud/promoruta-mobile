@@ -1449,4 +1449,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get audioLoadFailed => 'Failed to load audio';
+
+  @override
+  String get waitingForPromoter => 'Waiting for promoter';
+
+  @override
+  String get markAllAsRead => 'Mark all as read';
+
+  @override
+  String get followMode => 'Follow mode';
 }
