@@ -157,10 +157,10 @@ Implementation tasks for user registration and email verification features.
 ---
 
 ### Task 6.2: Unit tests (optional, recommended)
-**Files:** `test/features/auth/...`
-- [ ] Test `RegisterUseCase` with mock repository
-- [ ] Test `VerifyEmailUseCase` with mock repository
-- [ ] Test form validation logic
+**Files:** `test/features/auth/domain/use_cases/registration_use_cases_test.dart`
+- [x] Test `RegisterUseCase` with mock repository
+- [x] Test `VerifyEmailUseCase` with mock repository
+- [x] Test form validation logic
 
 ---
 
@@ -186,6 +186,6 @@ Phase 4 (Localization) ←────────→ Phase 5 (Presentation)
 - **Routing:** 1 task ✅
 - **Localization:** 1 task ✅
 - **Presentation:** 3 tasks ✅
-- **Testing:** 2 tasks (pending manual testing)
+- **Testing:** 2 tasks (unit tests ✅, manual testing pending)
 
-**Total:** 12 tasks (10 completed, 2 pending testing)
+**Total:** 12 tasks (11 completed, 1 pending manual testing)
