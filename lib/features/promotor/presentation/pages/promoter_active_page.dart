@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/core/constants/colors.dart';
+import 'package:promoruta/core/models/campaign.dart' as model;
 import 'package:promoruta/features/promotor/presentation/pages/active_campaign_map_view.dart';
 import 'package:promoruta/features/promotor/presentation/pages/completed_campaign_details_page.dart';
+import 'package:promoruta/shared/providers/providers.dart';
 
-class PromoterActivePage extends StatefulWidget {
+class PromoterActivePage extends ConsumerStatefulWidget {
   const PromoterActivePage({super.key});
 
   @override
-  State<PromoterActivePage> createState() => _PromoterActivePageState();
+  ConsumerState<PromoterActivePage> createState() => _PromoterActivePageState();
 }
 
-class _PromoterActivePageState extends State<PromoterActivePage> {
+class _PromoterActivePageState extends ConsumerState<PromoterActivePage> {
   int _selectedSegment = 0;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final kpiStatsAsync = ref.watch(promoterKpiStatsProvider);
+    final activeCampaignsAsync = ref.watch(promoterActiveCampaignsProvider);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -29,22 +35,34 @@ class _PromoterActivePageState extends State<PromoterActivePage> {
               // Stats Cards
               _StatCard(
                 title: l10n.activeJobsCount,
-                value: '2',
+                value: activeCampaignsAsync.when(
+                  loading: () => '-',
+                  error: (_, __) => '-',
+                  data: (campaigns) => campaigns.length.toString(),
+                ),
                 icon: Icons.access_time,
                 iconColor: AppColors.secondary,
               ),
               const SizedBox(height: 12),
               _StatCard(
-                title: l10n.earningsToday,
-                value: '\$129.99',
+                title: l10n.earningsThisWeek,
+                value: kpiStatsAsync.when(
+                  loading: () => '-',
+                  error: (_, __) => '-',
+                  data: (stats) => '\$${stats.thisWeekEarnings.toStringAsFixed(2)}',
+                ),
                 icon: Icons.attach_money,
                 iconColor: AppColors.green,
               ),
               const SizedBox(height: 12),
               _StatCard(
-                title: l10n.hoursWorked,
-                value: '5.2',
-                icon: Icons.people_outline,
+                title: l10n.distanceTraveled,
+                value: kpiStatsAsync.when(
+                  loading: () => '-',
+                  error: (_, __) => '-',
+                  data: (stats) => '${stats.totalDistanceKm.toStringAsFixed(1)} km',
+                ),
+                icon: Icons.route_outlined,
                 iconColor: AppColors.secondary,
               ),
               const SizedBox(height: 24),
@@ -200,33 +218,91 @@ class _SegmentButton extends StatelessWidget {
   }
 }
 
-class _InProgressView extends StatelessWidget {
+class _InProgressView extends ConsumerWidget {
   final AppLocalizations l10n;
 
   const _InProgressView({required this.l10n});
 
   @override
-  Widget build(BuildContext context) {
-    final activeCampaigns = [
-      ActiveCampaign(
-        name: 'Promoción de Apertura de tienda',
-        location: 'Montevideo shopping',
-        payment: 250.00,
-        startTime: '9:00 AM',
-        endTime: '01:00 AM',
-        hours: 4,
-        progress: 0.65,
-        timeRemaining: '24m',
-      ),
-    ];
+  Widget build(BuildContext context, WidgetRef ref) {
+    final campaignsAsync = ref.watch(promoterActiveCampaignsProvider);
+    final executionState = ref.watch(campaignExecutionProvider);
 
-    return Column(
-      children: activeCampaigns
-          .map((campaign) => Padding(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: _ActiveCampaignCard(campaign: campaign, l10n: l10n),
-              ))
-          .toList(),
+    return campaignsAsync.when(
+      loading: () => const Center(
+        child: Padding(
+          padding: EdgeInsets.all(32),
+          child: CircularProgressIndicator(),
+        ),
+      ),
+      error: (error, _) => Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.error_outline,
+                size: 48,
+                color: AppColors.textSecondary,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                l10n.errorLoadingCampaigns,
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              TextButton(
+                onPressed: () => ref.refresh(promoterActiveCampaignsProvider),
+                child: Text(l10n.retry),
+              ),
+            ],
+          ),
+        ),
+      ),
+      data: (campaigns) {
+        if (campaigns.isEmpty) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(32),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.campaign_outlined,
+                    size: 48,
+                    color: AppColors.textSecondary,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    l10n.noActiveCampaigns,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
+        return Column(
+          children: campaigns
+              .map((campaign) => Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: _ActiveCampaignCard(
+                      campaign: campaign,
+                      l10n: l10n,
+                      isExecuting: executionState.campaignId == campaign.id,
+                    ),
+                  ))
+              .toList(),
+        );
+      },
     );
   }
 }
@@ -277,17 +353,47 @@ class _CompletedTodayView extends StatelessWidget {
 }
 
 class _ActiveCampaignCard extends StatelessWidget {
-  final ActiveCampaign campaign;
+  final model.Campaign campaign;
   final AppLocalizations l10n;
+  final bool isExecuting;
 
   const _ActiveCampaignCard({
     required this.campaign,
     required this.l10n,
+    this.isExecuting = false,
   });
+
+  String _formatTime(DateTime dateTime) {
+    return DateFormat.jm().format(dateTime);
+  }
+
+  double _calculateProgress() {
+    final now = DateTime.now();
+    if (now.isBefore(campaign.startTime)) return 0.0;
+    if (now.isAfter(campaign.endTime)) return 1.0;
+
+    final totalDuration = campaign.endTime.difference(campaign.startTime).inMinutes;
+    final elapsed = now.difference(campaign.startTime).inMinutes;
+    return (elapsed / totalDuration).clamp(0.0, 1.0);
+  }
+
+  String _calculateTimeRemaining() {
+    final now = DateTime.now();
+    if (now.isAfter(campaign.endTime)) return '0m';
+
+    final remaining = campaign.endTime.difference(now);
+    if (remaining.inHours > 0) {
+      return '${remaining.inHours}h ${remaining.inMinutes % 60}m';
+    }
+    return '${remaining.inMinutes}m';
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final payment = campaign.finalPrice ?? campaign.suggestedPrice;
+    final progress = _calculateProgress();
+    final timeRemaining = _calculateTimeRemaining();
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -295,8 +401,8 @@ class _ActiveCampaignCard extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppColors.grayLightStroke,
-          width: 1,
+          color: isExecuting ? AppColors.secondary : AppColors.grayLightStroke,
+          width: isExecuting ? 2 : 1,
         ),
       ),
       child: Column(
@@ -308,7 +414,7 @@ class _ActiveCampaignCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  campaign.name,
+                  campaign.title,
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                     color: AppColors.textPrimary,
@@ -318,13 +424,15 @@ class _ActiveCampaignCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: AppColors.green.withValues(alpha: 0.1),
+                  color: isExecuting
+                      ? AppColors.secondary.withValues(alpha: 0.1)
+                      : AppColors.green.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Text(
-                  l10n.inProgressStatus,
+                  isExecuting ? l10n.campaignInProgress : l10n.inProgressStatus,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: AppColors.green,
+                    color: isExecuting ? AppColors.secondary : AppColors.green,
                     fontWeight: FontWeight.w600,
                     fontSize: 12,
                   ),
@@ -343,10 +451,13 @@ class _ActiveCampaignCard extends StatelessWidget {
                 color: AppColors.textSecondary,
               ),
               const SizedBox(width: 4),
-              Text(
-                campaign.location,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textSecondary,
+              Expanded(
+                child: Text(
+                  campaign.zone,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               const SizedBox(width: 16),
@@ -356,7 +467,7 @@ class _ActiveCampaignCard extends StatelessWidget {
                 color: AppColors.textSecondary,
               ),
               Text(
-                campaign.payment.toStringAsFixed(2),
+                payment.toStringAsFixed(2),
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: AppColors.textSecondary,
                 ),
@@ -375,20 +486,20 @@ class _ActiveCampaignCard extends StatelessWidget {
               ),
               const SizedBox(width: 4),
               Text(
-                '${campaign.startTime} - ${campaign.endTime}',
+                '${_formatTime(campaign.startTime)} - ${_formatTime(campaign.endTime)}',
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: AppColors.textSecondary,
                 ),
               ),
               const SizedBox(width: 16),
               Icon(
-                Icons.people_outline,
+                Icons.route_outlined,
                 size: 16,
                 color: AppColors.textSecondary,
               ),
               const SizedBox(width: 4),
               Text(
-                l10n.hoursCount(campaign.hours.toString()),
+                '${campaign.distance.toStringAsFixed(1)} km',
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: AppColors.textSecondary,
                 ),
@@ -409,7 +520,7 @@ class _ActiveCampaignCard extends StatelessWidget {
                 ),
               ),
               Text(
-                l10n.timeRemaining(campaign.timeRemaining),
+                l10n.timeRemaining(timeRemaining),
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: AppColors.textSecondary,
                 ),
@@ -422,7 +533,7 @@ class _ActiveCampaignCard extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(4),
             child: LinearProgressIndicator(
-              value: campaign.progress,
+              value: progress,
               backgroundColor: AppColors.grayLightStroke,
               valueColor: AlwaysStoppedAnimation<Color>(AppColors.secondary),
               minHeight: 8,
@@ -430,8 +541,7 @@ class _ActiveCampaignCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            l10n.percentageCompleted(
-                (campaign.progress * 100).toStringAsFixed(0)),
+            l10n.percentageCompleted((progress * 100).toStringAsFixed(0)),
             style: theme.textTheme.bodySmall?.copyWith(
               color: AppColors.textSecondary,
             ),
@@ -444,15 +554,28 @@ class _ActiveCampaignCard extends StatelessWidget {
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('${l10n.pausePromotion} (WIP)')),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ActiveCampaignMapView(
+                          campaignId: campaign.id ?? '',
+                          campaignName: campaign.title,
+                          location: campaign.zone,
+                          audioUrl: campaign.audioUrl,
+                        ),
+                      ),
                     );
                   },
-                  icon: const Icon(Icons.pause_circle_outline, size: 20),
-                  label: Text(l10n.pausePromotion),
+                  icon: Icon(
+                    isExecuting ? Icons.pause_circle_outline : Icons.play_circle_outline,
+                    size: 20,
+                  ),
+                  label: Text(isExecuting ? l10n.viewExecution : l10n.startPromotion),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: AppColors.textPrimary,
-                    side: BorderSide(color: AppColors.grayLightStroke),
+                    foregroundColor: isExecuting ? AppColors.secondary : AppColors.textPrimary,
+                    side: BorderSide(
+                      color: isExecuting ? AppColors.secondary : AppColors.grayLightStroke,
+                    ),
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -467,8 +590,10 @@ class _ActiveCampaignCard extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => ActiveCampaignMapView(
-                        campaignName: campaign.name,
-                        location: campaign.location,
+                        campaignId: campaign.id ?? '',
+                        campaignName: campaign.title,
+                        location: campaign.zone,
+                        audioUrl: campaign.audioUrl,
                       ),
                     ),
                   );
@@ -646,27 +771,6 @@ class _CompletedCampaignCard extends StatelessWidget {
   }
 }
 
-class ActiveCampaign {
-  final String name;
-  final String location;
-  final double payment;
-  final String startTime;
-  final String endTime;
-  final int hours;
-  final double progress;
-  final String timeRemaining;
-
-  ActiveCampaign({
-    required this.name,
-    required this.location,
-    required this.payment,
-    required this.startTime,
-    required this.endTime,
-    required this.hours,
-    required this.progress,
-    required this.timeRemaining,
-  });
-}
 
 class CompletedCampaign {
   final String name;

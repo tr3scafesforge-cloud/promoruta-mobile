@@ -1390,6 +1390,24 @@ abstract class AppLocalizations {
   /// **'No active campaigns'**
   String get noActiveCampaigns;
 
+  /// Error message when campaigns fail to load
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading campaigns'**
+  String get errorLoadingCampaigns;
+
+  /// Button to view the current campaign execution
+  ///
+  /// In en, this message translates to:
+  /// **'View execution'**
+  String get viewExecution;
+
+  /// Button to start a promotion campaign
+  ///
+  /// In en, this message translates to:
+  /// **'Start promotion'**
+  String get startPromotion;
+
   /// Button text to preview a campaign
   ///
   /// In en, this message translates to:
@@ -1906,10 +1924,10 @@ abstract class AppLocalizations {
   /// **'Navigation Route'**
   String get navigationRoute;
 
-  /// Label for campaign audio
+  /// Label for campaign audio section
   ///
   /// In en, this message translates to:
-  /// **'Campaign audio'**
+  /// **'Campaign Audio'**
   String get campaignAudio;
 
   /// Label for next direction
@@ -2583,6 +2601,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'• Each code can only be used once\n• Use them when you don\'t have access to your authentication app\n• Download or print these codes to store them safely\n• You can regenerate new codes at any time'**
   String get recoveryCodesInstructions;
+
+  /// Confirmation message when starting campaign tracking
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to start tracking your location for this campaign?'**
+  String get startCampaignConfirmation;
+
+  /// Title for complete campaign dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Campaign'**
+  String get completeCampaign;
+
+  /// Confirmation message when completing campaign
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to complete this campaign?'**
+  String get completeCampaignConfirmation;
+
+  /// Label for elapsed time
+  ///
+  /// In en, this message translates to:
+  /// **'Elapsed time'**
+  String get elapsedTime;
+
+  /// Label for earnings this week in promoter dashboard
+  ///
+  /// In en, this message translates to:
+  /// **'Earnings this week'**
+  String get earningsThisWeek;
+
+  /// Label for distance traveled
+  ///
+  /// In en, this message translates to:
+  /// **'Distance traveled'**
+  String get distanceTraveled;
+
+  /// Label for GPS points collected count
+  ///
+  /// In en, this message translates to:
+  /// **'GPS points collected'**
+  String get gpsPointsCollected;
+
+  /// Button text to complete action
+  ///
+  /// In en, this message translates to:
+  /// **'Complete'**
+  String get complete;
+
+  /// Label for distance
+  ///
+  /// In en, this message translates to:
+  /// **'Distance'**
+  String get distance;
+
+  /// Label for GPS points
+  ///
+  /// In en, this message translates to:
+  /// **'GPS Points'**
+  String get gpsPoints;
+
+  /// Button text for done action
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get done;
+
+  /// Status label for not started
+  ///
+  /// In en, this message translates to:
+  /// **'Not started'**
+  String get notStarted;
+
+  /// Status label for starting
+  ///
+  /// In en, this message translates to:
+  /// **'Starting...'**
+  String get starting;
+
+  /// Status label for active tracking
+  ///
+  /// In en, this message translates to:
+  /// **'Tracking'**
+  String get tracking;
+
+  /// Status label for paused
+  ///
+  /// In en, this message translates to:
+  /// **'Paused'**
+  String get paused;
+
+  /// Status label for completing
+  ///
+  /// In en, this message translates to:
+  /// **'Completing...'**
+  String get completing;
+
+  /// Button text to start location tracking
+  ///
+  /// In en, this message translates to:
+  /// **'Start Tracking'**
+  String get startTracking;
+
+  /// Button text to pause
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get pause;
+
+  /// Button text to resume
+  ///
+  /// In en, this message translates to:
+  /// **'Resume'**
+  String get resume;
+
+  /// Message when a campaign is already in progress
+  ///
+  /// In en, this message translates to:
+  /// **'Campaign in progress'**
+  String get campaignInProgress;
+
+  /// Message explaining that the active campaign must be completed first
+  ///
+  /// In en, this message translates to:
+  /// **'You must complete or cancel the active campaign before starting a new one.'**
+  String get mustCompleteActiveCampaign;
+
+  /// Message shown while audio is loading
+  ///
+  /// In en, this message translates to:
+  /// **'Loading audio...'**
+  String get loadingAudio;
+
+  /// Error message when audio fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load audio'**
+  String get audioLoadFailed;
 }
 
 class _AppLocalizationsDelegate

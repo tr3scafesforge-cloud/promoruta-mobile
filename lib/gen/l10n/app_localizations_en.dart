@@ -709,6 +709,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noActiveCampaigns => 'No active campaigns';
 
   @override
+  String get errorLoadingCampaigns => 'Error loading campaigns';
+
+  @override
+  String get viewExecution => 'View execution';
+
+  @override
+  String get startPromotion => 'Start promotion';
+
+  @override
   String get preview => 'Preview';
 
   @override
@@ -994,7 +1003,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navigationRoute => 'Navigation Route';
 
   @override
-  String get campaignAudio => 'Campaign audio';
+  String get campaignAudio => 'Campaign Audio';
 
   @override
   String get nextDirection => 'Next direction';
@@ -1368,4 +1377,76 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get recoveryCodesInstructions =>
       '• Each code can only be used once\n• Use them when you don\'t have access to your authentication app\n• Download or print these codes to store them safely\n• You can regenerate new codes at any time';
+
+  @override
+  String get startCampaignConfirmation =>
+      'Are you sure you want to start tracking your location for this campaign?';
+
+  @override
+  String get completeCampaign => 'Complete Campaign';
+
+  @override
+  String get completeCampaignConfirmation =>
+      'Are you sure you want to complete this campaign?';
+
+  @override
+  String get elapsedTime => 'Elapsed time';
+
+  @override
+  String get earningsThisWeek => 'Earnings this week';
+
+  @override
+  String get distanceTraveled => 'Distance traveled';
+
+  @override
+  String get gpsPointsCollected => 'GPS points collected';
+
+  @override
+  String get complete => 'Complete';
+
+  @override
+  String get distance => 'Distance';
+
+  @override
+  String get gpsPoints => 'GPS Points';
+
+  @override
+  String get done => 'Done';
+
+  @override
+  String get notStarted => 'Not started';
+
+  @override
+  String get starting => 'Starting...';
+
+  @override
+  String get tracking => 'Tracking';
+
+  @override
+  String get paused => 'Paused';
+
+  @override
+  String get completing => 'Completing...';
+
+  @override
+  String get startTracking => 'Start Tracking';
+
+  @override
+  String get pause => 'Pause';
+
+  @override
+  String get resume => 'Resume';
+
+  @override
+  String get campaignInProgress => 'Campaign in progress';
+
+  @override
+  String get mustCompleteActiveCampaign =>
+      'You must complete or cancel the active campaign before starting a new one.';
+
+  @override
+  String get loadingAudio => 'Loading audio...';
+
+  @override
+  String get audioLoadFailed => 'Failed to load audio';
 }

@@ -896,6 +896,18 @@
   "@noActiveCampaigns": {
     "description": "Message shown when there are no active campaigns"
   },
+  "errorLoadingCampaigns": "Error loading campaigns",
+  "@errorLoadingCampaigns": {
+    "description": "Error message when campaigns fail to load"
+  },
+  "viewExecution": "View execution",
+  "@viewExecution": {
+    "description": "Button to view the current campaign execution"
+  },
+  "startPromotion": "Start promotion",
+  "@startPromotion": {
+    "description": "Button to start a promotion campaign"
+  },
   "preview": "Preview",
   "@preview": {
     "description": "Button text to preview a campaign"
@@ -1814,5 +1826,101 @@
   "recoveryCodesInstructions": "• Each code can only be used once\n• Use them when you don't have access to your authentication app\n• Download or print these codes to store them safely\n• You can regenerate new codes at any time",
   "@recoveryCodesInstructions": {
     "description": "Instructions on how to use recovery codes"
+  },
+  "startCampaignConfirmation": "Are you sure you want to start tracking your location for this campaign?",
+  "@startCampaignConfirmation": {
+    "description": "Confirmation message when starting campaign tracking"
+  },
+  "completeCampaign": "Complete Campaign",
+  "@completeCampaign": {
+    "description": "Title for complete campaign dialog"
+  },
+  "completeCampaignConfirmation": "Are you sure you want to complete this campaign?",
+  "@completeCampaignConfirmation": {
+    "description": "Confirmation message when completing campaign"
+  },
+  "elapsedTime": "Elapsed time",
+  "@elapsedTime": {
+    "description": "Label for elapsed time"
+  },
+  "earningsThisWeek": "Earnings this week",
+  "@earningsThisWeek": {
+    "description": "Label for earnings this week in promoter dashboard"
+  },
+  "distanceTraveled": "Distance traveled",
+  "@distanceTraveled": {
+    "description": "Label for distance traveled"
+  },
+  "gpsPointsCollected": "GPS points collected",
+  "@gpsPointsCollected": {
+    "description": "Label for GPS points collected count"
+  },
+  "complete": "Complete",
+  "@complete": {
+    "description": "Button text to complete action"
+  },
+  "distance": "Distance",
+  "@distance": {
+    "description": "Label for distance"
+  },
+  "gpsPoints": "GPS Points",
+  "@gpsPoints": {
+    "description": "Label for GPS points"
+  },
+  "done": "Done",
+  "@done": {
+    "description": "Button text for done action"
+  },
+  "notStarted": "Not started",
+  "@notStarted": {
+    "description": "Status label for not started"
+  },
+  "starting": "Starting...",
+  "@starting": {
+    "description": "Status label for starting"
+  },
+  "tracking": "Tracking",
+  "@tracking": {
+    "description": "Status label for active tracking"
+  },
+  "paused": "Paused",
+  "@paused": {
+    "description": "Status label for paused"
+  },
+  "completing": "Completing...",
+  "@completing": {
+    "description": "Status label for completing"
+  },
+  "startTracking": "Start Tracking",
+  "@startTracking": {
+    "description": "Button text to start location tracking"
+  },
+  "pause": "Pause",
+  "@pause": {
+    "description": "Button text to pause"
+  },
+  "resume": "Resume",
+  "@resume": {
+    "description": "Button text to resume"
+  },
+  "campaignInProgress": "Campaign in progress",
+  "@campaignInProgress": {
+    "description": "Message when a campaign is already in progress"
+  },
+  "mustCompleteActiveCampaign": "You must complete or cancel the active campaign before starting a new one.",
+  "@mustCompleteActiveCampaign": {
+    "description": "Message explaining that the active campaign must be completed first"
+  },
+  "loadingAudio": "Loading audio...",
+  "@loadingAudio": {
+    "description": "Message shown while audio is loading"
+  },
+  "audioLoadFailed": "Failed to load audio",
+  "@audioLoadFailed": {
+    "description": "Error message when audio fails to load"
+  },
+  "campaignAudio": "Campaign Audio",
+  "@campaignAudio": {
+    "description": "Label for campaign audio section"
   }
 }

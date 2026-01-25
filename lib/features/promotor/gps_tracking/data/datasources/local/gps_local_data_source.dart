@@ -107,7 +107,7 @@ class GpsLocalDataSourceImpl implements GpsLocalDataSource {
 
     return pointRows.map((row) => model.GpsPoint(
       id: row.id,
-      routeId: row.routeId,
+      routeId: row.routeId ?? '',
       latitude: row.latitude,
       longitude: row.longitude,
       timestamp: row.timestamp,
@@ -153,5 +153,119 @@ class GpsLocalDataSourceImpl implements GpsLocalDataSource {
     }
 
     return routes;
+  }
+
+  /// Save a GPS point for campaign execution tracking
+  Future<void> saveCampaignGpsPoint({
+    required String id,
+    required String campaignId,
+    required double latitude,
+    required double longitude,
+    required DateTime timestamp,
+    double? speed,
+    double? accuracy,
+  }) async {
+    await db.into(db.gpsPoints).insertOnConflictUpdate(
+      GpsPointsCompanion(
+        id: Value(id),
+        campaignId: Value(campaignId),
+        routeId: const Value.absent(),
+        latitude: Value(latitude),
+        longitude: Value(longitude),
+        timestamp: Value(timestamp),
+        speed: Value(speed),
+        accuracy: Value(accuracy),
+        syncedAt: const Value(null),
+      ),
+    );
+  }
+
+  /// Save multiple GPS points for campaign execution in a batch
+  Future<void> saveCampaignGpsPoints(String campaignId, List<model.GpsPoint> points) async {
+    await db.batch((batch) {
+      for (final point in points) {
+        batch.insert(
+          db.gpsPoints,
+          GpsPointsCompanion(
+            id: Value(point.id),
+            campaignId: Value(campaignId),
+            routeId: const Value.absent(),
+            latitude: Value(point.latitude),
+            longitude: Value(point.longitude),
+            timestamp: Value(point.timestamp),
+            speed: Value(point.speed),
+            accuracy: Value(point.accuracy),
+            syncedAt: const Value(null),
+          ),
+          mode: InsertMode.insertOrReplace,
+        );
+      }
+    });
+  }
+
+  /// Get all unsynced GPS points for a campaign
+  Future<List<model.GpsPoint>> getUnsyncedCampaignPoints(String campaignId) async {
+    final pointRows = await (db.select(db.gpsPoints)
+      ..where((tbl) => tbl.campaignId.equals(campaignId))
+      ..where((tbl) => tbl.syncedAt.isNull())
+      ..orderBy([(tbl) => OrderingTerm.asc(tbl.timestamp)]))
+      .get();
+
+    return pointRows.map((row) => model.GpsPoint(
+      id: row.id,
+      routeId: row.routeId ?? '',
+      latitude: row.latitude,
+      longitude: row.longitude,
+      timestamp: row.timestamp,
+      speed: row.speed,
+      accuracy: row.accuracy,
+    )).toList();
+  }
+
+  /// Get all GPS points for a campaign (for drawing polyline)
+  Future<List<model.GpsPoint>> getCampaignGpsPoints(String campaignId) async {
+    final pointRows = await (db.select(db.gpsPoints)
+      ..where((tbl) => tbl.campaignId.equals(campaignId))
+      ..orderBy([(tbl) => OrderingTerm.asc(tbl.timestamp)]))
+      .get();
+
+    return pointRows.map((row) => model.GpsPoint(
+      id: row.id,
+      routeId: row.routeId ?? '',
+      latitude: row.latitude,
+      longitude: row.longitude,
+      timestamp: row.timestamp,
+      speed: row.speed,
+      accuracy: row.accuracy,
+    )).toList();
+  }
+
+  /// Mark GPS points as synced
+  Future<void> markPointsAsSynced(List<String> pointIds) async {
+    if (pointIds.isEmpty) return;
+
+    await (db.update(db.gpsPoints)
+      ..where((tbl) => tbl.id.isIn(pointIds)))
+      .write(GpsPointsCompanion(
+        syncedAt: Value(DateTime.now()),
+      ));
+  }
+
+  /// Delete all GPS points for a campaign
+  Future<void> deleteCampaignGpsPoints(String campaignId) async {
+    await (db.delete(db.gpsPoints)
+      ..where((tbl) => tbl.campaignId.equals(campaignId)))
+      .go();
+  }
+
+  /// Get count of unsynced points for a campaign
+  Future<int> getUnsyncedPointCount(String campaignId) async {
+    final count = await (db.selectOnly(db.gpsPoints)
+      ..addColumns([db.gpsPoints.id.count()])
+      ..where(db.gpsPoints.campaignId.equals(campaignId))
+      ..where(db.gpsPoints.syncedAt.isNull()))
+      .map((row) => row.read(db.gpsPoints.id.count()))
+      .getSingle();
+    return count ?? 0;
   }
 }

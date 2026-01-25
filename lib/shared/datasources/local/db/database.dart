@@ -65,12 +65,14 @@ class Routes extends Table {
 
 class GpsPoints extends Table {
   TextColumn get id => text()();
-  TextColumn get routeId => text().references(Routes, #id)();
+  TextColumn get routeId => text().references(Routes, #id).nullable()();
+  TextColumn get campaignId => text().nullable()(); // Campaign this point belongs to
   RealColumn get latitude => real()();
   RealColumn get longitude => real()();
   DateTimeColumn get timestamp => dateTime()();
   RealColumn get speed => real().nullable()();
   RealColumn get accuracy => real().nullable()();
+  DateTimeColumn get syncedAt => dateTime().nullable()(); // When synced to backend
 
   @override
   Set<Column> get primaryKey => {id};
@@ -82,7 +84,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 7;
 
   @override
   MigrationStrategy get migration {
@@ -162,6 +164,15 @@ class AppDatabase extends _$AppDatabase {
           await transaction(() async {
             await m.addColumn(users, users.twoFactorEnabled);
             await m.addColumn(users, users.twoFactorConfirmedAt);
+          });
+        }
+
+        /// Handle migration from version 6 to 7 (add GPS tracking columns)
+        if (from <= 6 && to >= 7) {
+          AppLogger.database.i('Migration 6→7: Adding campaignId and syncedAt to GpsPoints');
+          await transaction(() async {
+            await m.addColumn(gpsPoints, gpsPoints.campaignId);
+            await m.addColumn(gpsPoints, gpsPoints.syncedAt);
           });
         }
 

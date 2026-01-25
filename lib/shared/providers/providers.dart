@@ -28,6 +28,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:promoruta/core/core.dart' as model;
 import 'package:promoruta/core/models/config.dart';
 import 'package:promoruta/core/constants/colors.dart';
+import 'package:promoruta/features/promotor/route_execution/data/services/campaign_audio_service.dart';
 import 'package:promoruta/core/theme.dart';
 import 'package:promoruta/features/auth/data/datasources/local/auth_local_data_source.dart';
 import 'package:promoruta/features/auth/data/datasources/remote/auth_remote_data_source.dart';
@@ -45,6 +46,11 @@ import 'package:promoruta/shared/services/route_service.dart';
 import 'package:promoruta/shared/services/route_service_impl.dart';
 import 'package:promoruta/shared/services/geocoding_service.dart';
 import 'package:promoruta/shared/services/geocoding_service_impl.dart';
+import 'package:promoruta/shared/services/location_service.dart';
+import 'package:promoruta/features/promotor/route_execution/domain/models/campaign_execution_state.dart';
+import 'package:promoruta/features/promotor/route_execution/presentation/providers/campaign_execution_notifier.dart';
+import 'package:promoruta/features/promotor/route_execution/domain/use_cases/sync_gps_points_use_case.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:logger/logger.dart';
 
 
@@ -142,6 +148,35 @@ final geocodingServiceProvider = Provider<GeocodingService>((ref) {
   return GeocodingServiceImpl(dio: dio, logger: logger);
 });
 
+// Location Service for GPS tracking during campaign execution
+final campaignLocationServiceProvider = Provider<LocationService>((ref) {
+  final service = LocationService();
+  ref.onDispose(() => service.dispose());
+  return service;
+});
+
+// Location stream provider for real-time position updates during campaign
+final campaignLocationStreamProvider = StreamProvider<Position>((ref) {
+  final locationService = ref.watch(campaignLocationServiceProvider);
+  return locationService.positionStream;
+});
+
+// Campaign Execution State Provider
+final campaignExecutionProvider =
+    StateNotifierProvider<CampaignExecutionNotifier, CampaignExecutionState>(
+        (ref) {
+  final locationService = ref.watch(campaignLocationServiceProvider);
+  final syncUseCase = ref.watch(syncGpsPointsUseCaseProvider);
+  return CampaignExecutionNotifier(locationService, syncUseCase);
+});
+
+// Campaign Audio Service Provider
+final campaignAudioServiceProvider = Provider<CampaignAudioService>((ref) {
+  final service = CampaignAudioService();
+  ref.onDispose(() => service.dispose());
+  return service;
+});
+
 // Data Sources
 final authLocalDataSourceProvider = Provider<AuthLocalDataSource>((ref) {
   final database = ref.watch(databaseProvider);
@@ -211,6 +246,16 @@ final syncServiceProvider = Provider<SyncService>((ref) {
     campaignRemote,
     gpsLocal,
     gpsRemote,
+  );
+});
+
+// Sync GPS Points Use Case
+final syncGpsPointsUseCaseProvider = Provider<SyncGpsPointsUseCase>((ref) {
+  final gpsLocal = ref.watch(gpsLocalDataSourceProvider) as GpsLocalDataSourceImpl;
+  final gpsRemote = ref.watch(gpsRemoteDataSourceProvider) as GpsRemoteDataSourceImpl;
+  return SyncGpsPointsUseCase(
+    localDataSource: gpsLocal,
+    remoteDataSource: gpsRemote,
   );
 });
 
@@ -400,6 +445,35 @@ final campaignsProvider = StateNotifierProvider<CampaignsNotifier, AsyncValue<Li
 final activeCampaignsProvider = FutureProvider<List<model.Campaign>>((ref) async {
   final getCampaignsUseCase = ref.watch(getCampaignsUseCaseProvider);
   return await getCampaignsUseCase(const GetCampaignsParams(status: 'in_progress'));
+});
+
+// Provider for promoter's active campaigns (accepted by current user, status = in_progress)
+final promoterActiveCampaignsProvider = FutureProvider.autoDispose<List<model.Campaign>>((ref) async {
+  final authState = ref.watch(authStateProvider);
+  final getCampaignsUseCase = ref.watch(getCampaignsUseCaseProvider);
+
+  final user = authState.valueOrNull;
+  if (user == null) return [];
+
+  // Fetch campaigns accepted by this promoter that are in progress
+  return await getCampaignsUseCase(GetCampaignsParams(
+    acceptedBy: user.id,
+    status: 'in_progress',
+  ));
+});
+
+// Provider for promoter's accepted campaigns (all statuses for history)
+final promoterAcceptedCampaignsProvider = FutureProvider.autoDispose<List<model.Campaign>>((ref) async {
+  final authState = ref.watch(authStateProvider);
+  final getCampaignsUseCase = ref.watch(getCampaignsUseCaseProvider);
+
+  final user = authState.valueOrNull;
+  if (user == null) return [];
+
+  // Fetch all campaigns accepted by this promoter
+  return await getCampaignsUseCase(GetCampaignsParams(
+    acceptedBy: user.id,
+  ));
 });
 
 // Provider for advertiser KPI stats from backend

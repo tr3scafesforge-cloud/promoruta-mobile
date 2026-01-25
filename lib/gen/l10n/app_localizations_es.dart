@@ -715,6 +715,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get noActiveCampaigns => 'No hay campañas activas';
 
   @override
+  String get errorLoadingCampaigns => 'Error al cargar campañas';
+
+  @override
+  String get viewExecution => 'Ver ejecución';
+
+  @override
+  String get startPromotion => 'Iniciar promoción';
+
+  @override
   String get preview => 'Preview';
 
   @override
@@ -1001,7 +1010,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get navigationRoute => 'Ruta Navegación';
 
   @override
-  String get campaignAudio => 'Audio de la campaña';
+  String get campaignAudio => 'Audio de la Campaña';
 
   @override
   String get nextDirection => 'Próxima indicación';
@@ -1380,4 +1389,76 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get recoveryCodesInstructions =>
       '• Cada código solo puede usarse una vez\n• Úsalos cuando no tengas acceso a tu aplicación de autenticación\n• Descarga o imprime estos códigos para guardarlos de forma segura\n• Puedes regenerar nuevos códigos en cualquier momento';
+
+  @override
+  String get startCampaignConfirmation =>
+      '¿Estás seguro de que deseas iniciar el seguimiento de tu ubicación para esta campaña?';
+
+  @override
+  String get completeCampaign => 'Completar Campaña';
+
+  @override
+  String get completeCampaignConfirmation =>
+      '¿Estás seguro de que deseas completar esta campaña?';
+
+  @override
+  String get elapsedTime => 'Tiempo transcurrido';
+
+  @override
+  String get earningsThisWeek => 'Ganancias esta semana';
+
+  @override
+  String get distanceTraveled => 'Distancia recorrida';
+
+  @override
+  String get gpsPointsCollected => 'Puntos GPS recopilados';
+
+  @override
+  String get complete => 'Completar';
+
+  @override
+  String get distance => 'Distancia';
+
+  @override
+  String get gpsPoints => 'Puntos GPS';
+
+  @override
+  String get done => 'Listo';
+
+  @override
+  String get notStarted => 'No iniciado';
+
+  @override
+  String get starting => 'Iniciando...';
+
+  @override
+  String get tracking => 'Rastreando';
+
+  @override
+  String get paused => 'Pausado';
+
+  @override
+  String get completing => 'Completando...';
+
+  @override
+  String get startTracking => 'Iniciar Seguimiento';
+
+  @override
+  String get pause => 'Pausar';
+
+  @override
+  String get resume => 'Reanudar';
+
+  @override
+  String get campaignInProgress => 'Campaña en progreso';
+
+  @override
+  String get mustCompleteActiveCampaign =>
+      'Debes completar o cancelar la campaña activa antes de iniciar una nueva.';
+
+  @override
+  String get loadingAudio => 'Cargando audio...';
+
+  @override
+  String get audioLoadFailed => 'Error al cargar el audio';
 }

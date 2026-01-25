@@ -1520,11 +1520,17 @@ class $GpsPointsTable extends GpsPoints
       const VerificationMeta('routeId');
   @override
   late final GeneratedColumn<String> routeId = GeneratedColumn<String>(
-      'route_id', aliasedName, false,
+      'route_id', aliasedName, true,
       type: DriftSqlType.string,
-      requiredDuringInsert: true,
+      requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('REFERENCES routes (id)'));
+  static const VerificationMeta _campaignIdMeta =
+      const VerificationMeta('campaignId');
+  @override
+  late final GeneratedColumn<String> campaignId = GeneratedColumn<String>(
+      'campaign_id', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _latitudeMeta =
       const VerificationMeta('latitude');
   @override
@@ -1554,9 +1560,24 @@ class $GpsPointsTable extends GpsPoints
   late final GeneratedColumn<double> accuracy = GeneratedColumn<double>(
       'accuracy', aliasedName, true,
       type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _syncedAtMeta =
+      const VerificationMeta('syncedAt');
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, routeId, latitude, longitude, timestamp, speed, accuracy];
+  late final GeneratedColumn<DateTime> syncedAt = GeneratedColumn<DateTime>(
+      'synced_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        routeId,
+        campaignId,
+        latitude,
+        longitude,
+        timestamp,
+        speed,
+        accuracy,
+        syncedAt
+      ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1575,8 +1596,12 @@ class $GpsPointsTable extends GpsPoints
     if (data.containsKey('route_id')) {
       context.handle(_routeIdMeta,
           routeId.isAcceptableOrUnknown(data['route_id']!, _routeIdMeta));
-    } else if (isInserting) {
-      context.missing(_routeIdMeta);
+    }
+    if (data.containsKey('campaign_id')) {
+      context.handle(
+          _campaignIdMeta,
+          campaignId.isAcceptableOrUnknown(
+              data['campaign_id']!, _campaignIdMeta));
     }
     if (data.containsKey('latitude')) {
       context.handle(_latitudeMeta,
@@ -1604,6 +1629,10 @@ class $GpsPointsTable extends GpsPoints
       context.handle(_accuracyMeta,
           accuracy.isAcceptableOrUnknown(data['accuracy']!, _accuracyMeta));
     }
+    if (data.containsKey('synced_at')) {
+      context.handle(_syncedAtMeta,
+          syncedAt.isAcceptableOrUnknown(data['synced_at']!, _syncedAtMeta));
+    }
     return context;
   }
 
@@ -1616,7 +1645,9 @@ class $GpsPointsTable extends GpsPoints
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
       routeId: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}route_id'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}route_id']),
+      campaignId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}campaign_id']),
       latitude: attachedDatabase.typeMapping
           .read(DriftSqlType.double, data['${effectivePrefix}latitude'])!,
       longitude: attachedDatabase.typeMapping
@@ -1627,6 +1658,8 @@ class $GpsPointsTable extends GpsPoints
           .read(DriftSqlType.double, data['${effectivePrefix}speed']),
       accuracy: attachedDatabase.typeMapping
           .read(DriftSqlType.double, data['${effectivePrefix}accuracy']),
+      syncedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}synced_at']),
     );
   }
 
@@ -1638,25 +1671,34 @@ class $GpsPointsTable extends GpsPoints
 
 class GpsPoint extends DataClass implements Insertable<GpsPoint> {
   final String id;
-  final String routeId;
+  final String? routeId;
+  final String? campaignId;
   final double latitude;
   final double longitude;
   final DateTime timestamp;
   final double? speed;
   final double? accuracy;
+  final DateTime? syncedAt;
   const GpsPoint(
       {required this.id,
-      required this.routeId,
+      this.routeId,
+      this.campaignId,
       required this.latitude,
       required this.longitude,
       required this.timestamp,
       this.speed,
-      this.accuracy});
+      this.accuracy,
+      this.syncedAt});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
-    map['route_id'] = Variable<String>(routeId);
+    if (!nullToAbsent || routeId != null) {
+      map['route_id'] = Variable<String>(routeId);
+    }
+    if (!nullToAbsent || campaignId != null) {
+      map['campaign_id'] = Variable<String>(campaignId);
+    }
     map['latitude'] = Variable<double>(latitude);
     map['longitude'] = Variable<double>(longitude);
     map['timestamp'] = Variable<DateTime>(timestamp);
@@ -1666,13 +1708,21 @@ class GpsPoint extends DataClass implements Insertable<GpsPoint> {
     if (!nullToAbsent || accuracy != null) {
       map['accuracy'] = Variable<double>(accuracy);
     }
+    if (!nullToAbsent || syncedAt != null) {
+      map['synced_at'] = Variable<DateTime>(syncedAt);
+    }
     return map;
   }
 
   GpsPointsCompanion toCompanion(bool nullToAbsent) {
     return GpsPointsCompanion(
       id: Value(id),
-      routeId: Value(routeId),
+      routeId: routeId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(routeId),
+      campaignId: campaignId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(campaignId),
       latitude: Value(latitude),
       longitude: Value(longitude),
       timestamp: Value(timestamp),
@@ -1681,6 +1731,9 @@ class GpsPoint extends DataClass implements Insertable<GpsPoint> {
       accuracy: accuracy == null && nullToAbsent
           ? const Value.absent()
           : Value(accuracy),
+      syncedAt: syncedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncedAt),
     );
   }
 
@@ -1689,12 +1742,14 @@ class GpsPoint extends DataClass implements Insertable<GpsPoint> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return GpsPoint(
       id: serializer.fromJson<String>(json['id']),
-      routeId: serializer.fromJson<String>(json['routeId']),
+      routeId: serializer.fromJson<String?>(json['routeId']),
+      campaignId: serializer.fromJson<String?>(json['campaignId']),
       latitude: serializer.fromJson<double>(json['latitude']),
       longitude: serializer.fromJson<double>(json['longitude']),
       timestamp: serializer.fromJson<DateTime>(json['timestamp']),
       speed: serializer.fromJson<double?>(json['speed']),
       accuracy: serializer.fromJson<double?>(json['accuracy']),
+      syncedAt: serializer.fromJson<DateTime?>(json['syncedAt']),
     );
   }
   @override
@@ -1702,41 +1757,50 @@ class GpsPoint extends DataClass implements Insertable<GpsPoint> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
-      'routeId': serializer.toJson<String>(routeId),
+      'routeId': serializer.toJson<String?>(routeId),
+      'campaignId': serializer.toJson<String?>(campaignId),
       'latitude': serializer.toJson<double>(latitude),
       'longitude': serializer.toJson<double>(longitude),
       'timestamp': serializer.toJson<DateTime>(timestamp),
       'speed': serializer.toJson<double?>(speed),
       'accuracy': serializer.toJson<double?>(accuracy),
+      'syncedAt': serializer.toJson<DateTime?>(syncedAt),
     };
   }
 
   GpsPoint copyWith(
           {String? id,
-          String? routeId,
+          Value<String?> routeId = const Value.absent(),
+          Value<String?> campaignId = const Value.absent(),
           double? latitude,
           double? longitude,
           DateTime? timestamp,
           Value<double?> speed = const Value.absent(),
-          Value<double?> accuracy = const Value.absent()}) =>
+          Value<double?> accuracy = const Value.absent(),
+          Value<DateTime?> syncedAt = const Value.absent()}) =>
       GpsPoint(
         id: id ?? this.id,
-        routeId: routeId ?? this.routeId,
+        routeId: routeId.present ? routeId.value : this.routeId,
+        campaignId: campaignId.present ? campaignId.value : this.campaignId,
         latitude: latitude ?? this.latitude,
         longitude: longitude ?? this.longitude,
         timestamp: timestamp ?? this.timestamp,
         speed: speed.present ? speed.value : this.speed,
         accuracy: accuracy.present ? accuracy.value : this.accuracy,
+        syncedAt: syncedAt.present ? syncedAt.value : this.syncedAt,
       );
   GpsPoint copyWithCompanion(GpsPointsCompanion data) {
     return GpsPoint(
       id: data.id.present ? data.id.value : this.id,
       routeId: data.routeId.present ? data.routeId.value : this.routeId,
+      campaignId:
+          data.campaignId.present ? data.campaignId.value : this.campaignId,
       latitude: data.latitude.present ? data.latitude.value : this.latitude,
       longitude: data.longitude.present ? data.longitude.value : this.longitude,
       timestamp: data.timestamp.present ? data.timestamp.value : this.timestamp,
       speed: data.speed.present ? data.speed.value : this.speed,
       accuracy: data.accuracy.present ? data.accuracy.value : this.accuracy,
+      syncedAt: data.syncedAt.present ? data.syncedAt.value : this.syncedAt,
     );
   }
 
@@ -1745,103 +1809,120 @@ class GpsPoint extends DataClass implements Insertable<GpsPoint> {
     return (StringBuffer('GpsPoint(')
           ..write('id: $id, ')
           ..write('routeId: $routeId, ')
+          ..write('campaignId: $campaignId, ')
           ..write('latitude: $latitude, ')
           ..write('longitude: $longitude, ')
           ..write('timestamp: $timestamp, ')
           ..write('speed: $speed, ')
-          ..write('accuracy: $accuracy')
+          ..write('accuracy: $accuracy, ')
+          ..write('syncedAt: $syncedAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, routeId, latitude, longitude, timestamp, speed, accuracy);
+  int get hashCode => Object.hash(id, routeId, campaignId, latitude, longitude,
+      timestamp, speed, accuracy, syncedAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is GpsPoint &&
           other.id == this.id &&
           other.routeId == this.routeId &&
+          other.campaignId == this.campaignId &&
           other.latitude == this.latitude &&
           other.longitude == this.longitude &&
           other.timestamp == this.timestamp &&
           other.speed == this.speed &&
-          other.accuracy == this.accuracy);
+          other.accuracy == this.accuracy &&
+          other.syncedAt == this.syncedAt);
 }
 
 class GpsPointsCompanion extends UpdateCompanion<GpsPoint> {
   final Value<String> id;
-  final Value<String> routeId;
+  final Value<String?> routeId;
+  final Value<String?> campaignId;
   final Value<double> latitude;
   final Value<double> longitude;
   final Value<DateTime> timestamp;
   final Value<double?> speed;
   final Value<double?> accuracy;
+  final Value<DateTime?> syncedAt;
   final Value<int> rowid;
   const GpsPointsCompanion({
     this.id = const Value.absent(),
     this.routeId = const Value.absent(),
+    this.campaignId = const Value.absent(),
     this.latitude = const Value.absent(),
     this.longitude = const Value.absent(),
     this.timestamp = const Value.absent(),
     this.speed = const Value.absent(),
     this.accuracy = const Value.absent(),
+    this.syncedAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   GpsPointsCompanion.insert({
     required String id,
-    required String routeId,
+    this.routeId = const Value.absent(),
+    this.campaignId = const Value.absent(),
     required double latitude,
     required double longitude,
     required DateTime timestamp,
     this.speed = const Value.absent(),
     this.accuracy = const Value.absent(),
+    this.syncedAt = const Value.absent(),
     this.rowid = const Value.absent(),
   })  : id = Value(id),
-        routeId = Value(routeId),
         latitude = Value(latitude),
         longitude = Value(longitude),
         timestamp = Value(timestamp);
   static Insertable<GpsPoint> custom({
     Expression<String>? id,
     Expression<String>? routeId,
+    Expression<String>? campaignId,
     Expression<double>? latitude,
     Expression<double>? longitude,
     Expression<DateTime>? timestamp,
     Expression<double>? speed,
     Expression<double>? accuracy,
+    Expression<DateTime>? syncedAt,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (routeId != null) 'route_id': routeId,
+      if (campaignId != null) 'campaign_id': campaignId,
       if (latitude != null) 'latitude': latitude,
       if (longitude != null) 'longitude': longitude,
       if (timestamp != null) 'timestamp': timestamp,
       if (speed != null) 'speed': speed,
       if (accuracy != null) 'accuracy': accuracy,
+      if (syncedAt != null) 'synced_at': syncedAt,
       if (rowid != null) 'rowid': rowid,
     });
   }
 
   GpsPointsCompanion copyWith(
       {Value<String>? id,
-      Value<String>? routeId,
+      Value<String?>? routeId,
+      Value<String?>? campaignId,
       Value<double>? latitude,
       Value<double>? longitude,
       Value<DateTime>? timestamp,
       Value<double?>? speed,
       Value<double?>? accuracy,
+      Value<DateTime?>? syncedAt,
       Value<int>? rowid}) {
     return GpsPointsCompanion(
       id: id ?? this.id,
       routeId: routeId ?? this.routeId,
+      campaignId: campaignId ?? this.campaignId,
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
       timestamp: timestamp ?? this.timestamp,
       speed: speed ?? this.speed,
       accuracy: accuracy ?? this.accuracy,
+      syncedAt: syncedAt ?? this.syncedAt,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1854,6 +1935,9 @@ class GpsPointsCompanion extends UpdateCompanion<GpsPoint> {
     }
     if (routeId.present) {
       map['route_id'] = Variable<String>(routeId.value);
+    }
+    if (campaignId.present) {
+      map['campaign_id'] = Variable<String>(campaignId.value);
     }
     if (latitude.present) {
       map['latitude'] = Variable<double>(latitude.value);
@@ -1870,6 +1954,9 @@ class GpsPointsCompanion extends UpdateCompanion<GpsPoint> {
     if (accuracy.present) {
       map['accuracy'] = Variable<double>(accuracy.value);
     }
+    if (syncedAt.present) {
+      map['synced_at'] = Variable<DateTime>(syncedAt.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -1881,11 +1968,13 @@ class GpsPointsCompanion extends UpdateCompanion<GpsPoint> {
     return (StringBuffer('GpsPointsCompanion(')
           ..write('id: $id, ')
           ..write('routeId: $routeId, ')
+          ..write('campaignId: $campaignId, ')
           ..write('latitude: $latitude, ')
           ..write('longitude: $longitude, ')
           ..write('timestamp: $timestamp, ')
           ..write('speed: $speed, ')
           ..write('accuracy: $accuracy, ')
+          ..write('syncedAt: $syncedAt, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -2704,22 +2793,26 @@ typedef $$RoutesTableProcessedTableManager = ProcessedTableManager<
     PrefetchHooks Function({bool gpsPointsRefs})>;
 typedef $$GpsPointsTableCreateCompanionBuilder = GpsPointsCompanion Function({
   required String id,
-  required String routeId,
+  Value<String?> routeId,
+  Value<String?> campaignId,
   required double latitude,
   required double longitude,
   required DateTime timestamp,
   Value<double?> speed,
   Value<double?> accuracy,
+  Value<DateTime?> syncedAt,
   Value<int> rowid,
 });
 typedef $$GpsPointsTableUpdateCompanionBuilder = GpsPointsCompanion Function({
   Value<String> id,
-  Value<String> routeId,
+  Value<String?> routeId,
+  Value<String?> campaignId,
   Value<double> latitude,
   Value<double> longitude,
   Value<DateTime> timestamp,
   Value<double?> speed,
   Value<double?> accuracy,
+  Value<DateTime?> syncedAt,
   Value<int> rowid,
 });
 
@@ -2730,9 +2823,9 @@ final class $$GpsPointsTableReferences
   static $RoutesTable _routeIdTable(_$AppDatabase db) => db.routes
       .createAlias($_aliasNameGenerator(db.gpsPoints.routeId, db.routes.id));
 
-  $$RoutesTableProcessedTableManager get routeId {
-    final $_column = $_itemColumn<String>('route_id')!;
-
+  $$RoutesTableProcessedTableManager? get routeId {
+    final $_column = $_itemColumn<String>('route_id');
+    if ($_column == null) return null;
     final manager = $$RoutesTableTableManager($_db, $_db.routes)
         .filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_routeIdTable($_db));
@@ -2754,6 +2847,9 @@ class $$GpsPointsTableFilterComposer
   ColumnFilters<String> get id => $composableBuilder(
       column: $table.id, builder: (column) => ColumnFilters(column));
 
+  ColumnFilters<String> get campaignId => $composableBuilder(
+      column: $table.campaignId, builder: (column) => ColumnFilters(column));
+
   ColumnFilters<double> get latitude => $composableBuilder(
       column: $table.latitude, builder: (column) => ColumnFilters(column));
 
@@ -2768,6 +2864,9 @@ class $$GpsPointsTableFilterComposer
 
   ColumnFilters<double> get accuracy => $composableBuilder(
       column: $table.accuracy, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get syncedAt => $composableBuilder(
+      column: $table.syncedAt, builder: (column) => ColumnFilters(column));
 
   $$RoutesTableFilterComposer get routeId {
     final $$RoutesTableFilterComposer composer = $composerBuilder(
@@ -2802,6 +2901,9 @@ class $$GpsPointsTableOrderingComposer
   ColumnOrderings<String> get id => $composableBuilder(
       column: $table.id, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<String> get campaignId => $composableBuilder(
+      column: $table.campaignId, builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<double> get latitude => $composableBuilder(
       column: $table.latitude, builder: (column) => ColumnOrderings(column));
 
@@ -2816,6 +2918,9 @@ class $$GpsPointsTableOrderingComposer
 
   ColumnOrderings<double> get accuracy => $composableBuilder(
       column: $table.accuracy, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get syncedAt => $composableBuilder(
+      column: $table.syncedAt, builder: (column) => ColumnOrderings(column));
 
   $$RoutesTableOrderingComposer get routeId {
     final $$RoutesTableOrderingComposer composer = $composerBuilder(
@@ -2850,6 +2955,9 @@ class $$GpsPointsTableAnnotationComposer
   GeneratedColumn<String> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
+  GeneratedColumn<String> get campaignId => $composableBuilder(
+      column: $table.campaignId, builder: (column) => column);
+
   GeneratedColumn<double> get latitude =>
       $composableBuilder(column: $table.latitude, builder: (column) => column);
 
@@ -2864,6 +2972,9 @@ class $$GpsPointsTableAnnotationComposer
 
   GeneratedColumn<double> get accuracy =>
       $composableBuilder(column: $table.accuracy, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get syncedAt =>
+      $composableBuilder(column: $table.syncedAt, builder: (column) => column);
 
   $$RoutesTableAnnotationComposer get routeId {
     final $$RoutesTableAnnotationComposer composer = $composerBuilder(
@@ -2910,42 +3021,50 @@ class $$GpsPointsTableTableManager extends RootTableManager<
               $$GpsPointsTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<String> id = const Value.absent(),
-            Value<String> routeId = const Value.absent(),
+            Value<String?> routeId = const Value.absent(),
+            Value<String?> campaignId = const Value.absent(),
             Value<double> latitude = const Value.absent(),
             Value<double> longitude = const Value.absent(),
             Value<DateTime> timestamp = const Value.absent(),
             Value<double?> speed = const Value.absent(),
             Value<double?> accuracy = const Value.absent(),
+            Value<DateTime?> syncedAt = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               GpsPointsCompanion(
             id: id,
             routeId: routeId,
+            campaignId: campaignId,
             latitude: latitude,
             longitude: longitude,
             timestamp: timestamp,
             speed: speed,
             accuracy: accuracy,
+            syncedAt: syncedAt,
             rowid: rowid,
           ),
           createCompanionCallback: ({
             required String id,
-            required String routeId,
+            Value<String?> routeId = const Value.absent(),
+            Value<String?> campaignId = const Value.absent(),
             required double latitude,
             required double longitude,
             required DateTime timestamp,
             Value<double?> speed = const Value.absent(),
             Value<double?> accuracy = const Value.absent(),
+            Value<DateTime?> syncedAt = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               GpsPointsCompanion.insert(
             id: id,
             routeId: routeId,
+            campaignId: campaignId,
             latitude: latitude,
             longitude: longitude,
             timestamp: timestamp,
             speed: speed,
             accuracy: accuracy,
+            syncedAt: syncedAt,
             rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0

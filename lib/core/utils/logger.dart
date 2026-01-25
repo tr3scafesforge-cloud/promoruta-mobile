@@ -102,6 +102,17 @@ class AppLogger {
     ), debug: '[DATABASE] ', info: '[DATABASE] ', warning: '[DATABASE] ', error: '[DATABASE] '),
   );
 
+  static final Logger audio = Logger(
+    printer: PrefixPrinter(PrettyPrinter(
+      methodCount: 2,
+      errorMethodCount: 8,
+      lineLength: 120,
+      colors: true,
+      printEmojis: true,
+      dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
+    ), debug: '[AUDIO] ', info: '[AUDIO] ', warning: '[AUDIO] ', error: '[AUDIO] '),
+  );
+
   // General logger for uncategorized logs
   static Logger get general => _logger;
 

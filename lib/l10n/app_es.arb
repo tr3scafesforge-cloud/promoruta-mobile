@@ -896,6 +896,18 @@
   "@noActiveCampaigns": {
     "description": "Message shown when there are no active campaigns"
   },
+  "errorLoadingCampaigns": "Error al cargar campañas",
+  "@errorLoadingCampaigns": {
+    "description": "Error message when campaigns fail to load"
+  },
+  "viewExecution": "Ver ejecución",
+  "@viewExecution": {
+    "description": "Button to view the current campaign execution"
+  },
+  "startPromotion": "Iniciar promoción",
+  "@startPromotion": {
+    "description": "Button to start a promotion campaign"
+  },
   "preview": "Preview",
   "@preview": {
     "description": "Button text to preview a campaign"
@@ -1701,5 +1713,101 @@
   "recoveryCodesInstructions": "• Cada código solo puede usarse una vez\n• Úsalos cuando no tengas acceso a tu aplicación de autenticación\n• Descarga o imprime estos códigos para guardarlos de forma segura\n• Puedes regenerar nuevos códigos en cualquier momento",
   "@recoveryCodesInstructions": {
     "description": "Instructions on how to use recovery codes"
+  },
+  "startCampaignConfirmation": "¿Estás seguro de que deseas iniciar el seguimiento de tu ubicación para esta campaña?",
+  "@startCampaignConfirmation": {
+    "description": "Confirmation message when starting campaign tracking"
+  },
+  "completeCampaign": "Completar Campaña",
+  "@completeCampaign": {
+    "description": "Title for complete campaign dialog"
+  },
+  "completeCampaignConfirmation": "¿Estás seguro de que deseas completar esta campaña?",
+  "@completeCampaignConfirmation": {
+    "description": "Confirmation message when completing campaign"
+  },
+  "elapsedTime": "Tiempo transcurrido",
+  "@elapsedTime": {
+    "description": "Label for elapsed time"
+  },
+  "earningsThisWeek": "Ganancias esta semana",
+  "@earningsThisWeek": {
+    "description": "Label for earnings this week in promoter dashboard"
+  },
+  "distanceTraveled": "Distancia recorrida",
+  "@distanceTraveled": {
+    "description": "Label for distance traveled"
+  },
+  "gpsPointsCollected": "Puntos GPS recopilados",
+  "@gpsPointsCollected": {
+    "description": "Label for GPS points collected count"
+  },
+  "complete": "Completar",
+  "@complete": {
+    "description": "Button text to complete action"
+  },
+  "distance": "Distancia",
+  "@distance": {
+    "description": "Label for distance"
+  },
+  "gpsPoints": "Puntos GPS",
+  "@gpsPoints": {
+    "description": "Label for GPS points"
+  },
+  "done": "Listo",
+  "@done": {
+    "description": "Button text for done action"
+  },
+  "notStarted": "No iniciado",
+  "@notStarted": {
+    "description": "Status label for not started"
+  },
+  "starting": "Iniciando...",
+  "@starting": {
+    "description": "Status label for starting"
+  },
+  "tracking": "Rastreando",
+  "@tracking": {
+    "description": "Status label for active tracking"
+  },
+  "paused": "Pausado",
+  "@paused": {
+    "description": "Status label for paused"
+  },
+  "completing": "Completando...",
+  "@completing": {
+    "description": "Status label for completing"
+  },
+  "startTracking": "Iniciar Seguimiento",
+  "@startTracking": {
+    "description": "Button text to start location tracking"
+  },
+  "pause": "Pausar",
+  "@pause": {
+    "description": "Button text to pause"
+  },
+  "resume": "Reanudar",
+  "@resume": {
+    "description": "Button text to resume"
+  },
+  "campaignInProgress": "Campaña en progreso",
+  "@campaignInProgress": {
+    "description": "Message when a campaign is already in progress"
+  },
+  "mustCompleteActiveCampaign": "Debes completar o cancelar la campaña activa antes de iniciar una nueva.",
+  "@mustCompleteActiveCampaign": {
+    "description": "Message explaining that the active campaign must be completed first"
+  },
+  "loadingAudio": "Cargando audio...",
+  "@loadingAudio": {
+    "description": "Message shown while audio is loading"
+  },
+  "audioLoadFailed": "Error al cargar el audio",
+  "@audioLoadFailed": {
+    "description": "Error message when audio fails to load"
+  },
+  "campaignAudio": "Audio de la Campaña",
+  "@campaignAudio": {
+    "description": "Label for campaign audio section"
   }
 }
