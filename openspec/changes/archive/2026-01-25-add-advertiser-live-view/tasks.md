@@ -58,7 +58,8 @@
 
 - [x] 9.1 Wire up providers in `shared/providers/providers.dart`
 - [x] 9.2 Update `AdvertiserHomeScreen` to use new `AdvertiserLiveMapPage`
-- [ ] 9.3 End-to-end testing with live backend (pending backend deployment)
+- [x] 9.3 Backend endpoint `/advertiser/live-campaigns` implemented
+- [x] 9.4 Backend integration tests (16 tests in LiveCampaignsTest.php)
 
 ## Dependencies
 
@@ -71,6 +72,7 @@
 
 ## Files Created
 
+### Mobile (Flutter)
 - `lib/features/advertiser/campaign_management/domain/models/live_campaign_models.dart`
 - `lib/features/advertiser/campaign_management/domain/repositories/advertiser_live_repository.dart`
 - `lib/features/advertiser/campaign_management/domain/use_cases/advertiser_live_use_cases.dart`
@@ -80,10 +82,18 @@
 - `lib/features/advertiser/campaign_management/presentation/pages/advertiser_live_map_page.dart`
 - `test/features/advertiser/campaign_management/domain/models/live_campaign_models_test.dart`
 
+### Backend (Laravel)
+- `tests/Feature/LiveCampaignsTest.php` - 16 integration tests for live campaigns endpoint
+
 ## Files Modified
 
+### Mobile (Flutter)
 - `lib/shared/providers/providers.dart` - Added advertiser live repository providers
 - `lib/features/advertiser/presentation/pages/advertiser_home_screen.dart` - Updated to use new live page
 - `lib/l10n/app_en.arb` - Added new localization strings
 - `lib/l10n/app_es.arb` - Added Spanish translations
 - `lib/l10n/app_pt.arb` - Added Portuguese translations
+
+### Backend (Laravel)
+- `routes/api.php` - Added `/advertiser/live-campaigns` route
+- `app/Http/Controllers/Api/CampaignController.php` - Added `liveCampaigns()` method
