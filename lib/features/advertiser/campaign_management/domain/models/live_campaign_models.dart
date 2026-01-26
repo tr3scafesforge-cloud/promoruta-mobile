@@ -92,9 +92,38 @@ class LivePromoterLocation extends Equatable {
   }
 
   factory LivePromoterLocation.fromJson(Map<String, dynamic> json) {
+    // Support both backend flat format and nested format for backwards compatibility
     final location = json['location'] as Map<String, dynamic>?;
     final execution = json['execution'] as Map<String, dynamic>?;
 
+    // Determine if using flat format (from backend) or nested format
+    final isFlat = json.containsKey('latitude') || json.containsKey('promoter_id');
+
+    if (isFlat) {
+      // Backend flat format
+      final lastUpdateStr = json['last_update'] as String?;
+      final lastUpdate = lastUpdateStr != null
+          ? DateTime.parse(lastUpdateStr)
+          : DateTime.now();
+
+      return LivePromoterLocation(
+        campaignId: json['campaign_id'] as String? ?? '',
+        promoterId: json['promoter_id'] as String? ?? '',
+        promoterName: json['promoter_name'] as String? ?? 'Unknown',
+        latitude: (json['latitude'] as num?)?.toDouble() ?? 0.0,
+        longitude: (json['longitude'] as num?)?.toDouble() ?? 0.0,
+        lastUpdate: lastUpdate,
+        distanceTraveled: (json['distance_traveled'] as num?)?.toDouble() ?? 0.0,
+        elapsedTime: Duration(
+          seconds: (json['elapsed_seconds'] as num?)?.toInt() ?? 0,
+        ),
+        status: _parseStatus(json['status'] as String?),
+        signalStrength: (json['signal_strength'] as num?)?.toInt() ?? 0,
+        startedAt: null,
+      );
+    }
+
+    // Legacy nested format
     return LivePromoterLocation(
       campaignId: json['campaign_id'] as String? ?? '',
       promoterId: json['id'] as String? ?? '',
