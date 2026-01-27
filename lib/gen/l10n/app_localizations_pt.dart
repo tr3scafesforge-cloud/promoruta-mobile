@@ -1465,4 +1465,21 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get followMode => 'Modo seguir';
+
+  @override
+  String get updateAvailable => 'Atualização disponível';
+
+  @override
+  String updateVersionAvailable(String version) {
+    return 'A versão $version já está disponível';
+  }
+
+  @override
+  String get updateReleaseNotes => 'Novidades:';
+
+  @override
+  String get updateDownload => 'Baixar';
+
+  @override
+  String get updateLater => 'Mais tarde';
 }

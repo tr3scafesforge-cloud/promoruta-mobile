@@ -30,6 +30,7 @@ import 'package:promoruta/presentation/promotor/pages/promoter_security_settings
 import 'package:promoruta/features/advertiser/campaign_creation/presentation/pages/create_campaign_page.dart';
 import 'package:promoruta/features/advertiser/presentation/pages/campaign_details_page.dart';
 import 'package:promoruta/shared/shared.dart';
+import 'package:promoruta/shared/widgets/update_check_wrapper.dart';
 import 'package:promoruta/app/routes/route_guards.dart';
 import 'package:promoruta/app/routes/auth_notifier.dart';
 
@@ -308,7 +309,9 @@ class PromoterHomeRoute extends GoRouteData with _$PromoterHomeRoute {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const PromoterHomeScreen();
+    return const UpdateCheckWrapper(
+      child: PromoterHomeScreen(),
+    );
   }
 }
 
@@ -320,7 +323,9 @@ class AdvertiserHomeRoute extends GoRouteData with _$AdvertiserHomeRoute {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const AdvertiserHomeScreen();
+    return const UpdateCheckWrapper(
+      child: AdvertiserHomeScreen(),
+    );
   }
 }
 

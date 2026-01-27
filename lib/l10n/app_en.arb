@@ -1934,5 +1934,30 @@
   "followMode": "Follow mode",
   "@followMode": {
     "description": "Label for follow mode toggle"
+  },
+  "updateAvailable": "Update Available",
+  "@updateAvailable": {
+    "description": "Title for update dialog"
+  },
+  "updateVersionAvailable": "Version {version} is now available",
+  "@updateVersionAvailable": {
+    "description": "Message showing new version is available",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "updateReleaseNotes": "What's new:",
+  "@updateReleaseNotes": {
+    "description": "Label for release notes section"
+  },
+  "updateDownload": "Download",
+  "@updateDownload": {
+    "description": "Button text to download update"
+  },
+  "updateLater": "Later",
+  "@updateLater": {
+    "description": "Button text to dismiss update dialog"
   }
 }

@@ -1470,4 +1470,21 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get followMode => 'Modo seguimiento';
+
+  @override
+  String get updateAvailable => 'Actualización disponible';
+
+  @override
+  String updateVersionAvailable(String version) {
+    return 'La versión $version ya está disponible';
+  }
+
+  @override
+  String get updateReleaseNotes => 'Novedades:';
+
+  @override
+  String get updateDownload => 'Descargar';
+
+  @override
+  String get updateLater => 'Más tarde';
 }

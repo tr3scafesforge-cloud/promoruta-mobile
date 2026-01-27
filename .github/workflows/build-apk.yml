@@ -1,0 +1,114 @@
+name: Build and Deploy APK
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (e.g., 1.2.0)'
+        required: true
+        type: string
+      build_number:
+        description: 'Build number (optional, defaults to GitHub run number)'
+        required: false
+        type: string
+      release_notes:
+        description: 'Release notes (optional)'
+        required: false
+        type: string
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.27.1'
+          channel: 'stable'
+
+      - name: Set build number
+        id: build_number
+        run: |
+          if [ -n "${{ inputs.build_number }}" ]; then
+            echo "BUILD_NUMBER=${{ inputs.build_number }}" >> $GITHUB_OUTPUT
+          else
+            echo "BUILD_NUMBER=${{ github.run_number }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update pubspec.yaml version
+        run: |
+          sed -i "s/^version: .*/version: ${{ inputs.version }}+${{ steps.build_number.outputs.BUILD_NUMBER }}/" pubspec.yaml
+          echo "Updated version to ${{ inputs.version }}+${{ steps.build_number.outputs.BUILD_NUMBER }}"
+          cat pubspec.yaml | grep "^version:"
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Rename APK
+        run: |
+          mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/promoruta-${{ inputs.version }}.apk
+
+      - name: Generate version.json
+        run: |
+          cat > build/version.json << EOF
+          {
+            "version": "${{ inputs.version }}",
+            "buildNumber": ${{ steps.build_number.outputs.BUILD_NUMBER }},
+            "downloadUrl": "${{ secrets.FTP_BASE_URL }}/releases/promoruta-${{ inputs.version }}.apk",
+            "releaseDate": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+            "releaseNotes": "${{ inputs.release_notes }}"
+          }
+          EOF
+          echo "Generated version.json:"
+          cat build/version.json
+
+      - name: Upload APK to FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: build/app/outputs/flutter-apk/
+          server-dir: releases/
+          exclude: |
+            **/*.sha1
+            **/app-release.apk
+
+      - name: Upload version.json to FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: build/
+          server-dir: ./
+          exclude: |
+            app/**
+            **/*.apk
+
+      - name: Commit version update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add pubspec.yaml
+          git commit -m "chore: bump version to ${{ inputs.version }}+${{ steps.build_number.outputs.BUILD_NUMBER }}"
+          git push
+
+      - name: Upload APK as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: promoruta-${{ inputs.version }}
+          path: build/app/outputs/flutter-apk/promoruta-${{ inputs.version }}.apk

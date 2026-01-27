@@ -2757,6 +2757,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Follow mode'**
   String get followMode;
+
+  /// Title for update dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Update Available'**
+  String get updateAvailable;
+
+  /// Message showing new version is available
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version} is now available'**
+  String updateVersionAvailable(String version);
+
+  /// Label for release notes section
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s new:'**
+  String get updateReleaseNotes;
+
+  /// Button text to download update
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get updateDownload;
+
+  /// Button text to dismiss update dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get updateLater;
 }
 
 class _AppLocalizationsDelegate

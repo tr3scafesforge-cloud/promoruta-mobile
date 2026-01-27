@@ -47,6 +47,9 @@ import 'package:promoruta/shared/services/route_service_impl.dart';
 import 'package:promoruta/shared/services/geocoding_service.dart';
 import 'package:promoruta/shared/services/geocoding_service_impl.dart';
 import 'package:promoruta/shared/services/location_service.dart';
+import 'package:promoruta/shared/services/update_check_service.dart';
+import 'package:promoruta/shared/services/update_check_service_impl.dart';
+import 'package:promoruta/core/models/version_info.dart';
 import 'package:promoruta/features/promotor/route_execution/domain/models/campaign_execution_state.dart';
 import 'package:promoruta/features/promotor/route_execution/presentation/providers/campaign_execution_notifier.dart';
 import 'package:promoruta/features/promotor/route_execution/domain/use_cases/sync_gps_points_use_case.dart';
@@ -570,6 +573,35 @@ final localeProvider = StateNotifierProvider<LocaleNotifier, Locale>((ref) {
 // Notification service provider
 final notificationServiceProvider = Provider<NotificationService>((ref) {
   return OverlayNotificationService(AppRouter.navigatorKey);
+});
+
+// Update check service provider
+final updateCheckServiceProvider = Provider<UpdateCheckService?>((ref) {
+  final configAsync = ref.watch(configProvider);
+  final logger = ref.watch(loggerProvider);
+
+  return configAsync.maybeWhen(
+    data: (config) {
+      final versionCheckUrl = config.versionCheckUrl;
+      if (versionCheckUrl == null || versionCheckUrl.isEmpty) {
+        return null;
+      }
+      return UpdateCheckServiceImpl(
+        versionCheckUrl: versionCheckUrl,
+        logger: logger,
+      );
+    },
+    orElse: () => null,
+  );
+});
+
+// Update check provider - checks for updates asynchronously
+final updateCheckProvider = FutureProvider.autoDispose<VersionInfo?>((ref) async {
+  final service = ref.watch(updateCheckServiceProvider);
+  if (service == null) {
+    return null;
+  }
+  return await service.checkForUpdates();
 });
 
 class ThemeModeNotifier extends StateNotifier<ThemeMode> {
