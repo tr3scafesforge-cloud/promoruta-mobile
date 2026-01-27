@@ -52,6 +52,10 @@ jobs:
           echo "Updated version to ${{ inputs.version }}+${{ steps.build_number.outputs.BUILD_NUMBER }}"
           cat pubspec.yaml | grep "^version:"
 
+      - name: Create .env file
+        run: |
+          echo "MAPBOX_ACCESS_TOKEN=${{ secrets.MAPBOX_ACCESS_TOKEN }}" > .env
+
       - name: Install dependencies
         run: flutter pub get
 
