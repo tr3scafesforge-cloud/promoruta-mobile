@@ -14,7 +14,8 @@ class VerifyResetCodePage extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<VerifyResetCodePage> createState() => _VerifyResetCodePageState();
+  ConsumerState<VerifyResetCodePage> createState() =>
+      _VerifyResetCodePageState();
 }
 
 class _VerifyResetCodePageState extends ConsumerState<VerifyResetCodePage> {
@@ -84,7 +85,8 @@ class _VerifyResetCodePageState extends ConsumerState<VerifyResetCodePage> {
 
     try {
       final authRepository = ref.read(authRepositoryProvider);
-      final message = await authRepository.requestPasswordResetCode(widget.email);
+      final message =
+          await authRepository.requestPasswordResetCode(widget.email);
 
       if (!mounted) return;
 
@@ -203,7 +205,8 @@ class _VerifyResetCodePageState extends ConsumerState<VerifyResetCodePage> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return AppLocalizations.of(context).pleaseEnterVerificationCode;
+                      return AppLocalizations.of(context)
+                          .pleaseEnterVerificationCode;
                     }
                     if (value.length != 6) {
                       return AppLocalizations.of(context).codeMustBeSixDigits;
@@ -241,7 +244,9 @@ class _VerifyResetCodePageState extends ConsumerState<VerifyResetCodePage> {
                     prefixIcon: const Icon(Icons.lock),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                        _obscurePassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                       onPressed: () {
@@ -275,7 +280,8 @@ class _VerifyResetCodePageState extends ConsumerState<VerifyResetCodePage> {
                       return AppLocalizations.of(context).pleaseEnterPassword;
                     }
                     if (value.length < 8) {
-                      return AppLocalizations.of(context).passwordMinLengthEight;
+                      return AppLocalizations.of(context)
+                          .passwordMinLengthEight;
                     }
                     return null;
                   },
@@ -297,7 +303,8 @@ class _VerifyResetCodePageState extends ConsumerState<VerifyResetCodePage> {
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                       onPressed: () {
-                        setState(() => _obscureConfirmPassword = !_obscureConfirmPassword);
+                        setState(() =>
+                            _obscureConfirmPassword = !_obscureConfirmPassword);
                       },
                     ),
                     filled: true,
@@ -357,7 +364,10 @@ class _VerifyResetCodePageState extends ConsumerState<VerifyResetCodePage> {
                         )
                       : Text(
                           AppLocalizations.of(context).resetPassword,
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge
+                              ?.copyWith(
                                 fontWeight: FontWeight.w600,
                                 color: Theme.of(context).colorScheme.onPrimary,
                               ),

@@ -50,7 +50,8 @@ class _MapScreenState extends ConsumerState<MapScreen> {
 
       // Start tracking location updates
       locationService.startTracking();
-      _locationSubscription = locationService.locationStream.listen((newLocation) {
+      _locationSubscription =
+          locationService.locationStream.listen((newLocation) {
         if (mounted) {
           setState(() {
             _currentLocation = newLocation;
@@ -60,14 +61,18 @@ class _MapScreenState extends ConsumerState<MapScreen> {
       });
 
       // Load route if waypoints are provided
-      if (widget.showRoute && widget.waypoints != null && widget.waypoints!.isNotEmpty) {
+      if (widget.showRoute &&
+          widget.waypoints != null &&
+          widget.waypoints!.isNotEmpty) {
         _loadRoute();
       }
     }
   }
 
   Future<void> _loadRoute() async {
-    if (_currentLocation == null || widget.waypoints == null || widget.waypoints!.isEmpty) {
+    if (_currentLocation == null ||
+        widget.waypoints == null ||
+        widget.waypoints!.isEmpty) {
       return;
     }
 

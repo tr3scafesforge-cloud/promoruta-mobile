@@ -51,10 +51,9 @@ class _PromoterHomeContent extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                     )),
             TextButton(
-              onPressed: () =>
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Ver Mapa (WIP)')),
-                  ),
+              onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Ver Mapa (WIP)')),
+              ),
               child: const Text('Ver Mapa'),
             ),
           ],
@@ -187,9 +186,10 @@ class _NearbyCampaignCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(title,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w700,
-                              )),
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                  )),
                       const SizedBox(height: 2),
                       Row(
                         children: [
@@ -264,7 +264,8 @@ class _NearbyCampaignCard extends StatelessWidget {
                     ),
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Aceptar promoción (WIP)')),
+                        const SnackBar(
+                            content: Text('Aceptar promoción (WIP)')),
                       );
                     },
                     child: const Text('Aceptar promoción'),
@@ -288,7 +289,8 @@ class _NearbyCampaignCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(value,
-                  style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13)),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w700, fontSize: 13)),
               Text(label,
                   style: TextStyle(color: Colors.grey[700], fontSize: 11)),
             ],
@@ -329,9 +331,10 @@ class _ActiveCampaignCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Campaña Activa',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w700,
-                              )),
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                  )),
                       Text('Especial de almuerzo del restaurante',
                           style: Theme.of(context)
                               .textTheme

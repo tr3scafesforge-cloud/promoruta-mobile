@@ -7,7 +7,8 @@ import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
 
 // Provider for nearby campaigns (first 15)
-final nearbyCampaignsProvider = FutureProvider.autoDispose<List<Campaign>>((ref) async {
+final nearbyCampaignsProvider =
+    FutureProvider.autoDispose<List<Campaign>>((ref) async {
   final getCampaignsUseCase = ref.watch(getCampaignsUseCaseProvider);
   return await getCampaignsUseCase(const GetCampaignsParams(perPage: 15));
 });
@@ -89,7 +90,8 @@ class _PromoterHomeContent extends ConsumerWidget {
                   labelTop: l10n.thisMonthLabelTop,
                   labelBottom: l10n.thisMonthLabelBottom,
                   iconColor: AppColors.completedGreenColor,
-                  backgroundColor: AppColors.completedGreenColor.withValues(alpha: .2),
+                  backgroundColor:
+                      AppColors.completedGreenColor.withValues(alpha: .2),
                 ),
               ),
             ),
@@ -106,10 +108,9 @@ class _PromoterHomeContent extends ConsumerWidget {
                       fontWeight: FontWeight.w700,
                     )),
             TextButton(
-              onPressed: () =>
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Ver Mapa (WIP)')),
-                  ),
+              onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Ver Mapa (WIP)')),
+              ),
               child: Text(AppLocalizations.of(context).viewMap),
             ),
           ],
@@ -179,7 +180,8 @@ class _NearbyCampaignCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Calculate duration estimate (placeholder - could be enhanced with routing API)
-    final durationMinutes = (campaign.distance * 15).round(); // Rough estimate: 15 min per km
+    final durationMinutes =
+        (campaign.distance * 15).round(); // Rough estimate: 15 min per km
 
     return Card(
       elevation: 0,
@@ -204,16 +206,18 @@ class _NearbyCampaignCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(campaign.title,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w700,
-                              )),
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                  )),
                       const SizedBox(height: 2),
                       Row(
                         children: [
                           Icon(Icons.near_me_rounded,
                               size: 16, color: Colors.grey[700]),
                           const SizedBox(width: 4),
-                          Text('A ${campaign.distance.toStringAsFixed(1)}km de distancia',
+                          Text(
+                              'A ${campaign.distance.toStringAsFixed(1)}km de distancia',
                               style: Theme.of(context)
                                   .textTheme
                                   .labelMedium
@@ -244,9 +248,12 @@ class _NearbyCampaignCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _miniMetric(Icons.alt_route_rounded, '${campaign.distance.toStringAsFixed(1)}km', 'Ruta'),
-                _miniMetric(Icons.timer_outlined, '$durationMinutes min', 'Duración'),
-                _miniMetric(Icons.graphic_eq_rounded, '${campaign.audioDuration}s', 'Audio'),
+                _miniMetric(Icons.alt_route_rounded,
+                    '${campaign.distance.toStringAsFixed(1)}km', 'Ruta'),
+                _miniMetric(
+                    Icons.timer_outlined, '$durationMinutes min', 'Duración'),
+                _miniMetric(Icons.graphic_eq_rounded,
+                    '${campaign.audioDuration}s', 'Audio'),
               ],
             ),
             const SizedBox(height: 12),
@@ -285,7 +292,8 @@ class _NearbyCampaignCard extends StatelessWidget {
                     ),
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Aceptar promoción (WIP)')),
+                        const SnackBar(
+                            content: Text('Aceptar promoción (WIP)')),
                       );
                     },
                     child: Text(
@@ -315,7 +323,8 @@ class _NearbyCampaignCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(value,
-                  style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13)),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w700, fontSize: 13)),
               Text(label,
                   style: TextStyle(color: Colors.grey[700], fontSize: 11)),
             ],
@@ -356,9 +365,10 @@ class _ActiveCampaignCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Campaña Activa',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w700,
-                              )),
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                  )),
                       Text('Especial de almuerzo del restaurante',
                           style: Theme.of(context)
                               .textTheme

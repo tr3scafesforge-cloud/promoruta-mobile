@@ -214,15 +214,21 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
           final exception = result.error;
           if (exception.toString().contains('Exception: ')) {
             final message = exception.toString().split('Exception: ').last;
-            if (message.isNotEmpty && !message.contains('Network error:') && !message.contains('DioException')) {
+            if (message.isNotEmpty &&
+                !message.contains('Network error:') &&
+                !message.contains('DioException')) {
               // Check if it's a hardcoded error message
-              if (message == 'Current password is incorrect. Please try again.') {
+              if (message ==
+                  'Current password is incorrect. Please try again.') {
                 errorMessage = l10n.currentPasswordIncorrect;
-              } else if (message == 'Invalid password format. Please check your input.') {
+              } else if (message ==
+                  'Invalid password format. Please check your input.') {
                 errorMessage = l10n.invalidPasswordFormat;
-              } else if (message == 'Unable to change password. Please try again later.') {
+              } else if (message ==
+                  'Unable to change password. Please try again later.') {
                 errorMessage = l10n.unableToChangePassword;
-              } else if (message == 'Network error. Please check your connection and try again.') {
+              } else if (message ==
+                  'Network error. Please check your connection and try again.') {
                 errorMessage = l10n.networkErrorPasswordChange;
               } else if (message == 'serverErrorPasswordChange') {
                 errorMessage = l10n.serverErrorPasswordChange;

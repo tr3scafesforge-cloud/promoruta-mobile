@@ -128,7 +128,8 @@ class MediaRemoteDataSourceImpl implements MediaRemoteDataSource {
       // Build canonical URL: /api/{modelType}/{modelId}/media
       final endpoint = '/${modelType.value}/$modelId/media';
 
-      AppLogger.auth.i('Uploading ${role.value} file to ${modelType.value}/$modelId: $fileName');
+      AppLogger.auth.i(
+          'Uploading ${role.value} file to ${modelType.value}/$modelId: $fileName');
 
       final response = await dio.post(
         endpoint,
@@ -154,7 +155,8 @@ class MediaRemoteDataSourceImpl implements MediaRemoteDataSource {
         throw Exception('Failed to upload media: ${response.statusMessage}');
       }
     } on DioException catch (e) {
-      AppLogger.auth.e('Media upload failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+      AppLogger.auth.e(
+          'Media upload failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
 
       // Handle different error codes with user-friendly messages
       if (e.response != null) {
@@ -167,7 +169,8 @@ class MediaRemoteDataSourceImpl implements MediaRemoteDataSource {
           case 413:
             throw Exception('File is too large. Maximum size is 10 MB.');
           case 415:
-            throw Exception('Unsupported file type. Please check the file format.');
+            throw Exception(
+                'Unsupported file type. Please check the file format.');
           case 422:
             // Handle validation errors
             if (responseData is Map && responseData.containsKey('message')) {
@@ -192,7 +195,8 @@ class MediaRemoteDataSourceImpl implements MediaRemoteDataSource {
         }
       } else {
         // Network or other Dio errors
-        throw Exception('Network error. Please check your connection and try again.');
+        throw Exception(
+            'Network error. Please check your connection and try again.');
       }
     } catch (e) {
       AppLogger.auth.e('Unexpected error during media upload: $e');

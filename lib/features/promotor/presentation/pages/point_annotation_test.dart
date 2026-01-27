@@ -17,7 +17,8 @@ class _PointAnnotationTestState extends State<PointAnnotationTest> {
     _mapboxMap = mapboxMap;
 
     // Create point annotation manager
-    _pointAnnotationManager = await mapboxMap.annotations.createPointAnnotationManager();
+    _pointAnnotationManager =
+        await mapboxMap.annotations.createPointAnnotationManager();
 
     // Add a marker at Bogotá center
     _addMarker(Position(-74.0721, 4.7110), 'Bogotá Center');

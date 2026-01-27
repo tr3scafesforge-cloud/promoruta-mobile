@@ -17,27 +17,29 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
   @override
   Future<void> saveUser(model.User user) async {
     await db.into(db.users).insertOnConflictUpdate(
-      UsersCompanion(
-        id: Value(user.id),
-        name: Value(user.name),
-        email: Value(user.email),
-        emailVerifiedAt: Value(user.emailVerifiedAt),
-        role: Value(user.role),
-        createdAt: Value(user.createdAt),
-        updatedAt: Value(user.updatedAt),
-        accessToken: Value(user.accessToken),
-        tokenExpiry: Value(user.tokenExpiry),
-        username: Value(user.username),
-        photoUrl: Value(user.photoUrl),
-        refreshExpiresIn:  Value(user.refreshExpiresIn!),
-        refreshToken:  Value(user.refreshToken!),
-      ),
-    );
+          UsersCompanion(
+            id: Value(user.id),
+            name: Value(user.name),
+            email: Value(user.email),
+            emailVerifiedAt: Value(user.emailVerifiedAt),
+            role: Value(user.role),
+            createdAt: Value(user.createdAt),
+            updatedAt: Value(user.updatedAt),
+            accessToken: Value(user.accessToken),
+            tokenExpiry: Value(user.tokenExpiry),
+            username: Value(user.username),
+            photoUrl: Value(user.photoUrl),
+            refreshExpiresIn: Value(user.refreshExpiresIn!),
+            refreshToken: Value(user.refreshToken!),
+          ),
+        );
   }
 
   @override
   Future<model.User?> getUser(String userId) async {
-    final userRow = await (db.select(db.users)..where((tbl) => tbl.id.equals(userId))).getSingleOrNull();
+    final userRow = await (db.select(db.users)
+          ..where((tbl) => tbl.id.equals(userId)))
+        .getSingleOrNull();
     if (userRow == null) return null;
 
     return model.User(

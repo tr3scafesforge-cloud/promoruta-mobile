@@ -13,15 +13,15 @@ class GpsLocalDataSourceImpl implements GpsLocalDataSource {
   @override
   Future<void> saveRoute(model_route.Route route) async {
     await db.into(db.routes).insertOnConflictUpdate(
-      RoutesCompanion(
-        id: Value(route.id),
-        promoterId: Value(route.promoterId),
-        campaignId: Value(route.campaignId),
-        startTime: Value(route.startTime),
-        endTime: Value(route.endTime),
-        isCompleted: Value(route.isCompleted),
-      ),
-    );
+          RoutesCompanion(
+            id: Value(route.id),
+            promoterId: Value(route.promoterId),
+            campaignId: Value(route.campaignId),
+            startTime: Value(route.startTime),
+            endTime: Value(route.endTime),
+            isCompleted: Value(route.isCompleted),
+          ),
+        );
   }
 
   @override
@@ -48,8 +48,8 @@ class GpsLocalDataSourceImpl implements GpsLocalDataSource {
   @override
   Future<model_route.Route?> getRoute(String id) async {
     final routeRow = await (db.select(db.routes)
-      ..where((tbl) => tbl.id.equals(id)))
-      .getSingleOrNull();
+          ..where((tbl) => tbl.id.equals(id)))
+        .getSingleOrNull();
 
     if (routeRow == null) return null;
 
@@ -68,16 +68,16 @@ class GpsLocalDataSourceImpl implements GpsLocalDataSource {
   @override
   Future<void> saveGpsPoint(model.GpsPoint point) async {
     await db.into(db.gpsPoints).insertOnConflictUpdate(
-      GpsPointsCompanion(
-        id: Value(point.id),
-        routeId: Value(point.routeId),
-        latitude: Value(point.latitude),
-        longitude: Value(point.longitude),
-        timestamp: Value(point.timestamp),
-        speed: Value(point.speed),
-        accuracy: Value(point.accuracy),
-      ),
-    );
+          GpsPointsCompanion(
+            id: Value(point.id),
+            routeId: Value(point.routeId),
+            latitude: Value(point.latitude),
+            longitude: Value(point.longitude),
+            timestamp: Value(point.timestamp),
+            speed: Value(point.speed),
+            accuracy: Value(point.accuracy),
+          ),
+        );
   }
 
   Future<void> saveGpsPoints(List<model.GpsPoint> points) async {
@@ -102,41 +102,40 @@ class GpsLocalDataSourceImpl implements GpsLocalDataSource {
   @override
   Future<List<model.GpsPoint>> getGpsPoints(String routeId) async {
     final pointRows = await (db.select(db.gpsPoints)
-      ..where((tbl) => tbl.routeId.equals(routeId)))
-      .get();
+          ..where((tbl) => tbl.routeId.equals(routeId)))
+        .get();
 
-    return pointRows.map((row) => model.GpsPoint(
-      id: row.id,
-      routeId: row.routeId ?? '',
-      latitude: row.latitude,
-      longitude: row.longitude,
-      timestamp: row.timestamp,
-      speed: row.speed,
-      accuracy: row.accuracy,
-    )).toList();
+    return pointRows
+        .map((row) => model.GpsPoint(
+              id: row.id,
+              routeId: row.routeId ?? '',
+              latitude: row.latitude,
+              longitude: row.longitude,
+              timestamp: row.timestamp,
+              speed: row.speed,
+              accuracy: row.accuracy,
+            ))
+        .toList();
   }
 
   @override
   Future<void> updateRoute(model_route.Route route) async {
-    await (db.update(db.routes)
-      ..where((tbl) => tbl.id.equals(route.id)))
-      .write(RoutesCompanion(
-        endTime: Value(route.endTime),
-        isCompleted: Value(route.isCompleted),
-      ));
+    await (db.update(db.routes)..where((tbl) => tbl.id.equals(route.id)))
+        .write(RoutesCompanion(
+      endTime: Value(route.endTime),
+      isCompleted: Value(route.isCompleted),
+    ));
   }
 
   @override
   Future<void> deleteRoute(String id) async {
-    await (db.delete(db.routes)
-      ..where((tbl) => tbl.id.equals(id)))
-      .go();
+    await (db.delete(db.routes)..where((tbl) => tbl.id.equals(id))).go();
   }
 
   Future<List<model_route.Route>> getPendingSyncRoutes() async {
     final routeRows = await (db.select(db.routes)
-      ..where((tbl) => tbl.isCompleted.equals(true)))
-      .get();
+          ..where((tbl) => tbl.isCompleted.equals(true)))
+        .get();
 
     final routes = <model_route.Route>[];
     for (final routeRow in routeRows) {
@@ -166,22 +165,23 @@ class GpsLocalDataSourceImpl implements GpsLocalDataSource {
     double? accuracy,
   }) async {
     await db.into(db.gpsPoints).insertOnConflictUpdate(
-      GpsPointsCompanion(
-        id: Value(id),
-        campaignId: Value(campaignId),
-        routeId: const Value.absent(),
-        latitude: Value(latitude),
-        longitude: Value(longitude),
-        timestamp: Value(timestamp),
-        speed: Value(speed),
-        accuracy: Value(accuracy),
-        syncedAt: const Value(null),
-      ),
-    );
+          GpsPointsCompanion(
+            id: Value(id),
+            campaignId: Value(campaignId),
+            routeId: const Value.absent(),
+            latitude: Value(latitude),
+            longitude: Value(longitude),
+            timestamp: Value(timestamp),
+            speed: Value(speed),
+            accuracy: Value(accuracy),
+            syncedAt: const Value(null),
+          ),
+        );
   }
 
   /// Save multiple GPS points for campaign execution in a batch
-  Future<void> saveCampaignGpsPoints(String campaignId, List<model.GpsPoint> points) async {
+  Future<void> saveCampaignGpsPoints(
+      String campaignId, List<model.GpsPoint> points) async {
     await db.batch((batch) {
       for (final point in points) {
         batch.insert(
@@ -204,68 +204,72 @@ class GpsLocalDataSourceImpl implements GpsLocalDataSource {
   }
 
   /// Get all unsynced GPS points for a campaign
-  Future<List<model.GpsPoint>> getUnsyncedCampaignPoints(String campaignId) async {
+  Future<List<model.GpsPoint>> getUnsyncedCampaignPoints(
+      String campaignId) async {
     final pointRows = await (db.select(db.gpsPoints)
-      ..where((tbl) => tbl.campaignId.equals(campaignId))
-      ..where((tbl) => tbl.syncedAt.isNull())
-      ..orderBy([(tbl) => OrderingTerm.asc(tbl.timestamp)]))
-      .get();
+          ..where((tbl) => tbl.campaignId.equals(campaignId))
+          ..where((tbl) => tbl.syncedAt.isNull())
+          ..orderBy([(tbl) => OrderingTerm.asc(tbl.timestamp)]))
+        .get();
 
-    return pointRows.map((row) => model.GpsPoint(
-      id: row.id,
-      routeId: row.routeId ?? '',
-      latitude: row.latitude,
-      longitude: row.longitude,
-      timestamp: row.timestamp,
-      speed: row.speed,
-      accuracy: row.accuracy,
-    )).toList();
+    return pointRows
+        .map((row) => model.GpsPoint(
+              id: row.id,
+              routeId: row.routeId ?? '',
+              latitude: row.latitude,
+              longitude: row.longitude,
+              timestamp: row.timestamp,
+              speed: row.speed,
+              accuracy: row.accuracy,
+            ))
+        .toList();
   }
 
   /// Get all GPS points for a campaign (for drawing polyline)
   Future<List<model.GpsPoint>> getCampaignGpsPoints(String campaignId) async {
     final pointRows = await (db.select(db.gpsPoints)
-      ..where((tbl) => tbl.campaignId.equals(campaignId))
-      ..orderBy([(tbl) => OrderingTerm.asc(tbl.timestamp)]))
-      .get();
+          ..where((tbl) => tbl.campaignId.equals(campaignId))
+          ..orderBy([(tbl) => OrderingTerm.asc(tbl.timestamp)]))
+        .get();
 
-    return pointRows.map((row) => model.GpsPoint(
-      id: row.id,
-      routeId: row.routeId ?? '',
-      latitude: row.latitude,
-      longitude: row.longitude,
-      timestamp: row.timestamp,
-      speed: row.speed,
-      accuracy: row.accuracy,
-    )).toList();
+    return pointRows
+        .map((row) => model.GpsPoint(
+              id: row.id,
+              routeId: row.routeId ?? '',
+              latitude: row.latitude,
+              longitude: row.longitude,
+              timestamp: row.timestamp,
+              speed: row.speed,
+              accuracy: row.accuracy,
+            ))
+        .toList();
   }
 
   /// Mark GPS points as synced
   Future<void> markPointsAsSynced(List<String> pointIds) async {
     if (pointIds.isEmpty) return;
 
-    await (db.update(db.gpsPoints)
-      ..where((tbl) => tbl.id.isIn(pointIds)))
-      .write(GpsPointsCompanion(
-        syncedAt: Value(DateTime.now()),
-      ));
+    await (db.update(db.gpsPoints)..where((tbl) => tbl.id.isIn(pointIds)))
+        .write(GpsPointsCompanion(
+      syncedAt: Value(DateTime.now()),
+    ));
   }
 
   /// Delete all GPS points for a campaign
   Future<void> deleteCampaignGpsPoints(String campaignId) async {
     await (db.delete(db.gpsPoints)
-      ..where((tbl) => tbl.campaignId.equals(campaignId)))
-      .go();
+          ..where((tbl) => tbl.campaignId.equals(campaignId)))
+        .go();
   }
 
   /// Get count of unsynced points for a campaign
   Future<int> getUnsyncedPointCount(String campaignId) async {
     final count = await (db.selectOnly(db.gpsPoints)
-      ..addColumns([db.gpsPoints.id.count()])
-      ..where(db.gpsPoints.campaignId.equals(campaignId))
-      ..where(db.gpsPoints.syncedAt.isNull()))
-      .map((row) => row.read(db.gpsPoints.id.count()))
-      .getSingle();
+          ..addColumns([db.gpsPoints.id.count()])
+          ..where(db.gpsPoints.campaignId.equals(campaignId))
+          ..where(db.gpsPoints.syncedAt.isNull()))
+        .map((row) => row.read(db.gpsPoints.id.count()))
+        .getSingle();
     return count ?? 0;
   }
 }

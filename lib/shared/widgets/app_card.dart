@@ -37,7 +37,8 @@ class AppCard extends StatelessWidget {
                 )
               : BorderSide.none,
         ),
-        child: padding != null ? Padding(padding: padding!, child: child) : child,
+        child:
+            padding != null ? Padding(padding: padding!, child: child) : child,
       ),
     );
   }

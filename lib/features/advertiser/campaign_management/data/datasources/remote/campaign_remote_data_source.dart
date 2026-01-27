@@ -40,8 +40,10 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
       if (createdBy != null) filters.add('created_by=$createdBy');
       if (acceptedBy != null) filters.add('accepted_by=$acceptedBy');
       if (upcoming != null) filters.add('upcoming=$upcoming');
-      if (startTimeFrom != null) filters.add('start_time_from=${startTimeFrom.toIso8601String()}');
-      if (startTimeTo != null) filters.add('start_time_to=${startTimeTo.toIso8601String()}');
+      if (startTimeFrom != null)
+        filters.add('start_time_from=${startTimeFrom.toIso8601String()}');
+      if (startTimeTo != null)
+        filters.add('start_time_to=${startTimeTo.toIso8601String()}');
       if (sortBy != null) filters.add('sort_by=$sortBy');
       if (sortOrder != null) filters.add('sort_order=$sortOrder');
       if (lat != null) filters.add('lat=$lat');
@@ -49,7 +51,8 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
       if (radius != null) filters.add('radius=$radius');
       if (perPage != null) filters.add('per_page=$perPage');
 
-      AppLogger.auth.i('Fetching campaigns list${filters.isNotEmpty ? ' with filters: ${filters.join(', ')}' : ''}');
+      AppLogger.auth.i(
+          'Fetching campaigns list${filters.isNotEmpty ? ' with filters: ${filters.join(', ')}' : ''}');
 
       final queryParameters = <String, dynamic>{};
       if (status != null) queryParameters['status'] = status;
@@ -57,8 +60,10 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
       if (createdBy != null) queryParameters['created_by'] = createdBy;
       if (acceptedBy != null) queryParameters['accepted_by'] = acceptedBy;
       if (upcoming != null) queryParameters['upcoming'] = upcoming;
-      if (startTimeFrom != null) queryParameters['start_time_from'] = startTimeFrom.toIso8601String();
-      if (startTimeTo != null) queryParameters['start_time_to'] = startTimeTo.toIso8601String();
+      if (startTimeFrom != null)
+        queryParameters['start_time_from'] = startTimeFrom.toIso8601String();
+      if (startTimeTo != null)
+        queryParameters['start_time_to'] = startTimeTo.toIso8601String();
       if (sortBy != null) queryParameters['sort_by'] = sortBy;
       if (sortOrder != null) queryParameters['sort_order'] = sortOrder;
       if (lat != null) queryParameters['lat'] = lat;
@@ -78,10 +83,12 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
 
       if (response.statusCode == 200) {
         final data = response.data;
-        AppLogger.auth.i('Campaigns fetched successfully: ${data is List ? data.length : 0} campaigns');
+        AppLogger.auth.i(
+            'Campaigns fetched successfully: ${data is List ? data.length : 0} campaigns');
 
         // Handle both array and object with data property
-        final List campaigns = data is List ? data : (data['data'] as List? ?? []);
+        final List campaigns =
+            data is List ? data : (data['data'] as List? ?? []);
 
         return campaigns
             .map((json) => Campaign.fromJson(json as Map<String, dynamic>))
@@ -117,7 +124,8 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
         throw Exception('Failed to fetch campaign: ${response.statusMessage}');
       }
     } on DioException catch (e) {
-      AppLogger.auth.e('Fetch campaign failed: ${e.response?.statusCode} - ${e.message}');
+      AppLogger.auth
+          .e('Fetch campaign failed: ${e.response?.statusCode} - ${e.message}');
 
       if (e.response != null) {
         final statusCode = e.response!.statusCode;
@@ -142,7 +150,8 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
 
       // STEP 1: If audio file provided, set placeholder URL
       if (audioFile != null) {
-        AppLogger.auth.i('Audio file provided, creating campaign with placeholder URL');
+        AppLogger.auth
+            .i('Audio file provided, creating campaign with placeholder URL');
         campaignToCreate = campaign.copyWith(
           audioUrl: 'https://placeholder.com/audio.mp3',
         );
@@ -179,7 +188,8 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
           } else if (responseData is Map) {
             json = Map<String, dynamic>.from(responseData);
           } else {
-            throw Exception('Unexpected response data type: ${responseData.runtimeType}');
+            throw Exception(
+                'Unexpected response data type: ${responseData.runtimeType}');
           }
         } catch (e) {
           AppLogger.auth.e('Failed to parse response data: $e');
@@ -188,19 +198,22 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
         }
 
         final createdCampaign = Campaign.fromJson(json);
-        AppLogger.auth.i('Campaign created successfully: ${createdCampaign.id}');
+        AppLogger.auth
+            .i('Campaign created successfully: ${createdCampaign.id}');
 
         // STEP 3: Upload audio file if provided
         if (audioFile != null && createdCampaign.id != null) {
           final mediaSource = mediaDataSource;
           if (mediaSource == null) {
-            AppLogger.auth.w('Media data source not available, returning campaign with placeholder URL');
+            AppLogger.auth.w(
+                'Media data source not available, returning campaign with placeholder URL');
             return createdCampaign;
           }
 
           try {
             // Upload audio to /campaigns/{id}/media
-            AppLogger.auth.i('Uploading audio to campaign: ${createdCampaign.id}');
+            AppLogger.auth
+                .i('Uploading audio to campaign: ${createdCampaign.id}');
             final uploadResponse = await mediaSource.uploadMedia(
               modelType: ModelType.campaigns,
               modelId: createdCampaign.id!,
@@ -208,10 +221,12 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
               role: MediaRole.audio,
             );
 
-            AppLogger.auth.i('Audio uploaded successfully: ${uploadResponse.url}');
+            AppLogger.auth
+                .i('Audio uploaded successfully: ${uploadResponse.url}');
 
             // STEP 4: Update campaign with real audio URL
-            final updatedCampaign = createdCampaign.copyWith(audioUrl: uploadResponse.url);
+            final updatedCampaign =
+                createdCampaign.copyWith(audioUrl: uploadResponse.url);
 
             AppLogger.auth.i('Updating campaign with real audio URL');
             final updateResponse = await dio.put(
@@ -226,7 +241,8 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
             );
 
             if (updateResponse.statusCode == 200) {
-              AppLogger.auth.i('Campaign updated with real audio URL successfully');
+              AppLogger.auth
+                  .i('Campaign updated with real audio URL successfully');
 
               final updateData = updateResponse.data;
               final updateJson = updateData is String
@@ -235,7 +251,8 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
 
               return Campaign.fromJson(updateJson);
             } else {
-              AppLogger.auth.w('Failed to update campaign with audio URL, returning campaign with uploaded URL');
+              AppLogger.auth.w(
+                  'Failed to update campaign with audio URL, returning campaign with uploaded URL');
               return updatedCampaign;
             }
           } catch (uploadError) {
@@ -257,7 +274,8 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
         throw Exception('Session expired. Please log in again.');
       }
 
-      AppLogger.auth.e('Campaign creation failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+      AppLogger.auth.e(
+          'Campaign creation failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
 
       if (e.response != null) {
         final statusCode = e.response!.statusCode;
@@ -298,7 +316,8 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
             throw Exception('Unable to create campaign. Please try again.');
         }
       } else {
-        throw Exception('Network error. Please check your connection and try again.');
+        throw Exception(
+            'Network error. Please check your connection and try again.');
       }
     } catch (e) {
       AppLogger.auth.e('Unexpected error during campaign creation: $e');
@@ -330,7 +349,8 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
         throw Exception('Failed to update campaign: ${response.statusMessage}');
       }
     } on DioException catch (e) {
-      AppLogger.auth.e('Campaign update failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+      AppLogger.auth.e(
+          'Campaign update failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
 
       if (e.response != null) {
         final statusCode = e.response!.statusCode;
@@ -360,7 +380,8 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
             throw Exception('Unable to update campaign. Please try again.');
         }
       } else {
-        throw Exception('Network error. Please check your connection and try again.');
+        throw Exception(
+            'Network error. Please check your connection and try again.');
       }
     } catch (e) {
       AppLogger.auth.e('Unexpected error during campaign update: $e');
@@ -388,7 +409,8 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
         throw Exception('Failed to delete campaign: ${response.statusMessage}');
       }
     } on DioException catch (e) {
-      AppLogger.auth.e('Campaign deletion failed: ${e.response?.statusCode} - ${e.message}');
+      AppLogger.auth.e(
+          'Campaign deletion failed: ${e.response?.statusCode} - ${e.message}');
 
       if (e.response != null) {
         final statusCode = e.response!.statusCode;
@@ -396,7 +418,8 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
           case 404:
             throw Exception('Campaign not found.');
           case 403:
-            throw Exception('You do not have permission to delete this campaign.');
+            throw Exception(
+                'You do not have permission to delete this campaign.');
           default:
             throw Exception('Unable to delete campaign.');
         }
@@ -426,13 +449,15 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
 
       if (response.statusCode == 200) {
         final json = response.data;
-        AppLogger.auth.i('Campaign cancelled successfully: ${json['campaign']['id']}');
+        AppLogger.auth
+            .i('Campaign cancelled successfully: ${json['campaign']['id']}');
         return Campaign.fromJson(json['campaign']);
       } else {
         throw Exception('Failed to cancel campaign: ${response.statusMessage}');
       }
     } on DioException catch (e) {
-      AppLogger.auth.e('Campaign cancellation failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+      AppLogger.auth.e(
+          'Campaign cancellation failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
 
       if (e.response != null) {
         final statusCode = e.response!.statusCode;
@@ -442,7 +467,8 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
           case 404:
             throw Exception('Campaign not found.');
           case 403:
-            throw Exception('You do not have permission to cancel this campaign.');
+            throw Exception(
+                'You do not have permission to cancel this campaign.');
           case 422:
             // Handle validation errors
             if (responseData is Map && responseData.containsKey('message')) {
@@ -464,7 +490,8 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
             throw Exception('Unable to cancel campaign. Please try again.');
         }
       } else {
-        throw Exception('Network error. Please check your connection and try again.');
+        throw Exception(
+            'Network error. Please check your connection and try again.');
       }
     } catch (e) {
       AppLogger.auth.e('Unexpected error during campaign cancellation: $e');
@@ -494,7 +521,8 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
         throw Exception('Failed to fetch KPI stats: ${response.statusMessage}');
       }
     } on DioException catch (e) {
-      AppLogger.auth.e('Fetch KPI stats failed: ${e.response?.statusCode} - ${e.message}');
+      AppLogger.auth.e(
+          'Fetch KPI stats failed: ${e.response?.statusCode} - ${e.message}');
 
       if (e.response != null) {
         final statusCode = e.response!.statusCode;

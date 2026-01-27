@@ -49,7 +49,8 @@ class _PromoterActivePageState extends ConsumerState<PromoterActivePage> {
                 value: kpiStatsAsync.when(
                   loading: () => '-',
                   error: (_, __) => '-',
-                  data: (stats) => '\$${stats.thisWeekEarnings.toStringAsFixed(2)}',
+                  data: (stats) =>
+                      '\$${stats.thisWeekEarnings.toStringAsFixed(2)}',
                 ),
                 icon: Icons.attach_money,
                 iconColor: AppColors.green,
@@ -60,7 +61,8 @@ class _PromoterActivePageState extends ConsumerState<PromoterActivePage> {
                 value: kpiStatsAsync.when(
                   loading: () => '-',
                   error: (_, __) => '-',
-                  data: (stats) => '${stats.totalDistanceKm.toStringAsFixed(1)} km',
+                  data: (stats) =>
+                      '${stats.totalDistanceKm.toStringAsFixed(1)} km',
                 ),
                 icon: Icons.route_outlined,
                 iconColor: AppColors.secondary,
@@ -372,7 +374,8 @@ class _ActiveCampaignCard extends StatelessWidget {
     if (now.isBefore(campaign.startTime)) return 0.0;
     if (now.isAfter(campaign.endTime)) return 1.0;
 
-    final totalDuration = campaign.endTime.difference(campaign.startTime).inMinutes;
+    final totalDuration =
+        campaign.endTime.difference(campaign.startTime).inMinutes;
     final elapsed = now.difference(campaign.startTime).inMinutes;
     return (elapsed / totalDuration).clamp(0.0, 1.0);
   }
@@ -422,7 +425,8 @@ class _ActiveCampaignCard extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: isExecuting
                       ? AppColors.secondary.withValues(alpha: 0.1)
@@ -567,14 +571,21 @@ class _ActiveCampaignCard extends StatelessWidget {
                     );
                   },
                   icon: Icon(
-                    isExecuting ? Icons.pause_circle_outline : Icons.play_circle_outline,
+                    isExecuting
+                        ? Icons.pause_circle_outline
+                        : Icons.play_circle_outline,
                     size: 20,
                   ),
-                  label: Text(isExecuting ? l10n.viewExecution : l10n.startPromotion),
+                  label: Text(
+                      isExecuting ? l10n.viewExecution : l10n.startPromotion),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: isExecuting ? AppColors.secondary : AppColors.textPrimary,
+                    foregroundColor: isExecuting
+                        ? AppColors.secondary
+                        : AppColors.textPrimary,
                     side: BorderSide(
-                      color: isExecuting ? AppColors.secondary : AppColors.grayLightStroke,
+                      color: isExecuting
+                          ? AppColors.secondary
+                          : AppColors.grayLightStroke,
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
@@ -657,7 +668,8 @@ class _CompletedCampaignCard extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: AppColors.grayLightStroke,
                   borderRadius: BorderRadius.circular(16),
@@ -770,7 +782,6 @@ class _CompletedCampaignCard extends StatelessWidget {
     );
   }
 }
-
 
 class CompletedCampaign {
   final String name;

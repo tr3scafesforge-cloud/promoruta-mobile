@@ -24,7 +24,9 @@ class _LanguageSettingsPageState extends ConsumerState<LanguageSettingsPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => context.canPop() ? context.pop() : context.go('/advertiser-home?tab=profile'),
+          onPressed: () => context.canPop()
+              ? context.pop()
+              : context.go('/advertiser-home?tab=profile'),
           icon: const Icon(Icons.arrow_back, color: Colors.black87),
         ),
         title: Text(l10n.language),

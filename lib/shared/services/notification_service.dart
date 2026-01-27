@@ -24,7 +24,8 @@ class DialogAction {
 /// Abstract notification service interface
 abstract class NotificationService {
   /// Shows a toast notification
-  void showToast(String message, {
+  void showToast(
+    String message, {
     ToastType type = ToastType.info,
     required BuildContext context,
   });

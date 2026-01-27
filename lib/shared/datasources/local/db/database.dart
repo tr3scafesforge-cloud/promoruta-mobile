@@ -43,13 +43,13 @@ class Users extends Table {
   TextColumn get photoUrl => text().nullable()();
   DateTimeColumn get refreshExpiresIn => dateTime().nullable()();
   TextColumn get refreshToken => text().nullable()();
-  BoolColumn get twoFactorEnabled => boolean().withDefault(const Constant(false))();
+  BoolColumn get twoFactorEnabled =>
+      boolean().withDefault(const Constant(false))();
   DateTimeColumn get twoFactorConfirmedAt => dateTime().nullable()();
 
   @override
   Set<Column> get primaryKey => {id};
 }
-
 
 class Routes extends Table {
   TextColumn get id => text()();
@@ -66,13 +66,15 @@ class Routes extends Table {
 class GpsPoints extends Table {
   TextColumn get id => text()();
   TextColumn get routeId => text().references(Routes, #id).nullable()();
-  TextColumn get campaignId => text().nullable()(); // Campaign this point belongs to
+  TextColumn get campaignId =>
+      text().nullable()(); // Campaign this point belongs to
   RealColumn get latitude => real()();
   RealColumn get longitude => real()();
   DateTimeColumn get timestamp => dateTime()();
   RealColumn get speed => real().nullable()();
   RealColumn get accuracy => real().nullable()();
-  DateTimeColumn get syncedAt => dateTime().nullable()(); // When synced to backend
+  DateTimeColumn get syncedAt =>
+      dateTime().nullable()(); // When synced to backend
 
   @override
   Set<Column> get primaryKey => {id};
@@ -135,7 +137,8 @@ class AppDatabase extends _$AppDatabase {
 
         /// Use versioned schema approach for migrations from version 3 to 5
         if (from >= 3 && from < 5) {
-          AppLogger.database.i('Running versioned migrations from $from to ${to >= 5 ? 5 : to}');
+          AppLogger.database.i(
+              'Running versioned migrations from $from to ${to >= 5 ? 5 : to}');
           await transaction(
             () => VersionedSchema.runMigrationSteps(
               migrator: m,
@@ -143,14 +146,17 @@ class AppDatabase extends _$AppDatabase {
               to: to >= 5 ? 5 : to,
               steps: migrationSteps(
                 from3To4: (Migrator m, Schema4 schema) async {
-                  AppLogger.database.i('Migration 3→4: Adding name, emailVerifiedAt, updatedAt to Users');
+                  AppLogger.database.i(
+                      'Migration 3→4: Adding name, emailVerifiedAt, updatedAt to Users');
                   await m.addColumn(schema.users, schema.users.name);
                   await m.addColumn(schema.users, schema.users.emailVerifiedAt);
                   await m.addColumn(schema.users, schema.users.updatedAt);
                 },
                 from4To5: (Migrator m, Schema5 schema) async {
-                  AppLogger.database.i('Migration 4→5: Adding refreshExpiresIn, refreshToken to Users');
-                  await m.addColumn(schema.users, schema.users.refreshExpiresIn);
+                  AppLogger.database.i(
+                      'Migration 4→5: Adding refreshExpiresIn, refreshToken to Users');
+                  await m.addColumn(
+                      schema.users, schema.users.refreshExpiresIn);
                   await m.addColumn(schema.users, schema.users.refreshToken);
                 },
               ),
@@ -169,7 +175,8 @@ class AppDatabase extends _$AppDatabase {
 
         /// Handle migration from version 6 to 7 (add GPS tracking columns)
         if (from <= 6 && to >= 7) {
-          AppLogger.database.i('Migration 6→7: Adding campaignId and syncedAt to GpsPoints');
+          AppLogger.database
+              .i('Migration 6→7: Adding campaignId and syncedAt to GpsPoints');
           await transaction(() async {
             await m.addColumn(gpsPoints, gpsPoints.campaignId);
             await m.addColumn(gpsPoints, gpsPoints.syncedAt);
@@ -183,9 +190,11 @@ class AppDatabase extends _$AppDatabase {
         await customStatement('PRAGMA foreign_keys = ON');
 
         if (details.wasCreated) {
-          AppLogger.database.i('Database created with schema version $schemaVersion');
+          AppLogger.database
+              .i('Database created with schema version $schemaVersion');
         } else if (details.hadUpgrade) {
-          AppLogger.database.i('Database upgraded from ${details.versionBefore} to ${details.versionNow}');
+          AppLogger.database.i(
+              'Database upgraded from ${details.versionBefore} to ${details.versionNow}');
         }
       },
     );

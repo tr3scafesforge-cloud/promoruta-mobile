@@ -31,7 +31,8 @@ class AdvertiserSearchFilterBar extends StatelessWidget {
             child: Row(
               children: [
                 const SizedBox(width: 12),
-                Icon(Icons.search, size: 20, color: theme.colorScheme.onSurfaceVariant),
+                Icon(Icons.search,
+                    size: 20, color: theme.colorScheme.onSurfaceVariant),
                 const SizedBox(width: 8),
                 Expanded(
                   child: TextField(
@@ -45,7 +46,8 @@ class AdvertiserSearchFilterBar extends StatelessWidget {
                 ),
                 if (onClear != null && controller.text.isNotEmpty)
                   IconButton(
-                    icon: Icon(Icons.close, size: 18, color: theme.colorScheme.onSurfaceVariant),
+                    icon: Icon(Icons.close,
+                        size: 18, color: theme.colorScheme.onSurfaceVariant),
                     onPressed: onClear,
                   ),
               ],

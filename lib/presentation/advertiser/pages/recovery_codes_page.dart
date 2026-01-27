@@ -98,7 +98,8 @@ class _RecoveryCodesPageState extends ConsumerState<RecoveryCodesPage> {
     setState(() => _isRegenerating = true);
 
     try {
-      final regenerateUseCase = ref.read(regenerateRecoveryCodesUseCaseProvider);
+      final regenerateUseCase =
+          ref.read(regenerateRecoveryCodesUseCaseProvider);
       final response = await regenerateUseCase(
         RegenerateRecoveryCodesParams(password: password),
       );
@@ -160,7 +161,8 @@ class _RecoveryCodesPageState extends ConsumerState<RecoveryCodesPage> {
         ),
         title: Text(
           l10n.recoveryCodesPageTitle,
-          style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w700),
+          style: const TextStyle(
+              color: Colors.black87, fontWeight: FontWeight.w700),
         ),
         actions: [
           if (!_isLoading && _recoveryCodes.isNotEmpty)

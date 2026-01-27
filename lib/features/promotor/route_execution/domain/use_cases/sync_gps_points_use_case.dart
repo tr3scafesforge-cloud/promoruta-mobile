@@ -35,7 +35,8 @@ class SyncGpsPointsUseCase {
   Future<SyncResult> call(String campaignId) async {
     try {
       // Get unsynced points
-      final unsyncedPoints = await _localDataSource.getUnsyncedCampaignPoints(campaignId);
+      final unsyncedPoints =
+          await _localDataSource.getUnsyncedCampaignPoints(campaignId);
 
       if (unsyncedPoints.isEmpty) {
         AppLogger.location.d('No unsynced points for campaign $campaignId');

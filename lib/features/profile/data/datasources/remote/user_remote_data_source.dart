@@ -32,7 +32,8 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         throw Exception('Failed to get user: ${response.statusMessage}');
       }
     } on DioException catch (e) {
-      AppLogger.auth.e('Get user by ID failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+      AppLogger.auth.e(
+          'Get user by ID failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
 
       if (e.response != null) {
         final statusCode = e.response!.statusCode;
@@ -41,15 +42,18 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
           case 404:
             throw Exception('User not found.');
           case 403:
-            throw Exception('Access denied. You do not have permission to view this user.');
+            throw Exception(
+                'Access denied. You do not have permission to view this user.');
           case 500:
             throw Exception('Server error. Please try again later.');
           default:
-            throw Exception('Unable to get user information. Please try again later.');
+            throw Exception(
+                'Unable to get user information. Please try again later.');
         }
       } else {
         // Network or other Dio errors
-        throw Exception('Network error. Please check your connection and try again.');
+        throw Exception(
+            'Network error. Please check your connection and try again.');
       }
     }
   }

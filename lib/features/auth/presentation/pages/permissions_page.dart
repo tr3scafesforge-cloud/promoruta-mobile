@@ -63,7 +63,8 @@ class _PermissionsState extends ConsumerState<Permissions> {
                     PermissionCard(
                       icon: Icons.location_on,
                       iconColor: AppColors.blueDark,
-                      backgroundColor: AppColors.blueDark.withValues(alpha: 0.2),
+                      backgroundColor:
+                          AppColors.blueDark.withValues(alpha: 0.2),
                       title: AppLocalizations.of(context).locationTitle,
                       subtitle: AppLocalizations.of(context).locationSubtitle,
                       isGranted: permissionState.locationGranted,
@@ -74,7 +75,8 @@ class _PermissionsState extends ConsumerState<Permissions> {
                     PermissionCard(
                       icon: Icons.notifications,
                       iconColor: AppColors.deepOrange,
-                      backgroundColor: AppColors.deepOrange.withValues(alpha: 0.2),
+                      backgroundColor:
+                          AppColors.deepOrange.withValues(alpha: 0.2),
                       title: AppLocalizations.of(context).notificationsTitle,
                       subtitle:
                           AppLocalizations.of(context).notificationsSubtitle,
@@ -86,7 +88,8 @@ class _PermissionsState extends ConsumerState<Permissions> {
                     PermissionCard(
                       icon: Icons.mic,
                       iconColor: AppColors.secondary,
-                      backgroundColor: AppColors.secondary.withValues(alpha: 0.2),
+                      backgroundColor:
+                          AppColors.secondary.withValues(alpha: 0.2),
                       title: AppLocalizations.of(context).microphoneTitle,
                       subtitle: AppLocalizations.of(context).microphoneSubtitle,
                       isGranted: permissionState.microphoneGranted,
@@ -149,4 +152,3 @@ class _PermissionsState extends ConsumerState<Permissions> {
     );
   }
 }
-

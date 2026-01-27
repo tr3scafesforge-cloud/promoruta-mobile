@@ -47,7 +47,8 @@ class AdvertiserLiveRemoteDataSourceImpl
           AppLogger.campaign.i('Fetched ${campaigns.length} live campaigns');
 
           return campaigns
-              .map((json) => LiveCampaign.fromJson(json as Map<String, dynamic>))
+              .map(
+                  (json) => LiveCampaign.fromJson(json as Map<String, dynamic>))
               .toList();
         }
       } on DioException catch (e) {
@@ -236,7 +237,8 @@ class AdvertiserLiveRemoteDataSourceImpl
       } on DioException catch (e) {
         if (e.response?.statusCode == 404) {
           // Alerts endpoint doesn't exist yet - return empty list
-          AppLogger.campaign.w('Alerts endpoint not found, returning empty list');
+          AppLogger.campaign
+              .w('Alerts endpoint not found, returning empty list');
           return [];
         }
         rethrow;

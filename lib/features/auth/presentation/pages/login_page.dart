@@ -74,14 +74,16 @@ class _LoginState extends ConsumerState<Login> {
                     Text(
                       AppLocalizations.of(context).welcomeBack,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
                             fontSize: 16,
                           ),
                     ),
                     Text(
                       AppLocalizations.of(context).loginToContinue,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
                             fontSize: 16,
                           ),
                     ),
@@ -97,7 +99,10 @@ class _LoginState extends ConsumerState<Login> {
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
-                        color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.1),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .shadow
+                            .withValues(alpha: 0.1),
                         spreadRadius: 1,
                         blurRadius: 10,
                         offset: const Offset(0, 2),
@@ -130,7 +135,8 @@ class _LoginState extends ConsumerState<Login> {
                                   .titleMedium
                                   ?.copyWith(
                                     fontWeight: FontWeight.bold,
-                                    color: Theme.of(context).colorScheme.onSurface,
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
                                   ),
                             ),
                             const SizedBox(height: 8),
@@ -139,23 +145,27 @@ class _LoginState extends ConsumerState<Login> {
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: Theme.of(context).colorScheme.surface,
+                                fillColor:
+                                    Theme.of(context).colorScheme.surface,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                   borderSide: BorderSide(
-                                    color: Theme.of(context).colorScheme.outline,
+                                    color:
+                                        Theme.of(context).colorScheme.outline,
                                   ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                   borderSide: BorderSide(
-                                    color: Theme.of(context).colorScheme.outline,
+                                    color:
+                                        Theme.of(context).colorScheme.outline,
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                   borderSide: BorderSide(
-                                    color: Theme.of(context).colorScheme.primary,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
                                     width: 2,
                                   ),
                                 ),
@@ -192,7 +202,8 @@ class _LoginState extends ConsumerState<Login> {
                                   .titleMedium
                                   ?.copyWith(
                                     fontWeight: FontWeight.bold,
-                                    color: Theme.of(context).colorScheme.onSurface,
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
                                   ),
                             ),
                             const SizedBox(height: 8),
@@ -201,23 +212,27 @@ class _LoginState extends ConsumerState<Login> {
                               obscureText: _obscurePassword,
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: Theme.of(context).colorScheme.surface,
+                                fillColor:
+                                    Theme.of(context).colorScheme.surface,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                   borderSide: BorderSide(
-                                    color: Theme.of(context).colorScheme.outline,
+                                    color:
+                                        Theme.of(context).colorScheme.outline,
                                   ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                   borderSide: BorderSide(
-                                    color: Theme.of(context).colorScheme.outline,
+                                    color:
+                                        Theme.of(context).colorScheme.outline,
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                   borderSide: BorderSide(
-                                    color: Theme.of(context).colorScheme.primary,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
                                     width: 2,
                                   ),
                                 ),
@@ -226,7 +241,9 @@ class _LoginState extends ConsumerState<Login> {
                                     _obscurePassword
                                         ? Icons.visibility
                                         : Icons.visibility_off,
-                                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurfaceVariant,
                                   ),
                                   onPressed: () {
                                     setState(() {
@@ -273,7 +290,8 @@ class _LoginState extends ConsumerState<Login> {
                                   .textTheme
                                   .bodyMedium
                                   ?.copyWith(
-                                    color: Theme.of(context).colorScheme.primary,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
                                   ),
                             ),
                           ),
@@ -294,21 +312,27 @@ class _LoginState extends ConsumerState<Login> {
                               if (_formKey.currentState!.validate()) {
                                 try {
                                   // Use the auth notifier to login, which updates the auth state
-                                  await ref.read(authStateProvider.notifier).login(
-                                    _emailController.text.trim(),
-                                    _passwordController.text,
-                                  );
+                                  await ref
+                                      .read(authStateProvider.notifier)
+                                      .login(
+                                        _emailController.text.trim(),
+                                        _passwordController.text,
+                                      );
 
                                   // Navigate based on the updated auth state
                                   if (context.mounted) {
-                                    final authState = ref.read(authStateProvider);
+                                    final authState =
+                                        ref.read(authStateProvider);
                                     authState.maybeWhen(
                                       data: (user) {
                                         if (user != null) {
                                           if (user.role == UserRole.promoter) {
-                                            const PromoterHomeRoute().go(context);
-                                          } else if (user.role == UserRole.advertiser) {
-                                            const AdvertiserHomeRoute().go(context);
+                                            const PromoterHomeRoute()
+                                                .go(context);
+                                          } else if (user.role ==
+                                              UserRole.advertiser) {
+                                            const AdvertiserHomeRoute()
+                                                .go(context);
                                           } else {
                                             const HomeRoute().go(context);
                                           }
@@ -316,9 +340,11 @@ class _LoginState extends ConsumerState<Login> {
                                       },
                                       orElse: () {
                                         // If login failed or state not updated, show error
-                                        ScaffoldMessenger.of(context).showSnackBar(
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
                                           const SnackBar(
-                                            content: Text('Login failed: Unable to determine user role'),
+                                            content: Text(
+                                                'Login failed: Unable to determine user role'),
                                             backgroundColor: Colors.red,
                                           ),
                                         );
@@ -338,7 +364,8 @@ class _LoginState extends ConsumerState<Login> {
                                   if (context.mounted) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                        content: Text('Login failed: ${e.toString()}'),
+                                        content: Text(
+                                            'Login failed: ${e.toString()}'),
                                         backgroundColor: Colors.red,
                                       ),
                                     );
@@ -347,8 +374,10 @@ class _LoginState extends ConsumerState<Login> {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Theme.of(context).colorScheme.primary,
-                              foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
+                              foregroundColor:
+                                  Theme.of(context).colorScheme.onPrimary,
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
@@ -362,7 +391,8 @@ class _LoginState extends ConsumerState<Login> {
                                   .bodyLarge
                                   ?.copyWith(
                                     fontWeight: FontWeight.w600,
-                                    color: Theme.of(context).colorScheme.onPrimary,
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
                                   ),
                             ),
                           ),
@@ -373,21 +403,28 @@ class _LoginState extends ConsumerState<Login> {
                         if (_kSocialLoginEnabled) ...[
                           Row(
                             children: [
-                              Expanded(child: Divider(color: Theme.of(context).dividerColor)),
+                              Expanded(
+                                  child: Divider(
+                                      color: Theme.of(context).dividerColor)),
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
                                 child: Text(
                                   AppLocalizations.of(context).orContinueWith,
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodySmall
                                       ?.copyWith(
-                                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurfaceVariant,
                                         fontWeight: FontWeight.w500,
                                       ),
                                 ),
                               ),
-                              Expanded(child: Divider(color: Theme.of(context).dividerColor)),
+                              Expanded(
+                                  child: Divider(
+                                      color: Theme.of(context).dividerColor)),
                             ],
                           ),
                           const SizedBox(height: 24),
@@ -427,7 +464,9 @@ class _LoginState extends ConsumerState<Login> {
                                   .textTheme
                                   .bodyMedium
                                   ?.copyWith(
-                                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurfaceVariant,
                                   ),
                             ),
                             TextButton(
@@ -445,7 +484,8 @@ class _LoginState extends ConsumerState<Login> {
                                     .textTheme
                                     .bodyMedium
                                     ?.copyWith(
-                                      color: Theme.of(context).colorScheme.primary,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       fontWeight: FontWeight.w600,
                                     ),
                               ),

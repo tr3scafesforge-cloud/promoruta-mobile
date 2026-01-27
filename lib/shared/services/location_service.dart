@@ -69,7 +69,8 @@ class LocationService {
     if (Platform.isIOS) {
       final accuracy = await Geolocator.getLocationAccuracy();
       if (accuracy == LocationAccuracyStatus.reduced) {
-        AppLogger.location.i('iOS: Reduced accuracy detected, requesting full accuracy');
+        AppLogger.location
+            .i('iOS: Reduced accuracy detected, requesting full accuracy');
         // Request temporary full accuracy for campaign tracking
         final fullAccuracy = await Geolocator.requestTemporaryFullAccuracy(
           purposeKey: 'CampaignTracking',

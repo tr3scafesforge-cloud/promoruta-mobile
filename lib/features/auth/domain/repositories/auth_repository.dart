@@ -26,7 +26,8 @@ abstract class AuthRepository {
   Future<bool> isLoggedIn();
 
   /// Changes the user's password.
-  Future<void> changePassword(String currentPassword, String newPassword, String newPasswordConfirmation);
+  Future<void> changePassword(String currentPassword, String newPassword,
+      String newPasswordConfirmation);
 
   /// Requests a password reset code to be sent to the email.
   Future<String> requestPasswordResetCode(String email);
@@ -130,7 +131,8 @@ abstract class AuthRemoteDataSource {
   Future<void> logout();
 
   /// Changes the user's password.
-  Future<void> changePassword(String currentPassword, String newPassword, String newPasswordConfirmation);
+  Future<void> changePassword(String currentPassword, String newPassword,
+      String newPasswordConfirmation);
 
   /// Requests a password reset code to be sent to the email.
   Future<String> requestPasswordResetCode(String email);

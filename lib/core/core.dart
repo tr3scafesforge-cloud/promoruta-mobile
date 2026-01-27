@@ -5,7 +5,6 @@ export 'models/route.dart';
 export 'models/user.dart';
 export 'models/advertiser_kpi_stats.dart';
 
-
 // Utils
 export 'utils/permission_helper.dart';
 export 'utils/image_helper.dart';

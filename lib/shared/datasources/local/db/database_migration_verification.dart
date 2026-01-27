@@ -17,9 +17,11 @@ class DatabaseMigrationVerification {
 
   /// Get all tables in the database
   Future<List<String>> getAllTables() async {
-    final result = await db.customSelect(
-      "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name",
-    ).get();
+    final result = await db
+        .customSelect(
+          "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name",
+        )
+        .get();
 
     final tables = result.map((row) => row.read<String>('name')).toList();
     AppLogger.database.i('Database tables: $tables');
@@ -62,8 +64,8 @@ class DatabaseMigrationVerification {
       'photo_url',
       'refresh_expires_in',
       'refresh_token',
-      'two_factor_enabled',        // Schema v6
-      'two_factor_confirmed_at',   // Schema v6
+      'two_factor_enabled', // Schema v6
+      'two_factor_confirmed_at', // Schema v6
     ];
 
     final missingColumns = <String>[];
@@ -96,8 +98,14 @@ class DatabaseMigrationVerification {
 
     // Check all tables exist
     final tables = await getAllTables();
-    final expectedTables = ['users', 'campaigns_entity', 'routes', 'gps_points'];
-    final missingTables = expectedTables.where((t) => !tables.contains(t)).toList();
+    final expectedTables = [
+      'users',
+      'campaigns_entity',
+      'routes',
+      'gps_points'
+    ];
+    final missingTables =
+        expectedTables.where((t) => !tables.contains(t)).toList();
 
     if (missingTables.isEmpty) {
       AppLogger.database.i('✓ All expected tables exist');
@@ -122,16 +130,21 @@ class DatabaseMigrationVerification {
 
     try {
       // Try to query the 2FA columns
-      final result = await db.customSelect(
-        'SELECT two_factor_enabled, two_factor_confirmed_at FROM users LIMIT 1',
-      ).get();
+      final result = await db
+          .customSelect(
+            'SELECT two_factor_enabled, two_factor_confirmed_at FROM users LIMIT 1',
+          )
+          .get();
 
       if (result.isEmpty) {
         AppLogger.database.i('✓ 2FA columns exist (no users to test with)');
       } else {
-        final twoFactorEnabled = result.first.readNullable<int>('two_factor_enabled');
-        final twoFactorConfirmedAt = result.first.readNullable<DateTime>('two_factor_confirmed_at');
-        AppLogger.database.i('✓ 2FA columns can be read: enabled=$twoFactorEnabled, confirmedAt=$twoFactorConfirmedAt');
+        final twoFactorEnabled =
+            result.first.readNullable<int>('two_factor_enabled');
+        final twoFactorConfirmedAt =
+            result.first.readNullable<DateTime>('two_factor_confirmed_at');
+        AppLogger.database.i(
+            '✓ 2FA columns can be read: enabled=$twoFactorEnabled, confirmedAt=$twoFactorConfirmedAt');
       }
     } catch (e) {
       AppLogger.database.e('✗ Error testing 2FA columns: $e');

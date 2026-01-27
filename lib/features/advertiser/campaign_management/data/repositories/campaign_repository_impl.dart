@@ -128,12 +128,14 @@ class CampaignRepositoryImpl implements CampaignRepository {
   }
 
   @override
-  Future<model.Campaign> createCampaign(model.Campaign campaign, {File? audioFile}) async {
+  Future<model.Campaign> createCampaign(model.Campaign campaign,
+      {File? audioFile}) async {
     final isConnected = await _connectivityService.isConnected;
 
     if (isConnected) {
       try {
-        final createdCampaign = await _remoteDataSource.createCampaign(campaign, audioFile: audioFile);
+        final createdCampaign = await _remoteDataSource.createCampaign(campaign,
+            audioFile: audioFile);
 
         // Try to save locally, but don't fail if it errors
         try {
@@ -159,7 +161,8 @@ class CampaignRepositoryImpl implements CampaignRepository {
       } catch (localError) {
         AppLogger.auth.w('Could not save to local cache: $localError');
       }
-      throw Exception('No internet connection. Campaign creation requires online access.');
+      throw Exception(
+          'No internet connection. Campaign creation requires online access.');
     }
   }
 
@@ -169,7 +172,8 @@ class CampaignRepositoryImpl implements CampaignRepository {
 
     if (isConnected) {
       try {
-        final updatedCampaign = await _remoteDataSource.updateCampaign(campaign);
+        final updatedCampaign =
+            await _remoteDataSource.updateCampaign(campaign);
 
         // Try to update local cache, but don't fail if it errors
         try {
@@ -195,7 +199,8 @@ class CampaignRepositoryImpl implements CampaignRepository {
       } catch (localError) {
         AppLogger.auth.w('Could not save to local cache: $localError');
       }
-      throw Exception('No internet connection. Campaign update requires online access.');
+      throw Exception(
+          'No internet connection. Campaign update requires online access.');
     }
   }
 
@@ -229,7 +234,8 @@ class CampaignRepositoryImpl implements CampaignRepository {
       } catch (localError) {
         AppLogger.auth.w('Could not delete from local cache: $localError');
       }
-      throw Exception('No internet connection. Campaign deletion requires online access.');
+      throw Exception(
+          'No internet connection. Campaign deletion requires online access.');
     }
   }
 
@@ -239,7 +245,8 @@ class CampaignRepositoryImpl implements CampaignRepository {
 
     if (isConnected) {
       try {
-        final cancelledCampaign = await _remoteDataSource.cancelCampaign(id, reason);
+        final cancelledCampaign =
+            await _remoteDataSource.cancelCampaign(id, reason);
 
         // Try to update local cache, but don't fail if it errors
         try {
@@ -253,7 +260,8 @@ class CampaignRepositoryImpl implements CampaignRepository {
         rethrow;
       }
     } else {
-      throw Exception('No internet connection. Campaign cancellation requires online access.');
+      throw Exception(
+          'No internet connection. Campaign cancellation requires online access.');
     }
   }
 
@@ -270,7 +278,8 @@ class CampaignRepositoryImpl implements CampaignRepository {
         rethrow;
       }
     } else {
-      throw Exception('No internet connection. KPI stats require online access.');
+      throw Exception(
+          'No internet connection. KPI stats require online access.');
     }
   }
 }

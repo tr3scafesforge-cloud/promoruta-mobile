@@ -73,9 +73,8 @@ class AdvertiserLiveNotifier extends StateNotifier<AdvertiserLiveState> {
     final now = DateTime.now();
 
     for (final newCampaign in newCampaigns) {
-      final oldCampaign = oldCampaigns
-          .where((c) => c.id == newCampaign.id)
-          .firstOrNull;
+      final oldCampaign =
+          oldCampaigns.where((c) => c.id == newCampaign.id).firstOrNull;
 
       if (oldCampaign == null) continue;
 
@@ -91,19 +90,23 @@ class AdvertiserLiveNotifier extends StateNotifier<AdvertiserLiveState> {
           case PromoterExecutionStatus.active:
             if (oldStatus == PromoterExecutionStatus.paused) {
               alertType = CampaignAlertType.resumed;
-              message = '${newCampaign.promoter?.promoterName} resumed the campaign';
+              message =
+                  '${newCampaign.promoter?.promoterName} resumed the campaign';
             } else {
               alertType = CampaignAlertType.started;
-              message = '${newCampaign.promoter?.promoterName} started the campaign';
+              message =
+                  '${newCampaign.promoter?.promoterName} started the campaign';
             }
             break;
           case PromoterExecutionStatus.paused:
             alertType = CampaignAlertType.paused;
-            message = '${newCampaign.promoter?.promoterName} paused the campaign';
+            message =
+                '${newCampaign.promoter?.promoterName} paused the campaign';
             break;
           case PromoterExecutionStatus.completed:
             alertType = CampaignAlertType.completed;
-            message = '${newCampaign.promoter?.promoterName} completed the campaign';
+            message =
+                '${newCampaign.promoter?.promoterName} completed the campaign';
             break;
           case PromoterExecutionStatus.unknown:
             break;
@@ -124,8 +127,8 @@ class AdvertiserLiveNotifier extends StateNotifier<AdvertiserLiveState> {
       }
 
       // Check for no signal
-      final wasOnline = oldCampaign.promoter != null &&
-          !oldCampaign.promoter!.hasNoSignal;
+      final wasOnline =
+          oldCampaign.promoter != null && !oldCampaign.promoter!.hasNoSignal;
       final isOffline = newCampaign.promoter?.hasNoSignal ?? false;
 
       if (wasOnline && isOffline) {
@@ -194,9 +197,8 @@ class AdvertiserLiveNotifier extends StateNotifier<AdvertiserLiveState> {
     try {
       await _repository.markAllAlertsAsRead();
 
-      final updatedAlerts = state.alerts
-          .map((alert) => alert.copyWith(isRead: true))
-          .toList();
+      final updatedAlerts =
+          state.alerts.map((alert) => alert.copyWith(isRead: true)).toList();
 
       state = state.copyWith(
         alerts: updatedAlerts,

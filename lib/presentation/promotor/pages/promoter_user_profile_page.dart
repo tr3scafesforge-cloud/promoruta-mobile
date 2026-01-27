@@ -55,12 +55,15 @@ class PromoterUserProfilePage extends ConsumerWidget {
                         child: CircleAvatar(
                           radius: 70,
                           backgroundColor: Colors.white,
-                          backgroundImage: user.photoUrl != null && user.photoUrl!.isNotEmpty
-                              ? NetworkImage(user.photoUrl!)
-                              : null,
-                          child: (user.photoUrl == null || user.photoUrl!.isEmpty)
-                              ? Icon(Icons.person, size: 64, color: Colors.grey[400])
-                              : null,
+                          backgroundImage:
+                              user.photoUrl != null && user.photoUrl!.isNotEmpty
+                                  ? NetworkImage(user.photoUrl!)
+                                  : null,
+                          child:
+                              (user.photoUrl == null || user.photoUrl!.isEmpty)
+                                  ? Icon(Icons.person,
+                                      size: 64, color: Colors.grey[400])
+                                  : null,
                         ),
                       ),
                     ),
@@ -71,11 +74,19 @@ class PromoterUserProfilePage extends ConsumerWidget {
                     _ProfileInfoCard(
                       radius: cardRadius,
                       rows: [
-                        _InfoRowData(label: 'UID', value: user.id, valueAlignEnd: true),
-                        _InfoRowData(label: 'Usuario', value: user.username ?? user.email),
+                        _InfoRowData(
+                            label: 'UID', value: user.id, valueAlignEnd: true),
+                        _InfoRowData(
+                            label: 'Usuario',
+                            value: user.username ?? user.email),
                         _InfoRowData(label: 'Email', value: user.email),
                         if (user.createdAt != null)
-                          _InfoRowData(label: 'Fecha de registro', value: user.createdAt!.toLocal().toString().split(' ')[0]),
+                          _InfoRowData(
+                              label: 'Fecha de registro',
+                              value: user.createdAt!
+                                  .toLocal()
+                                  .toString()
+                                  .split(' ')[0]),
                       ],
                     ),
 
@@ -133,7 +144,8 @@ class PromoterUserProfilePage extends ConsumerWidget {
                             confirmText: 'Salir',
                           );
                           if (confirmed) {
-                            final authNotifier = ref.read(authStateProvider.notifier);
+                            final authNotifier =
+                                ref.read(authStateProvider.notifier);
                             await authNotifier.logout();
                             if (context.mounted) {
                               // Navigate to app startup to reinitialize everything

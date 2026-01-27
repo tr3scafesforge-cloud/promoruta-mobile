@@ -151,7 +151,10 @@ class _TwoFactorLoginPageState extends ConsumerState<TwoFactorLoginPage> {
                   width: 80,
                   height: 80,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .primary
+                        .withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -198,7 +201,10 @@ class _TwoFactorLoginPageState extends ConsumerState<TwoFactorLoginPage> {
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
-                        color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.1),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .shadow
+                            .withValues(alpha: 0.1),
                         spreadRadius: 1,
                         blurRadius: 10,
                         offset: const Offset(0, 2),
@@ -223,16 +229,18 @@ class _TwoFactorLoginPageState extends ConsumerState<TwoFactorLoginPage> {
                         TextFormField(
                           controller: _recoveryCodeController,
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 2,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 2,
+                                  ),
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Theme.of(context).colorScheme.surface,
                             hintText: 'XXXXX-XXXXX',
                             hintStyle: TextStyle(
-                              color: AppColors.textSecondary.withValues(alpha: 0.5),
+                              color: AppColors.textSecondary
+                                  .withValues(alpha: 0.5),
                               letterSpacing: 2,
                             ),
                             border: OutlineInputBorder(
@@ -266,7 +274,10 @@ class _TwoFactorLoginPageState extends ConsumerState<TwoFactorLoginPage> {
                           keyboardType: TextInputType.number,
                           textAlign: TextAlign.center,
                           maxLength: 6,
-                          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineMedium
+                              ?.copyWith(
                                 fontWeight: FontWeight.bold,
                                 letterSpacing: 8,
                               ),
@@ -279,7 +290,8 @@ class _TwoFactorLoginPageState extends ConsumerState<TwoFactorLoginPage> {
                             fillColor: Theme.of(context).colorScheme.surface,
                             hintText: '000000',
                             hintStyle: TextStyle(
-                              color: AppColors.textSecondary.withValues(alpha: 0.5),
+                              color: AppColors.textSecondary
+                                  .withValues(alpha: 0.5),
                               letterSpacing: 8,
                             ),
                             counterText: '',
@@ -318,8 +330,10 @@ class _TwoFactorLoginPageState extends ConsumerState<TwoFactorLoginPage> {
                         child: ElevatedButton(
                           onPressed: _isLoading ? null : _handleVerify,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).colorScheme.primary,
-                            foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            foregroundColor:
+                                Theme.of(context).colorScheme.onPrimary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),

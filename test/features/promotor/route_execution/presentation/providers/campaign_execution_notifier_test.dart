@@ -23,7 +23,7 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(Duration.zero);
-    registerFallbackValue('');  // Fallback for String used in any()
+    registerFallbackValue(''); // Fallback for String used in any()
   });
 
   setUp(() {
@@ -64,7 +64,8 @@ void main() {
     });
 
     group('startExecution', () {
-      test('should transition from idle to active when permission granted', () async {
+      test('should transition from idle to active when permission granted',
+          () async {
         notifier = createNotifier();
         await Future.delayed(const Duration(milliseconds: 100));
 
@@ -201,7 +202,8 @@ void main() {
         expect(notifier.state.campaignId, equals('campaign-1'));
       });
 
-      test('should allow starting new campaign after previous is completed', () async {
+      test('should allow starting new campaign after previous is completed',
+          () async {
         notifier = createNotifier();
         await Future.delayed(const Duration(milliseconds: 100));
 
@@ -221,7 +223,8 @@ void main() {
           campaignName: 'First Campaign',
         );
         await notifier.completeExecution();
-        expect(notifier.state.status, equals(CampaignExecutionStatus.completed));
+        expect(
+            notifier.state.status, equals(CampaignExecutionStatus.completed));
 
         // Reset state
         await notifier.reset();
@@ -363,7 +366,8 @@ void main() {
 
         final summary = await notifier.completeExecution();
 
-        expect(notifier.state.status, equals(CampaignExecutionStatus.completed));
+        expect(
+            notifier.state.status, equals(CampaignExecutionStatus.completed));
         expect(summary.campaignId, equals('campaign-1'));
         expect(summary.campaignName, equals('Test Campaign'));
         expect(summary.startedAt, isNotNull);

@@ -17,7 +17,8 @@ enum CampaignFilter {
 }
 
 // Provider for campaign filter parameters
-final campaignFilterParamsProvider = StateProvider.autoDispose<GetCampaignsParams>((ref) {
+final campaignFilterParamsProvider =
+    StateProvider.autoDispose<GetCampaignsParams>((ref) {
   return const GetCampaignsParams(perPage: 15);
 });
 
@@ -50,7 +51,8 @@ final userLocationProvider = FutureProvider.autoDispose<LatLng?>((ref) async {
 });
 
 // Provider for filtered campaigns based on selected tab
-final filteredCampaignsProvider = FutureProvider.autoDispose<List<Campaign>>((ref) async {
+final filteredCampaignsProvider =
+    FutureProvider.autoDispose<List<Campaign>>((ref) async {
   final getCampaignsUseCase = ref.watch(getCampaignsUseCaseProvider);
   final selectedFilter = ref.watch(selectedFilterProvider);
   final userLocation = await ref.watch(userLocationProvider.future);
@@ -164,44 +166,71 @@ class _PromoterNearbyPageState extends ConsumerState<PromoterNearbyPage> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.activeCampaignColor, width: 2),
+              borderSide:
+                  BorderSide(color: AppColors.activeCampaignColor, width: 2),
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           ),
         ),
         const SizedBox(height: 16),
 
         // Location status indicator (only for nearby filter)
         if (selectedFilter == CampaignFilter.nearby)
-              userLocationAsync.when(
-                loading: () => Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.blue[50],
-                    borderRadius: BorderRadius.circular(8),
+          userLocationAsync.when(
+            loading: () => Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.blue[50],
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(Colors.blue[700]!),
+                    ),
                   ),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 16,
-                        height: 16,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.blue[700]!),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        l10n.gettingYourLocation,
-                        style: TextStyle(
-                          color: Colors.blue[700],
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
+                  const SizedBox(width: 8),
+                  Text(
+                    l10n.gettingYourLocation,
+                    style: TextStyle(
+                      color: Colors.blue[700],
+                      fontSize: 13,
+                    ),
                   ),
-                ),
-                error: (error, stack) => Container(
+                ],
+              ),
+            ),
+            error: (error, stack) => Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.orange[50],
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.location_off, color: Colors.orange[700], size: 16),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      l10n.locationUnavailableEnableServices,
+                      style: TextStyle(
+                        color: Colors.orange[700],
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            data: (location) {
+              if (location == null) {
+                return Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: Colors.orange[50],
@@ -209,11 +238,12 @@ class _PromoterNearbyPageState extends ConsumerState<PromoterNearbyPage> {
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.location_off, color: Colors.orange[700], size: 16),
+                      Icon(Icons.location_off,
+                          color: Colors.orange[700], size: 16),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          l10n.locationUnavailableEnableServices,
+                          l10n.locationPermissionRequired,
                           style: TextStyle(
                             color: Colors.orange[700],
                             fontSize: 13,
@@ -222,54 +252,30 @@ class _PromoterNearbyPageState extends ConsumerState<PromoterNearbyPage> {
                       ),
                     ],
                   ),
+                );
+              }
+              return Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.green[50],
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                data: (location) {
-                  if (location == null) {
-                    return Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.orange[50],
-                        borderRadius: BorderRadius.circular(8),
+                child: Row(
+                  children: [
+                    Icon(Icons.location_on, color: Colors.green[700], size: 16),
+                    const SizedBox(width: 8),
+                    Text(
+                      l10n.showingCampaignsWithinRadius,
+                      style: TextStyle(
+                        color: Colors.green[700],
+                        fontSize: 13,
                       ),
-                      child: Row(
-                        children: [
-                          Icon(Icons.location_off, color: Colors.orange[700], size: 16),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              l10n.locationPermissionRequired,
-                              style: TextStyle(
-                                color: Colors.orange[700],
-                                fontSize: 13,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-                  return Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.green[50],
-                      borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.location_on, color: Colors.green[700], size: 16),
-                        const SizedBox(width: 8),
-                        Text(
-                          l10n.showingCampaignsWithinRadius,
-                          style: TextStyle(
-                            color: Colors.green[700],
-                            fontSize: 13,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+                  ],
+                ),
+              );
+            },
+          ),
         if (selectedFilter == CampaignFilter.nearby) const SizedBox(height: 16),
 
         // Tab switcher
@@ -362,13 +368,15 @@ class _PromoterNearbyPageState extends ConsumerState<PromoterNearbyPage> {
                     padding: const EdgeInsets.all(32.0),
                     child: Column(
                       children: [
-                        Icon(Icons.campaign_outlined, size: 60, color: Colors.grey[400]),
+                        Icon(Icons.campaign_outlined,
+                            size: 60, color: Colors.grey[400]),
                         const SizedBox(height: 16),
                         Text(
                           l10n.noCampaignsFound,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: Colors.grey[600],
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: Colors.grey[600],
+                                  ),
                         ),
                       ],
                     ),
@@ -417,8 +425,7 @@ class _MapSection extends StatelessWidget {
             Row(
               children: [
                 Icon(Icons.location_on_outlined,
-                     color: AppColors.activeCampaignColor,
-                     size: 20),
+                    color: AppColors.activeCampaignColor, size: 20),
                 const SizedBox(width: 8),
                 Text(
                   l10n.viewOnMap,
@@ -480,10 +487,10 @@ class _CampaignCard extends ConsumerWidget {
     // Check if campaign is urgent (bid deadline is within 3 hours)
     final now = DateTime.now();
     final timeUntilDeadline = campaign.bidDeadline.difference(now);
-    final isUrgent = timeUntilDeadline.inHours < 3 && timeUntilDeadline.inHours >= 0;
-    final urgencyMessage = isUrgent
-        ? l10n.closesInHours(timeUntilDeadline.inHours)
-        : null;
+    final isUrgent =
+        timeUntilDeadline.inHours < 3 && timeUntilDeadline.inHours >= 0;
+    final urgencyMessage =
+        isUrgent ? l10n.closesInHours(timeUntilDeadline.inHours) : null;
 
     // Calculate distance from user location if available
     double? distanceFromUser;
@@ -492,7 +499,9 @@ class _CampaignCard extends ConsumerWidget {
         campaign.routeCoordinates.first.lat,
         campaign.routeCoordinates.first.lng,
       );
-      distanceFromUser = locationService.calculateDistance(userLocation!, campaignLocation) / 1000; // Convert to km
+      distanceFromUser =
+          locationService.calculateDistance(userLocation!, campaignLocation) /
+              1000; // Convert to km
     }
 
     return Card(
@@ -611,7 +620,9 @@ class _CampaignCard extends ConsumerWidget {
                 ),
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('${l10n.acceptCampaign}: ${campaign.title} (WIP)')),
+                    SnackBar(
+                        content: Text(
+                            '${l10n.acceptCampaign}: ${campaign.title} (WIP)')),
                   );
                 },
                 child: Text(

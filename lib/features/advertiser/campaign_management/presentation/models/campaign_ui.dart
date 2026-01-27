@@ -4,12 +4,12 @@ import 'package:intl/intl.dart';
 /// Campaign model for UI display in advertiser pages.
 /// Matches backend statuses: pending, created, accepted, in_progress, completed, cancelled, expired
 enum CampaignStatus {
-  all,        // UI-only filter option
-  active,     // Maps to in_progress in backend
-  pending,    // Maps to pending + created in backend
-  completed,  // Maps to completed in backend
-  canceled,   // Maps to cancelled in backend
-  expired     // Maps to expired in backend
+  all, // UI-only filter option
+  active, // Maps to in_progress in backend
+  pending, // Maps to pending + created in backend
+  completed, // Maps to completed in backend
+  canceled, // Maps to cancelled in backend
+  expired // Maps to expired in backend
 }
 
 class Campaign {
@@ -56,10 +56,14 @@ class Campaign {
       completionPct: _calculateCompletionPercentage(backendCampaign),
       audioSeconds: backendCampaign.audioDuration,
       budget: backendCampaign.finalPrice ?? backendCampaign.suggestedPrice,
-      dateRange: _formatDateRange(backendCampaign.startTime, backendCampaign.endTime),
+      dateRange:
+          _formatDateRange(backendCampaign.startTime, backendCampaign.endTime),
       dateTime: backendCampaign.startTime,
-      durationSec: backendCampaign.endTime.difference(backendCampaign.startTime).inSeconds,
-      payUsd: (backendCampaign.finalPrice ?? backendCampaign.suggestedPrice).toInt(),
+      durationSec: backendCampaign.endTime
+          .difference(backendCampaign.startTime)
+          .inSeconds,
+      payUsd: (backendCampaign.finalPrice ?? backendCampaign.suggestedPrice)
+          .toInt(),
       peopleNeeded: null, // Not available in backend model
       status: _mapBackendStatus(backendCampaign.status),
     );

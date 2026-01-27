@@ -55,7 +55,9 @@ class _HomeContentState extends ConsumerState<_HomeContent> {
   Future<void> _syncFirstCampaignFlag() async {
     final allCampaignsAsync = ref.read(campaignsProvider);
     allCampaignsAsync.whenData((campaigns) {
-      ref.read(firstCampaignProvider.notifier).syncWithCampaigns(campaigns.length);
+      ref
+          .read(firstCampaignProvider.notifier)
+          .syncWithCampaigns(campaigns.length);
     });
   }
 
@@ -74,7 +76,9 @@ class _HomeContentState extends ConsumerState<_HomeContent> {
             Expanded(
               child: StatCard(
                 icon: Icons.trending_up_rounded,
-                value: widget.isLoading ? '--' : '${widget.activeCampaigns.length}',
+                value: widget.isLoading
+                    ? '--'
+                    : '${widget.activeCampaigns.length}',
                 labelTop: widget.l10n.campaigns,
                 labelBottom: widget.l10n.active,
                 iconColor: AppColors.blueDark,
@@ -146,10 +150,7 @@ class _HomeContentState extends ConsumerState<_HomeContent> {
             child: Center(
               child: Text(
                 widget.l10n.noActiveCampaigns,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: AppColors.textSecondary,
                       fontWeight: FontWeight.w500,
                     ),
@@ -162,10 +163,7 @@ class _HomeContentState extends ConsumerState<_HomeContent> {
             child: Center(
               child: Text(
                 widget.l10n.noActiveCampaigns,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: AppColors.textSecondary,
                       fontWeight: FontWeight.w500,
                     ),
@@ -272,104 +270,104 @@ class _CampaignCard extends StatelessWidget {
       child: AppCard(
         padding: const EdgeInsets.all(14),
         child: Column(
-        children: [
-          // Header row
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CircleAvatar(
-                radius: 18,
-                backgroundColor: statusColor.withValues(alpha: .2),
-                child: Icon(
-                  Icons.play_circle_fill_rounded,
-                  color: statusColor,
+          children: [
+            // Header row
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CircleAvatar(
+                  radius: 18,
+                  backgroundColor: statusColor.withValues(alpha: .2),
+                  child: Icon(
+                    Icons.play_circle_fill_rounded,
+                    color: statusColor,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(campaign.title,
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                )),
-                    const SizedBox(height: 4),
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: statusColor.withValues(alpha: .2),
-                            borderRadius: BorderRadius.circular(20),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(campaign.title,
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                  )),
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: statusColor.withValues(alpha: .2),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              statusLabel,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelSmall
+                                  ?.copyWith(color: Colors.grey[800]),
+                            ),
                           ),
-                          child: Text(
-                            statusLabel,
+                          const SizedBox(width: 8),
+                          Text(
+                            campaign.zone,
                             style: Theme.of(context)
                                 .textTheme
-                                .labelSmall
-                                ?.copyWith(color: Colors.grey[800]),
+                                .labelMedium
+                                ?.copyWith(color: Colors.grey[700]),
                           ),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          campaign.zone,
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelMedium
-                              ?.copyWith(color: Colors.grey[700]),
-                        ),
-                      ],
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      '\$${campaign.finalPrice?.toStringAsFixed(2) ?? campaign.suggestedPrice.toStringAsFixed(2)}',
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w800,
+                          ),
                     ),
+                    Text(l10n.today,
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelSmall
+                            ?.copyWith(color: Colors.grey[700])),
                   ],
                 ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    '\$${campaign.finalPrice?.toStringAsFixed(2) ?? campaign.suggestedPrice.toStringAsFixed(2)}',
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w800,
-                        ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            // Metrics row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: _MetricTile(
+                    value: '${campaign.distance.toStringAsFixed(1)}km',
+                    label: l10n.route,
                   ),
-                  Text(l10n.today,
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelSmall
-                          ?.copyWith(color: Colors.grey[700])),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          // Metrics row
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: _MetricTile(
-                  value: '${campaign.distance.toStringAsFixed(1)}km',
-                  label: l10n.route,
                 ),
-              ),
-              Expanded(
-                child: _MetricTile(
-                  value: '${campaign.audioDuration}s',
-                  label: l10n.audio,
+                Expanded(
+                  child: _MetricTile(
+                    value: '${campaign.audioDuration}s',
+                    label: l10n.audio,
+                  ),
                 ),
-              ),
-              Expanded(
-                child: _MetricTile(
-                  value: '0%',
-                  label: l10n.completed,
+                Expanded(
+                  child: _MetricTile(
+                    value: '0%',
+                    label: l10n.completed,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -463,4 +461,3 @@ class _SectionHeader extends ConsumerWidget {
     );
   }
 }
-

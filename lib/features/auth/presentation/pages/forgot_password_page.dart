@@ -171,7 +171,8 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
                                 .bodyLarge
                                 ?.copyWith(
                                   fontWeight: FontWeight.w600,
-                                  color: Theme.of(context).colorScheme.onPrimary,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
                                 ),
                           ),
                   ),

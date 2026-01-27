@@ -16,7 +16,8 @@ class CampaignDetailsPage extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<CampaignDetailsPage> createState() => _CampaignDetailsPageState();
+  ConsumerState<CampaignDetailsPage> createState() =>
+      _CampaignDetailsPageState();
 }
 
 class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
@@ -161,9 +162,10 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
                     children: [
                       Text(
                         campaign.title,
-                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style:
+                            Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                       ),
                       const SizedBox(height: 8),
                       Row(
@@ -174,15 +176,19 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
                               vertical: 6,
                             ),
                             decoration: BoxDecoration(
-                              color: _getStatusColor(campaign.status).withValues(alpha: .2),
+                              color: _getStatusColor(campaign.status)
+                                  .withValues(alpha: .2),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
                               _getStatusLabel(campaign.status, l10n),
-                              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                                color: _getStatusColor(campaign.status),
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelLarge
+                                  ?.copyWith(
+                                    color: _getStatusColor(campaign.status),
+                                    fontWeight: FontWeight.bold,
+                                  ),
                             ),
                           ),
                         ],
@@ -205,7 +211,8 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
                       const Divider(height: 24),
                       _DetailRow(
                         label: l10n.suggestedPrice,
-                        value: '\$${campaign.suggestedPrice.toStringAsFixed(2)}',
+                        value:
+                            '\$${campaign.suggestedPrice.toStringAsFixed(2)}',
                       ),
                       if (campaign.finalPrice != null) ...[
                         const Divider(height: 24),
@@ -227,17 +234,20 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
                       const Divider(height: 24),
                       _DetailRow(
                         label: l10n.bidDeadline,
-                        value: DateFormat('MMM dd, yyyy HH:mm').format(campaign.bidDeadline),
+                        value: DateFormat('MMM dd, yyyy HH:mm')
+                            .format(campaign.bidDeadline),
                       ),
                       const Divider(height: 24),
                       _DetailRow(
                         label: l10n.startTime,
-                        value: DateFormat('MMM dd, yyyy HH:mm').format(campaign.startTime),
+                        value: DateFormat('MMM dd, yyyy HH:mm')
+                            .format(campaign.startTime),
                       ),
                       const Divider(height: 24),
                       _DetailRow(
                         label: l10n.endTime,
-                        value: DateFormat('MMM dd, yyyy HH:mm').format(campaign.endTime),
+                        value: DateFormat('MMM dd, yyyy HH:mm')
+                            .format(campaign.endTime),
                       ),
                     ],
                   ),
@@ -312,16 +322,16 @@ class _DetailRow extends StatelessWidget {
         Text(
           label,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: Colors.grey[600],
-            fontWeight: FontWeight.w500,
-          ),
+                color: Colors.grey[600],
+                fontWeight: FontWeight.w500,
+              ),
         ),
         Flexible(
           child: Text(
             value,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+                  fontWeight: FontWeight.w600,
+                ),
             textAlign: TextAlign.end,
           ),
         ),

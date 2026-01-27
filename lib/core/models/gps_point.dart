@@ -20,4 +20,3 @@ class GpsPoint {
 
   // Add copyWith, fromJson, toJson as needed
 }
-

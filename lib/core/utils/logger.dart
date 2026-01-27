@@ -15,102 +15,147 @@ class AppLogger {
 
   // Category loggers
   static final Logger auth = Logger(
-    printer: PrefixPrinter(PrettyPrinter(
-      methodCount: 2,
-      errorMethodCount: 8,
-      lineLength: 120,
-      colors: true,
-      printEmojis: true,
-      dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
-    ), debug: '[AUTH] ', info: '[AUTH] ', warning: '[AUTH] ', error: '[AUTH] '),
+    printer: PrefixPrinter(
+        PrettyPrinter(
+          methodCount: 2,
+          errorMethodCount: 8,
+          lineLength: 120,
+          colors: true,
+          printEmojis: true,
+          dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
+        ),
+        debug: '[AUTH] ',
+        info: '[AUTH] ',
+        warning: '[AUTH] ',
+        error: '[AUTH] '),
   );
 
   static final Logger sync = Logger(
-    printer: PrefixPrinter(PrettyPrinter(
-      methodCount: 2,
-      errorMethodCount: 8,
-      lineLength: 120,
-      colors: true,
-      printEmojis: true,
-      dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
-    ), debug: '[SYNC] ', info: '[SYNC] ', warning: '[SYNC] ', error: '[SYNC] '),
+    printer: PrefixPrinter(
+        PrettyPrinter(
+          methodCount: 2,
+          errorMethodCount: 8,
+          lineLength: 120,
+          colors: true,
+          printEmojis: true,
+          dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
+        ),
+        debug: '[SYNC] ',
+        info: '[SYNC] ',
+        warning: '[SYNC] ',
+        error: '[SYNC] '),
   );
 
   static final Logger gps = Logger(
-    printer: PrefixPrinter(PrettyPrinter(
-      methodCount: 2,
-      errorMethodCount: 8,
-      lineLength: 120,
-      colors: true,
-      printEmojis: true,
-      dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
-    ), debug: '[GPS] ', info: '[GPS] ', warning: '[GPS] ', error: '[GPS] '),
+    printer: PrefixPrinter(
+        PrettyPrinter(
+          methodCount: 2,
+          errorMethodCount: 8,
+          lineLength: 120,
+          colors: true,
+          printEmojis: true,
+          dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
+        ),
+        debug: '[GPS] ',
+        info: '[GPS] ',
+        warning: '[GPS] ',
+        error: '[GPS] '),
   );
 
   static final Logger campaign = Logger(
-    printer: PrefixPrinter(PrettyPrinter(
-      methodCount: 2,
-      errorMethodCount: 8,
-      lineLength: 120,
-      colors: true,
-      printEmojis: true,
-      dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
-    ), debug: '[CAMPAIGN] ', info: '[CAMPAIGN] ', warning: '[CAMPAIGN] ', error: '[CAMPAIGN] '),
+    printer: PrefixPrinter(
+        PrettyPrinter(
+          methodCount: 2,
+          errorMethodCount: 8,
+          lineLength: 120,
+          colors: true,
+          printEmojis: true,
+          dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
+        ),
+        debug: '[CAMPAIGN] ',
+        info: '[CAMPAIGN] ',
+        warning: '[CAMPAIGN] ',
+        error: '[CAMPAIGN] '),
   );
 
   static final Logger permission = Logger(
-    printer: PrefixPrinter(PrettyPrinter(
-      methodCount: 2,
-      errorMethodCount: 8,
-      lineLength: 120,
-      colors: true,
-      printEmojis: true,
-      dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
-    ), debug: '[PERMISSION] ', info: '[PERMISSION] ', warning: '[PERMISSION] ', error: '[PERMISSION] '),
+    printer: PrefixPrinter(
+        PrettyPrinter(
+          methodCount: 2,
+          errorMethodCount: 8,
+          lineLength: 120,
+          colors: true,
+          printEmojis: true,
+          dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
+        ),
+        debug: '[PERMISSION] ',
+        info: '[PERMISSION] ',
+        warning: '[PERMISSION] ',
+        error: '[PERMISSION] '),
   );
 
   static final Logger location = Logger(
-    printer: PrefixPrinter(PrettyPrinter(
-      methodCount: 2,
-      errorMethodCount: 8,
-      lineLength: 120,
-      colors: true,
-      printEmojis: true,
-      dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
-    ), debug: '[LOCATION] ', info: '[LOCATION] ', warning: '[LOCATION] ', error: '[LOCATION] '),
+    printer: PrefixPrinter(
+        PrettyPrinter(
+          methodCount: 2,
+          errorMethodCount: 8,
+          lineLength: 120,
+          colors: true,
+          printEmojis: true,
+          dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
+        ),
+        debug: '[LOCATION] ',
+        info: '[LOCATION] ',
+        warning: '[LOCATION] ',
+        error: '[LOCATION] '),
   );
 
   static final Logger router = Logger(
-    printer: PrefixPrinter(PrettyPrinter(
-      methodCount: 2,
-      errorMethodCount: 8,
-      lineLength: 120,
-      colors: true,
-      printEmojis: true,
-      dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
-    ), debug: '[ROUTER] ', info: '[ROUTER] ', warning: '[ROUTER] ', error: '[ROUTER] '),
+    printer: PrefixPrinter(
+        PrettyPrinter(
+          methodCount: 2,
+          errorMethodCount: 8,
+          lineLength: 120,
+          colors: true,
+          printEmojis: true,
+          dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
+        ),
+        debug: '[ROUTER] ',
+        info: '[ROUTER] ',
+        warning: '[ROUTER] ',
+        error: '[ROUTER] '),
   );
 
   static final Logger database = Logger(
-    printer: PrefixPrinter(PrettyPrinter(
-      methodCount: 2,
-      errorMethodCount: 8,
-      lineLength: 120,
-      colors: true,
-      printEmojis: true,
-      dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
-    ), debug: '[DATABASE] ', info: '[DATABASE] ', warning: '[DATABASE] ', error: '[DATABASE] '),
+    printer: PrefixPrinter(
+        PrettyPrinter(
+          methodCount: 2,
+          errorMethodCount: 8,
+          lineLength: 120,
+          colors: true,
+          printEmojis: true,
+          dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
+        ),
+        debug: '[DATABASE] ',
+        info: '[DATABASE] ',
+        warning: '[DATABASE] ',
+        error: '[DATABASE] '),
   );
 
   static final Logger audio = Logger(
-    printer: PrefixPrinter(PrettyPrinter(
-      methodCount: 2,
-      errorMethodCount: 8,
-      lineLength: 120,
-      colors: true,
-      printEmojis: true,
-      dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
-    ), debug: '[AUDIO] ', info: '[AUDIO] ', warning: '[AUDIO] ', error: '[AUDIO] '),
+    printer: PrefixPrinter(
+        PrettyPrinter(
+          methodCount: 2,
+          errorMethodCount: 8,
+          lineLength: 120,
+          colors: true,
+          printEmojis: true,
+          dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
+        ),
+        debug: '[AUDIO] ',
+        info: '[AUDIO] ',
+        warning: '[AUDIO] ',
+        error: '[AUDIO] '),
   );
 
   // General logger for uncategorized logs

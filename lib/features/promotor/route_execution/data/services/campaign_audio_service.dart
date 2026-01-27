@@ -136,7 +136,8 @@ class CampaignAudioService {
   Stream<PlayerState> get playerStateStream => _player.playerStateStream;
 
   /// Processing state stream
-  Stream<ProcessingState> get processingStateStream => _player.processingStateStream;
+  Stream<ProcessingState> get processingStateStream =>
+      _player.processingStateStream;
 
   /// Combined playback state for UI
   Stream<AudioPlaybackState> get playbackStateStream {

@@ -25,7 +25,8 @@ class MapConstants {
   static const String osrmApiBase = 'https://router.project-osrm.org';
 
   // Mapbox Directions API
-  static const String mapboxDirectionsApiBase = 'https://api.mapbox.com/directions/v5';
+  static const String mapboxDirectionsApiBase =
+      'https://api.mapbox.com/directions/v5';
 
   // Cache settings for offline maps
   static const int maxCacheSizeMB = 500;

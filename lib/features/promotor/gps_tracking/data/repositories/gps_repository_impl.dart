@@ -3,7 +3,6 @@ import 'package:promoruta/core/core.dart';
 import 'package:promoruta/shared/shared.dart' hide Route, GpsPoint;
 import '../../domain/repositories/gps_repository.dart';
 
-
 class GpsRepositoryImpl implements GpsRepository {
   final GpsLocalDataSource _localDataSource;
   final ConnectivityService _connectivityService;

@@ -6,13 +6,14 @@ class KpiCalculator {
   static int calculateZonesCoveredThisWeek(List<Campaign> campaigns) {
     final now = DateTime.now();
     final weekStart = now.subtract(Duration(days: now.weekday - 1));
-    final weekStartMidnight = DateTime(weekStart.year, weekStart.month, weekStart.day);
+    final weekStartMidnight =
+        DateTime(weekStart.year, weekStart.month, weekStart.day);
 
     // Filter campaigns that started this week
     final thisWeekCampaigns = campaigns.where((campaign) {
       final campaignStart = campaign.startTime;
       return campaignStart.isAfter(weekStartMidnight) ||
-             campaignStart.isAtSameMomentAs(weekStartMidnight);
+          campaignStart.isAtSameMomentAs(weekStartMidnight);
     });
 
     // Get unique zones

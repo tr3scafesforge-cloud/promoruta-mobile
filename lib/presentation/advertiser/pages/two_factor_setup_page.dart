@@ -200,7 +200,8 @@ class _TwoFactorSetupPageState extends ConsumerState<TwoFactorSetupPage> {
         ),
         title: Text(
           l10n.setup2FA,
-          style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w700),
+          style: const TextStyle(
+              color: Colors.black87, fontWeight: FontWeight.w700),
         ),
       ),
       body: _isLoading
@@ -388,7 +389,8 @@ class _TwoFactorSetupPageState extends ConsumerState<TwoFactorSetupPage> {
                         height: 20,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
                         ),
                       )
                     : Text(

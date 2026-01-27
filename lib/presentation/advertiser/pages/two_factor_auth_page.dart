@@ -69,12 +69,13 @@ class _TwoFactorAuthPageState extends ConsumerState<TwoFactorAuthPage> {
                 child: Text(l10n.cancel),
               ),
               ElevatedButton(
-                onPressed: hasPassword
-                    ? () => Navigator.pop(context, true)
-                    : null,
+                onPressed:
+                    hasPassword ? () => Navigator.pop(context, true) : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: hasPassword ? Colors.red : Colors.grey.shade300,
-                  foregroundColor: hasPassword ? Colors.white : Colors.grey.shade500,
+                  backgroundColor:
+                      hasPassword ? Colors.red : Colors.grey.shade300,
+                  foregroundColor:
+                      hasPassword ? Colors.white : Colors.grey.shade500,
                   disabledBackgroundColor: Colors.grey.shade300,
                   disabledForegroundColor: Colors.grey.shade500,
                 ),
@@ -96,7 +97,8 @@ class _TwoFactorAuthPageState extends ConsumerState<TwoFactorAuthPage> {
 
     try {
       final disable2FAUseCase = ref.read(disable2FAUseCaseProvider);
-      final message = await disable2FAUseCase(Disable2FAParams(password: password));
+      final message =
+          await disable2FAUseCase(Disable2FAParams(password: password));
 
       if (mounted) {
         final l10n = AppLocalizations.of(context);
@@ -165,7 +167,9 @@ class _TwoFactorAuthPageState extends ConsumerState<TwoFactorAuthPage> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black87),
-          onPressed: () => context.canPop() ? context.pop() : context.go(widget.securitySettingsRoute),
+          onPressed: () => context.canPop()
+              ? context.pop()
+              : context.go(widget.securitySettingsRoute),
         ),
         title: const SizedBox.shrink(),
       ),
@@ -364,7 +368,8 @@ class _SettingsTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
         child: Row(
           children: [
-            Icon(icon, size: 24, color: enabled ? Colors.black87 : Colors.black38),
+            Icon(icon,
+                size: 24, color: enabled ? Colors.black87 : Colors.black38),
             const SizedBox(width: 12),
             Expanded(
               child: Column(

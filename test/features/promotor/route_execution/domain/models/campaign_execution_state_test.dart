@@ -245,7 +245,8 @@ void main() {
         expect(copied.distanceTraveled, equals(200.0));
       });
 
-      test('clearCampaignId should set campaignId and campaignName to null', () {
+      test('clearCampaignId should set campaignId and campaignName to null',
+          () {
         const original = CampaignExecutionState(
           status: CampaignExecutionStatus.active,
           campaignId: 'campaign-1',
@@ -377,13 +378,20 @@ void main() {
 
   group('CampaignExecutionStatus', () {
     test('should have all required statuses', () {
-      expect(CampaignExecutionStatus.values, contains(CampaignExecutionStatus.idle));
-      expect(CampaignExecutionStatus.values, contains(CampaignExecutionStatus.starting));
-      expect(CampaignExecutionStatus.values, contains(CampaignExecutionStatus.active));
-      expect(CampaignExecutionStatus.values, contains(CampaignExecutionStatus.paused));
-      expect(CampaignExecutionStatus.values, contains(CampaignExecutionStatus.completing));
-      expect(CampaignExecutionStatus.values, contains(CampaignExecutionStatus.completed));
-      expect(CampaignExecutionStatus.values, contains(CampaignExecutionStatus.error));
+      expect(CampaignExecutionStatus.values,
+          contains(CampaignExecutionStatus.idle));
+      expect(CampaignExecutionStatus.values,
+          contains(CampaignExecutionStatus.starting));
+      expect(CampaignExecutionStatus.values,
+          contains(CampaignExecutionStatus.active));
+      expect(CampaignExecutionStatus.values,
+          contains(CampaignExecutionStatus.paused));
+      expect(CampaignExecutionStatus.values,
+          contains(CampaignExecutionStatus.completing));
+      expect(CampaignExecutionStatus.values,
+          contains(CampaignExecutionStatus.completed));
+      expect(CampaignExecutionStatus.values,
+          contains(CampaignExecutionStatus.error));
     });
   });
 }

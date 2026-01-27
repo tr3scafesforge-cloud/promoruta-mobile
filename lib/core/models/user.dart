@@ -68,18 +68,30 @@ class User {
       id: json['id'] as String,
       name: json['name'] as String,
       email: json['email'] as String,
-      emailVerifiedAt: json['email_verified_at'] != null ? DateTime.parse(json['email_verified_at'] as String) : null,
+      emailVerifiedAt: json['email_verified_at'] != null
+          ? DateTime.parse(json['email_verified_at'] as String)
+          : null,
       role: UserRole.fromString(json['role'] as String),
-      createdAt: json['created_at'] != null ? DateTime.parse(json['created_at'] as String) : null,
-      updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at'] as String) : null,
+      createdAt: json['created_at'] != null
+          ? DateTime.parse(json['created_at'] as String)
+          : null,
+      updatedAt: json['updated_at'] != null
+          ? DateTime.parse(json['updated_at'] as String)
+          : null,
       accessToken: json['accessToken'] as String?,
-      tokenExpiry: json['tokenExpiry'] != null ? DateTime.parse(json['tokenExpiry'] as String) : null,
+      tokenExpiry: json['tokenExpiry'] != null
+          ? DateTime.parse(json['tokenExpiry'] as String)
+          : null,
       refreshToken: json['refreshToken'] as String?,
-      refreshExpiresIn: json['refreshExpiresIn'] != null ? DateTime.parse(json['refreshExpiresIn'] as String) : null,
+      refreshExpiresIn: json['refreshExpiresIn'] != null
+          ? DateTime.parse(json['refreshExpiresIn'] as String)
+          : null,
       username: json['username'] as String?,
       photoUrl: json['photoUrl'] as String?,
       twoFactorEnabled: json['two_factor_enabled'] as bool? ?? false,
-      twoFactorConfirmedAt: json['two_factor_confirmed_at'] != null ? DateTime.parse(json['two_factor_confirmed_at'] as String) : null,
+      twoFactorConfirmedAt: json['two_factor_confirmed_at'] != null
+          ? DateTime.parse(json['two_factor_confirmed_at'] as String)
+          : null,
     );
   }
 

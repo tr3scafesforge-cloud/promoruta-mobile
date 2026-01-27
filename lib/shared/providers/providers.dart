@@ -4,10 +4,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/shared/shared.dart';
-import 'package:promoruta/features/profile/data/datasources/local/user_local_data_source.dart' as user_ds;
-import 'package:promoruta/features/profile/data/datasources/remote/user_remote_data_source.dart' as user_remote_ds;
+import 'package:promoruta/features/profile/data/datasources/local/user_local_data_source.dart'
+    as user_ds;
+import 'package:promoruta/features/profile/data/datasources/remote/user_remote_data_source.dart'
+    as user_remote_ds;
 import 'package:promoruta/features/profile/data/repositories/user_repository_impl.dart';
-import 'package:promoruta/features/profile/domain/repositories/user_repository.dart' hide UserLocalDataSource, UserRemoteDataSource;
+import 'package:promoruta/features/profile/domain/repositories/user_repository.dart'
+    hide UserLocalDataSource, UserRemoteDataSource;
 import 'package:promoruta/features/advertiser/campaign_creation/data/datasources/remote/media_remote_data_source.dart';
 import 'package:promoruta/features/advertiser/campaign_creation/domain/repositories/media_repository.dart';
 import 'package:promoruta/features/advertiser/campaign_management/data/datasources/local/campaign_local_data_source.dart';
@@ -58,7 +61,6 @@ import 'package:promoruta/features/advertiser/campaign_management/data/repositor
 import 'package:promoruta/features/advertiser/campaign_management/domain/repositories/advertiser_live_repository.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:logger/logger.dart';
-
 
 // Database provider
 final databaseProvider = Provider<AppDatabase>((ref) {
@@ -195,12 +197,14 @@ final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {
   return AuthRemoteDataSourceImpl(dio: dio, localDataSource: localDataSource);
 });
 
-final campaignLocalDataSourceProvider = Provider<CampaignLocalDataSource>((ref) {
+final campaignLocalDataSourceProvider =
+    Provider<CampaignLocalDataSource>((ref) {
   final database = ref.watch(databaseProvider);
   return CampaignLocalDataSourceImpl(database);
 });
 
-final campaignRemoteDataSourceProvider = Provider<CampaignRemoteDataSource>((ref) {
+final campaignRemoteDataSourceProvider =
+    Provider<CampaignRemoteDataSource>((ref) {
   final dio = ref.watch(dioProvider);
   final mediaDataSource = ref.watch(mediaRemoteDataSourceProvider);
   return CampaignRemoteDataSourceImpl(
@@ -219,12 +223,14 @@ final gpsRemoteDataSourceProvider = Provider<GpsRemoteDataSource>((ref) {
   return GpsRemoteDataSourceImpl(dio: dio);
 });
 
-final userLocalDataSourceProvider = Provider<user_ds.UserLocalDataSource>((ref) {
+final userLocalDataSourceProvider =
+    Provider<user_ds.UserLocalDataSource>((ref) {
   final database = ref.watch(databaseProvider);
   return user_ds.UserLocalDataSourceImpl(database);
 });
 
-final userRemoteDataSourceProvider = Provider<user_remote_ds.UserRemoteDataSource>((ref) {
+final userRemoteDataSourceProvider =
+    Provider<user_remote_ds.UserRemoteDataSource>((ref) {
   final dio = ref.watch(dioProvider);
   return user_remote_ds.UserRemoteDataSourceImpl(dio: dio);
 });
@@ -257,8 +263,10 @@ final syncServiceProvider = Provider<SyncService>((ref) {
 
 // Sync GPS Points Use Case
 final syncGpsPointsUseCaseProvider = Provider<SyncGpsPointsUseCase>((ref) {
-  final gpsLocal = ref.watch(gpsLocalDataSourceProvider) as GpsLocalDataSourceImpl;
-  final gpsRemote = ref.watch(gpsRemoteDataSourceProvider) as GpsRemoteDataSourceImpl;
+  final gpsLocal =
+      ref.watch(gpsLocalDataSourceProvider) as GpsLocalDataSourceImpl;
+  final gpsRemote =
+      ref.watch(gpsRemoteDataSourceProvider) as GpsRemoteDataSourceImpl;
   return SyncGpsPointsUseCase(
     localDataSource: gpsLocal,
     remoteDataSource: gpsRemote,
@@ -304,7 +312,8 @@ final gpsRepositoryProvider = Provider<GpsRepository>((ref) {
   );
 });
 
-final promoterRemoteDataSourceProvider = Provider<PromoterRemoteDataSource>((ref) {
+final promoterRemoteDataSourceProvider =
+    Provider<PromoterRemoteDataSource>((ref) {
   final dio = ref.watch(dioProvider);
   return PromoterRemoteDataSourceImpl(dio: dio);
 });
@@ -379,12 +388,14 @@ final verify2FACodeUseCaseProvider = Provider<Verify2FACodeUseCase>((ref) {
   return Verify2FACodeUseCase(repository);
 });
 
-final getRecoveryCodesUseCaseProvider = Provider<GetRecoveryCodesUseCase>((ref) {
+final getRecoveryCodesUseCaseProvider =
+    Provider<GetRecoveryCodesUseCase>((ref) {
   final repository = ref.watch(authRepositoryProvider);
   return GetRecoveryCodesUseCase(repository);
 });
 
-final regenerateRecoveryCodesUseCaseProvider = Provider<RegenerateRecoveryCodesUseCase>((ref) {
+final regenerateRecoveryCodesUseCaseProvider =
+    Provider<RegenerateRecoveryCodesUseCase>((ref) {
   final repository = ref.watch(authRepositoryProvider);
   return RegenerateRecoveryCodesUseCase(repository);
 });
@@ -400,7 +411,8 @@ final verifyEmailUseCaseProvider = Provider<VerifyEmailUseCase>((ref) {
   return VerifyEmailUseCase(repository);
 });
 
-final resendVerificationCodeUseCaseProvider = Provider<ResendVerificationCodeUseCase>((ref) {
+final resendVerificationCodeUseCaseProvider =
+    Provider<ResendVerificationCodeUseCase>((ref) {
   final repository = ref.watch(authRepositoryProvider);
   return ResendVerificationCodeUseCase(repository);
 });
@@ -436,18 +448,22 @@ final cancelCampaignUseCaseProvider = Provider<CancelCampaignUseCase>((ref) {
 });
 
 // Provider for getting a single campaign by ID
-final campaignByIdProvider = FutureProvider.family<model.Campaign?, String>((ref, campaignId) async {
+final campaignByIdProvider =
+    FutureProvider.family<model.Campaign?, String>((ref, campaignId) async {
   final getCampaignUseCase = ref.watch(getCampaignUseCaseProvider);
   return await getCampaignUseCase(campaignId);
 });
 
 // State Notifiers for UI
-final authStateProvider = StateNotifierProvider<AuthNotifier, AsyncValue<model.User?>>((ref) {
+final authStateProvider =
+    StateNotifierProvider<AuthNotifier, AsyncValue<model.User?>>((ref) {
   final repository = ref.watch(authRepositoryProvider);
   return AuthNotifier(repository);
 });
 
-final campaignsProvider = StateNotifierProvider<CampaignsNotifier, AsyncValue<List<model.Campaign>>>((ref) {
+final campaignsProvider =
+    StateNotifierProvider<CampaignsNotifier, AsyncValue<List<model.Campaign>>>(
+        (ref) {
   final getCampaignsUseCase = ref.watch(getCampaignsUseCaseProvider);
   final createCampaignUseCase = ref.watch(createCampaignUseCaseProvider);
   final updateCampaignUseCase = ref.watch(updateCampaignUseCaseProvider);
@@ -461,13 +477,16 @@ final campaignsProvider = StateNotifierProvider<CampaignsNotifier, AsyncValue<Li
 });
 
 // Provider for active campaigns (status = in_progress)
-final activeCampaignsProvider = FutureProvider<List<model.Campaign>>((ref) async {
+final activeCampaignsProvider =
+    FutureProvider<List<model.Campaign>>((ref) async {
   final getCampaignsUseCase = ref.watch(getCampaignsUseCaseProvider);
-  return await getCampaignsUseCase(const GetCampaignsParams(status: 'in_progress'));
+  return await getCampaignsUseCase(
+      const GetCampaignsParams(status: 'in_progress'));
 });
 
 // Provider for promoter's active campaigns (accepted by current user, status = in_progress)
-final promoterActiveCampaignsProvider = FutureProvider.autoDispose<List<model.Campaign>>((ref) async {
+final promoterActiveCampaignsProvider =
+    FutureProvider.autoDispose<List<model.Campaign>>((ref) async {
   final authState = ref.watch(authStateProvider);
   final getCampaignsUseCase = ref.watch(getCampaignsUseCaseProvider);
 
@@ -482,7 +501,8 @@ final promoterActiveCampaignsProvider = FutureProvider.autoDispose<List<model.Ca
 });
 
 // Provider for promoter's accepted campaigns (all statuses for history)
-final promoterAcceptedCampaignsProvider = FutureProvider.autoDispose<List<model.Campaign>>((ref) async {
+final promoterAcceptedCampaignsProvider =
+    FutureProvider.autoDispose<List<model.Campaign>>((ref) async {
   final authState = ref.watch(authStateProvider);
   final getCampaignsUseCase = ref.watch(getCampaignsUseCaseProvider);
 
@@ -496,13 +516,15 @@ final promoterAcceptedCampaignsProvider = FutureProvider.autoDispose<List<model.
 });
 
 // Provider for advertiser KPI stats from backend
-final kpiStatsProvider = FutureProvider.autoDispose<model.AdvertiserKpiStats>((ref) async {
+final kpiStatsProvider =
+    FutureProvider.autoDispose<model.AdvertiserKpiStats>((ref) async {
   final repository = ref.watch(campaignRepositoryProvider);
   return await repository.getKpiStats();
 });
 
 // Provider for promoter KPI stats from backend
-final promoterKpiStatsProvider = FutureProvider.autoDispose<PromoterKpiStats>((ref) async {
+final promoterKpiStatsProvider =
+    FutureProvider.autoDispose<PromoterKpiStats>((ref) async {
   final repository = ref.watch(promoterRepositoryProvider);
   return await repository.getKpiStats();
 });
@@ -515,13 +537,14 @@ final zonesCoveredThisWeekProvider = Provider<int>((ref) {
     data: (campaigns) {
       final now = DateTime.now();
       final weekStart = now.subtract(Duration(days: now.weekday - 1));
-      final weekStartMidnight = DateTime(weekStart.year, weekStart.month, weekStart.day);
+      final weekStartMidnight =
+          DateTime(weekStart.year, weekStart.month, weekStart.day);
 
       // Filter campaigns that started this week
       final thisWeekCampaigns = campaigns.where((campaign) {
         final campaignStart = campaign.startTime;
         return campaignStart.isAfter(weekStartMidnight) ||
-               campaignStart.isAtSameMomentAs(weekStartMidnight);
+            campaignStart.isAtSameMomentAs(weekStartMidnight);
       });
 
       // Get unique zones
@@ -542,7 +565,8 @@ final connectivityStatusProvider = StreamProvider<bool>((ref) {
 });
 
 // Theme provider
-final themeModeProvider = StateNotifierProvider<ThemeModeNotifier, ThemeMode>((ref) {
+final themeModeProvider =
+    StateNotifierProvider<ThemeModeNotifier, ThemeMode>((ref) {
   return ThemeModeNotifier();
 });
 
@@ -550,7 +574,9 @@ final themeModeProvider = StateNotifierProvider<ThemeModeNotifier, ThemeMode>((r
 final lightThemeProvider = Provider<ThemeData>((ref) {
   final authState = ref.watch(authStateProvider);
   final seedColor = authState.maybeWhen(
-    data: (user) => user?.role == model.UserRole.promoter ? AppColors.primary : AppColors.primary,
+    data: (user) => user?.role == model.UserRole.promoter
+        ? AppColors.primary
+        : AppColors.primary,
     orElse: () => AppColors.primary,
   );
   return AppTheme.lightTheme(seedColor);
@@ -559,7 +585,9 @@ final lightThemeProvider = Provider<ThemeData>((ref) {
 final darkThemeProvider = Provider<ThemeData>((ref) {
   final authState = ref.watch(authStateProvider);
   final seedColor = authState.maybeWhen(
-    data: (user) => user?.role == model.UserRole.promoter ? AppColors.primary : AppColors.primary,
+    data: (user) => user?.role == model.UserRole.promoter
+        ? AppColors.primary
+        : AppColors.primary,
     orElse: () => AppColors.primary,
   );
   return AppTheme.darkTheme(seedColor);
@@ -596,7 +624,8 @@ final updateCheckServiceProvider = Provider<UpdateCheckService?>((ref) {
 });
 
 // Update check provider - checks for updates asynchronously
-final updateCheckProvider = FutureProvider.autoDispose<VersionInfo?>((ref) async {
+final updateCheckProvider =
+    FutureProvider.autoDispose<VersionInfo?>((ref) async {
   final service = ref.watch(updateCheckServiceProvider);
   if (service == null) {
     return null;
@@ -709,7 +738,8 @@ class AuthNotifier extends StateNotifier<AsyncValue<model.User?>> {
   }
 }
 
-class CampaignsNotifier extends StateNotifier<AsyncValue<List<model.Campaign>>> {
+class CampaignsNotifier
+    extends StateNotifier<AsyncValue<List<model.Campaign>>> {
   final GetCampaignsUseCase _getCampaignsUseCase;
   final CreateCampaignUseCase _createCampaignUseCase;
   final UpdateCampaignUseCase _updateCampaignUseCase;
@@ -752,7 +782,8 @@ class CampaignsNotifier extends StateNotifier<AsyncValue<List<model.Campaign>>> 
     }
   }
 
-  Future<void> createCampaign(model.Campaign campaign, {File? audioFile}) async {
+  Future<void> createCampaign(model.Campaign campaign,
+      {File? audioFile}) async {
     try {
       final created = await _createCampaignUseCase(
         CreateCampaignParams(campaign: campaign, audioFile: audioFile),
@@ -816,7 +847,8 @@ class AdvertiserTabNotifier extends StateNotifier<int> {
   }
 }
 
-final advertiserTabProvider = StateNotifierProvider<AdvertiserTabNotifier, int>((ref) {
+final advertiserTabProvider =
+    StateNotifierProvider<AdvertiserTabNotifier, int>((ref) {
   return AdvertiserTabNotifier();
 });
 
@@ -849,6 +881,7 @@ class FirstCampaignNotifier extends StateNotifier<bool> {
   }
 }
 
-final firstCampaignProvider = StateNotifierProvider<FirstCampaignNotifier, bool>((ref) {
+final firstCampaignProvider =
+    StateNotifierProvider<FirstCampaignNotifier, bool>((ref) {
   return FirstCampaignNotifier();
 });

@@ -16,7 +16,8 @@ class AdvertiserCampaignsPage extends ConsumerStatefulWidget {
       _AdvertiserCampaignsPageState();
 }
 
-class _AdvertiserCampaignsPageState extends ConsumerState<AdvertiserCampaignsPage> {
+class _AdvertiserCampaignsPageState
+    extends ConsumerState<AdvertiserCampaignsPage> {
   final TextEditingController _searchCtrl = TextEditingController();
   ui.CampaignStatus _selected = ui.CampaignStatus.all;
 
@@ -40,23 +41,25 @@ class _AdvertiserCampaignsPageState extends ConsumerState<AdvertiserCampaignsPag
     });
   }
 
-  List<ui.Campaign> _getFilteredCampaigns(List<backend.Campaign> backendCampaigns) {
+  List<ui.Campaign> _getFilteredCampaigns(
+      List<backend.Campaign> backendCampaigns) {
     final q = _searchCtrl.text.trim().toLowerCase();
 
     // Convert backend campaigns to UI campaigns
-    final uiCampaigns = backendCampaigns
-        .map((bc) => ui.Campaign.fromBackend(bc))
-        .toList();
+    final uiCampaigns =
+        backendCampaigns.map((bc) => ui.Campaign.fromBackend(bc)).toList();
 
     return uiCampaigns.where((c) {
-      final byStatus = _selected == ui.CampaignStatus.all || c.status == _selected;
+      final byStatus =
+          _selected == ui.CampaignStatus.all || c.status == _selected;
       final bySearch = q.isEmpty ||
           c.title.toLowerCase().contains(q) ||
           c.location.toLowerCase().contains(q) ||
           (c.subtitle?.toLowerCase().contains(q) ?? false);
       final byDistance =
           _maxDistanceKm == null || c.distanceKm <= _maxDistanceKm!;
-      final byBudget = _minBudget == null || (c.budget != null && c.budget! >= _minBudget!);
+      final byBudget =
+          _minBudget == null || (c.budget != null && c.budget! >= _minBudget!);
       return byStatus && bySearch && byDistance && byBudget;
     }).toList();
   }
@@ -74,7 +77,8 @@ class _AdvertiserCampaignsPageState extends ConsumerState<AdvertiserCampaignsPag
     final isLoading = campaignsAsync.isLoading;
 
     final backendCampaigns = campaignsAsync.valueOrNull ?? [];
-    final filtered = isLoading ? <ui.Campaign>[] : _getFilteredCampaigns(backendCampaigns);
+    final filtered =
+        isLoading ? <ui.Campaign>[] : _getFilteredCampaigns(backendCampaigns);
 
     return SafeArea(
       child: ListView(
@@ -109,7 +113,8 @@ class _AdvertiserCampaignsPageState extends ConsumerState<AdvertiserCampaignsPag
                   AppLocalizations.of(context).campaignFilterCompleted,
                 ],
                 initialIndex: _statuses.indexOf(_selected),
-                onChanged: (index) => setState(() => _selected = _statuses[index]),
+                onChanged: (index) =>
+                    setState(() => _selected = _statuses[index]),
               ),
             ),
           ),
@@ -153,7 +158,8 @@ class _AdvertiserCampaignsPageState extends ConsumerState<AdvertiserCampaignsPag
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () => ref.read(campaignsProvider.notifier).loadCampaigns(),
+                    onPressed: () =>
+                        ref.read(campaignsProvider.notifier).loadCampaigns(),
                     child: const Text('Retry'),
                   ),
                 ],
@@ -162,17 +168,18 @@ class _AdvertiserCampaignsPageState extends ConsumerState<AdvertiserCampaignsPag
           else ...[
             ...filtered.map((c) => AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
-                  transitionBuilder: (Widget child, Animation<double> animation) =>
-                      SlideTransition(
-                        position: Tween<Offset>(
-                          begin: const Offset(0, 0.1),
-                          end: Offset.zero,
-                        ).animate(animation),
-                        child: FadeTransition(
-                          opacity: animation,
-                          child: child,
-                        ),
-                      ),
+                  transitionBuilder:
+                      (Widget child, Animation<double> animation) =>
+                          SlideTransition(
+                    position: Tween<Offset>(
+                      begin: const Offset(0, 0.1),
+                      end: Offset.zero,
+                    ).animate(animation),
+                    child: FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    ),
+                  ),
                   child: Padding(
                     key: ValueKey(c.id),
                     padding: const EdgeInsets.only(bottom: 12),
@@ -220,8 +227,6 @@ class _AdvertiserCampaignsPageState extends ConsumerState<AdvertiserCampaignsPag
     }
   }
 }
-
-
 
 /// ————— Active filters summary bar —————
 class _ActiveFiltersBar extends StatelessWidget {
@@ -288,12 +293,12 @@ class _CampaignCard extends StatelessWidget {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
     final badge = switch (campaign.status) {
-      ui.CampaignStatus.active =>
-        _StatusBadge(text: l10n.nActive(0), color: AppColors.activeCampaignColor),
+      ui.CampaignStatus.active => _StatusBadge(
+          text: l10n.nActive(0), color: AppColors.activeCampaignColor),
       ui.CampaignStatus.pending =>
         _StatusBadge(text: l10n.pending, color: AppColors.pendingOrangeColor),
-      ui.CampaignStatus.completed =>
-        _StatusBadge(text: l10n.statusCompleted, color: AppColors.completedGreenColor),
+      ui.CampaignStatus.completed => _StatusBadge(
+          text: l10n.statusCompleted, color: AppColors.completedGreenColor),
       ui.CampaignStatus.canceled =>
         _StatusBadge(text: l10n.cancelled, color: Colors.red),
       ui.CampaignStatus.all => const SizedBox.shrink(),
@@ -306,81 +311,85 @@ class _CampaignCard extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        border: Border.all(color: theme.colorScheme.outline),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-              blurRadius: 6, color: theme.shadowColor.withValues(alpha: 0.06), offset: const Offset(0, 2))
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Title + badge
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    campaign.title,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium
-                        ?.copyWith(fontWeight: FontWeight.w700),
+          color: theme.colorScheme.surface,
+          border: Border.all(color: theme.colorScheme.outline),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+                blurRadius: 6,
+                color: theme.shadowColor.withValues(alpha: 0.06),
+                offset: const Offset(0, 2))
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Title + badge
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      campaign.title,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(fontWeight: FontWeight.w700),
+                    ),
                   ),
-                ),
-                badge,
-              ],
-            ),
-            const SizedBox(height: 2),
-            Text(
-              campaign.subtitle ?? '',
-              style: theme.textTheme.bodySmall
-                  ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Icon(Icons.place, size: 16, color: theme.colorScheme.onSurfaceVariant),
-                const SizedBox(width: 6),
-                Expanded(
-                  child: Text(
-                    campaign.location,
+                  badge,
+                ],
+              ),
+              const SizedBox(height: 2),
+              Text(
+                campaign.subtitle ?? '',
+                style: theme.textTheme.bodySmall
+                    ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(Icons.place,
+                      size: 16, color: theme.colorScheme.onSurfaceVariant),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      campaign.location,
+                      style: theme.textTheme.bodySmall
+                          ?.copyWith(color: theme.colorScheme.onSurface),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Icon(Icons.calendar_today,
+                      size: 16, color: theme.colorScheme.onSurfaceVariant),
+                  const SizedBox(width: 6),
+                  Text(
+                    campaign.dateRange ?? '',
                     style: theme.textTheme.bodySmall
                         ?.copyWith(color: theme.colorScheme.onSurface),
                   ),
-                ),
-                const SizedBox(width: 8),
-                Icon(Icons.calendar_today,
-                    size: 16, color: theme.colorScheme.onSurfaceVariant),
-                const SizedBox(width: 6),
-                Text(
-                  campaign.dateRange ?? '',
-                  style: theme.textTheme.bodySmall
-                      ?.copyWith(color: theme.colorScheme.onSurface),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _StatTile(
-                    value: '${campaign.distanceKm.toStringAsFixed(1)}km',
-                    label: 'Ruta'),
-                _StatTile(
-                    value: '${campaign.completionPct}%', label: 'Completado'),
-                _StatTile(value: '${campaign.audioSeconds}s', label: 'Audio'),
-                _StatTile(
-                    value: '\$${campaign.budget?.toStringAsFixed(2) ?? '0.00'}',
-                    label: 'Presupuesto'),
-              ],
-            ),
-          ],
+                ],
+              ),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _StatTile(
+                      value: '${campaign.distanceKm.toStringAsFixed(1)}km',
+                      label: 'Ruta'),
+                  _StatTile(
+                      value: '${campaign.completionPct}%', label: 'Completado'),
+                  _StatTile(value: '${campaign.audioSeconds}s', label: 'Audio'),
+                  _StatTile(
+                      value:
+                          '\$${campaign.budget?.toStringAsFixed(2) ?? '0.00'}',
+                      label: 'Presupuesto'),
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }
@@ -399,9 +408,13 @@ class _StatTile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(value, style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w700)),
+          Text(value,
+              style: theme.textTheme.bodyMedium
+                  ?.copyWith(fontWeight: FontWeight.w700)),
           const SizedBox(height: 2),
-          Text(label, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+          Text(label,
+              style: theme.textTheme.bodySmall
+                  ?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
         ],
       ),
     );

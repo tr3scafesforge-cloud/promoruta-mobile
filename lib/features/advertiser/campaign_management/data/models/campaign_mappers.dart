@@ -1,5 +1,6 @@
 import 'package:promoruta/core/core.dart' as model;
-import 'package:promoruta/features/advertiser/campaign_management/presentation/models/campaign_ui.dart' as ui;
+import 'package:promoruta/features/advertiser/campaign_management/presentation/models/campaign_ui.dart'
+    as ui;
 
 /// Extension methods for converting between core and UI campaign models
 extension CampaignMappers on model.Campaign {

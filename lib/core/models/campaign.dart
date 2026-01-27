@@ -16,7 +16,7 @@ enum CampaignStatus {
       case 'completed':
         return CampaignStatus.completed;
       case 'canceled':
-      case 'cancelled':  // Support both American and British spelling
+      case 'cancelled': // Support both American and British spelling
         return CampaignStatus.canceled;
       case 'expired':
         return CampaignStatus.expired;
@@ -103,7 +103,8 @@ class Campaign {
   final String? id; // Optional for creation
   final String title;
   final String? description; // Optional
-  final String? advertiserId; // Optional - will be set by backend (deprecated, use createdBy)
+  final String?
+      advertiserId; // Optional - will be set by backend (deprecated, use createdBy)
   final DateTime? startDate; // Optional - deprecated, use startTime
   final DateTime? endDate; // Optional - deprecated, use endTime
   final CampaignStatus? status; // Optional - will be set by backend
@@ -219,7 +220,8 @@ class Campaign {
       lastUpdatedBy: json['last_updated_by'] != null
           ? (json['last_updated_by'] is String
               ? null // If it's just a UUID string, we can't create a full user object
-              : CampaignUser.fromJson(json['last_updated_by'] as Map<String, dynamic>))
+              : CampaignUser.fromJson(
+                  json['last_updated_by'] as Map<String, dynamic>))
           : null,
       createdAt: json['created_at'] != null
           ? DateTime.parse(json['created_at'] as String)

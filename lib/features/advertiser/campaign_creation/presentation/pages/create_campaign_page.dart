@@ -380,7 +380,8 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                         MapConstants.montevideoLat,
                         MapConstants.montevideoLng,
                       ),
-                      initialWaypoints: _routeWaypoints.isEmpty ? null : _routeWaypoints,
+                      initialWaypoints:
+                          _routeWaypoints.isEmpty ? null : _routeWaypoints,
                       onRouteSelected: (waypoints, waypointNames, route) {
                         setState(() {
                           _routeWaypoints = waypoints;
@@ -391,7 +392,8 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                           } else if (route != null) {
                             // Build description from street names
                             final startName = waypointNames[0] ?? 'Inicio';
-                            final endName = waypointNames[waypoints.length - 1] ?? 'Fin';
+                            final endName =
+                                waypointNames[waypoints.length - 1] ?? 'Fin';
                             _locationController.text =
                                 '$startName → $endName (${route.distanceKm.toStringAsFixed(1)} km)';
                           } else {
@@ -586,7 +588,8 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                         const SizedBox(height: 12),
                         Text(
                           l10n.uploadingAudioFile,
-                          style: const TextStyle(color: AppColors.textSecondary),
+                          style:
+                              const TextStyle(color: AppColors.textSecondary),
                         ),
                       ],
                     ),
@@ -741,7 +744,8 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
     if (_routeWaypoints.length < 2) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Por favor selecciona al menos 2 puntos en el mapa para la ruta'),
+          content: Text(
+              'Por favor selecciona al menos 2 puntos en el mapa para la ruta'),
           backgroundColor: AppColors.error,
         ),
       );
@@ -850,9 +854,9 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
 
         final a = math.sin(dLat / 2) * math.sin(dLat / 2) +
             math.cos(_toRadians(point1.latitude)) *
-            math.cos(_toRadians(point2.latitude)) *
-            math.sin(dLon / 2) *
-            math.sin(dLon / 2);
+                math.cos(_toRadians(point2.latitude)) *
+                math.sin(dLon / 2) *
+                math.sin(dLon / 2);
 
         final c = 2 * math.asin(math.sqrt(a));
         totalDistance += earthRadius * c;

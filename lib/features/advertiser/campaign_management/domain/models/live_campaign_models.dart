@@ -97,7 +97,8 @@ class LivePromoterLocation extends Equatable {
     final execution = json['execution'] as Map<String, dynamic>?;
 
     // Determine if using flat format (from backend) or nested format
-    final isFlat = json.containsKey('latitude') || json.containsKey('promoter_id');
+    final isFlat =
+        json.containsKey('latitude') || json.containsKey('promoter_id');
 
     if (isFlat) {
       // Backend flat format
@@ -113,7 +114,8 @@ class LivePromoterLocation extends Equatable {
         latitude: (json['latitude'] as num?)?.toDouble() ?? 0.0,
         longitude: (json['longitude'] as num?)?.toDouble() ?? 0.0,
         lastUpdate: lastUpdate,
-        distanceTraveled: (json['distance_traveled'] as num?)?.toDouble() ?? 0.0,
+        distanceTraveled:
+            (json['distance_traveled'] as num?)?.toDouble() ?? 0.0,
         elapsedTime: Duration(
           seconds: (json['elapsed_seconds'] as num?)?.toInt() ?? 0,
         ),
@@ -133,8 +135,7 @@ class LivePromoterLocation extends Equatable {
       lastUpdate: location?['updated_at'] != null
           ? DateTime.parse(location!['updated_at'] as String)
           : DateTime.now(),
-      distanceTraveled:
-          (execution?['distance_km'] as num?)?.toDouble() ?? 0.0,
+      distanceTraveled: (execution?['distance_km'] as num?)?.toDouble() ?? 0.0,
       elapsedTime: Duration(
         minutes: (execution?['elapsed_minutes'] as num?)?.toInt() ?? 0,
       ),
@@ -517,9 +518,7 @@ class AdvertiserLiveState extends Equatable {
   /// Get the currently selected campaign
   LiveCampaign? get selectedCampaign {
     if (selectedCampaignId == null) return null;
-    return campaigns
-        .where((c) => c.id == selectedCampaignId)
-        .firstOrNull;
+    return campaigns.where((c) => c.id == selectedCampaignId).firstOrNull;
   }
 
   /// Whether there are any active campaigns

@@ -119,18 +119,20 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                   children: [
                     Text(
                       l10n.appName,
-                      style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 32,
-                            color: Theme.of(context).colorScheme.onSurface,
-                            letterSpacing: 1.2,
-                          ),
+                      style:
+                          Theme.of(context).textTheme.headlineLarge?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 32,
+                                color: Theme.of(context).colorScheme.onSurface,
+                                letterSpacing: 1.2,
+                              ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       l10n.createYourAccount,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
                             fontSize: 16,
                           ),
                     ),
@@ -146,7 +148,10 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
-                        color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.1),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .shadow
+                            .withValues(alpha: 0.1),
                         spreadRadius: 1,
                         blurRadius: 10,
                         offset: const Offset(0, 2),
@@ -160,9 +165,10 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                       children: [
                         Text(
                           l10n.signUpSubtitle,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: AppColors.textSecondary,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: AppColors.textSecondary,
+                                  ),
                         ),
                         const SizedBox(height: 20),
 
@@ -228,7 +234,8 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                 color: AppColors.textSecondary,
                               ),
                               onPressed: () {
-                                setState(() => _obscurePassword = !_obscurePassword);
+                                setState(
+                                    () => _obscurePassword = !_obscurePassword);
                               },
                             ),
                           ),
@@ -262,7 +269,8 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                 color: AppColors.textSecondary,
                               ),
                               onPressed: () {
-                                setState(() => _obscureConfirmPassword = !_obscureConfirmPassword);
+                                setState(() => _obscureConfirmPassword =
+                                    !_obscureConfirmPassword);
                               },
                             ),
                           ),
@@ -313,8 +321,10 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           child: ElevatedButton(
                             onPressed: _isLoading ? null : _handleSignUp,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Theme.of(context).colorScheme.primary,
-                              foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
+                              foregroundColor:
+                                  Theme.of(context).colorScheme.onPrimary,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
@@ -446,7 +456,9 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
               : Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? primaryColor : Theme.of(context).colorScheme.outline,
+            color: isSelected
+                ? primaryColor
+                : Theme.of(context).colorScheme.outline,
             width: isSelected ? 2 : 1,
           ),
         ),

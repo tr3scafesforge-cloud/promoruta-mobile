@@ -6,7 +6,8 @@ import 'connectivity_service.dart';
 
 class ConnectivityServiceImpl implements ConnectivityService {
   final Connectivity _connectivity;
-  final StreamController<bool> _connectivityController = StreamController<bool>.broadcast();
+  final StreamController<bool> _connectivityController =
+      StreamController<bool>.broadcast();
 
   ConnectivityServiceImpl(this._connectivity) {
     _init();

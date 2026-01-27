@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:promoruta/core/core.dart';
 import 'package:promoruta/gen/assets.gen.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
-import 'package:shared_preferences/shared_preferences.dart';  // Add this import
+import 'package:shared_preferences/shared_preferences.dart'; // Add this import
 
 class ChooseRole extends StatelessWidget {
   const ChooseRole({super.key});
@@ -49,7 +49,8 @@ class ChooseRole extends StatelessWidget {
                 image: AssetImage(Assets.images.advertiserSelection.path),
                 cardColor: colorScheme.surface,
                 titleColor: colorScheme.primary,
-                onTap: () async {  // Make async
+                onTap: () async {
+                  // Make async
                   final prefs = await SharedPreferences.getInstance();
                   await prefs.setBool('onboardingDone', true);
                   if (context.mounted) {
@@ -66,7 +67,8 @@ class ChooseRole extends StatelessWidget {
                 image: AssetImage(Assets.images.promoterSelection.path),
                 cardColor: colorScheme.surface,
                 titleColor: AppColors.deepOrange,
-                onTap: () async {  // Make async
+                onTap: () async {
+                  // Make async
                   final prefs = await SharedPreferences.getInstance();
                   await prefs.setBool('onboardingDone', true);
                   if (context.mounted) {
@@ -82,7 +84,6 @@ class ChooseRole extends StatelessWidget {
     );
   }
 }
-
 
 class RoleCard extends StatefulWidget {
   const RoleCard({

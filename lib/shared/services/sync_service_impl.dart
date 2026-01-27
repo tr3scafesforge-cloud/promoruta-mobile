@@ -3,7 +3,8 @@ import 'package:promoruta/shared/shared.dart';
 import 'package:promoruta/features/auth/domain/repositories/auth_repository.dart';
 import 'package:promoruta/features/advertiser/campaign_management/domain/repositories/campaign_repository.dart';
 import 'package:promoruta/features/promotor/gps_tracking/domain/repositories/gps_repository.dart';
-import 'package:promoruta/features/promotor/gps_tracking/data/datasources/local/gps_local_data_source.dart' as gps_local;
+import 'package:promoruta/features/promotor/gps_tracking/data/datasources/local/gps_local_data_source.dart'
+    as gps_local;
 
 class SyncServiceImpl implements SyncService {
   final ConnectivityService _connectivityService;
@@ -81,7 +82,8 @@ class SyncServiceImpl implements SyncService {
     if (user != null && user.accessToken != null) {
       // Optionally validate token with server or refresh if near expiry
       final now = DateTime.now();
-      if (user.tokenExpiry != null && user.tokenExpiry!.isBefore(now.add(Duration(minutes: 5)))) {
+      if (user.tokenExpiry != null &&
+          user.tokenExpiry!.isBefore(now.add(Duration(minutes: 5)))) {
         // Token expires soon, could refresh here
         AppLogger.sync.i('Token expires soon, consider refreshing');
       }

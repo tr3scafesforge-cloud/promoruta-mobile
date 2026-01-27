@@ -14,10 +14,10 @@ class StartPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-
           const SizedBox(height: 32),
           Image(
-            image: capImageSize(context, AssetImage(Assets.images.splashImg.path))!,
+            image: capImageSize(
+                context, AssetImage(Assets.images.splashImg.path))!,
             height: 250,
             opacity: const AlwaysStoppedAnimation(0.9),
           ),

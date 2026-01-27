@@ -71,7 +71,8 @@ void main() {
         when(() => mockLocalDataSource.getUnsyncedCampaignPoints(campaignId))
             .thenAnswer((_) async => points);
         when(
-          () => mockRemoteDataSource.uploadCampaignGpsTracks(campaignId, points),
+          () =>
+              mockRemoteDataSource.uploadCampaignGpsTracks(campaignId, points),
         ).thenAnswer(
           (_) async => GpsTrackUploadResponse(
             created: 3,
@@ -96,7 +97,8 @@ void main() {
         verify(() => mockLocalDataSource.getUnsyncedCampaignPoints(campaignId))
             .called(1);
         verify(
-          () => mockRemoteDataSource.uploadCampaignGpsTracks(campaignId, points),
+          () =>
+              mockRemoteDataSource.uploadCampaignGpsTracks(campaignId, points),
         ).called(1);
         verify(
           () => mockLocalDataSource.markPointsAsSynced(
@@ -114,7 +116,8 @@ void main() {
         when(() => mockLocalDataSource.getUnsyncedCampaignPoints(campaignId))
             .thenAnswer((_) async => points);
         when(
-          () => mockRemoteDataSource.uploadCampaignGpsTracks(campaignId, points),
+          () =>
+              mockRemoteDataSource.uploadCampaignGpsTracks(campaignId, points),
         ).thenAnswer(
           (_) async => GpsTrackUploadResponse(
             created: 0,
@@ -147,7 +150,8 @@ void main() {
         when(() => mockLocalDataSource.getUnsyncedCampaignPoints(campaignId))
             .thenAnswer((_) async => points);
         when(
-          () => mockRemoteDataSource.uploadCampaignGpsTracks(campaignId, points),
+          () =>
+              mockRemoteDataSource.uploadCampaignGpsTracks(campaignId, points),
         ).thenThrow(Exception('Network error'));
 
         final result = await useCase.call(campaignId);
@@ -187,7 +191,8 @@ void main() {
         when(() => mockLocalDataSource.getUnsyncedCampaignPoints(campaignId))
             .thenAnswer((_) async => points);
         when(
-          () => mockRemoteDataSource.uploadCampaignGpsTracks(campaignId, points),
+          () =>
+              mockRemoteDataSource.uploadCampaignGpsTracks(campaignId, points),
         ).thenAnswer(
           (_) async => GpsTrackUploadResponse(
             created: 1,

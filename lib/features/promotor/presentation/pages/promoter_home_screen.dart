@@ -126,7 +126,8 @@ class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
                   isDark ? ThemeMode.dark : ThemeMode.light,
                 );
           },
-          onTapSecurity: () => const PromoterSecuritySettingsRoute().push(context),
+          onTapSecurity: () =>
+              const PromoterSecuritySettingsRoute().push(context),
           onTapLanguage: () => const LanguageSettingsRoute().push(context),
         );
       default:
@@ -161,7 +162,7 @@ class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
       case 4: // Profile
         return PromoterAppBar(title: l10n.profile);
       default:
-        return PromoterAppBar(title:  l10n.home);
+        return PromoterAppBar(title: l10n.home);
     }
   }
 }
@@ -218,4 +219,3 @@ class _BottomNavigationItem extends StatelessWidget {
     );
   }
 }
-

@@ -50,7 +50,8 @@ class RouteServiceImpl implements RouteService {
     } catch (e) {
       _logger.e('Error getting route from Mapbox: $e');
       // Fallback to OSRM if Mapbox fails
-      return getRouteOsrm(origin: origin, destination: destination, profile: profile);
+      return getRouteOsrm(
+          origin: origin, destination: destination, profile: profile);
     }
   }
 
@@ -66,7 +67,8 @@ class RouteServiceImpl implements RouteService {
       final coordinates =
           '${origin.longitude},${origin.latitude};${destination.longitude},${destination.latitude}';
 
-      final url = '${MapConstants.osrmApiBase}/route/v1/$osrmProfile/$coordinates';
+      final url =
+          '${MapConstants.osrmApiBase}/route/v1/$osrmProfile/$coordinates';
 
       final response = await _dio.get(
         url,

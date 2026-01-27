@@ -26,7 +26,8 @@ class PromoterRepositoryImpl implements PromoterRepository {
         rethrow;
       }
     } else {
-      throw Exception('No internet connection. KPI stats require online access.');
+      throw Exception(
+          'No internet connection. KPI stats require online access.');
     }
   }
 }

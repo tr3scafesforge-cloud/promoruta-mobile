@@ -154,7 +154,8 @@ void main() {
     });
 
     group('repository interaction', () {
-      test('should call repository with trimmed name and lowercase email on success',
+      test(
+          'should call repository with trimmed name and lowercase email on success',
           () async {
         const response = RegistrationResponse(
           message: 'Registration successful',
@@ -390,8 +391,7 @@ void main() {
           )),
         );
 
-        verifyNever(
-            () => mockRepository.resendVerificationCode(any()));
+        verifyNever(() => mockRepository.resendVerificationCode(any()));
       });
 
       test('should throw exception when email is only whitespace', () async {

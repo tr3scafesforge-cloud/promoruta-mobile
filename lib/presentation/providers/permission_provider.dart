@@ -31,9 +31,9 @@ class PermissionState {
 
   // Check if all critical permissions are granted
   bool get allCriticalPermissionsGranted => locationGranted;
-  
+
   // Check if all permissions are granted
-  bool get allPermissionsGranted => 
+  bool get allPermissionsGranted =>
       locationGranted && notificationGranted && microphoneGranted;
 }
 
@@ -46,7 +46,7 @@ class PermissionNotifier extends StateNotifier<PermissionState> {
   // Check current permission status
   Future<void> _checkCurrentPermissions() async {
     state = state.copyWith(isLoading: true);
-    
+
     try {
       final locationStatus = await Permission.locationWhenInUse.status;
       final notificationStatus = await Permission.notification.status;
@@ -68,7 +68,7 @@ class PermissionNotifier extends StateNotifier<PermissionState> {
     try {
       final status = await Permission.locationWhenInUse.request();
       final isGranted = status.isGranted;
-      
+
       state = state.copyWith(locationGranted: isGranted);
       return isGranted;
     } catch (e) {
@@ -81,7 +81,7 @@ class PermissionNotifier extends StateNotifier<PermissionState> {
     try {
       final status = await Permission.notification.request();
       final isGranted = status.isGranted;
-      
+
       state = state.copyWith(notificationGranted: isGranted);
       return isGranted;
     } catch (e) {
@@ -94,7 +94,7 @@ class PermissionNotifier extends StateNotifier<PermissionState> {
     try {
       final status = await Permission.microphone.request();
       final isGranted = status.isGranted;
-      
+
       state = state.copyWith(microphoneGranted: isGranted);
       return isGranted;
     } catch (e) {
@@ -105,7 +105,7 @@ class PermissionNotifier extends StateNotifier<PermissionState> {
   // Request all permissions at once
   Future<void> requestAllPermissions() async {
     state = state.copyWith(isLoading: true);
-    
+
     try {
       final permissions = await [
         Permission.locationWhenInUse,
@@ -114,9 +114,12 @@ class PermissionNotifier extends StateNotifier<PermissionState> {
       ].request();
 
       state = state.copyWith(
-        locationGranted: permissions[Permission.locationWhenInUse]?.isGranted ?? false,
-        notificationGranted: permissions[Permission.notification]?.isGranted ?? false,
-        microphoneGranted: permissions[Permission.microphone]?.isGranted ?? false,
+        locationGranted:
+            permissions[Permission.locationWhenInUse]?.isGranted ?? false,
+        notificationGranted:
+            permissions[Permission.notification]?.isGranted ?? false,
+        microphoneGranted:
+            permissions[Permission.microphone]?.isGranted ?? false,
         isLoading: false,
       );
     } catch (e) {
@@ -136,6 +139,7 @@ class PermissionNotifier extends StateNotifier<PermissionState> {
 }
 
 // Provider
-final permissionNotifierProvider = StateNotifierProvider<PermissionNotifier, PermissionState>(
+final permissionNotifierProvider =
+    StateNotifierProvider<PermissionNotifier, PermissionState>(
   (ref) => PermissionNotifier(),
 );

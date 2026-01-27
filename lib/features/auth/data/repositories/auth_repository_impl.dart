@@ -1,4 +1,3 @@
-
 import 'package:promoruta/core/core.dart' as model;
 import 'package:promoruta/core/utils/logger.dart';
 import 'package:promoruta/shared/services/connectivity_service.dart';
@@ -6,7 +5,6 @@ import 'package:promoruta/shared/services/connectivity_service.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../domain/models/two_factor_models.dart';
 import '../models/registration_models.dart';
-
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthLocalDataSource _localDataSource;
@@ -73,12 +71,14 @@ class AuthRepositoryImpl implements AuthRepository {
     final now = DateTime.now();
     final bufferTime = Duration(minutes: 5);
 
-    if (user.tokenExpiry != null && user.tokenExpiry!.subtract(bufferTime).isBefore(now)) {
+    if (user.tokenExpiry != null &&
+        user.tokenExpiry!.subtract(bufferTime).isBefore(now)) {
       // Token is expired or will expire soon, try to refresh
       final isConnected = await _connectivityService.isConnected;
       if (isConnected && user.accessToken != null) {
         try {
-          final refreshedUser = await _remoteDataSource.refreshToken(user.accessToken!);
+          final refreshedUser =
+              await _remoteDataSource.refreshToken(user.accessToken!);
           await _localDataSource.saveUser(refreshedUser);
           return refreshedUser;
         } catch (e) {
@@ -118,12 +118,14 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> changePassword(String currentPassword, String newPassword, String newPasswordConfirmation) async {
+  Future<void> changePassword(String currentPassword, String newPassword,
+      String newPasswordConfirmation) async {
     final isConnected = await _connectivityService.isConnected;
 
     if (isConnected) {
       try {
-        await _remoteDataSource.changePassword(currentPassword, newPassword, newPasswordConfirmation);
+        await _remoteDataSource.changePassword(
+            currentPassword, newPassword, newPasswordConfirmation);
       } catch (e) {
         rethrow;
       }
@@ -143,7 +145,8 @@ class AuthRepositoryImpl implements AuthRepository {
         rethrow;
       }
     } else {
-      throw Exception('No internet connection. Please check your connection and try again.');
+      throw Exception(
+          'No internet connection. Please check your connection and try again.');
     }
   }
 
@@ -168,7 +171,8 @@ class AuthRepositoryImpl implements AuthRepository {
         rethrow;
       }
     } else {
-      throw Exception('No internet connection. Please check your connection and try again.');
+      throw Exception(
+          'No internet connection. Please check your connection and try again.');
     }
   }
 
@@ -185,12 +189,14 @@ class AuthRepositoryImpl implements AuthRepository {
         rethrow;
       }
     } else {
-      throw Exception('No internet connection. Please check your connection and try again.');
+      throw Exception(
+          'No internet connection. Please check your connection and try again.');
     }
   }
 
   @override
-  Future<TwoFactorConfirmResponse> confirm2FA(String secret, String code) async {
+  Future<TwoFactorConfirmResponse> confirm2FA(
+      String secret, String code) async {
     final isConnected = await _connectivityService.isConnected;
 
     if (isConnected) {
@@ -200,7 +206,8 @@ class AuthRepositoryImpl implements AuthRepository {
         rethrow;
       }
     } else {
-      throw Exception('No internet connection. Please check your connection and try again.');
+      throw Exception(
+          'No internet connection. Please check your connection and try again.');
     }
   }
 
@@ -215,7 +222,8 @@ class AuthRepositoryImpl implements AuthRepository {
         rethrow;
       }
     } else {
-      throw Exception('No internet connection. Please check your connection and try again.');
+      throw Exception(
+          'No internet connection. Please check your connection and try again.');
     }
   }
 
@@ -257,7 +265,8 @@ class AuthRepositoryImpl implements AuthRepository {
         rethrow;
       }
     } else {
-      throw Exception('No internet connection. Please check your connection and try again.');
+      throw Exception(
+          'No internet connection. Please check your connection and try again.');
     }
   }
 
@@ -272,7 +281,8 @@ class AuthRepositoryImpl implements AuthRepository {
         rethrow;
       }
     } else {
-      throw Exception('No internet connection. Please check your connection and try again.');
+      throw Exception(
+          'No internet connection. Please check your connection and try again.');
     }
   }
 
@@ -301,7 +311,8 @@ class AuthRepositoryImpl implements AuthRepository {
         rethrow;
       }
     } else {
-      throw Exception('No internet connection. Please check your connection and try again.');
+      throw Exception(
+          'No internet connection. Please check your connection and try again.');
     }
   }
 
@@ -325,7 +336,8 @@ class AuthRepositoryImpl implements AuthRepository {
         rethrow;
       }
     } else {
-      throw Exception('No internet connection. Please check your connection and try again.');
+      throw Exception(
+          'No internet connection. Please check your connection and try again.');
     }
   }
 
@@ -340,7 +352,8 @@ class AuthRepositoryImpl implements AuthRepository {
         rethrow;
       }
     } else {
-      throw Exception('No internet connection. Please check your connection and try again.');
+      throw Exception(
+          'No internet connection. Please check your connection and try again.');
     }
   }
 }

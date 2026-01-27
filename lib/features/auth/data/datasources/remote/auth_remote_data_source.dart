@@ -42,16 +42,20 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         final expiresIn = data['expires_in'] as int;
         final tokenExpiry = DateTime.now().add(Duration(seconds: expiresIn));
         final refreshExpiresIn = data['refresh_expires_in'] != null
-            ? DateTime.now().add(Duration(seconds: data['refresh_expires_in'] as int))
+            ? DateTime.now()
+                .add(Duration(seconds: data['refresh_expires_in'] as int))
             : null;
 
         return User(
           id: userData['id'],
           name: userData['name'],
           email: userData['email'],
-          emailVerifiedAt: null, // API doesn't provide email_verified_at on login
+          emailVerifiedAt:
+              null, // API doesn't provide email_verified_at on login
           role: UserRole.fromString(userData['role']),
-          createdAt: userData['created_at'] != null ? DateTime.parse(userData['created_at']) : null,
+          createdAt: userData['created_at'] != null
+              ? DateTime.parse(userData['created_at'])
+              : null,
           updatedAt: null, // API doesn't provide updated_at on login
           accessToken: data['access_token'],
           tokenExpiry: tokenExpiry,
@@ -95,7 +99,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         final expiresIn = data['expires_in'] as int;
         final tokenExpiry = DateTime.now().add(Duration(seconds: expiresIn));
         final refreshExpiresIn = data['refresh_expires_in'] != null
-            ? DateTime.now().add(Duration(seconds: data['refresh_expires_in'] as int))
+            ? DateTime.now()
+                .add(Duration(seconds: data['refresh_expires_in'] as int))
             : null;
 
         final refreshedUser = User(
@@ -136,7 +141,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<void> changePassword(String currentPassword, String newPassword, String newPasswordConfirmation) async {
+  Future<void> changePassword(String currentPassword, String newPassword,
+      String newPasswordConfirmation) async {
     try {
       await dio.post(
         '/auth/change-password',
@@ -153,7 +159,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         ),
       );
     } on DioException catch (e) {
-      AppLogger.auth.e('Change password failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+      AppLogger.auth.e(
+          'Change password failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
 
       // Handle different error codes with user-friendly messages
       if (e.response != null) {
@@ -172,15 +179,18 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
                 }
               }
             }
-            throw Exception('Invalid password format. Please check your input.');
+            throw Exception(
+                'Invalid password format. Please check your input.');
           case 500:
             throw Exception('serverErrorPasswordChange');
           default:
-            throw Exception('Unable to change password. Please try again later.');
+            throw Exception(
+                'Unable to change password. Please try again later.');
         }
       } else {
         // Network or other Dio errors
-        throw Exception('Network error. Please check your connection and try again.');
+        throw Exception(
+            'Network error. Please check your connection and try again.');
       }
     }
   }
@@ -218,7 +228,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw Exception('An error occurred');
       }
     } on DioException catch (e) {
-      AppLogger.auth.e('Request password reset failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+      AppLogger.auth.e(
+          'Request password reset failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
 
       if (e.response != null) {
         final statusCode = e.response!.statusCode;
@@ -239,10 +250,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           case 429:
             throw Exception('Too many requests. Please try again in a minute.');
           default:
-            throw Exception('Unable to request password reset. Please try again later.');
+            throw Exception(
+                'Unable to request password reset. Please try again later.');
         }
       } else {
-        throw Exception('Network error. Please check your connection and try again.');
+        throw Exception(
+            'Network error. Please check your connection and try again.');
       }
     }
   }
@@ -290,7 +303,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw Exception('An error occurred');
       }
     } on DioException catch (e) {
-      AppLogger.auth.e('Reset password failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+      AppLogger.auth.e(
+          'Reset password failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
 
       if (e.response != null) {
         final statusCode = e.response!.statusCode;
@@ -307,14 +321,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
                 }
               }
             }
-            throw Exception('Invalid code or password format. Please check your input.');
+            throw Exception(
+                'Invalid code or password format. Please check your input.');
           case 429:
             throw Exception('Too many attempts. Please try again later.');
           default:
-            throw Exception('Unable to reset password. Please try again later.');
+            throw Exception(
+                'Unable to reset password. Please try again later.');
         }
       } else {
-        throw Exception('Network error. Please check your connection and try again.');
+        throw Exception(
+            'Network error. Please check your connection and try again.');
       }
     }
   }
@@ -340,7 +357,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw Exception('Failed to enable 2FA: ${response.statusMessage}');
       }
     } on DioException catch (e) {
-      AppLogger.auth.e('Enable 2FA failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+      AppLogger.auth.e(
+          'Enable 2FA failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
 
       if (e.response != null) {
         final statusCode = e.response!.statusCode;
@@ -364,13 +382,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
             throw Exception('Unable to enable 2FA. Please try again later.');
         }
       } else {
-        throw Exception('Network error. Please check your connection and try again.');
+        throw Exception(
+            'Network error. Please check your connection and try again.');
       }
     }
   }
 
   @override
-  Future<TwoFactorConfirmResponse> confirm2FA(String secret, String code) async {
+  Future<TwoFactorConfirmResponse> confirm2FA(
+      String secret, String code) async {
     try {
       final response = await dio.post(
         '/auth/2fa/confirm',
@@ -402,7 +422,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw Exception('Failed to confirm 2FA: ${response.statusMessage}');
       }
     } on DioException catch (e) {
-      AppLogger.auth.e('Confirm 2FA failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+      AppLogger.auth.e(
+          'Confirm 2FA failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
 
       if (e.response != null) {
         final statusCode = e.response!.statusCode;
@@ -426,7 +447,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
             throw Exception('Unable to confirm 2FA. Please try again later.');
         }
       } else {
-        throw Exception('Network error. Please check your connection and try again.');
+        throw Exception(
+            'Network error. Please check your connection and try again.');
       }
     }
   }
@@ -457,12 +479,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         }
 
         final data = response.data;
-        return data['message'] ?? 'Two-factor authentication has been disabled.';
+        return data['message'] ??
+            'Two-factor authentication has been disabled.';
       } else {
         throw Exception('Failed to disable 2FA: ${response.statusMessage}');
       }
     } on DioException catch (e) {
-      AppLogger.auth.e('Disable 2FA failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+      AppLogger.auth.e(
+          'Disable 2FA failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
 
       if (e.response != null) {
         final statusCode = e.response!.statusCode;
@@ -486,7 +510,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
             throw Exception('Unable to disable 2FA. Please try again later.');
         }
       } else {
-        throw Exception('Network error. Please check your connection and try again.');
+        throw Exception(
+            'Network error. Please check your connection and try again.');
       }
     }
   }
@@ -529,7 +554,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         final expiresIn = responseData['expires_in'] as int;
         final tokenExpiry = DateTime.now().add(Duration(seconds: expiresIn));
         final refreshExpiresIn = responseData['refresh_expires_in'] != null
-            ? DateTime.now().add(Duration(seconds: responseData['refresh_expires_in'] as int))
+            ? DateTime.now().add(
+                Duration(seconds: responseData['refresh_expires_in'] as int))
             : null;
 
         return User(
@@ -561,7 +587,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw Exception('2FA verification failed: ${response.statusMessage}');
       }
     } on DioException catch (e) {
-      AppLogger.auth.e('Verify 2FA code failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+      AppLogger.auth.e(
+          'Verify 2FA code failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
 
       if (e.response != null) {
         final statusCode = e.response!.statusCode;
@@ -569,7 +596,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
         switch (statusCode) {
           case 403:
-            throw Exception('Email not verified. Please verify your email first.');
+            throw Exception(
+                'Email not verified. Please verify your email first.');
           case 422:
             if (responseData is Map && responseData.containsKey('errors')) {
               final errors = responseData['errors'] as Map?;
@@ -580,14 +608,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
                 }
               }
             }
-            throw Exception('Invalid verification code or credentials. Please try again.');
+            throw Exception(
+                'Invalid verification code or credentials. Please try again.');
           case 429:
             throw Exception('Too many attempts. Please try again later.');
           default:
-            throw Exception('Unable to verify 2FA code. Please try again later.');
+            throw Exception(
+                'Unable to verify 2FA code. Please try again later.');
         }
       } else {
-        throw Exception('Network error. Please check your connection and try again.');
+        throw Exception(
+            'Network error. Please check your connection and try again.');
       }
     }
   }
@@ -608,10 +639,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       if (response.statusCode == 200) {
         return RecoveryCodesResponse.fromJson(response.data);
       } else {
-        throw Exception('Failed to get recovery codes: ${response.statusMessage}');
+        throw Exception(
+            'Failed to get recovery codes: ${response.statusMessage}');
       }
     } on DioException catch (e) {
-      AppLogger.auth.e('Get recovery codes failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+      AppLogger.auth.e(
+          'Get recovery codes failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
 
       if (e.response != null) {
         final statusCode = e.response!.statusCode;
@@ -619,14 +652,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
         switch (statusCode) {
           case 400:
-            throw Exception('Two-factor authentication is not enabled for your account.');
+            throw Exception(
+                'Two-factor authentication is not enabled for your account.');
           case 401:
             throw Exception('Unauthorized. Please log in again.');
           default:
-            throw Exception('Unable to retrieve recovery codes. Please try again later.');
+            throw Exception(
+                'Unable to retrieve recovery codes. Please try again later.');
         }
       } else {
-        throw Exception('Network error. Please check your connection and try again.');
+        throw Exception(
+            'Network error. Please check your connection and try again.');
       }
     }
   }
@@ -648,10 +684,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       if (response.statusCode == 200) {
         return RecoveryCodesResponse.fromJson(response.data);
       } else {
-        throw Exception('Failed to regenerate recovery codes: ${response.statusMessage}');
+        throw Exception(
+            'Failed to regenerate recovery codes: ${response.statusMessage}');
       }
     } on DioException catch (e) {
-      AppLogger.auth.e('Regenerate recovery codes failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+      AppLogger.auth.e(
+          'Regenerate recovery codes failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
 
       if (e.response != null) {
         final statusCode = e.response!.statusCode;
@@ -659,7 +697,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
         switch (statusCode) {
           case 400:
-            throw Exception('Two-factor authentication is not enabled for your account.');
+            throw Exception(
+                'Two-factor authentication is not enabled for your account.');
           case 401:
             throw Exception('Unauthorized. Please log in again.');
           case 422:
@@ -674,10 +713,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
             }
             throw Exception('Invalid password. Please try again.');
           default:
-            throw Exception('Unable to regenerate recovery codes. Please try again later.');
+            throw Exception(
+                'Unable to regenerate recovery codes. Please try again later.');
         }
       } else {
-        throw Exception('Network error. Please check your connection and try again.');
+        throw Exception(
+            'Network error. Please check your connection and try again.');
       }
     }
   }
@@ -716,7 +757,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw Exception('Registration failed: ${response.statusMessage}');
       }
     } on DioException catch (e) {
-      AppLogger.auth.e('Registration failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+      AppLogger.auth.e(
+          'Registration failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
 
       if (e.response != null) {
         final statusCode = e.response!.statusCode;
@@ -740,14 +782,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
                 }
               }
             }
-            throw Exception('Invalid registration data. Please check your input.');
+            throw Exception(
+                'Invalid registration data. Please check your input.');
           case 429:
             throw Exception('Too many attempts. Please try again later.');
           default:
             throw Exception('Unable to register. Please try again later.');
         }
       } else {
-        throw Exception('Network error. Please check your connection and try again.');
+        throw Exception(
+            'Network error. Please check your connection and try again.');
       }
     }
   }
@@ -778,7 +822,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw Exception('Email verification failed: ${response.statusMessage}');
       }
     } on DioException catch (e) {
-      AppLogger.auth.e('Email verification failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+      AppLogger.auth.e(
+          'Email verification failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
 
       if (e.response != null) {
         final statusCode = e.response!.statusCode;
@@ -807,7 +852,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
             throw Exception('Unable to verify email. Please try again later.');
         }
       } else {
-        throw Exception('Network error. Please check your connection and try again.');
+        throw Exception(
+            'Network error. Please check your connection and try again.');
       }
     }
   }
@@ -833,7 +879,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw Exception('Failed to resend code: ${response.statusMessage}');
       }
     } on DioException catch (e) {
-      AppLogger.auth.e('Resend verification code failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+      AppLogger.auth.e(
+          'Resend verification code failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
 
       if (e.response != null) {
         final statusCode = e.response!.statusCode;
@@ -852,12 +899,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
             }
             throw Exception('Invalid email. Please check your input.');
           case 429:
-            throw Exception('Too many requests. Please wait before requesting a new code.');
+            throw Exception(
+                'Too many requests. Please wait before requesting a new code.');
           default:
             throw Exception('Unable to resend code. Please try again later.');
         }
       } else {
-        throw Exception('Network error. Please check your connection and try again.');
+        throw Exception(
+            'Network error. Please check your connection and try again.');
       }
     }
   }

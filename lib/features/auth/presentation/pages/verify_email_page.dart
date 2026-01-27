@@ -178,7 +178,10 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
                   width: 80,
                   height: 80,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .primary
+                        .withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -222,7 +225,10 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
-                        color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.1),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .shadow
+                            .withValues(alpha: 0.1),
                         spreadRadius: 1,
                         blurRadius: 10,
                         offset: const Offset(0, 2),
@@ -246,7 +252,10 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
                         keyboardType: TextInputType.number,
                         textAlign: TextAlign.center,
                         maxLength: 6,
-                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium
+                            ?.copyWith(
                               fontWeight: FontWeight.bold,
                               letterSpacing: 8,
                             ),
@@ -259,7 +268,8 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
                           fillColor: Theme.of(context).colorScheme.surface,
                           hintText: '000000',
                           hintStyle: TextStyle(
-                            color: AppColors.textSecondary.withValues(alpha: 0.5),
+                            color:
+                                AppColors.textSecondary.withValues(alpha: 0.5),
                             letterSpacing: 8,
                           ),
                           counterText: '',
@@ -297,8 +307,10 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
                         child: ElevatedButton(
                           onPressed: _isLoading ? null : _handleVerify,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).colorScheme.primary,
-                            foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            foregroundColor:
+                                Theme.of(context).colorScheme.onPrimary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),

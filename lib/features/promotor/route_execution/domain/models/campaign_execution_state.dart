@@ -88,7 +88,8 @@ class ExecutionGpsPoint extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, latitude, longitude, timestamp, speed, accuracy, synced];
+  List<Object?> get props =>
+      [id, latitude, longitude, timestamp, speed, accuracy, synced];
 }
 
 /// State of campaign execution
@@ -210,7 +211,8 @@ class CampaignExecutionState extends Equatable {
     return CampaignExecutionState(
       status: status ?? this.status,
       campaignId: clearCampaignId ? null : (campaignId ?? this.campaignId),
-      campaignName: clearCampaignId ? null : (campaignName ?? this.campaignName),
+      campaignName:
+          clearCampaignId ? null : (campaignName ?? this.campaignName),
       pendingPoints: pendingPoints ?? this.pendingPoints,
       allPoints: allPoints ?? this.allPoints,
       startedAt: startedAt ?? this.startedAt,

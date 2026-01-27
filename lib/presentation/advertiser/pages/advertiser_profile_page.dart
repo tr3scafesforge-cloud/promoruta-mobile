@@ -32,7 +32,8 @@ class AdvertiserProfilePage extends ConsumerStatefulWidget {
   final VoidCallback? onTapAccount;
 
   @override
-  ConsumerState<AdvertiserProfilePage> createState() => _AdvertiserProfilePageState();
+  ConsumerState<AdvertiserProfilePage> createState() =>
+      _AdvertiserProfilePageState();
 }
 
 class _AdvertiserProfilePageState extends ConsumerState<AdvertiserProfilePage> {
@@ -116,4 +117,3 @@ class _AdvertiserProfilePageState extends ConsumerState<AdvertiserProfilePage> {
         ));
   }
 }
-

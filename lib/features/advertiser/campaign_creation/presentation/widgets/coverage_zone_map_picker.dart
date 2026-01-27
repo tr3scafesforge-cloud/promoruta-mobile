@@ -16,7 +16,8 @@ import '../../../../../shared/providers/providers.dart';
 class CoverageZoneMapPicker extends ConsumerStatefulWidget {
   final List<LatLng>? initialWaypoints;
   final LatLng initialCenter;
-  final Function(List<LatLng> waypoints, Map<int, String> waypointNames, RouteModel? route)? onRouteSelected;
+  final Function(List<LatLng> waypoints, Map<int, String> waypointNames,
+      RouteModel? route)? onRouteSelected;
 
   const CoverageZoneMapPicker({
     super.key,
@@ -26,7 +27,8 @@ class CoverageZoneMapPicker extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<CoverageZoneMapPicker> createState() => _CoverageZoneMapPickerState();
+  ConsumerState<CoverageZoneMapPicker> createState() =>
+      _CoverageZoneMapPickerState();
 }
 
 class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
@@ -54,7 +56,8 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
 
     // Load custom marker images
     try {
-      final ByteData bytes = await rootBundle.load('assets/icons/map_marker_full_48.png');
+      final ByteData bytes =
+          await rootBundle.load('assets/icons/map_marker_full_48.png');
       final Uint8List imageData = bytes.buffer.asUint8List();
 
       await mapboxMap.style.addStyleImage(
@@ -99,7 +102,8 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
   void _onMapTap(MapContentGestureContext context) async {
     // Get the tapped geographic coordinate
     final position = context.point.coordinates;
-    final tappedPoint = LatLng(position.lat.toDouble(), position.lng.toDouble());
+    final tappedPoint =
+        LatLng(position.lat.toDouble(), position.lng.toDouble());
 
     final waypointIndex = _waypoints.length;
 
@@ -154,7 +158,8 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
       iconColor: Colors.green.toARGB32(),
       iconAnchor: IconAnchor.BOTTOM, // Align bottom of marker with coordinate
     );
-    final startAnnotation = await _pointAnnotationManager!.create(startPointOptions);
+    final startAnnotation =
+        await _pointAnnotationManager!.create(startPointOptions);
     _annotations.add(startAnnotation);
 
     // End point marker (red) - only if we have more than one point
@@ -169,7 +174,8 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
         iconColor: Colors.red.toARGB32(),
         iconAnchor: IconAnchor.BOTTOM, // Align bottom of marker with coordinate
       );
-      final endAnnotation = await _pointAnnotationManager!.create(endPointOptions);
+      final endAnnotation =
+          await _pointAnnotationManager!.create(endPointOptions);
       _annotations.add(endAnnotation);
     }
   }
@@ -463,7 +469,8 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
                     color: Colors.black26,
                     child: Center(
                       child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(AppColors.primary),
                       ),
                     ),
                   ),
@@ -527,7 +534,8 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
                         ),
                       ),
                       const Spacer(),
-                      Icon(Icons.access_time, size: 16, color: AppColors.primary),
+                      Icon(Icons.access_time,
+                          size: 16, color: AppColors.primary),
                       const SizedBox(width: 4),
                       Text(
                         '${_currentRoute!.duration.inMinutes} min',

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/core/core.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
-import 'package:promoruta/features/advertiser/campaign_management/presentation/models/campaign_ui.dart' as ui;
+import 'package:promoruta/features/advertiser/campaign_management/presentation/models/campaign_ui.dart'
+    as ui;
 import 'package:promoruta/features/advertiser/campaign_management/data/models/campaign_mappers.dart';
 import 'package:promoruta/shared/widgets/advertiser_search_filter_bar.dart';
 import 'package:promoruta/shared/shared.dart';
@@ -88,9 +89,7 @@ class _AdvertiserHistoryPageState extends ConsumerState<AdvertiserHistoryPage> {
           for (final c in _filtered)
             _CampaignCard(
               campaign: c,
-              dateFormatted: c.dateTime != null
-                  ? df.format(c.dateTime!)
-                  : '--',
+              dateFormatted: c.dateTime != null ? df.format(c.dateTime!) : '--',
             ),
           if (_filtered.isEmpty)
             Padding(
@@ -362,7 +361,8 @@ class _CampaignCard extends StatelessWidget {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(_statusIcon(), size: 14, color: _statusColor(theme)),
+                              Icon(_statusIcon(),
+                                  size: 14, color: _statusColor(theme)),
                               const SizedBox(width: 4),
                               Text(
                                 _statusLabel(context),

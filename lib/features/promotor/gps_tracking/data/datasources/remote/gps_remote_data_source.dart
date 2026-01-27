@@ -65,15 +65,17 @@ class GpsRemoteDataSourceImpl implements GpsRemoteDataSource {
   @override
   Future<void> uploadGpsPoints(String routeId, List<GpsPoint> points) async {
     try {
-      final pointsData = points.map((point) => {
-        'id': point.id,
-        'routeId': point.routeId,
-        'latitude': point.latitude,
-        'longitude': point.longitude,
-        'timestamp': point.timestamp.toIso8601String(),
-        'speed': point.speed,
-        'accuracy': point.accuracy,
-      }).toList();
+      final pointsData = points
+          .map((point) => {
+                'id': point.id,
+                'routeId': point.routeId,
+                'latitude': point.latitude,
+                'longitude': point.longitude,
+                'timestamp': point.timestamp.toIso8601String(),
+                'speed': point.speed,
+                'accuracy': point.accuracy,
+              })
+          .toList();
 
       final response = await dio.post(
         'routes/$routeId/points',
@@ -81,7 +83,8 @@ class GpsRemoteDataSourceImpl implements GpsRemoteDataSource {
       );
 
       if (response.statusCode != 201 && response.statusCode != 200) {
-        throw Exception('Failed to upload GPS points: ${response.statusMessage}');
+        throw Exception(
+            'Failed to upload GPS points: ${response.statusMessage}');
       }
     } on DioException catch (e) {
       throw Exception('Network error: ${e.message}');
@@ -95,15 +98,19 @@ class GpsRemoteDataSourceImpl implements GpsRemoteDataSource {
 
       if (response.statusCode == 200) {
         final data = response.data as List;
-        return data.map((json) => route_model.Route(
-          id: json['id'],
-          promoterId: json['promoterId'],
-          campaignId: json['campaignId'],
-          startTime: DateTime.parse(json['startTime']),
-          endTime: json['endTime'] != null ? DateTime.parse(json['endTime']) : null,
-          points: [], // Points fetched separately
-          isCompleted: json['isCompleted'] ?? false,
-        )).toList();
+        return data
+            .map((json) => route_model.Route(
+                  id: json['id'],
+                  promoterId: json['promoterId'],
+                  campaignId: json['campaignId'],
+                  startTime: DateTime.parse(json['startTime']),
+                  endTime: json['endTime'] != null
+                      ? DateTime.parse(json['endTime'])
+                      : null,
+                  points: [], // Points fetched separately
+                  isCompleted: json['isCompleted'] ?? false,
+                ))
+            .toList();
       } else {
         throw Exception('Failed to fetch routes: ${response.statusMessage}');
       }
@@ -119,17 +126,20 @@ class GpsRemoteDataSourceImpl implements GpsRemoteDataSource {
 
       if (response.statusCode == 200) {
         final data = response.data as List;
-        return data.map((json) => GpsPoint(
-          id: json['id'],
-          routeId: json['routeId'],
-          latitude: json['latitude'],
-          longitude: json['longitude'],
-          timestamp: DateTime.parse(json['timestamp']),
-          speed: json['speed'],
-          accuracy: json['accuracy'],
-        )).toList();
+        return data
+            .map((json) => GpsPoint(
+                  id: json['id'],
+                  routeId: json['routeId'],
+                  latitude: json['latitude'],
+                  longitude: json['longitude'],
+                  timestamp: DateTime.parse(json['timestamp']),
+                  speed: json['speed'],
+                  accuracy: json['accuracy'],
+                ))
+            .toList();
       } else {
-        throw Exception('Failed to fetch route points: ${response.statusMessage}');
+        throw Exception(
+            'Failed to fetch route points: ${response.statusMessage}');
       }
     } on DioException catch (e) {
       throw Exception('Network error: ${e.message}');
@@ -155,11 +165,13 @@ class GpsRemoteDataSourceImpl implements GpsRemoteDataSource {
 
     try {
       // Group points into a single track with all coordinates
-      final coordinates = points.map((point) => {
-        'lat': point.latitude,
-        'lng': point.longitude,
-        'timestamp': point.timestamp.toIso8601String(),
-      }).toList();
+      final coordinates = points
+          .map((point) => {
+                'lat': point.latitude,
+                'lng': point.longitude,
+                'timestamp': point.timestamp.toIso8601String(),
+              })
+          .toList();
 
       // Use first point's ID as idempotency key for this batch
       final idempotencyKey = '${campaignId}_${points.first.id}';
@@ -190,7 +202,8 @@ class GpsRemoteDataSourceImpl implements GpsRemoteDataSource {
         );
         return result;
       } else {
-        throw Exception('Failed to upload GPS tracks: ${response.statusMessage}');
+        throw Exception(
+            'Failed to upload GPS tracks: ${response.statusMessage}');
       }
     } on DioException catch (e) {
       AppLogger.location.e('Failed to upload GPS tracks: ${e.message}');
@@ -199,14 +212,16 @@ class GpsRemoteDataSourceImpl implements GpsRemoteDataSource {
   }
 
   /// Get all GPS tracks for a campaign
-  Future<List<Map<String, dynamic>>> getCampaignGpsTracks(String campaignId) async {
+  Future<List<Map<String, dynamic>>> getCampaignGpsTracks(
+      String campaignId) async {
     try {
       final response = await dio.get('campaigns/$campaignId/gps-tracks');
 
       if (response.statusCode == 200) {
         return List<Map<String, dynamic>>.from(response.data);
       } else {
-        throw Exception('Failed to fetch GPS tracks: ${response.statusMessage}');
+        throw Exception(
+            'Failed to fetch GPS tracks: ${response.statusMessage}');
       }
     } on DioException catch (e) {
       throw Exception('Network error: ${e.message}');

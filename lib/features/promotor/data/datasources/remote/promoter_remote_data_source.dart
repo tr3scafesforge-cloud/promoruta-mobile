@@ -42,13 +42,15 @@ class PromoterRemoteDataSourceImpl implements PromoterRemoteDataSource {
         throw Exception('Session expired. Please log in again.');
       }
 
-      AppLogger.auth.e('Fetch promoter KPI stats failed: ${e.response?.statusCode} - ${e.message}');
+      AppLogger.auth.e(
+          'Fetch promoter KPI stats failed: ${e.response?.statusCode} - ${e.message}');
 
       if (e.response != null) {
         final statusCode = e.response!.statusCode;
         switch (statusCode) {
           case 403:
-            throw Exception('Access denied. Only promoters can view KPI stats.');
+            throw Exception(
+                'Access denied. Only promoters can view KPI stats.');
           case 404:
             throw Exception('KPI stats endpoint not found.');
           default:

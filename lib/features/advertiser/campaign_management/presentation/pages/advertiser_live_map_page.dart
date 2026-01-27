@@ -124,7 +124,8 @@ class _AdvertiserLiveMapPageState extends ConsumerState<AdvertiserLiveMapPage>
         final markerOptions = PointAnnotationOptions(
           geometry: point,
           iconSize: 1.2,
-          iconColor: _getPromoterStatusColor(campaign.promoter!.status).toARGB32(),
+          iconColor:
+              _getPromoterStatusColor(campaign.promoter!.status).toARGB32(),
         );
 
         final marker = await _pointAnnotationManager!.create(markerOptions);
@@ -256,7 +257,9 @@ class _AdvertiserLiveMapPageState extends ConsumerState<AdvertiserLiveMapPage>
                             icon: Icons.access_time,
                             label: l10n.now,
                             onTap: () {
-                              ref.read(advertiserLiveProvider.notifier).refresh();
+                              ref
+                                  .read(advertiserLiveProvider.notifier)
+                                  .refresh();
                             },
                           ),
                       ],
@@ -546,8 +549,8 @@ class _PromoterItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final promoter = campaign.promoter;
-    final isOnline = promoter != null &&
-        promoter.status == PromoterExecutionStatus.active;
+    final isOnline =
+        promoter != null && promoter.status == PromoterExecutionStatus.active;
     final isPaused = promoter?.status == PromoterExecutionStatus.paused;
     final hasNoSignal = promoter?.hasNoSignal ?? true;
 
@@ -806,8 +809,9 @@ class _AlertCard extends StatelessWidget {
                         child: Text(
                           alert.promoterName ?? alert.campaignTitle,
                           style: theme.textTheme.bodyMedium?.copyWith(
-                            fontWeight:
-                                alert.isRead ? FontWeight.w500 : FontWeight.w700,
+                            fontWeight: alert.isRead
+                                ? FontWeight.w500
+                                : FontWeight.w700,
                           ),
                         ),
                       ),
@@ -963,14 +967,14 @@ class _RoundFab extends StatelessWidget {
     return FloatingActionButton.small(
       onPressed: onPressed,
       heroTag: null,
-      backgroundColor:
-          isActive ? theme.colorScheme.primaryContainer : theme.colorScheme.surface,
+      backgroundColor: isActive
+          ? theme.colorScheme.primaryContainer
+          : theme.colorScheme.surface,
       shape: const CircleBorder(),
       child: Icon(
         icon,
-        color: isActive
-            ? theme.colorScheme.primary
-            : theme.colorScheme.onSurface,
+        color:
+            isActive ? theme.colorScheme.primary : theme.colorScheme.onSurface,
       ),
     );
   }

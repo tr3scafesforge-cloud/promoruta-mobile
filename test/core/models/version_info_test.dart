@@ -19,7 +19,8 @@ void main() {
         expect(versionInfo.version, equals('1.2.3'));
         expect(versionInfo.buildNumber, equals(42));
         expect(versionInfo.downloadUrl, equals('https://example.com/app.apk'));
-        expect(versionInfo.releaseDate, equals(DateTime.parse('2024-01-15T10:30:00Z')));
+        expect(versionInfo.releaseDate,
+            equals(DateTime.parse('2024-01-15T10:30:00Z')));
         expect(versionInfo.releaseNotes, equals('Bug fixes and improvements'));
         expect(versionInfo.minSupportedVersion, equals('1.0.0'));
       });

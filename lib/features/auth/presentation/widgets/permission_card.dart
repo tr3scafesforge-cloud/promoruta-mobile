@@ -48,7 +48,8 @@ class PermissionCard extends StatelessWidget {
               width: 56,
               height: 56,
               decoration: BoxDecoration(
-                color: isGranted ? colorScheme.primaryContainer : backgroundColor,
+                color:
+                    isGranted ? colorScheme.primaryContainer : backgroundColor,
                 borderRadius: BorderRadius.circular(28),
               ),
               child: Icon(
@@ -71,7 +72,9 @@ class PermissionCard extends StatelessWidget {
                           title,
                           style: textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w600,
-                            color: isGranted ? colorScheme.onPrimaryContainer : colorScheme.onSurface,
+                            color: isGranted
+                                ? colorScheme.onPrimaryContainer
+                                : colorScheme.onSurface,
                           ),
                         ),
                       ),
@@ -103,7 +106,9 @@ class PermissionCard extends StatelessWidget {
                         ? AppLocalizations.of(context).permissionGranted
                         : subtitle,
                     style: textTheme.bodyMedium?.copyWith(
-                      color: isGranted ? colorScheme.primary : colorScheme.onSurfaceVariant,
+                      color: isGranted
+                          ? colorScheme.primary
+                          : colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ],

@@ -52,7 +52,8 @@ class CampaignExecutionNotifier extends StateNotifier<CampaignExecutionState> {
         final campaignId = data['campaignId'] as String?;
         final campaignName = data['campaignName'] as String?;
         final startedAtStr = data['startedAt'] as String?;
-        final distanceTraveled = (data['distanceTraveled'] as num?)?.toDouble() ?? 0.0;
+        final distanceTraveled =
+            (data['distanceTraveled'] as num?)?.toDouble() ?? 0.0;
         final pausedDurationMs = (data['pausedDurationMs'] as int?) ?? 0;
         final wasPaused = data['wasPaused'] as bool? ?? false;
 
@@ -456,9 +457,8 @@ class CampaignExecutionNotifier extends StateNotifier<CampaignExecutionState> {
 
       if (result.isSuccess || result.synced > 0) {
         // Mark points as synced locally
-        final syncedPoints = pointsToSync
-            .map((p) => p.copyWith(synced: true))
-            .toList();
+        final syncedPoints =
+            pointsToSync.map((p) => p.copyWith(synced: true)).toList();
 
         // Update all points with synced status
         final updatedAllPoints = state.allPoints.map((point) {

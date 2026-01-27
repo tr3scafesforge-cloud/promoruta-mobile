@@ -34,7 +34,8 @@ class PermissionState {
   }
 
   // Check if all critical permissions are granted (location + notifications)
-  bool get allCriticalPermissionsGranted => locationGranted && notificationGranted;
+  bool get allCriticalPermissionsGranted =>
+      locationGranted && notificationGranted;
 
   // Check if all permissions are granted
   bool get allPermissionsGranted =>
@@ -159,6 +160,7 @@ class PermissionNotifier extends StateNotifier<PermissionState> {
 }
 
 // Provider
-final permissionNotifierProvider = StateNotifierProvider<PermissionNotifier, PermissionState>(
+final permissionNotifierProvider =
+    StateNotifierProvider<PermissionNotifier, PermissionState>(
   (ref) => PermissionNotifier(),
 );

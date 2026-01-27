@@ -15,7 +15,9 @@ class PaymentMethodsPage extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black87),
-          onPressed: () => context.canPop() ? context.pop() : context.go('/advertiser-security-settings'),
+          onPressed: () => context.canPop()
+              ? context.pop()
+              : context.go('/advertiser-security-settings'),
         ),
         title: const SizedBox.shrink(),
       ),

@@ -262,8 +262,8 @@ class _AvailableEarningsCard extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                     SnackBar(content: Text('${l10n.withdrawFunds} (WIP)')),
-                  );
+                  SnackBar(content: Text('${l10n.withdrawFunds} (WIP)')),
+                );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.secondary,
@@ -414,7 +414,8 @@ class _HistoricoView extends StatelessWidget {
                   ),
                   style: TextButton.styleFrom(
                     foregroundColor: AppColors.secondary,
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   ),
                 ),
               ),
@@ -551,7 +552,9 @@ class _TransactionItem extends StatelessWidget {
                     Text(
                       isPaid ? l10n.paid : l10n.pending,
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: isPaid ? AppColors.green : AppColors.pendingOrangeColor,
+                        color: isPaid
+                            ? AppColors.green
+                            : AppColors.pendingOrangeColor,
                         fontWeight: FontWeight.w600,
                         fontSize: 11,
                       ),
@@ -593,7 +596,8 @@ class _EstadisticasView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final maxValue = earnings.map((e) => e.amount).reduce((a, b) => a > b ? a : b);
+    final maxValue =
+        earnings.map((e) => e.amount).reduce((a, b) => a > b ? a : b);
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -769,7 +773,8 @@ class _PagosView extends StatelessWidget {
                   ),
                   style: TextButton.styleFrom(
                     foregroundColor: AppColors.secondary,
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   ),
                 ),
               ),
@@ -841,7 +846,8 @@ class _PaymentMethodItem extends StatelessWidget {
                     if (paymentMethod.isPrimary) ...[
                       const SizedBox(width: 8),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           color: AppColors.secondary.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(12),

@@ -101,9 +101,8 @@ class SignUpRoute extends GoRouteData with _$SignUpRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     final roleParam = state.uri.queryParameters['role'];
-    final userRole = roleParam != null
-        ? model.UserRole.fromString(roleParam)
-        : role;
+    final userRole =
+        roleParam != null ? model.UserRole.fromString(roleParam) : role;
     return SignUpPage(role: userRole);
   }
 }
@@ -120,9 +119,8 @@ class VerifyEmailRoute extends GoRouteData with _$VerifyEmailRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     final roleParam = state.uri.queryParameters['role'];
-    final userRole = roleParam != null
-        ? model.UserRole.fromString(roleParam)
-        : role;
+    final userRole =
+        roleParam != null ? model.UserRole.fromString(roleParam) : role;
     return VerifyEmailPage(email: email, role: userRole);
   }
 }
@@ -506,8 +504,7 @@ class PromoterTwoFactorAuthRoute extends GoRouteData
 @TypedGoRoute<Promoter2FASetupRoute>(
   path: '/promoter-2fa-setup',
 )
-class Promoter2FASetupRoute extends GoRouteData
-    with _$Promoter2FASetupRoute {
+class Promoter2FASetupRoute extends GoRouteData with _$Promoter2FASetupRoute {
   const Promoter2FASetupRoute();
 
   @override
@@ -584,7 +581,8 @@ class AppRouter {
           // Check role-based access
           if (!guard.canAccess(user.role)) {
             // User doesn't have required role
-            AppLogger.router.w('Access denied to $path: role ${user.role} not allowed');
+            AppLogger.router
+                .w('Access denied to $path: role ${user.role} not allowed');
 
             // Redirect to appropriate home based on user's role
             if (user.role == model.UserRole.promoter) {

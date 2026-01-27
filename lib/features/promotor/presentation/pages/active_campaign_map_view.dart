@@ -25,7 +25,8 @@ class ActiveCampaignMapView extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<ActiveCampaignMapView> createState() => _ActiveCampaignMapViewState();
+  ConsumerState<ActiveCampaignMapView> createState() =>
+      _ActiveCampaignMapViewState();
 }
 
 class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
@@ -71,7 +72,8 @@ class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
     });
 
     // Get persisted audio position
-    final restoredPosition = await CampaignExecutionNotifier.getPersistedAudioPosition();
+    final restoredPosition =
+        await CampaignExecutionNotifier.getPersistedAudioPosition();
 
     final audioService = ref.read(campaignAudioServiceProvider);
     final success = await audioService.loadAudio(
@@ -81,7 +83,8 @@ class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
 
     if (success) {
       // Set up periodic position persistence (every 5 seconds while playing)
-      _audioPositionSubscription = audioService.positionStream.listen((position) {
+      _audioPositionSubscription =
+          audioService.positionStream.listen((position) {
         // Only persist if position changed by more than 5 seconds
         if ((position - _lastPersistedPosition).inSeconds.abs() >= 5) {
           _lastPersistedPosition = position;
@@ -110,8 +113,10 @@ class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
     _mapboxMap = mapboxMap;
 
     // Create annotation managers
-    _pointAnnotationManager = await mapboxMap.annotations.createPointAnnotationManager();
-    _polylineAnnotationManager = await mapboxMap.annotations.createPolylineAnnotationManager();
+    _pointAnnotationManager =
+        await mapboxMap.annotations.createPointAnnotationManager();
+    _polylineAnnotationManager =
+        await mapboxMap.annotations.createPolylineAnnotationManager();
 
     setState(() {
       _isMapReady = true;
@@ -163,13 +168,14 @@ class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
   }
 
   void _updateRoutePolyline(List<ExecutionGpsPoint> points) async {
-    if (!_isMapReady || _polylineAnnotationManager == null || points.length < 2) {
+    if (!_isMapReady ||
+        _polylineAnnotationManager == null ||
+        points.length < 2) {
       return;
     }
 
-    final coordinates = points
-        .map((p) => Position(p.longitude, p.latitude))
-        .toList();
+    final coordinates =
+        points.map((p) => Position(p.longitude, p.latitude)).toList();
 
     // Remove existing polyline
     if (_routePolyline != null) {
@@ -190,10 +196,11 @@ class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
     final confirmed = await _showStartConfirmationDialog();
     if (!confirmed) return;
 
-    final success = await ref.read(campaignExecutionProvider.notifier).startExecution(
-      campaignId: widget.campaignId,
-      campaignName: widget.campaignName,
-    );
+    final success =
+        await ref.read(campaignExecutionProvider.notifier).startExecution(
+              campaignId: widget.campaignId,
+              campaignName: widget.campaignName,
+            );
 
     if (!success && mounted) {
       final state = ref.read(campaignExecutionProvider);
@@ -218,7 +225,8 @@ class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
     final confirmed = await _showCompleteConfirmationDialog();
     if (!confirmed) return;
 
-    final summary = await ref.read(campaignExecutionProvider.notifier).completeExecution();
+    final summary =
+        await ref.read(campaignExecutionProvider.notifier).completeExecution();
 
     if (mounted) {
       await _showCompletionSummaryDialog(summary);
@@ -244,25 +252,26 @@ class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
   Future<bool> _showStartConfirmationDialog() async {
     final l10n = AppLocalizations.of(context);
     return await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.startCampaign),
-        content: Text(l10n.startCampaignConfirmation),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(l10n.cancel),
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(l10n.startCampaign),
+            content: Text(l10n.startCampaignConfirmation),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: Text(l10n.cancel),
+              ),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context, true),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.secondary,
+                ),
+                child: Text(l10n.start),
+              ),
+            ],
           ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.secondary,
-            ),
-            child: Text(l10n.start),
-          ),
-        ],
-      ),
-    ) ?? false;
+        ) ??
+        false;
   }
 
   Future<bool> _showCompleteConfirmationDialog() async {
@@ -270,38 +279,40 @@ class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
     final state = ref.read(campaignExecutionProvider);
 
     return await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.completeCampaign),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(l10n.completeCampaignConfirmation),
-            const SizedBox(height: 16),
-            Text('${l10n.elapsedTime}: ${state.formattedElapsedTime}'),
-            Text('${l10n.distanceTraveled}: ${state.formattedDistance}'),
-            Text('${l10n.gpsPointsCollected}: ${state.allPoints.length}'),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(l10n.cancel),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.green,
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(l10n.completeCampaign),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(l10n.completeCampaignConfirmation),
+                const SizedBox(height: 16),
+                Text('${l10n.elapsedTime}: ${state.formattedElapsedTime}'),
+                Text('${l10n.distanceTraveled}: ${state.formattedDistance}'),
+                Text('${l10n.gpsPointsCollected}: ${state.allPoints.length}'),
+              ],
             ),
-            child: Text(l10n.complete),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: Text(l10n.cancel),
+              ),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context, true),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.green,
+                ),
+                child: Text(l10n.complete),
+              ),
+            ],
           ),
-        ],
-      ),
-    ) ?? false;
+        ) ??
+        false;
   }
 
-  Future<void> _showCompletionSummaryDialog(CampaignExecutionSummary summary) async {
+  Future<void> _showCompletionSummaryDialog(
+      CampaignExecutionSummary summary) async {
     final l10n = AppLocalizations.of(context);
 
     await showDialog(
@@ -322,13 +333,16 @@ class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
             Text(
               summary.campaignName,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+                    fontWeight: FontWeight.w600,
+                  ),
             ),
             const SizedBox(height: 16),
-            _buildSummaryRow(Icons.timer, l10n.duration, summary.formattedDuration),
-            _buildSummaryRow(Icons.straighten, l10n.distance, summary.formattedDistance),
-            _buildSummaryRow(Icons.location_on, l10n.gpsPoints, '${summary.totalPoints}'),
+            _buildSummaryRow(
+                Icons.timer, l10n.duration, summary.formattedDuration),
+            _buildSummaryRow(
+                Icons.straighten, l10n.distance, summary.formattedDistance),
+            _buildSummaryRow(
+                Icons.location_on, l10n.gpsPoints, '${summary.totalPoints}'),
           ],
         ),
         actions: [
@@ -396,7 +410,8 @@ class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
                     styleUri: MapboxStyles.MAPBOX_STREETS,
                     cameraOptions: CameraOptions(
                       center: Point(
-                        coordinates: Position(-56.1645, -34.9011), // Montevideo default
+                        coordinates:
+                            Position(-56.1645, -34.9011), // Montevideo default
                       ),
                       zoom: 14.0,
                     ),
@@ -433,7 +448,8 @@ class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
     );
   }
 
-  Widget _buildHeader(AppLocalizations l10n, ThemeData theme, CampaignExecutionState state) {
+  Widget _buildHeader(
+      AppLocalizations l10n, ThemeData theme, CampaignExecutionState state) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -494,7 +510,8 @@ class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
     );
   }
 
-  Widget _buildStatusBadge(CampaignExecutionStatus status, AppLocalizations l10n) {
+  Widget _buildStatusBadge(
+      CampaignExecutionStatus status, AppLocalizations l10n) {
     Color bgColor;
     Color textColor;
     String text;
@@ -554,7 +571,8 @@ class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
     );
   }
 
-  Widget _buildBottomControls(AppLocalizations l10n, ThemeData theme, CampaignExecutionState state) {
+  Widget _buildBottomControls(
+      AppLocalizations l10n, ThemeData theme, CampaignExecutionState state) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -668,7 +686,8 @@ class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
       builder: (context, snapshot) {
         final playerState = snapshot.data;
         final isPlaying = playerState?.playing ?? false;
-        final processingState = playerState?.processingState ?? ProcessingState.idle;
+        final processingState =
+            playerState?.processingState ?? ProcessingState.idle;
         final isLoading = processingState == ProcessingState.loading ||
             processingState == ProcessingState.buffering;
 
@@ -723,9 +742,11 @@ class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
                           stream: audioService.positionStream,
                           builder: (context, posSnapshot) {
                             final position = posSnapshot.data ?? Duration.zero;
-                            final duration = audioService.duration ?? Duration.zero;
+                            final duration =
+                                audioService.duration ?? Duration.zero;
                             final progress = duration.inMilliseconds > 0
-                                ? position.inMilliseconds / duration.inMilliseconds
+                                ? position.inMilliseconds /
+                                    duration.inMilliseconds
                                 : 0.0;
 
                             return Column(
@@ -740,7 +761,8 @@ class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
                                       overlayRadius: 12,
                                     ),
                                     activeTrackColor: AppColors.secondary,
-                                    inactiveTrackColor: AppColors.grayLightStroke,
+                                    inactiveTrackColor:
+                                        AppColors.grayLightStroke,
                                     thumbColor: AppColors.secondary,
                                   ),
                                   child: Slider(
@@ -759,9 +781,11 @@ class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
                                 ),
                                 // Time Display
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         _formatDuration(position),
@@ -849,7 +873,8 @@ class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
     );
   }
 
-  Widget _buildActionButtons(AppLocalizations l10n, CampaignExecutionState state) {
+  Widget _buildActionButtons(
+      AppLocalizations l10n, CampaignExecutionState state) {
     switch (state.status) {
       case CampaignExecutionStatus.idle:
       case CampaignExecutionStatus.error:

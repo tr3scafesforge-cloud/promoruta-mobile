@@ -40,7 +40,8 @@ class GetCampaignsParams {
 }
 
 /// Use case for getting all campaigns
-class GetCampaignsUseCase implements UseCase<List<model.Campaign>, GetCampaignsParams?> {
+class GetCampaignsUseCase
+    implements UseCase<List<model.Campaign>, GetCampaignsParams?> {
   final CampaignRepository _repository;
 
   GetCampaignsUseCase(this._repository);
@@ -89,7 +90,8 @@ class CreateCampaignParams {
 }
 
 /// Use case for creating a new campaign
-class CreateCampaignUseCase implements UseCase<model.Campaign, CreateCampaignParams> {
+class CreateCampaignUseCase
+    implements UseCase<model.Campaign, CreateCampaignParams> {
   final CampaignRepository _repository;
 
   CreateCampaignUseCase(this._repository);
@@ -139,7 +141,8 @@ class CancelCampaignParams {
 }
 
 /// Use case for cancelling a campaign
-class CancelCampaignUseCase implements UseCase<model.Campaign, CancelCampaignParams> {
+class CancelCampaignUseCase
+    implements UseCase<model.Campaign, CancelCampaignParams> {
   final CampaignRepository _repository;
 
   CancelCampaignUseCase(this._repository);

@@ -18,7 +18,8 @@ class Enable2FAUseCase implements UseCase<TwoFactorEnableResponse, NoParams> {
 
 /// Confirm 2FA Use Case
 /// Confirms and enables 2FA by verifying the code from the authenticator app.
-class Confirm2FAUseCase implements UseCase<TwoFactorConfirmResponse, Confirm2FAParams> {
+class Confirm2FAUseCase
+    implements UseCase<TwoFactorConfirmResponse, Confirm2FAParams> {
   final AuthRepository _repository;
 
   Confirm2FAUseCase(this._repository);
@@ -89,7 +90,8 @@ class Verify2FACodeParams {
 
 /// Get Recovery Codes Use Case
 /// Gets the current recovery codes for the authenticated user.
-class GetRecoveryCodesUseCase implements UseCase<RecoveryCodesResponse, NoParams> {
+class GetRecoveryCodesUseCase
+    implements UseCase<RecoveryCodesResponse, NoParams> {
   final AuthRepository _repository;
 
   GetRecoveryCodesUseCase(this._repository);
@@ -102,13 +104,15 @@ class GetRecoveryCodesUseCase implements UseCase<RecoveryCodesResponse, NoParams
 
 /// Regenerate Recovery Codes Use Case
 /// Regenerates recovery codes (requires password confirmation).
-class RegenerateRecoveryCodesUseCase implements UseCase<RecoveryCodesResponse, RegenerateRecoveryCodesParams> {
+class RegenerateRecoveryCodesUseCase
+    implements UseCase<RecoveryCodesResponse, RegenerateRecoveryCodesParams> {
   final AuthRepository _repository;
 
   RegenerateRecoveryCodesUseCase(this._repository);
 
   @override
-  Future<RecoveryCodesResponse> call(RegenerateRecoveryCodesParams params) async {
+  Future<RecoveryCodesResponse> call(
+      RegenerateRecoveryCodesParams params) async {
     return await _repository.regenerateRecoveryCodes(params.password);
   }
 }

@@ -3,7 +3,6 @@ import 'package:promoruta/core/core.dart' as model;
 import 'package:promoruta/shared/shared.dart';
 import '../../../domain/repositories/campaign_repository.dart';
 
-
 // Mock data for offline scenarios
 final _mockCampaigns = <model.Campaign>[
   model.Campaign(
@@ -140,24 +139,26 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
       return _mockCampaigns;
     }
 
-    return campaignRows.map((row) => model.Campaign(
-      id: row.id,
-      title: row.title,
-      description: row.description,
-      advertiserId: row.advertiserId,
-      startDate: row.startDate,
-      endDate: row.endDate,
-      status: _parseStatus(row.status),
-      // Use deprecated fields as fallback for required fields
-      zone: 'Unknown',
-      suggestedPrice: 0.0,
-      bidDeadline: row.startDate,
-      audioDuration: 30,
-      distance: 0.0,
-      routeCoordinates: [],
-      startTime: row.startDate,
-      endTime: row.endDate,
-    )).toList();
+    return campaignRows
+        .map((row) => model.Campaign(
+              id: row.id,
+              title: row.title,
+              description: row.description,
+              advertiserId: row.advertiserId,
+              startDate: row.startDate,
+              endDate: row.endDate,
+              status: _parseStatus(row.status),
+              // Use deprecated fields as fallback for required fields
+              zone: 'Unknown',
+              suggestedPrice: 0.0,
+              bidDeadline: row.startDate,
+              audioDuration: 30,
+              distance: 0.0,
+              routeCoordinates: [],
+              startTime: row.startDate,
+              endTime: row.endDate,
+            ))
+        .toList();
   }
 
   @override
@@ -172,23 +173,23 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
     }
 
     await db.into(db.campaignsEntity).insertOnConflictUpdate(
-      CampaignsEntityCompanion(
-        id: Value(campaign.id!),
-        title: Value(campaign.title),
-        description: Value(campaign.description ?? ''),
-        advertiserId: Value(campaign.advertiserId!),
-        startDate: Value(campaign.startDate!),
-        endDate: Value(campaign.endDate!),
-        status: Value(campaign.status!.name),
-      ),
-    );
+          CampaignsEntityCompanion(
+            id: Value(campaign.id!),
+            title: Value(campaign.title),
+            description: Value(campaign.description ?? ''),
+            advertiserId: Value(campaign.advertiserId!),
+            startDate: Value(campaign.startDate!),
+            endDate: Value(campaign.endDate!),
+            status: Value(campaign.status!.name),
+          ),
+        );
   }
 
   @override
   Future<model.Campaign?> getCampaign(String id) async {
     final campaignRow = await (db.select(db.campaignsEntity)
-      ..where((tbl) => tbl.id.equals(id)))
-      .getSingleOrNull();
+          ..where((tbl) => tbl.id.equals(id)))
+        .getSingleOrNull();
 
     if (campaignRow == null) return null;
 
@@ -214,9 +215,8 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
 
   @override
   Future<void> deleteCampaign(String id) async {
-    await (db.delete(db.campaignsEntity)
-      ..where((tbl) => tbl.id.equals(id)))
-      .go();
+    await (db.delete(db.campaignsEntity)..where((tbl) => tbl.id.equals(id)))
+        .go();
   }
 
   @override

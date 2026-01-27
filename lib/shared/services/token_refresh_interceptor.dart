@@ -8,7 +8,8 @@ class TokenRefreshInterceptor extends Interceptor {
   final AuthLocalDataSource _localDataSource;
   final Dio _dio;
   bool _isRefreshing = false;
-  final List<({RequestOptions options, ErrorInterceptorHandler handler})> _requestQueue = [];
+  final List<({RequestOptions options, ErrorInterceptorHandler handler})>
+      _requestQueue = [];
 
   TokenRefreshInterceptor({
     required AuthLocalDataSource localDataSource,
@@ -27,7 +28,8 @@ class TokenRefreshInterceptor extends Interceptor {
       options.headers['Authorization'] = 'Bearer ${user.accessToken}';
       AppLogger.auth.d('Added auth token to request: ${options.path}');
     } else {
-      AppLogger.auth.w('No access token available for request: ${options.path}');
+      AppLogger.auth
+          .w('No access token available for request: ${options.path}');
     }
 
     handler.next(options);
@@ -38,7 +40,8 @@ class TokenRefreshInterceptor extends Interceptor {
     DioException err,
     ErrorInterceptorHandler handler,
   ) async {
-    AppLogger.auth.d('Interceptor onError called for: ${err.requestOptions.path} - Status: ${err.response?.statusCode}');
+    AppLogger.auth.d(
+        'Interceptor onError called for: ${err.requestOptions.path} - Status: ${err.response?.statusCode}');
 
     // Only handle 401 unauthorized errors
     if (err.response?.statusCode != 401) {
@@ -94,14 +97,16 @@ class TokenRefreshInterceptor extends Interceptor {
         ),
       );
 
-      AppLogger.auth.i('Refresh token response received: ${response.statusCode}');
+      AppLogger.auth
+          .i('Refresh token response received: ${response.statusCode}');
 
       if (response.statusCode == 200) {
         final data = response.data;
         final expiresIn = data['expires_in'] as int;
         final tokenExpiry = DateTime.now().add(Duration(seconds: expiresIn));
         final refreshExpiresIn = data['refresh_expires_in'] != null
-            ? DateTime.now().add(Duration(seconds: data['refresh_expires_in'] as int))
+            ? DateTime.now()
+                .add(Duration(seconds: data['refresh_expires_in'] as int))
             : null;
 
         final refreshedUser = User(
@@ -126,9 +131,11 @@ class TokenRefreshInterceptor extends Interceptor {
         AppLogger.auth.i('Token refreshed successfully, new token saved');
 
         // Retry the original request with new token
-        err.requestOptions.headers['Authorization'] = 'Bearer ${refreshedUser.accessToken}';
+        err.requestOptions.headers['Authorization'] =
+            'Bearer ${refreshedUser.accessToken}';
 
-        AppLogger.auth.i('Retrying original request: ${err.requestOptions.path}');
+        AppLogger.auth
+            .i('Retrying original request: ${err.requestOptions.path}');
 
         try {
           final retryResponse = await _dio.fetch(err.requestOptions);
@@ -136,7 +143,8 @@ class TokenRefreshInterceptor extends Interceptor {
           handler.resolve(retryResponse);
 
           // Process queued requests with new token
-          AppLogger.auth.i('Processing ${_requestQueue.length} queued requests');
+          AppLogger.auth
+              .i('Processing ${_requestQueue.length} queued requests');
           _processQueue(refreshedUser.accessToken!);
         } catch (retryError) {
           AppLogger.auth.e('Retry failed: $retryError');

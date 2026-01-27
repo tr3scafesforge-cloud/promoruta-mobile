@@ -17,7 +17,8 @@ class _PolylineTestState extends State<PolylineTest> {
     _mapboxMap = mapboxMap;
 
     // Create polyline annotation manager
-    _polylineAnnotationManager = await mapboxMap.annotations.createPolylineAnnotationManager();
+    _polylineAnnotationManager =
+        await mapboxMap.annotations.createPolylineAnnotationManager();
 
     // Draw a test route in Bogotá
     _drawTestRoute();
@@ -55,7 +56,8 @@ class _PolylineTestState extends State<PolylineTest> {
       body: MapWidget(
         key: const ValueKey("mapWidget"),
         cameraOptions: CameraOptions(
-          center: Point(coordinates: Position(-74.0560, 4.6975)), // Center of route
+          center:
+              Point(coordinates: Position(-74.0560, 4.6975)), // Center of route
           zoom: 12.0,
         ),
         styleUri: MapboxStyles.MAPBOX_STREETS,
