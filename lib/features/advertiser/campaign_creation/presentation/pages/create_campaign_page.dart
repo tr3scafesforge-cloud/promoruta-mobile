@@ -12,6 +12,7 @@ import 'package:promoruta/shared/widgets/custom_button.dart';
 import 'package:promoruta/shared/widgets/app_card.dart';
 import 'package:promoruta/shared/providers/providers.dart';
 import 'package:promoruta/shared/constants/map_constants.dart';
+import 'package:promoruta/shared/models/route_model.dart';
 import '../widgets/coverage_zone_map_picker.dart';
 
 class CreateCampaignPage extends ConsumerStatefulWidget {
@@ -41,6 +42,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
   // Coverage zone map points
   List<LatLng> _routeWaypoints = [];
   Map<int, String> _routeWaypointNames = {};
+  RouteModel? _currentRoute;
   bool _showMap = false;
 
   @override
@@ -386,6 +388,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                         setState(() {
                           _routeWaypoints = waypoints;
                           _routeWaypointNames = waypointNames;
+                          _currentRoute = route;
 
                           if (waypoints.isEmpty) {
                             _locationController.text = '';
@@ -840,27 +843,9 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
               ))
           .toList();
 
-      // Calculate straight-line distance between waypoints as fallback
-      // TODO: Use actual route distance from RouteModel when available
-      double totalDistance = 0.0;
-      for (int i = 0; i < _routeWaypoints.length - 1; i++) {
-        final point1 = _routeWaypoints[i];
-        final point2 = _routeWaypoints[i + 1];
-
-        // Simple Haversine formula for distance calculation
-        const earthRadius = 6371.0; // km
-        final dLat = _toRadians(point2.latitude - point1.latitude);
-        final dLon = _toRadians(point2.longitude - point1.longitude);
-
-        final a = math.sin(dLat / 2) * math.sin(dLat / 2) +
-            math.cos(_toRadians(point1.latitude)) *
-                math.cos(_toRadians(point2.latitude)) *
-                math.sin(dLon / 2) *
-                math.sin(dLon / 2);
-
-        final c = 2 * math.asin(math.sqrt(a));
-        totalDistance += earthRadius * c;
-      }
+      // Use actual route distance from RouteModel, fallback to straight-line calculation
+      final double totalDistance =
+          _currentRoute?.distanceKm ?? _calculateFallbackDistance();
 
       // Create campaign object
       final newCampaign = Campaign(
@@ -920,6 +905,29 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
         });
       }
     }
+  }
+
+  // Calculate straight-line distance between waypoints using Haversine formula
+  double _calculateFallbackDistance() {
+    double totalDistance = 0.0;
+    for (int i = 0; i < _routeWaypoints.length - 1; i++) {
+      final point1 = _routeWaypoints[i];
+      final point2 = _routeWaypoints[i + 1];
+
+      const earthRadius = 6371.0; // km
+      final dLat = _toRadians(point2.latitude - point1.latitude);
+      final dLon = _toRadians(point2.longitude - point1.longitude);
+
+      final a = math.sin(dLat / 2) * math.sin(dLat / 2) +
+          math.cos(_toRadians(point1.latitude)) *
+              math.cos(_toRadians(point2.latitude)) *
+              math.sin(dLon / 2) *
+              math.sin(dLon / 2);
+
+      final c = 2 * math.asin(math.sqrt(a));
+      totalDistance += earthRadius * c;
+    }
+    return totalDistance;
   }
 
   // Helper function to convert degrees to radians
