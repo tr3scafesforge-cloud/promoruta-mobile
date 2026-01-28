@@ -62,13 +62,12 @@ jobs:
       - name: Build APK
         run: flutter build apk --release
 
-      - name: Rename APK
-        run: |
-          mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/promoruta-${{ inputs.version }}.apk
-
-      - name: Generate version.json
+      - name: Prepare deploy folder
         run: |
           mkdir -p deploy
+          # Copy and rename APK
+          cp build/app/outputs/flutter-apk/app-release.apk deploy/promoruta-${{ inputs.version }}.apk
+          # Generate version.json
           NOTES=$(echo '${{ inputs.release_notes }}' | jq -Rs .)
           cat > deploy/version.json << EOF
           {
@@ -81,22 +80,10 @@ jobs:
           EOF
           echo "Generated version.json:"
           cat deploy/version.json
+          echo "Deploy folder contents:"
+          ls -la deploy/
 
-      - name: Upload APK to FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
-          port: 21
-          local-dir: build/app/outputs/flutter-apk/
-          server-dir: releases/
-          exclude: |
-            **/*.sha1
-            **/app-release.apk
-
-      - name: Upload version.json to FTP
+      - name: Upload to FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}
@@ -106,6 +93,7 @@ jobs:
           port: 21
           local-dir: deploy/
           server-dir: releases/
+          dangerous-clean-slate: true
 
       - name: Commit version update
         run: |
@@ -119,4 +107,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: promoruta-${{ inputs.version }}
-          path: build/app/outputs/flutter-apk/promoruta-${{ inputs.version }}.apk
+          path: deploy/promoruta-${{ inputs.version }}.apk
