@@ -68,8 +68,9 @@ jobs:
 
       - name: Generate version.json
         run: |
+          mkdir -p deploy
           NOTES=$(echo '${{ inputs.release_notes }}' | jq -Rs .)
-          cat > build/version.json << EOF
+          cat > deploy/version.json << EOF
           {
             "version": "${{ inputs.version }}",
             "buildNumber": ${{ steps.build_number.outputs.BUILD_NUMBER }},
@@ -79,7 +80,7 @@ jobs:
           }
           EOF
           echo "Generated version.json:"
-          cat build/version.json
+          cat deploy/version.json
 
       - name: Upload APK to FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -103,11 +104,8 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           port: 21
-          local-dir: build/
+          local-dir: deploy/
           server-dir: ./
-          exclude: |
-            app/**
-            **/*.apk
 
       - name: Commit version update
         run: |
