@@ -9,13 +9,11 @@ class CampaignRepositoryImpl implements CampaignRepository {
   final CampaignLocalDataSource _localDataSource;
   final CampaignRemoteDataSource _remoteDataSource;
   final ConnectivityService _connectivityService;
-  final SyncService _syncService;
 
   CampaignRepositoryImpl(
     this._localDataSource,
     this._remoteDataSource,
     this._connectivityService,
-    this._syncService,
   );
 
   @override

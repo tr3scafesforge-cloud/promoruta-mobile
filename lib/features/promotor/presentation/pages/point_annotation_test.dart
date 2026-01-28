@@ -10,12 +10,9 @@ class PointAnnotationTest extends StatefulWidget {
 }
 
 class _PointAnnotationTestState extends State<PointAnnotationTest> {
-  MapboxMap? _mapboxMap;
   PointAnnotationManager? _pointAnnotationManager;
 
   void _onMapCreated(MapboxMap mapboxMap) async {
-    _mapboxMap = mapboxMap;
-
     // Create point annotation manager
     _pointAnnotationManager =
         await mapboxMap.annotations.createPointAnnotationManager();

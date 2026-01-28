@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:uuid/uuid.dart';
 
 import 'package:promoruta/core/models/gps_point.dart';
 import 'package:promoruta/core/models/route.dart' as route_model;
@@ -33,7 +32,6 @@ class GpsTrackUploadResponse {
 
 class GpsRemoteDataSourceImpl implements GpsRemoteDataSource {
   final Dio dio;
-  final Uuid _uuid = const Uuid();
 
   GpsRemoteDataSourceImpl({
     required this.dio,

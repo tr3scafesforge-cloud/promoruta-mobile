@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:promoruta/core/core.dart';
+import 'package:promoruta/features/auth/domain/repositories/auth_repository.dart';
 import 'package:promoruta/shared/shared.dart' hide Route, GpsPoint;
 import '../../domain/repositories/gps_repository.dart';
 
@@ -7,22 +8,25 @@ class GpsRepositoryImpl implements GpsRepository {
   final GpsLocalDataSource _localDataSource;
   final ConnectivityService _connectivityService;
   final SyncService _syncService;
+  final AuthRepository _authRepository;
 
   GpsRepositoryImpl(
     this._localDataSource,
     this._connectivityService,
     this._syncService,
+    this._authRepository,
   );
 
   @override
   Future<Route> startRoute(String campaignId) async {
-    // Get current user - assuming we have a way to get current user ID
-    // For now, using a placeholder
-    const promoterId = 'current_user_id'; // TODO: Get from auth repository
+    final user = await _authRepository.getCurrentUser();
+    if (user == null) {
+      throw Exception('User not logged in');
+    }
 
     final route = Route(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
-      promoterId: promoterId,
+      promoterId: user.id,
       campaignId: campaignId,
       startTime: DateTime.now(),
       points: [],

@@ -10,12 +10,9 @@ class PolylineTest extends StatefulWidget {
 }
 
 class _PolylineTestState extends State<PolylineTest> {
-  MapboxMap? _mapboxMap;
   PolylineAnnotationManager? _polylineAnnotationManager;
 
   void _onMapCreated(MapboxMap mapboxMap) async {
-    _mapboxMap = mapboxMap;
-
     // Create polyline annotation manager
     _polylineAnnotationManager =
         await mapboxMap.annotations.createPolylineAnnotationManager();

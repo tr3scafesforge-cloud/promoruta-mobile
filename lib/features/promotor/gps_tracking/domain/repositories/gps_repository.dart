@@ -3,6 +3,8 @@ import 'package:promoruta/core/models/route.dart' as route_model;
 
 /// Abstract repository for GPS operations
 abstract class GpsRepository {
+  Future<route_model.Route> startRoute(String campaignId);
+  Future<route_model.Route> endRoute(String routeId);
   Future<void> saveRoute(route_model.Route route);
   Future<List<route_model.Route>> getRoutes();
   Future<route_model.Route?> getRoute(String id);

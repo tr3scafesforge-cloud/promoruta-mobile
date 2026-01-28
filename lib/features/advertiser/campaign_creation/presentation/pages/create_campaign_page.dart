@@ -41,7 +41,6 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
 
   // Coverage zone map points
   List<LatLng> _routeWaypoints = [];
-  Map<int, String> _routeWaypointNames = {};
   RouteModel? _currentRoute;
   bool _showMap = false;
 
@@ -387,7 +386,6 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                       onRouteSelected: (waypoints, waypointNames, route) {
                         setState(() {
                           _routeWaypoints = waypoints;
-                          _routeWaypointNames = waypointNames;
                           _currentRoute = route;
 
                           if (waypoints.isEmpty) {

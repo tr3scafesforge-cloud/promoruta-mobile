@@ -10,10 +10,7 @@ class SimpleMapTest extends StatefulWidget {
 }
 
 class _SimpleMapTestState extends State<SimpleMapTest> {
-  MapboxMap? _mapboxMap;
-
   void _onMapCreated(MapboxMap mapboxMap) {
-    _mapboxMap = mapboxMap;
     debugPrint('Map created successfully!');
   }
 

@@ -6,14 +6,11 @@ import '../constants/env.dart';
 import 'geocoding_service.dart';
 
 class GeocodingServiceImpl implements GeocodingService {
-  final Dio _dio;
   final Logger _logger;
 
   GeocodingServiceImpl({
-    required Dio dio,
     required Logger logger,
-  })  : _dio = dio,
-        _logger = logger;
+  }) : _logger = logger;
 
   @override
   Future<String?> reverseGeocode(LatLng coordinates) async {

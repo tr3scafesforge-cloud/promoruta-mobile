@@ -151,9 +151,8 @@ final routeServiceProvider = Provider<RouteService>((ref) {
 });
 
 final geocodingServiceProvider = Provider<GeocodingService>((ref) {
-  final dio = ref.watch(dioProvider);
   final logger = ref.watch(loggerProvider);
-  return GeocodingServiceImpl(dio: dio, logger: logger);
+  return GeocodingServiceImpl(logger: logger);
 });
 
 // Location Service for GPS tracking during campaign execution
@@ -290,13 +289,11 @@ final campaignRepositoryProvider = Provider<CampaignRepository>((ref) {
   final localDataSource = ref.watch(campaignLocalDataSourceProvider);
   final remoteDataSource = ref.watch(campaignRemoteDataSourceProvider);
   final connectivityService = ref.watch(connectivityServiceProvider);
-  final syncService = ref.watch(syncServiceProvider);
 
   return CampaignRepositoryImpl(
     localDataSource,
     remoteDataSource,
     connectivityService,
-    syncService,
   );
 });
 
@@ -304,11 +301,13 @@ final gpsRepositoryProvider = Provider<GpsRepository>((ref) {
   final localDataSource = ref.watch(gpsLocalDataSourceProvider);
   final connectivityService = ref.watch(connectivityServiceProvider);
   final syncService = ref.watch(syncServiceProvider);
+  final authRepository = ref.watch(authRepositoryProvider);
 
   return GpsRepositoryImpl(
     localDataSource,
     connectivityService,
     syncService,
+    authRepository,
   );
 });
 
