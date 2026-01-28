@@ -1,5 +1,5 @@
 {
   "baseUrl": "http://172.81.177.85/api/",
   "configVersion": "1.0.0",
-  "versionCheckUrl": ""
+  "versionCheckUrl": "http://172.81.177.85/releases/version.json"
 }
