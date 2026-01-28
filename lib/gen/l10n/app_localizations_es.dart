@@ -445,6 +445,18 @@ class AppLocalizationsEs extends AppLocalizations {
   String get layers => 'Capas';
 
   @override
+  String get mapStyleStreets => 'Calles';
+
+  @override
+  String get mapStyleSatellite => 'Satélite';
+
+  @override
+  String get mapStyleOutdoors => 'Exterior';
+
+  @override
+  String get selectMapStyle => 'Seleccionar Estilo de Mapa';
+
+  @override
   String get now => 'Ahora';
 
   @override

@@ -922,6 +922,30 @@ abstract class AppLocalizations {
   /// **'Layers'**
   String get layers;
 
+  /// Map style option for street view
+  ///
+  /// In en, this message translates to:
+  /// **'Streets'**
+  String get mapStyleStreets;
+
+  /// Map style option for satellite view
+  ///
+  /// In en, this message translates to:
+  /// **'Satellite'**
+  String get mapStyleSatellite;
+
+  /// Map style option for outdoor/terrain view
+  ///
+  /// In en, this message translates to:
+  /// **'Outdoors'**
+  String get mapStyleOutdoors;
+
+  /// Title for map style selection dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Select Map Style'**
+  String get selectMapStyle;
+
   /// Button label for now/time
   ///
   /// In en, this message translates to:

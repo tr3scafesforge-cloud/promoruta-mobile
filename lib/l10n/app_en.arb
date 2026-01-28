@@ -563,6 +563,22 @@
   "@layers": {
     "description": "Button label for layers"
   },
+  "mapStyleStreets": "Streets",
+  "@mapStyleStreets": {
+    "description": "Map style option for street view"
+  },
+  "mapStyleSatellite": "Satellite",
+  "@mapStyleSatellite": {
+    "description": "Map style option for satellite view"
+  },
+  "mapStyleOutdoors": "Outdoors",
+  "@mapStyleOutdoors": {
+    "description": "Map style option for outdoor/terrain view"
+  },
+  "selectMapStyle": "Select Map Style",
+  "@selectMapStyle": {
+    "description": "Title for map style selection dialog"
+  },
   "now": "Now",
   "@now": {
     "description": "Button label for now/time"

@@ -178,8 +178,29 @@ class AppDatabase extends _$AppDatabase {
           AppLogger.database
               .i('Migration 6→7: Adding campaignId and syncedAt to GpsPoints');
           await transaction(() async {
-            await m.addColumn(gpsPoints, gpsPoints.campaignId);
-            await m.addColumn(gpsPoints, gpsPoints.syncedAt);
+            // Check if gps_points table exists (may not exist for databases migrated from v3+)
+            final gpsTableExists = await customSelect(
+              "SELECT name FROM sqlite_master WHERE type='table' AND name='gps_points'",
+            ).get();
+
+            if (gpsTableExists.isEmpty) {
+              // Check if routes table exists first (gps_points has FK to routes)
+              final routesTableExists = await customSelect(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name='routes'",
+              ).get();
+
+              if (routesTableExists.isEmpty) {
+                AppLogger.database.i('Creating missing routes table');
+                await m.createTable(routes);
+              }
+
+              AppLogger.database.i('Creating missing gps_points table');
+              await m.createTable(gpsPoints);
+            } else {
+              // Table exists, just add the new columns
+              await m.addColumn(gpsPoints, gpsPoints.campaignId);
+              await m.addColumn(gpsPoints, gpsPoints.syncedAt);
+            }
           });
         }
 

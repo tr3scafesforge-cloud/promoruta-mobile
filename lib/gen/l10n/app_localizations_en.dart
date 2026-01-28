@@ -444,6 +444,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get layers => 'Layers';
 
   @override
+  String get mapStyleStreets => 'Streets';
+
+  @override
+  String get mapStyleSatellite => 'Satellite';
+
+  @override
+  String get mapStyleOutdoors => 'Outdoors';
+
+  @override
+  String get selectMapStyle => 'Select Map Style';
+
+  @override
   String get now => 'Now';
 
   @override

@@ -563,6 +563,22 @@
   "@layers": {
     "description": "Button label for layers"
   },
+  "mapStyleStreets": "Ruas",
+  "@mapStyleStreets": {
+    "description": "Map style option for street view"
+  },
+  "mapStyleSatellite": "Satélite",
+  "@mapStyleSatellite": {
+    "description": "Map style option for satellite view"
+  },
+  "mapStyleOutdoors": "Exterior",
+  "@mapStyleOutdoors": {
+    "description": "Map style option for outdoor/terrain view"
+  },
+  "selectMapStyle": "Selecionar Estilo de Mapa",
+  "@selectMapStyle": {
+    "description": "Title for map style selection dialog"
+  },
   "now": "Agora",
   "@now": {
     "description": "Button label for now/time"

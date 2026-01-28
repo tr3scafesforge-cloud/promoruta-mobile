@@ -8,6 +8,8 @@ import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/features/advertiser/campaign_management/domain/models/live_campaign_models.dart';
 import 'package:promoruta/features/advertiser/campaign_management/presentation/providers/advertiser_live_notifier.dart';
 import 'package:promoruta/shared/providers/providers.dart';
+import 'package:promoruta/shared/providers/map_style_provider.dart';
+import 'package:promoruta/shared/widgets/map_style_picker.dart';
 
 /// Provider for the advertiser live notifier
 final advertiserLiveProvider =
@@ -247,9 +249,7 @@ class _AdvertiserLiveMapPageState extends ConsumerState<AdvertiserLiveMapPage>
                         _ChipButton(
                           icon: Icons.layers_outlined,
                           label: l10n.layers,
-                          onTap: () {
-                            // TODO: Layer selection
-                          },
+                          onTap: () => showMapStylePicker(context),
                         ),
                         const SizedBox(width: 8),
                         if (state.lastRefresh != null)
@@ -385,10 +385,19 @@ class _AdvertiserLiveMapPageState extends ConsumerState<AdvertiserLiveMapPage>
       return _buildEmptyState();
     }
 
+    final mapStyle = ref.watch(mapStyleProvider);
+
+    // Listen for style changes and update the map
+    ref.listen(mapStyleProvider, (previous, next) {
+      if (_mapboxMap != null && previous != next) {
+        _mapboxMap!.loadStyleURI(next.styleUri);
+      }
+    });
+
     return MapWidget(
       key: const ValueKey('advertiser-live-map'),
       onMapCreated: _onMapCreated,
-      styleUri: MapboxStyles.MAPBOX_STREETS,
+      styleUri: mapStyle.styleUri,
       cameraOptions: CameraOptions(
         center: Point(
           coordinates: Position(-56.1645, -34.9011), // Montevideo default

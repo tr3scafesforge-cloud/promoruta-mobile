@@ -446,6 +446,18 @@ class AppLocalizationsPt extends AppLocalizations {
   String get layers => 'Camadas';
 
   @override
+  String get mapStyleStreets => 'Ruas';
+
+  @override
+  String get mapStyleSatellite => 'Satélite';
+
+  @override
+  String get mapStyleOutdoors => 'Exterior';
+
+  @override
+  String get selectMapStyle => 'Selecionar Estilo de Mapa';
+
+  @override
   String get now => 'Agora';
 
   @override
