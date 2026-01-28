@@ -736,6 +736,14 @@ class AuthNotifier extends StateNotifier<AsyncValue<model.User?>> {
       }
     }
   }
+
+  /// Sets the authenticated user directly.
+  /// Use this after email verification or 2FA login completes successfully.
+  void setUser(model.User user) {
+    if (mounted) {
+      state = AsyncValue.data(user);
+    }
+  }
 }
 
 class CampaignsNotifier

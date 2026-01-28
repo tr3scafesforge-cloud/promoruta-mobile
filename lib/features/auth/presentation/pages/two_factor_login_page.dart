@@ -80,8 +80,10 @@ class _TwoFactorLoginPageState extends ConsumerState<TwoFactorLoginPage> {
       final authLocalDataSource = ref.read(authLocalDataSourceProvider);
       await authLocalDataSource.saveUser(user);
 
+      if (!mounted) return;
+
       // Update auth state
-      ref.read(authStateProvider.notifier).state = AsyncValue.data(user);
+      ref.read(authStateProvider.notifier).setUser(user);
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

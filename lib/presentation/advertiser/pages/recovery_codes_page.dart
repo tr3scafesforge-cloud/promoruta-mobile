@@ -49,7 +49,7 @@ class _RecoveryCodesPageState extends ConsumerState<RecoveryCodesPage> {
   }
 
   Future<void> _regenerateCodes() async {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final passwordController = TextEditingController();
 
     final result = await showDialog<bool>(
@@ -94,7 +94,7 @@ class _RecoveryCodesPageState extends ConsumerState<RecoveryCodesPage> {
   }
 
   Future<void> _performRegeneration(String password) async {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     setState(() => _isRegenerating = true);
 
     try {
@@ -134,7 +134,7 @@ class _RecoveryCodesPageState extends ConsumerState<RecoveryCodesPage> {
   }
 
   void _copyAllCodes() {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     Clipboard.setData(ClipboardData(text: _recoveryCodes.join('\n')));
     toastification.show(
       context: context,
@@ -147,7 +147,7 @@ class _RecoveryCodesPageState extends ConsumerState<RecoveryCodesPage> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     const bg = Color(0xFFF3F5F7);
 
     return Scaffold(
@@ -182,7 +182,7 @@ class _RecoveryCodesPageState extends ConsumerState<RecoveryCodesPage> {
   }
 
   Widget _buildErrorState() {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24),
@@ -213,7 +213,7 @@ class _RecoveryCodesPageState extends ConsumerState<RecoveryCodesPage> {
   }
 
   Widget _buildCodesContent() {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     return SafeArea(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(24),

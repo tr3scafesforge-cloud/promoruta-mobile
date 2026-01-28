@@ -6,7 +6,6 @@ import 'package:promoruta/core/core.dart';
 import 'package:promoruta/app/routes/app_router.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
-import 'package:promoruta/features/auth/domain/use_cases/registration_use_cases.dart';
 
 class VerifyEmailPage extends ConsumerStatefulWidget {
   const VerifyEmailPage({
@@ -82,7 +81,7 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
       if (!mounted) return;
 
       // Update auth state
-      ref.read(authStateProvider.notifier).state = AsyncValue.data(user);
+      ref.read(authStateProvider.notifier).setUser(user);
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

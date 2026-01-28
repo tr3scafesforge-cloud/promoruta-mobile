@@ -95,7 +95,7 @@ class _TwoFactorSetupPageState extends ConsumerState<TwoFactorSetupPage> {
         await _showRecoveryCodes(response.recoveryCodes);
 
         // Navigate back
-        if (context.mounted) {
+        if (mounted) {
           context.go(widget.securitySettingsRoute);
         }
       }

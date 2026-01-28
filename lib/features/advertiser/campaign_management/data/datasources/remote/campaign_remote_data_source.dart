@@ -40,10 +40,12 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
       if (createdBy != null) filters.add('created_by=$createdBy');
       if (acceptedBy != null) filters.add('accepted_by=$acceptedBy');
       if (upcoming != null) filters.add('upcoming=$upcoming');
-      if (startTimeFrom != null)
+      if (startTimeFrom != null) {
         filters.add('start_time_from=${startTimeFrom.toIso8601String()}');
-      if (startTimeTo != null)
+      }
+      if (startTimeTo != null) {
         filters.add('start_time_to=${startTimeTo.toIso8601String()}');
+      }
       if (sortBy != null) filters.add('sort_by=$sortBy');
       if (sortOrder != null) filters.add('sort_order=$sortOrder');
       if (lat != null) filters.add('lat=$lat');
@@ -60,10 +62,12 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
       if (createdBy != null) queryParameters['created_by'] = createdBy;
       if (acceptedBy != null) queryParameters['accepted_by'] = acceptedBy;
       if (upcoming != null) queryParameters['upcoming'] = upcoming;
-      if (startTimeFrom != null)
+      if (startTimeFrom != null) {
         queryParameters['start_time_from'] = startTimeFrom.toIso8601String();
-      if (startTimeTo != null)
+      }
+      if (startTimeTo != null) {
         queryParameters['start_time_to'] = startTimeTo.toIso8601String();
+      }
       if (sortBy != null) queryParameters['sort_by'] = sortBy;
       if (sortOrder != null) queryParameters['sort_order'] = sortOrder;
       if (lat != null) queryParameters['lat'] = lat;

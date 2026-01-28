@@ -156,7 +156,7 @@ class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
     final options = PointAnnotationOptions(
       geometry: point,
       iconSize: 1.5,
-      iconColor: AppColors.secondary.value,
+      iconColor: AppColors.secondary.toARGB32(),
     );
 
     _currentLocationMarker = await _pointAnnotationManager!.create(options);
@@ -185,7 +185,7 @@ class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
     // Create new polyline
     final options = PolylineAnnotationOptions(
       geometry: LineString(coordinates: coordinates),
-      lineColor: AppColors.secondary.value,
+      lineColor: AppColors.secondary.toARGB32(),
       lineWidth: 4.0,
     );
 
@@ -230,7 +230,9 @@ class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
 
     if (mounted) {
       await _showCompletionSummaryDialog(summary);
-      Navigator.pop(context);
+      if (mounted) {
+        Navigator.pop(context);
+      }
     }
   }
 

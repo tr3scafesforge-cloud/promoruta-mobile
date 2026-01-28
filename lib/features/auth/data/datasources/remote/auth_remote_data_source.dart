@@ -648,7 +648,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       if (e.response != null) {
         final statusCode = e.response!.statusCode;
-        final responseData = e.response!.data;
 
         switch (statusCode) {
           case 400:
