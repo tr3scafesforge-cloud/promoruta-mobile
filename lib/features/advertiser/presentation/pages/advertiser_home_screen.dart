@@ -148,12 +148,6 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
         return const AdvertiserHistoryPage();
       case 4:
         return AdvertiserProfilePage(
-          isDarkMode: Theme.of(context).brightness == Brightness.dark,
-          onToggleDarkMode: (isDark) {
-            ref.read(themeModeProvider.notifier).setThemeMode(
-                  isDark ? ThemeMode.dark : ThemeMode.light,
-                );
-          },
           onTapSecurity: () =>
               const AdvertiserSecuritySettingsRoute().push(context),
           onTapAccount: () => const UserProfileRoute().push(context),

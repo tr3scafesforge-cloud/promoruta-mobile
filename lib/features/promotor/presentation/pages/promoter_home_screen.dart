@@ -7,7 +7,6 @@ import 'package:promoruta/presentation/promotor/pages/promoter_profile_page.dart
 import 'package:promoruta/presentation/promotor/pages/promoter_home_page.dart';
 import 'package:promoruta/features/promotor/presentation/pages/promoter_active_page.dart';
 import 'package:promoruta/shared/widgets/promoter_app_bar.dart';
-import 'package:promoruta/shared/providers/providers.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/app/routes/app_router.dart';
 
@@ -120,12 +119,6 @@ class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
         return const PromoterEarningsPage();
       case 4:
         return PromoterProfilePage(
-          isDarkMode: Theme.of(context).brightness == Brightness.dark,
-          onToggleDarkMode: (isDark) {
-            ref.read(themeModeProvider.notifier).setThemeMode(
-                  isDark ? ThemeMode.dark : ThemeMode.light,
-                );
-          },
           onTapSecurity: () =>
               const PromoterSecuritySettingsRoute().push(context),
         );

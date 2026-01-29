@@ -633,7 +633,7 @@ final updateCheckProvider =
 });
 
 class ThemeModeNotifier extends StateNotifier<ThemeMode> {
-  ThemeModeNotifier() : super(ThemeMode.system) {
+  ThemeModeNotifier() : super(ThemeMode.light) {
     _loadThemeMode();
   }
 
@@ -643,7 +643,7 @@ class ThemeModeNotifier extends StateNotifier<ThemeMode> {
     if (themeModeString != null) {
       state = ThemeMode.values.firstWhere(
         (mode) => mode.toString() == themeModeString,
-        orElse: () => ThemeMode.system,
+        orElse: () => ThemeMode.light,
       );
     }
   }
