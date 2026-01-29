@@ -150,8 +150,11 @@ The system SHALL provide standard map controls for the live view.
 
 #### Scenario: Map layer toggle
 - **WHEN** advertiser taps the layers button
-- **THEN** options are shown to toggle satellite, terrain, or standard views
-- **AND** the selected style is applied to the map
+- **THEN** a bottom sheet appears with layer options (Streets, Satellite, Outdoors)
+- **AND** the currently selected style is highlighted
+- **WHEN** advertiser selects a different style
+- **THEN** the map immediately updates to the selected style
+- **AND** the preference is persisted for future sessions
 
 ### Requirement: Offline Handling
 
