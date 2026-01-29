@@ -150,22 +150,19 @@ The app SHALL require users to verify their email address via a code before gran
 ---
 
 ### Requirement: Localization
-The app SHALL provide all registration UI text in English, Spanish, and Portuguese.
 
-#### Scenario: Sign-up page in Spanish
-**Given** the app language is set to Spanish
-**When** the user views the sign-up page
-**Then** all labels, buttons, and error messages are in Spanish
+The system SHALL display the registration flow in Spanish by default. Multi-language support (English, Portuguese) remains available in the codebase but is not user-selectable.
 
-#### Scenario: Sign-up page in Portuguese
-**Given** the app language is set to Portuguese
-**When** the user views the sign-up page
-**Then** all labels, buttons, and error messages are in Portuguese
+#### Scenario: Default locale is Spanish
+- **WHEN** a new user installs and opens the app for the first time
+- **THEN** all UI text is displayed in Spanish
 
-#### Scenario: Sign-up page in English
-**Given** the app language is set to English
-**When** the user views the sign-up page
-**Then** all labels, buttons, and error messages are in English
+#### Scenario: Language selector hidden
+- **WHEN** a user navigates to the profile/settings page
+- **THEN** no language selection option is visible
 
----
+#### Scenario: Persisted locale override
+- **WHEN** a user previously selected a locale before this change
+- **AND** that preference is still stored in SharedPreferences
+- **THEN** the persisted locale is used instead of the default
 

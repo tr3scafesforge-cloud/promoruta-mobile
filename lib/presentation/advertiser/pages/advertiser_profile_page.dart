@@ -13,7 +13,6 @@ class AdvertiserProfilePage extends ConsumerStatefulWidget {
     this.isDarkMode = false,
     this.onToggleDarkMode,
     this.onTapSecurity,
-    this.onTapLanguage,
     this.onTapAccount,
   });
 
@@ -28,7 +27,6 @@ class AdvertiserProfilePage extends ConsumerStatefulWidget {
   final ValueChanged<bool>? onToggleDarkMode;
 
   final VoidCallback? onTapSecurity;
-  final VoidCallback? onTapLanguage;
   final VoidCallback? onTapAccount;
 
   @override
@@ -104,14 +102,6 @@ class _AdvertiserProfilePageState extends ConsumerState<AdvertiserProfilePage> {
               icon: Icons.shield_outlined,
               label: l10n.security,
               onTap: widget.onTapSecurity,
-            ),
-            const SizedBox(height: 12),
-
-            // Language
-            ArrowTileCard(
-              icon: Icons.language,
-              label: l10n.language,
-              onTap: widget.onTapLanguage,
             ),
           ],
         ));

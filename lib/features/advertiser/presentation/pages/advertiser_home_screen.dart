@@ -156,7 +156,6 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
           },
           onTapSecurity: () =>
               const AdvertiserSecuritySettingsRoute().push(context),
-          onTapLanguage: () => const LanguageSettingsRoute().push(context),
           onTapAccount: () => const UserProfileRoute().push(context),
         );
       default:

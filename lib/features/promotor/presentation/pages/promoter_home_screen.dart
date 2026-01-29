@@ -128,7 +128,6 @@ class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
           },
           onTapSecurity: () =>
               const PromoterSecuritySettingsRoute().push(context),
-          onTapLanguage: () => const LanguageSettingsRoute().push(context),
         );
       default:
         return const PromoterHomePage();

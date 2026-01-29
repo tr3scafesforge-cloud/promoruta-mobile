@@ -661,7 +661,7 @@ class ThemeModeNotifier extends StateNotifier<ThemeMode> {
 }
 
 class LocaleNotifier extends StateNotifier<Locale> {
-  LocaleNotifier() : super(const Locale('en')) {
+  LocaleNotifier() : super(const Locale('es')) {
     _loadLocale();
   }
 
