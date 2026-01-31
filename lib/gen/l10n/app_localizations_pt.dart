@@ -1494,4 +1494,33 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get updateLater => 'Mais tarde';
+
+  @override
+  String get selectCoverageZone => 'Selecionar zona de cobertura';
+
+  @override
+  String confirmRoute(int count) {
+    return 'Confirmar rota ($count pontos)';
+  }
+
+  @override
+  String get routeSelected => 'Rota selecionada';
+
+  @override
+  String get tapToModify => 'Toque para modificar';
+
+  @override
+  String routePointsDistance(int count, String distance) {
+    return '$count pontos - $distance km';
+  }
+
+  @override
+  String get selectZoneOnMap => 'Selecionar zona no mapa';
+
+  @override
+  String get tapToOpenMap => 'Toque para abrir o mapa';
+
+  @override
+  String get pleaseSelectAtLeast2PointsOnMap =>
+      'Por favor selecione pelo menos 2 pontos no mapa para a rota';
 }

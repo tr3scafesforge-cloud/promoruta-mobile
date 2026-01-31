@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:promoruta/core/constants/colors.dart';
+import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/models/route_model.dart';
 import '../widgets/coverage_zone_map_picker.dart';
 
@@ -67,6 +68,7 @@ class _CoverageZoneMapScreenState extends State<CoverageZoneMapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final canConfirm = _waypoints.length >= 2;
 
     return Scaffold(
@@ -79,7 +81,7 @@ class _CoverageZoneMapScreenState extends State<CoverageZoneMapScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          'Seleccionar zona de cobertura',
+          l10n.selectCoverageZone,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w700,
                 color: AppColors.textPrimary,
@@ -91,7 +93,7 @@ class _CoverageZoneMapScreenState extends State<CoverageZoneMapScreen> {
               onPressed: _confirmSelection,
               icon: const Icon(Icons.check, color: AppColors.secondary),
               label: Text(
-                'Confirmar',
+                l10n.confirm,
                 style: TextStyle(
                   color: AppColors.secondary,
                   fontWeight: FontWeight.w600,
@@ -122,7 +124,7 @@ class _CoverageZoneMapScreenState extends State<CoverageZoneMapScreen> {
                     ),
                   ),
                   child: Text(
-                    'Confirmar ruta (${_waypoints.length} puntos)',
+                    l10n.confirmRoute(_waypoints.length),
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,

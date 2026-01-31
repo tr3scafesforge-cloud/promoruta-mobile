@@ -2811,6 +2811,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Later'**
   String get updateLater;
+
+  /// Title for coverage zone map picker screen
+  ///
+  /// In en, this message translates to:
+  /// **'Select coverage zone'**
+  String get selectCoverageZone;
+
+  /// Button text to confirm route selection with point count
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm route ({count} points)'**
+  String confirmRoute(int count);
+
+  /// Text shown when a route has been selected
+  ///
+  /// In en, this message translates to:
+  /// **'Route selected'**
+  String get routeSelected;
+
+  /// Hint text to tap and modify the selected route
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to modify'**
+  String get tapToModify;
+
+  /// Route summary showing points and distance
+  ///
+  /// In en, this message translates to:
+  /// **'{count} points - {distance} km'**
+  String routePointsDistance(int count, String distance);
+
+  /// Button text to open map for zone selection
+  ///
+  /// In en, this message translates to:
+  /// **'Select zone on map'**
+  String get selectZoneOnMap;
+
+  /// Hint text to tap and open the map
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to open map'**
+  String get tapToOpenMap;
+
+  /// Validation error when fewer than 2 waypoints are selected on the map
+  ///
+  /// In en, this message translates to:
+  /// **'Please select at least 2 points on the map for the route'**
+  String get pleaseSelectAtLeast2PointsOnMap;
 }
 
 class _AppLocalizationsDelegate

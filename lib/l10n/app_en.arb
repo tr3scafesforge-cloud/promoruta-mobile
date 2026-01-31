@@ -1975,5 +1975,50 @@
   "updateLater": "Later",
   "@updateLater": {
     "description": "Button text to dismiss update dialog"
+  },
+  "selectCoverageZone": "Select coverage zone",
+  "@selectCoverageZone": {
+    "description": "Title for coverage zone map picker screen"
+  },
+  "confirmRoute": "Confirm route ({count} points)",
+  "@confirmRoute": {
+    "description": "Button text to confirm route selection with point count",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "routeSelected": "Route selected",
+  "@routeSelected": {
+    "description": "Text shown when a route has been selected"
+  },
+  "tapToModify": "Tap to modify",
+  "@tapToModify": {
+    "description": "Hint text to tap and modify the selected route"
+  },
+  "routePointsDistance": "{count} points - {distance} km",
+  "@routePointsDistance": {
+    "description": "Route summary showing points and distance",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "selectZoneOnMap": "Select zone on map",
+  "@selectZoneOnMap": {
+    "description": "Button text to open map for zone selection"
+  },
+  "tapToOpenMap": "Tap to open map",
+  "@tapToOpenMap": {
+    "description": "Hint text to tap and open the map"
+  },
+  "pleaseSelectAtLeast2PointsOnMap": "Please select at least 2 points on the map for the route",
+  "@pleaseSelectAtLeast2PointsOnMap": {
+    "description": "Validation error when fewer than 2 waypoints are selected on the map"
   }
 }

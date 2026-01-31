@@ -1850,5 +1850,50 @@
   "updateLater": "Mais tarde",
   "@updateLater": {
     "description": "Button text to dismiss update dialog"
+  },
+  "selectCoverageZone": "Selecionar zona de cobertura",
+  "@selectCoverageZone": {
+    "description": "Title for coverage zone map picker screen"
+  },
+  "confirmRoute": "Confirmar rota ({count} pontos)",
+  "@confirmRoute": {
+    "description": "Button text to confirm route selection with point count",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "routeSelected": "Rota selecionada",
+  "@routeSelected": {
+    "description": "Text shown when a route has been selected"
+  },
+  "tapToModify": "Toque para modificar",
+  "@tapToModify": {
+    "description": "Hint text to tap and modify the selected route"
+  },
+  "routePointsDistance": "{count} pontos - {distance} km",
+  "@routePointsDistance": {
+    "description": "Route summary showing points and distance",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "selectZoneOnMap": "Selecionar zona no mapa",
+  "@selectZoneOnMap": {
+    "description": "Button text to open map for zone selection"
+  },
+  "tapToOpenMap": "Toque para abrir o mapa",
+  "@tapToOpenMap": {
+    "description": "Hint text to tap and open the map"
+  },
+  "pleaseSelectAtLeast2PointsOnMap": "Por favor selecione pelo menos 2 pontos no mapa para a rota",
+  "@pleaseSelectAtLeast2PointsOnMap": {
+    "description": "Validation error when fewer than 2 waypoints are selected on the map"
   }
 }

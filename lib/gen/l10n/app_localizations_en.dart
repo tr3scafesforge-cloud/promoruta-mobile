@@ -1487,4 +1487,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get updateLater => 'Later';
+
+  @override
+  String get selectCoverageZone => 'Select coverage zone';
+
+  @override
+  String confirmRoute(int count) {
+    return 'Confirm route ($count points)';
+  }
+
+  @override
+  String get routeSelected => 'Route selected';
+
+  @override
+  String get tapToModify => 'Tap to modify';
+
+  @override
+  String routePointsDistance(int count, String distance) {
+    return '$count points - $distance km';
+  }
+
+  @override
+  String get selectZoneOnMap => 'Select zone on map';
+
+  @override
+  String get tapToOpenMap => 'Tap to open map';
+
+  @override
+  String get pleaseSelectAtLeast2PointsOnMap =>
+      'Please select at least 2 points on the map for the route';
 }

@@ -360,8 +360,8 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                           const SizedBox(height: 8),
                           Text(
                             _routeWaypoints.length >= 2
-                                ? 'Ruta seleccionada'
-                                : 'Seleccionar zona en el mapa',
+                                ? l10n.routeSelected
+                                : l10n.selectZoneOnMap,
                             style: theme.textTheme.bodyMedium?.copyWith(
                               color: AppColors.secondary,
                               fontWeight: FontWeight.w600,
@@ -370,8 +370,8 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                           const SizedBox(height: 4),
                           Text(
                             _routeWaypoints.length >= 2
-                                ? '${_routeWaypoints.length} puntos - ${_currentRoute?.distanceKm.toStringAsFixed(1) ?? '?'} km'
-                                : 'Toca para abrir el mapa',
+                                ? l10n.routePointsDistance(_routeWaypoints.length, _currentRoute?.distanceKm.toStringAsFixed(1) ?? '?')
+                                : l10n.tapToOpenMap,
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: AppColors.textSecondary,
                             ),
@@ -379,7 +379,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                           if (_routeWaypoints.length >= 2) ...[
                             const SizedBox(height: 8),
                             Text(
-                              'Toca para modificar',
+                              l10n.tapToModify,
                               style: theme.textTheme.bodySmall?.copyWith(
                                 color: AppColors.secondary,
                                 fontWeight: FontWeight.w500,
@@ -767,8 +767,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
     if (_routeWaypoints.length < 2) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-              'Por favor selecciona al menos 2 puntos en el mapa para la ruta'),
+          content: Text(l10n.pleaseSelectAtLeast2PointsOnMap),
           backgroundColor: AppColors.error,
         ),
       );
