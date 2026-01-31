@@ -436,72 +436,73 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
         ),
         const SizedBox(height: 12),
 
-        // Map
-        Container(
-          height: 400,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.grayStroke),
-          ),
-          clipBehavior: Clip.hardEdge,
-          child: Stack(
-            children: [
-              MapWidget(
-                key: const ValueKey("coverageZoneMap"),
-                cameraOptions: CameraOptions(
-                  center: Point(
-                    coordinates: Position(
-                      widget.initialCenter.longitude,
-                      widget.initialCenter.latitude,
-                    ),
-                  ),
-                  zoom: MapConstants.defaultZoom,
-                ),
-                styleUri: MapConstants.streetStyle,
-                onMapCreated: _onMapCreated,
-                onTapListener: _onMapTap,
-              ),
-
-              // Loading indicator
-              if (_isLoadingRoute)
-                Positioned.fill(
-                  child: Container(
-                    color: Colors.black26,
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(AppColors.primary),
+        // Map - Expanded to fill available space
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.grayStroke),
+            ),
+            clipBehavior: Clip.hardEdge,
+            child: Stack(
+              children: [
+                MapWidget(
+                  key: const ValueKey("coverageZoneMap"),
+                  cameraOptions: CameraOptions(
+                    center: Point(
+                      coordinates: Position(
+                        widget.initialCenter.longitude,
+                        widget.initialCenter.latitude,
                       ),
                     ),
+                    zoom: MapConstants.defaultZoom,
                   ),
+                  styleUri: MapConstants.streetStyle,
+                  onMapCreated: _onMapCreated,
+                  onTapListener: _onMapTap,
                 ),
 
-              // Control buttons
-              if (_waypoints.isNotEmpty)
-                Positioned(
-                  top: 16,
-                  right: 16,
-                  child: Column(
-                    children: [
-                      // Reset button
-                      FloatingActionButton.small(
-                        heroTag: 'reset',
-                        backgroundColor: Colors.white,
-                        onPressed: _resetRoute,
-                        child: Icon(Icons.refresh, color: AppColors.secondary),
+                // Loading indicator
+                if (_isLoadingRoute)
+                  Positioned.fill(
+                    child: Container(
+                      color: Colors.black26,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(AppColors.primary),
+                        ),
                       ),
-                      const SizedBox(height: 8),
-                      // Undo last point button
-                      FloatingActionButton.small(
-                        heroTag: 'undo',
-                        backgroundColor: Colors.white,
-                        onPressed: _removeLastWaypoint,
-                        child: Icon(Icons.undo, color: AppColors.secondary),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-            ],
+
+                // Control buttons
+                if (_waypoints.isNotEmpty)
+                  Positioned(
+                    top: 16,
+                    right: 16,
+                    child: Column(
+                      children: [
+                        // Reset button
+                        FloatingActionButton.small(
+                          heroTag: 'reset',
+                          backgroundColor: Colors.white,
+                          onPressed: _resetRoute,
+                          child: Icon(Icons.refresh, color: AppColors.secondary),
+                        ),
+                        const SizedBox(height: 8),
+                        // Undo last point button
+                        FloatingActionButton.small(
+                          heroTag: 'undo',
+                          backgroundColor: Colors.white,
+                          onPressed: _removeLastWaypoint,
+                          child: Icon(Icons.undo, color: AppColors.secondary),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
 

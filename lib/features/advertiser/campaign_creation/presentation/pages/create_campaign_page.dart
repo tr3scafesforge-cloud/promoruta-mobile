@@ -13,7 +13,7 @@ import 'package:promoruta/shared/widgets/app_card.dart';
 import 'package:promoruta/shared/providers/providers.dart';
 import 'package:promoruta/shared/constants/map_constants.dart';
 import 'package:promoruta/shared/models/route_model.dart';
-import '../widgets/coverage_zone_map_picker.dart';
+import 'coverage_zone_map_screen.dart';
 
 class CreateCampaignPage extends ConsumerStatefulWidget {
   const CreateCampaignPage({super.key});
@@ -42,7 +42,6 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
   // Coverage zone map points
   List<LatLng> _routeWaypoints = [];
   RouteModel? _currentRoute;
-  bool _showMap = false;
 
   @override
   void dispose() {
@@ -332,78 +331,65 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  if (!_showMap)
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _showMap = true;
-                        });
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        height: 120,
-                        decoration: BoxDecoration(
-                          color: AppColors.surface,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: AppColors.grayStroke),
+                  GestureDetector(
+                    onTap: _openMapPicker,
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: _routeWaypoints.length >= 2
+                            ? AppColors.secondary.withValues(alpha: 0.1)
+                            : AppColors.surface,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: _routeWaypoints.length >= 2
+                              ? AppColors.secondary.withValues(alpha: 0.3)
+                              : AppColors.grayStroke,
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.map_outlined,
-                              size: 48,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            _routeWaypoints.length >= 2
+                                ? Icons.check_circle
+                                : Icons.map_outlined,
+                            size: 48,
+                            color: AppColors.secondary,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            _routeWaypoints.length >= 2
+                                ? 'Ruta seleccionada'
+                                : 'Seleccionar zona en el mapa',
+                            style: theme.textTheme.bodyMedium?.copyWith(
                               color: AppColors.secondary,
+                              fontWeight: FontWeight.w600,
                             ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            _routeWaypoints.length >= 2
+                                ? '${_routeWaypoints.length} puntos - ${_currentRoute?.distanceKm.toStringAsFixed(1) ?? '?'} km'
+                                : 'Toca para abrir el mapa',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                          if (_routeWaypoints.length >= 2) ...[
                             const SizedBox(height: 8),
                             Text(
-                              'Seleccionar zona en el mapa',
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: AppColors.secondary,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Text(
-                              _routeWaypoints.length >= 2
-                                  ? 'Ruta de ${_routeWaypoints.length} puntos ✓'
-                                  : 'Toca para abrir el mapa',
+                              'Toca para modificar',
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: AppColors.textSecondary,
+                                color: AppColors.secondary,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ],
-                        ),
+                        ],
                       ),
                     ),
-                  if (_showMap)
-                    CoverageZoneMapPicker(
-                      initialCenter: LatLng(
-                        MapConstants.montevideoLat,
-                        MapConstants.montevideoLng,
-                      ),
-                      initialWaypoints:
-                          _routeWaypoints.isEmpty ? null : _routeWaypoints,
-                      onRouteSelected: (waypoints, waypointNames, route) {
-                        setState(() {
-                          _routeWaypoints = waypoints;
-                          _currentRoute = route;
-
-                          if (waypoints.isEmpty) {
-                            _locationController.text = '';
-                          } else if (route != null) {
-                            // Build description from street names
-                            final startName = waypointNames[0] ?? 'Inicio';
-                            final endName =
-                                waypointNames[waypoints.length - 1] ?? 'Fin';
-                            _locationController.text =
-                                '$startName → $endName (${route.distanceKm.toStringAsFixed(1)} km)';
-                          } else {
-                            _locationController.text =
-                                '${waypoints.length} puntos seleccionados';
-                          }
-                        });
-                      },
-                    ),
+                  ),
                 ],
               ),
             ),
@@ -719,6 +705,42 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
         } else {
           _endTime = picked;
           _endTimeController.text = picked.format(context);
+        }
+      });
+    }
+  }
+
+  Future<void> _openMapPicker() async {
+    final result = await Navigator.of(context).push<CoverageZoneMapResult>(
+      MaterialPageRoute(
+        builder: (context) => CoverageZoneMapScreen(
+          initialCenter: LatLng(
+            MapConstants.montevideoLat,
+            MapConstants.montevideoLng,
+          ),
+          initialWaypoints:
+              _routeWaypoints.isEmpty ? null : _routeWaypoints,
+        ),
+      ),
+    );
+
+    if (result != null && mounted) {
+      setState(() {
+        _routeWaypoints = result.waypoints;
+        _currentRoute = result.route;
+
+        if (result.waypoints.isEmpty) {
+          _locationController.text = '';
+        } else if (result.route != null) {
+          // Build description from street names
+          final startName = result.waypointNames[0] ?? 'Inicio';
+          final endName =
+              result.waypointNames[result.waypoints.length - 1] ?? 'Fin';
+          _locationController.text =
+              '$startName → $endName (${result.route!.distanceKm.toStringAsFixed(1)} km)';
+        } else {
+          _locationController.text =
+              '${result.waypoints.length} puntos seleccionados';
         }
       });
     }
