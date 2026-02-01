@@ -21,7 +21,7 @@ import 'package:promoruta/features/auth/presentation/pages/two_factor_login_page
 import 'package:promoruta/presentation/home_screen.dart';
 import 'package:promoruta/presentation/advertiser/pages/advertiser_security_settings_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/language_settings_page.dart';
-import 'package:promoruta/presentation/advertiser/pages/payment_methods_page.dart';
+import 'package:promoruta/features/payments/presentation/pages/payment_methods_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/change_password_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/two_factor_auth_page.dart';
 import 'package:promoruta/presentation/advertiser/pages/two_factor_setup_page.dart';
