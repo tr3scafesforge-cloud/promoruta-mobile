@@ -1907,5 +1907,9 @@
   "pleaseSelectAtLeast2PointsOnMap": "Por favor selecciona al menos 2 puntos en el mapa para la ruta",
   "@pleaseSelectAtLeast2PointsOnMap": {
     "description": "Validation error when fewer than 2 waypoints are selected on the map"
+  },
+  "noCurrentLiveCampaigns": "No hay campañas en vivo actualmente",
+  "@noCurrentLiveCampaigns": {
+    "description": "Message shown when there are no live campaigns to display"
   }
 }

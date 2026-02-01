@@ -1523,4 +1523,7 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get pleaseSelectAtLeast2PointsOnMap =>
       'Por favor selecione pelo menos 2 pontos no mapa para a rota';
+
+  @override
+  String get noCurrentLiveCampaigns => 'Não há campanhas ao vivo no momento';
 }

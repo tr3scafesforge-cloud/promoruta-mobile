@@ -2859,6 +2859,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please select at least 2 points on the map for the route'**
   String get pleaseSelectAtLeast2PointsOnMap;
+
+  /// Message shown when there are no live campaigns to display
+  ///
+  /// In en, this message translates to:
+  /// **'There are no current live campaigns'**
+  String get noCurrentLiveCampaigns;
 }
 
 class _AppLocalizationsDelegate
