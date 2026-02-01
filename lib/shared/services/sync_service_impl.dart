@@ -9,7 +9,6 @@ import 'package:promoruta/features/promotor/gps_tracking/data/datasources/local/
 class SyncServiceImpl implements SyncService {
   final ConnectivityService _connectivityService;
   final AuthLocalDataSource _authLocalDataSource;
-  final AuthRemoteDataSource _authRemoteDataSource;
   final CampaignLocalDataSource _campaignLocalDataSource;
   final CampaignRemoteDataSource _campaignRemoteDataSource;
   final GpsLocalDataSource _gpsLocalDataSource;
@@ -18,7 +17,6 @@ class SyncServiceImpl implements SyncService {
   SyncServiceImpl(
     this._connectivityService,
     this._authLocalDataSource,
-    this._authRemoteDataSource,
     this._campaignLocalDataSource,
     this._campaignRemoteDataSource,
     this._gpsLocalDataSource,

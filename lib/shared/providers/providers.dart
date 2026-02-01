@@ -243,7 +243,6 @@ final mediaRemoteDataSourceProvider = Provider<MediaRemoteDataSource>((ref) {
 final syncServiceProvider = Provider<SyncService>((ref) {
   final connectivityService = ref.watch(connectivityServiceProvider);
   final authLocal = ref.watch(authLocalDataSourceProvider);
-  final authRemote = ref.watch(authRemoteDataSourceProvider);
   final campaignLocal = ref.watch(campaignLocalDataSourceProvider);
   final campaignRemote = ref.watch(campaignRemoteDataSourceProvider);
   final gpsLocal = ref.watch(gpsLocalDataSourceProvider);
@@ -252,7 +251,6 @@ final syncServiceProvider = Provider<SyncService>((ref) {
   return SyncServiceImpl(
     connectivityService,
     authLocal,
-    authRemote,
     campaignLocal,
     campaignRemote,
     gpsLocal,
