@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:promoruta/core/models/app_error.dart';
 import 'package:promoruta/core/utils/logger.dart';
 import 'package:promoruta/features/advertiser/campaign_management/domain/models/live_campaign_models.dart';
 
@@ -43,13 +44,14 @@ class AdvertiserLiveRemoteDataSourceImpl
 
         if (response.statusCode == 200) {
           final data = response.data;
-          final campaigns = data['campaigns'] as List? ?? data as List? ?? [];
+          final campaigns = _extractListFromResponse(data, 'campaigns');
           AppLogger.campaign.i('Fetched ${campaigns.length} live campaigns');
 
-          return campaigns
-              .map(
-                  (json) => LiveCampaign.fromJson(json as Map<String, dynamic>))
-              .toList();
+          return _parseListSafely(
+            campaigns,
+            (json) => LiveCampaign.fromJson(_asMapOrThrow(json, 'campaign')),
+            'LiveCampaign',
+          );
         }
       } on DioException catch (e) {
         // If the dedicated endpoint doesn't exist (404), fall back to regular campaigns
@@ -66,6 +68,9 @@ class AdvertiserLiveRemoteDataSourceImpl
     } on DioException catch (e) {
       AppLogger.campaign.e('Failed to fetch live campaigns: ${e.message}');
       throw Exception('Failed to fetch live campaigns: ${e.message}');
+    } on ParsingError catch (e) {
+      AppLogger.campaign.e('Parsing error in live campaigns: ${e.message}');
+      throw Exception('Failed to parse live campaigns: ${e.message}');
     } catch (e) {
       AppLogger.campaign.e('Unexpected error fetching live campaigns: $e');
       throw Exception('Failed to fetch live campaigns: $e');
@@ -85,19 +90,23 @@ class AdvertiserLiveRemoteDataSourceImpl
 
       if (response.statusCode == 200) {
         final data = response.data;
-        final campaigns = data is List ? data : (data['data'] as List? ?? []);
+        final campaigns = _extractListFromResponse(data, 'data');
 
-        return campaigns.map((json) {
-          final campaignJson = json as Map<String, dynamic>;
-          // Transform regular campaign to LiveCampaign format
-          return LiveCampaign(
-            id: campaignJson['id'] as String,
-            title: campaignJson['title'] as String,
-            zone: campaignJson['zone'] as String? ?? '',
-            promoter: _extractPromoterFromCampaign(campaignJson),
-            routeCoordinates: _extractRouteCoordinates(campaignJson),
-          );
-        }).toList();
+        return _parseListSafely(
+          campaigns,
+          (json) {
+            final campaignJson = _asMapOrThrow(json, 'campaign');
+            // Transform regular campaign to LiveCampaign format
+            return LiveCampaign(
+              id: _getString(campaignJson, 'id'),
+              title: _getString(campaignJson, 'title'),
+              zone: _getStringOrDefault(campaignJson, 'zone', ''),
+              promoter: _extractPromoterFromCampaign(campaignJson),
+              routeCoordinates: _extractRouteCoordinates(campaignJson),
+            );
+          },
+          'Campaign',
+        );
       }
 
       return [];
@@ -109,15 +118,18 @@ class AdvertiserLiveRemoteDataSourceImpl
 
   LivePromoterLocation? _extractPromoterFromCampaign(
       Map<String, dynamic> campaign) {
-    final acceptedBy = campaign['accepted_by'] as Map<String, dynamic>?;
-    if (acceptedBy == null) return null;
+    final acceptedByRaw = campaign['accepted_by'];
+    if (acceptedByRaw == null) return null;
+    if (acceptedByRaw is! Map<String, dynamic>) return null;
+
+    final acceptedBy = acceptedByRaw;
 
     // This is a simplified version - the full version would include
     // real-time location data from GPS tracks
     return LivePromoterLocation(
-      campaignId: campaign['id'] as String,
-      promoterId: acceptedBy['id'] as String? ?? '',
-      promoterName: acceptedBy['name'] as String? ?? 'Unknown',
+      campaignId: _getStringOrDefault(campaign, 'id', ''),
+      promoterId: _getStringOrDefault(acceptedBy, 'id', ''),
+      promoterName: _getStringOrDefault(acceptedBy, 'name', 'Unknown'),
       latitude: 0.0,
       longitude: 0.0,
       lastUpdate: DateTime.now(),
@@ -129,12 +141,15 @@ class AdvertiserLiveRemoteDataSourceImpl
   }
 
   List<RoutePoint> _extractRouteCoordinates(Map<String, dynamic> campaign) {
-    final coords = campaign['route_coordinates'] as List?;
+    final coords = campaign['route_coordinates'];
     if (coords == null) return [];
+    if (coords is! List) return [];
 
-    return coords
-        .map((c) => RoutePoint.fromJson(c as Map<String, dynamic>))
-        .toList();
+    return _parseListSafely(
+      coords,
+      (c) => RoutePoint.fromJson(_asMapOrThrow(c, 'route_point')),
+      'RoutePoint',
+    );
   }
 
   @override
@@ -152,7 +167,9 @@ class AdvertiserLiveRemoteDataSourceImpl
         );
 
         if (response.statusCode == 200) {
-          return LiveCampaign.fromJson(response.data as Map<String, dynamic>);
+          final data = response.data;
+          return LiveCampaign.fromJson(
+              _asMapOrThrow(data, 'live_campaign_response'));
         }
       } on DioException catch (e) {
         if (e.response?.statusCode == 404) {
@@ -166,6 +183,9 @@ class AdvertiserLiveRemoteDataSourceImpl
     } on DioException catch (e) {
       AppLogger.campaign.e('Failed to fetch live campaign: ${e.message}');
       throw Exception('Failed to fetch live campaign: ${e.message}');
+    } on ParsingError catch (e) {
+      AppLogger.campaign.e('Parsing error in live campaign: ${e.message}');
+      throw Exception('Failed to parse live campaign: ${e.message}');
     }
   }
 
@@ -179,11 +199,11 @@ class AdvertiserLiveRemoteDataSourceImpl
       );
 
       if (response.statusCode == 200) {
-        final json = response.data as Map<String, dynamic>;
+        final json = _asMapOrThrow(response.data, 'campaign_response');
         return LiveCampaign(
-          id: json['id'] as String,
-          title: json['title'] as String,
-          zone: json['zone'] as String? ?? '',
+          id: _getString(json, 'id'),
+          title: _getString(json, 'title'),
+          zone: _getStringOrDefault(json, 'zone', ''),
           promoter: _extractPromoterFromCampaign(json),
           routeCoordinates: _extractRouteCoordinates(json),
         );
@@ -216,23 +236,13 @@ class AdvertiserLiveRemoteDataSourceImpl
 
         if (response.statusCode == 200) {
           final data = response.data;
-          final alerts = data['alerts'] as List? ?? data as List? ?? [];
+          final alerts = _extractListFromResponse(data, 'alerts');
 
-          return alerts.map((json) {
-            final alertJson = json as Map<String, dynamic>;
-            return CampaignAlert(
-              id: alertJson['id'] as String,
-              campaignId: alertJson['campaign_id'] as String,
-              campaignTitle: alertJson['campaign_title'] as String? ?? '',
-              promoterName: alertJson['promoter_name'] as String?,
-              type: _parseAlertType(alertJson['type'] as String?),
-              message: alertJson['message'] as String? ?? '',
-              createdAt: alertJson['created_at'] != null
-                  ? DateTime.parse(alertJson['created_at'] as String)
-                  : DateTime.now(),
-              isRead: alertJson['is_read'] as bool? ?? false,
-            );
-          }).toList();
+          return _parseListSafely(
+            alerts,
+            (json) => _parseAlert(_asMapOrThrow(json, 'alert')),
+            'CampaignAlert',
+          );
         }
       } on DioException catch (e) {
         if (e.response?.statusCode == 404) {
@@ -253,6 +263,19 @@ class AdvertiserLiveRemoteDataSourceImpl
       AppLogger.campaign.e('Unexpected error fetching alerts: $e');
       return [];
     }
+  }
+
+  CampaignAlert _parseAlert(Map<String, dynamic> alertJson) {
+    return CampaignAlert(
+      id: _getString(alertJson, 'id'),
+      campaignId: _getString(alertJson, 'campaign_id'),
+      campaignTitle: _getStringOrDefault(alertJson, 'campaign_title', ''),
+      promoterName: _getStringOrNull(alertJson, 'promoter_name'),
+      type: _parseAlertType(_getStringOrNull(alertJson, 'type')),
+      message: _getStringOrDefault(alertJson, 'message', ''),
+      createdAt: _getDateTimeOrDefault(alertJson, 'created_at', DateTime.now()),
+      isRead: _getBoolOrDefault(alertJson, 'is_read', false),
+    );
   }
 
   CampaignAlertType _parseAlertType(String? type) {
@@ -311,5 +334,96 @@ class AdvertiserLiveRemoteDataSourceImpl
       }
       AppLogger.campaign.e('Failed to mark all alerts as read: ${e.message}');
     }
+  }
+
+  // ============ Safe JSON parsing helpers ============
+
+  /// Extracts a List from response data, trying the key first, then the data itself.
+  List<dynamic> _extractListFromResponse(dynamic data, String key) {
+    if (data is List) return data;
+    if (data is Map<String, dynamic>) {
+      final value = data[key];
+      if (value is List) return value;
+    }
+    return [];
+  }
+
+  /// Safely parses a list of items, logging errors for individual items.
+  List<T> _parseListSafely<T>(
+    List<dynamic> items,
+    T Function(dynamic) parser,
+    String itemType,
+  ) {
+    final results = <T>[];
+    for (var i = 0; i < items.length; i++) {
+      try {
+        results.add(parser(items[i]));
+      } catch (e) {
+        AppLogger.campaign.w('Failed to parse $itemType at index $i: $e');
+        // Continue parsing other items
+      }
+    }
+    return results;
+  }
+
+  /// Validates and casts to [Map], throwing [ParsingError] if invalid.
+  Map<String, dynamic> _asMapOrThrow(dynamic value, String context) {
+    if (value is Map<String, dynamic>) return value;
+    throw ParsingError(
+      message: 'Expected Map<String, dynamic> for $context, got ${value.runtimeType}',
+      field: context,
+    );
+  }
+
+  /// Gets a required String field, throwing ParsingError if missing or wrong type.
+  String _getString(Map<String, dynamic> map, String key) {
+    final value = map[key];
+    if (value is String) return value;
+    if (value == null) {
+      throw ParsingError.missingField(key);
+    }
+    throw ParsingError.typeMismatch(
+      field: key,
+      expectedType: 'String',
+      actualType: '${value.runtimeType}',
+    );
+  }
+
+  /// Gets an optional String field, returning null if missing or wrong type.
+  String? _getStringOrNull(Map<String, dynamic> map, String key) {
+    final value = map[key];
+    if (value is String) return value;
+    return null;
+  }
+
+  /// Gets a String field with a default value if missing or wrong type.
+  String _getStringOrDefault(Map<String, dynamic> map, String key, String defaultValue) {
+    final value = map[key];
+    if (value is String) return value;
+    return defaultValue;
+  }
+
+  /// Gets a bool field with a default value if missing or wrong type.
+  bool _getBoolOrDefault(Map<String, dynamic> map, String key, bool defaultValue) {
+    final value = map[key];
+    if (value is bool) return value;
+    return defaultValue;
+  }
+
+  /// Gets a DateTime field with a default value if missing, invalid, or wrong type.
+  DateTime _getDateTimeOrDefault(
+    Map<String, dynamic> map,
+    String key,
+    DateTime defaultValue,
+  ) {
+    final value = map[key];
+    if (value is String) {
+      try {
+        return DateTime.parse(value);
+      } catch (_) {
+        return defaultValue;
+      }
+    }
+    return defaultValue;
   }
 }

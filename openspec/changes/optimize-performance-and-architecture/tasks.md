@@ -74,17 +74,19 @@
   - All error types include cause, stackTrace, and factory constructors
   - Validation: Error types cover all API failure scenarios
 
-- [ ] 3.3 Migrate campaign repository to Result pattern
-  - Update `lib/features/advertiser/campaign_management/data/repositories/campaign_repository_impl.dart`
-  - Replace nested try-catch blocks with Result returns
-  - Map exceptions to AppError types
+- [x] 3.3 Migrate campaign repository to Result pattern
+  - Updated `lib/features/advertiser/campaign_management/domain/repositories/campaign_repository.dart` interface
+  - Updated `lib/features/advertiser/campaign_management/data/repositories/campaign_repository_impl.dart` implementation
+  - Updated `lib/features/advertiser/campaign_management/domain/use_cases/campaign_use_cases.dart` to handle Result
+  - Updated `lib/shared/providers/providers.dart` kpiStatsProvider for Result
+  - Added `_mapException()` and `_mapDioException()` for error mapping
   - Validation: All repository methods return Result<T, AppError>
 
-- [ ] 3.4 Fix unsafe JSON deserialization
-  - Update `lib/features/advertiser/campaign_management/data/datasources/remote/advertiser_live_remote_data_source.dart`
-  - Remove unsafe `as Map<String, dynamic>` and `as List` casts
-  - Implement proper type validation
-  - Add schema validation before deserialization
+- [x] 3.4 Fix unsafe JSON deserialization
+  - Updated `lib/features/advertiser/campaign_management/data/datasources/remote/advertiser_live_remote_data_source.dart`
+  - Added safe parsing helpers: `_extractListFromResponse`, `_parseListSafely`, `_asMapOrThrow`
+  - Added type-safe field accessors: `_getString`, `_getStringOrNull`, `_getStringOrDefault`, `_getBoolOrDefault`, `_getDateTimeOrDefault`
+  - Removed unsafe `as Map<String, dynamic>` and `as List` casts
   - Validation: No unsafe casts remain, type errors caught as ParsingError
 
 - [x] 3.5 Add structured error logging

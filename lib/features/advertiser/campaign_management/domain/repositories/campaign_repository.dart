@@ -1,10 +1,15 @@
 import 'dart:io';
 import 'package:promoruta/core/models/campaign.dart';
 import 'package:promoruta/core/models/advertiser_kpi_stats.dart';
+import 'package:promoruta/core/models/result.dart';
+import 'package:promoruta/core/models/app_error.dart';
 
-/// Abstract repository for campaign operations
+/// Abstract repository for campaign operations.
+///
+/// Methods return [Result<T, AppError>] for type-safe error handling.
+/// Use `.fold()` to handle success and failure cases.
 abstract class CampaignRepository {
-  Future<List<Campaign>> getCampaigns({
+  Future<Result<List<Campaign>, AppError>> getCampaigns({
     String? status,
     String? zone,
     String? createdBy,
@@ -19,12 +24,13 @@ abstract class CampaignRepository {
     double? radius,
     int? perPage,
   });
-  Future<Campaign> getCampaign(String id);
-  Future<Campaign> createCampaign(Campaign campaign, {File? audioFile});
-  Future<Campaign> updateCampaign(Campaign campaign);
-  Future<void> deleteCampaign(String id);
-  Future<Campaign> cancelCampaign(String id, String reason);
-  Future<AdvertiserKpiStats> getKpiStats();
+  Future<Result<Campaign, AppError>> getCampaign(String id);
+  Future<Result<Campaign, AppError>> createCampaign(Campaign campaign,
+      {File? audioFile});
+  Future<Result<Campaign, AppError>> updateCampaign(Campaign campaign);
+  Future<Result<void, AppError>> deleteCampaign(String id);
+  Future<Result<Campaign, AppError>> cancelCampaign(String id, String reason);
+  Future<Result<AdvertiserKpiStats, AppError>> getKpiStats();
 }
 
 /// Abstract local data source for campaigns

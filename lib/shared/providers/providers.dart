@@ -516,7 +516,11 @@ final promoterAcceptedCampaignsProvider =
 final kpiStatsProvider =
     FutureProvider.autoDispose<model.AdvertiserKpiStats>((ref) async {
   final repository = ref.watch(campaignRepositoryProvider);
-  return await repository.getKpiStats();
+  final result = await repository.getKpiStats();
+  return result.fold(
+    (stats) => stats,
+    (error) => throw Exception(error.message),
+  );
 });
 
 // Provider for promoter KPI stats from backend

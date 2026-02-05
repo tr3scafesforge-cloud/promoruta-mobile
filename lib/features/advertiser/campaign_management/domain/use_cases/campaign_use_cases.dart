@@ -1,6 +1,7 @@
 import 'dart:io';
 import '../repositories/campaign_repository.dart';
 import 'package:promoruta/core/core.dart' as model;
+import 'package:promoruta/core/models/app_error.dart';
 import 'package:promoruta/shared/shared.dart';
 
 /// Parameters for getting campaigns
@@ -48,7 +49,7 @@ class GetCampaignsUseCase
 
   @override
   Future<List<model.Campaign>> call([GetCampaignsParams? params]) async {
-    return await _repository.getCampaigns(
+    final result = await _repository.getCampaigns(
       status: params?.status,
       zone: params?.zone,
       createdBy: params?.createdBy,
@@ -63,6 +64,11 @@ class GetCampaignsUseCase
       radius: params?.radius,
       perPage: params?.perPage,
     );
+
+    return result.fold(
+      (campaigns) => campaigns,
+      (error) => throw _toException(error),
+    );
   }
 }
 
@@ -74,7 +80,18 @@ class GetCampaignUseCase implements UseCase<model.Campaign?, String> {
 
   @override
   Future<model.Campaign?> call(String campaignId) async {
-    return await _repository.getCampaign(campaignId);
+    final result = await _repository.getCampaign(campaignId);
+
+    return result.fold(
+      (campaign) => campaign,
+      (error) {
+        // Return null for not found, throw for other errors
+        if (error is NotFoundError) {
+          return null;
+        }
+        throw _toException(error);
+      },
+    );
   }
 }
 
@@ -98,9 +115,14 @@ class CreateCampaignUseCase
 
   @override
   Future<model.Campaign> call(CreateCampaignParams params) async {
-    return await _repository.createCampaign(
+    final result = await _repository.createCampaign(
       params.campaign,
       audioFile: params.audioFile,
+    );
+
+    return result.fold(
+      (campaign) => campaign,
+      (error) => throw _toException(error),
     );
   }
 }
@@ -113,7 +135,12 @@ class UpdateCampaignUseCase implements UseCase<model.Campaign, model.Campaign> {
 
   @override
   Future<model.Campaign> call(model.Campaign campaign) async {
-    return await _repository.updateCampaign(campaign);
+    final result = await _repository.updateCampaign(campaign);
+
+    return result.fold(
+      (updated) => updated,
+      (error) => throw _toException(error),
+    );
   }
 }
 
@@ -125,7 +152,12 @@ class DeleteCampaignUseCase implements UseCaseVoid<String> {
 
   @override
   Future<void> call(String campaignId) async {
-    return await _repository.deleteCampaign(campaignId);
+    final result = await _repository.deleteCampaign(campaignId);
+
+    result.fold(
+      (_) {},
+      (error) => throw _toException(error),
+    );
   }
 }
 
@@ -149,6 +181,17 @@ class CancelCampaignUseCase
 
   @override
   Future<model.Campaign> call(CancelCampaignParams params) async {
-    return await _repository.cancelCampaign(params.campaignId, params.reason);
+    final result =
+        await _repository.cancelCampaign(params.campaignId, params.reason);
+
+    return result.fold(
+      (campaign) => campaign,
+      (error) => throw _toException(error),
+    );
   }
+}
+
+/// Converts AppError to Exception for backwards compatibility with existing code.
+Exception _toException(AppError error) {
+  return Exception(error.message);
 }
