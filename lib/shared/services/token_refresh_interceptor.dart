@@ -1,15 +1,22 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:promoruta/core/core.dart';
 import 'package:promoruta/core/utils/logger.dart';
 import 'package:promoruta/features/auth/domain/repositories/auth_repository.dart';
 
-/// Dio interceptor that handles automatic token refresh on 401 responses
+/// Dio interceptor that handles automatic token refresh on 401 responses.
+///
+/// Uses an async lock pattern (via Completer) to ensure only one token refresh
+/// occurs at a time, preventing race conditions when multiple concurrent
+/// requests receive 401 responses.
 class TokenRefreshInterceptor extends Interceptor {
   final AuthLocalDataSource _localDataSource;
   final Dio _dio;
-  bool _isRefreshing = false;
-  final List<({RequestOptions options, ErrorInterceptorHandler handler})>
-      _requestQueue = [];
+
+  /// Completer that coordinates concurrent refresh requests.
+  /// When set, a refresh is in progress and all new requests should wait on it.
+  Completer<String?>? _refreshCompleter;
 
   TokenRefreshInterceptor({
     required AuthLocalDataSource localDataSource,
@@ -65,14 +72,30 @@ class TokenRefreshInterceptor extends Interceptor {
 
     AppLogger.auth.i('User found with refresh token, proceeding with refresh');
 
-    // If already refreshing, queue the request
-    if (_isRefreshing) {
-      AppLogger.auth.i('Token refresh already in progress, queuing request');
-      _requestQueue.add((options: err.requestOptions, handler: handler));
-      return;
+    // Use async lock pattern: if refresh is in progress, wait for it
+    if (_refreshCompleter != null) {
+      AppLogger.auth.i('Token refresh already in progress, waiting...');
+      final newToken = await _refreshCompleter!.future;
+      if (newToken != null) {
+        // Retry the original request with new token
+        err.requestOptions.headers['Authorization'] = 'Bearer $newToken';
+        try {
+          final retryResponse = await _dio.fetch(err.requestOptions);
+          return handler.resolve(retryResponse);
+        } catch (retryError) {
+          if (retryError is DioException) {
+            return handler.next(retryError);
+          }
+          return handler.next(err);
+        }
+      } else {
+        // Refresh failed, propagate original error
+        return handler.next(err);
+      }
     }
 
-    _isRefreshing = true;
+    // Start a new refresh - create completer before any async operations
+    _refreshCompleter = Completer<String?>();
     AppLogger.auth.i('Starting token refresh process...');
 
     try {
@@ -130,6 +153,10 @@ class TokenRefreshInterceptor extends Interceptor {
 
         AppLogger.auth.i('Token refreshed successfully, new token saved');
 
+        // Complete the refresh with new token - all waiting requests will proceed
+        _refreshCompleter!.complete(refreshedUser.accessToken);
+        _refreshCompleter = null;
+
         // Retry the original request with new token
         err.requestOptions.headers['Authorization'] =
             'Bearer ${refreshedUser.accessToken}';
@@ -141,62 +168,26 @@ class TokenRefreshInterceptor extends Interceptor {
           final retryResponse = await _dio.fetch(err.requestOptions);
           AppLogger.auth.i('Retry successful: ${retryResponse.statusCode}');
           handler.resolve(retryResponse);
-
-          // Process queued requests with new token
-          AppLogger.auth
-              .i('Processing ${_requestQueue.length} queued requests');
-          _processQueue(refreshedUser.accessToken!);
         } catch (retryError) {
           AppLogger.auth.e('Retry failed: $retryError');
           handler.next(err);
-          _clearQueue(err);
         }
       } else {
         AppLogger.auth.e('Token refresh failed: ${response.statusMessage}');
+        _refreshCompleter!.complete(null);
+        _refreshCompleter = null;
         handler.next(err);
-        _clearQueue(err);
       }
     } on DioException catch (e) {
       AppLogger.auth.e('Token refresh error: ${e.message}');
+      _refreshCompleter!.complete(null);
+      _refreshCompleter = null;
       handler.next(err);
-      _clearQueue(err);
     } catch (e) {
       AppLogger.auth.e('Unexpected error during token refresh: $e');
+      _refreshCompleter!.complete(null);
+      _refreshCompleter = null;
       handler.next(err);
-      _clearQueue(err);
-    } finally {
-      _isRefreshing = false;
     }
-  }
-
-  /// Process all queued requests with the new access token
-  void _processQueue(String newAccessToken) {
-    for (final item in _requestQueue) {
-      item.options.headers['Authorization'] = 'Bearer $newAccessToken';
-      _dio.fetch(item.options).then(
-        (response) => item.handler.resolve(response),
-        onError: (error) {
-          if (error is DioException) {
-            item.handler.next(error);
-          } else {
-            item.handler.next(
-              DioException(
-                requestOptions: item.options,
-                error: error,
-              ),
-            );
-          }
-        },
-      );
-    }
-    _requestQueue.clear();
-  }
-
-  /// Clear the queue and reject all queued requests
-  void _clearQueue(DioException error) {
-    for (final item in _requestQueue) {
-      item.handler.next(error);
-    }
-    _requestQueue.clear();
   }
 }

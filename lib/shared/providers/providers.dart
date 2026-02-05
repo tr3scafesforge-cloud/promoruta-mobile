@@ -445,8 +445,8 @@ final cancelCampaignUseCaseProvider = Provider<CancelCampaignUseCase>((ref) {
 });
 
 // Provider for getting a single campaign by ID
-final campaignByIdProvider =
-    FutureProvider.family<model.Campaign?, String>((ref, campaignId) async {
+final campaignByIdProvider = FutureProvider.autoDispose
+    .family<model.Campaign?, String>((ref, campaignId) async {
   final getCampaignUseCase = ref.watch(getCampaignUseCaseProvider);
   return await getCampaignUseCase(campaignId);
 });
@@ -475,7 +475,7 @@ final campaignsProvider =
 
 // Provider for active campaigns (status = in_progress)
 final activeCampaignsProvider =
-    FutureProvider<List<model.Campaign>>((ref) async {
+    FutureProvider.autoDispose<List<model.Campaign>>((ref) async {
   final getCampaignsUseCase = ref.watch(getCampaignsUseCaseProvider);
   return await getCampaignsUseCase(
       const GetCampaignsParams(status: 'in_progress'));

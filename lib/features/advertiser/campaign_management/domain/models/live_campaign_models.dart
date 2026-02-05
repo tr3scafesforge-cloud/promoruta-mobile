@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:promoruta/shared/constants/time_thresholds.dart';
 
 /// Status of promoter's campaign execution (from advertiser's perspective)
 enum PromoterExecutionStatus {
@@ -64,16 +65,16 @@ class LivePromoterLocation extends Equatable {
     this.startedAt,
   });
 
-  /// Whether the location data is considered stale (>2 minutes old)
+  /// Whether the location data is considered stale
   bool get isStale {
     final now = DateTime.now();
-    return now.difference(lastUpdate).inMinutes >= 2;
+    return now.difference(lastUpdate) >= TimeThresholds.staleDataThreshold;
   }
 
-  /// Whether there's no signal (>5 minutes without update)
+  /// Whether there's no signal (no update within threshold)
   bool get hasNoSignal {
     final now = DateTime.now();
-    return now.difference(lastUpdate).inMinutes >= 5;
+    return now.difference(lastUpdate) >= TimeThresholds.noSignalThreshold;
   }
 
   /// Format elapsed time as HH:MM
@@ -169,10 +170,10 @@ class LivePromoterLocation extends Equatable {
     final now = DateTime.now();
     final minutesAgo = now.difference(lastUpdate).inMinutes;
 
-    if (minutesAgo >= 5) return 0;
-    if (minutesAgo >= 3) return 1;
-    if (minutesAgo >= 2) return 2;
-    if (minutesAgo >= 1) return 3;
+    if (minutesAgo >= TimeThresholds.signalLevel1MaxMinutes) return 0;
+    if (minutesAgo >= TimeThresholds.signalLevel2MaxMinutes) return 1;
+    if (minutesAgo >= TimeThresholds.signalLevel3MaxMinutes) return 2;
+    if (minutesAgo >= TimeThresholds.signalLevel4MaxMinutes) return 3;
     return 4;
   }
 

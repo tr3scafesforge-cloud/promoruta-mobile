@@ -3,12 +3,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/core/utils/logger.dart';
 import 'package:promoruta/features/advertiser/campaign_management/domain/models/live_campaign_models.dart';
 import 'package:promoruta/features/advertiser/campaign_management/domain/repositories/advertiser_live_repository.dart';
+import 'package:promoruta/shared/constants/time_thresholds.dart';
 
 /// Notifier for advertiser live view state
 class AdvertiserLiveNotifier extends StateNotifier<AdvertiserLiveState> {
   final AdvertiserLiveRepository _repository;
   Timer? _pollingTimer;
-  static const _pollingInterval = Duration(seconds: 10);
+
+  /// Tracks if a refresh request is currently in progress
+  bool _isRefreshing = false;
+
+  /// Tracks if a refresh was requested while another was in progress
+  bool _pendingRefresh = false;
 
   AdvertiserLiveNotifier(this._repository) : super(const AdvertiserLiveState());
 
@@ -20,7 +26,7 @@ class AdvertiserLiveNotifier extends StateNotifier<AdvertiserLiveState> {
 
     // Set up periodic polling
     _pollingTimer?.cancel();
-    _pollingTimer = Timer.periodic(_pollingInterval, (_) {
+    _pollingTimer = Timer.periodic(TimeThresholds.pollingInterval, (_) {
       refresh();
     });
   }
@@ -32,8 +38,21 @@ class AdvertiserLiveNotifier extends StateNotifier<AdvertiserLiveState> {
     _pollingTimer = null;
   }
 
-  /// Refresh live data
+  /// Refresh live data with request deduplication
+  ///
+  /// If a refresh is already in progress, queues a single pending refresh
+  /// to execute after the current one completes. Multiple requests during
+  /// an ongoing refresh are deduplicated to a single pending request.
   Future<void> refresh() async {
+    // If already refreshing, mark that we need to refresh again when done
+    if (_isRefreshing) {
+      _pendingRefresh = true;
+      return;
+    }
+
+    _isRefreshing = true;
+    _pendingRefresh = false;
+
     try {
       state = state.copyWith(isLoading: state.campaigns.isEmpty);
 
@@ -61,6 +80,13 @@ class AdvertiserLiveNotifier extends StateNotifier<AdvertiserLiveState> {
         isLoading: false,
         error: 'Failed to load live campaigns',
       );
+    } finally {
+      _isRefreshing = false;
+
+      // If a refresh was requested while we were refreshing, do it now
+      if (_pendingRefresh) {
+        refresh();
+      }
     }
   }
 
@@ -176,17 +202,17 @@ class AdvertiserLiveNotifier extends StateNotifier<AdvertiserLiveState> {
     try {
       await _repository.markAlertAsRead(alertId);
 
-      final updatedAlerts = state.alerts.map((alert) {
-        if (alert.id == alertId) {
-          return alert.copyWith(isRead: true);
-        }
-        return alert;
-      }).toList();
+      // Use index-based update instead of .map().toList() for efficiency
+      final index = state.alerts.indexWhere((a) => a.id == alertId);
+      if (index != -1) {
+        final updatedAlerts = [...state.alerts];
+        updatedAlerts[index] = updatedAlerts[index].copyWith(isRead: true);
 
-      state = state.copyWith(
-        alerts: updatedAlerts,
-        unreadAlertCount: updatedAlerts.where((a) => !a.isRead).length,
-      );
+        state = state.copyWith(
+          alerts: updatedAlerts,
+          unreadAlertCount: updatedAlerts.where((a) => !a.isRead).length,
+        );
+      }
     } catch (e) {
       AppLogger.location.e('Failed to mark alert as read: $e');
     }

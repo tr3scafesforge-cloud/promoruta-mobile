@@ -27,22 +27,51 @@ class GpsLocalDataSourceImpl implements GpsLocalDataSource {
   @override
   Future<List<model_route.Route>> getRoutes() async {
     final routeRows = await db.select(db.routes).get();
-    final routes = <model_route.Route>[];
+    if (routeRows.isEmpty) return [];
 
-    for (final routeRow in routeRows) {
-      final points = await getGpsPoints(routeRow.id);
-      routes.add(model_route.Route(
-        id: routeRow.id,
-        promoterId: routeRow.promoterId,
-        campaignId: routeRow.campaignId,
-        startTime: routeRow.startTime,
-        endTime: routeRow.endTime,
-        points: points,
-        isCompleted: routeRow.isCompleted,
-      ));
+    // Batch load all GPS points for all routes in a single query
+    final routeIds = routeRows.map((r) => r.id).toList();
+    final allPoints = await _getGpsPointsForRoutes(routeIds);
+
+    // Group points by route ID
+    final pointsByRouteId = <String, List<model.GpsPoint>>{};
+    for (final point in allPoints) {
+      pointsByRouteId.putIfAbsent(point.routeId, () => []).add(point);
     }
 
-    return routes;
+    return routeRows
+        .map((routeRow) => model_route.Route(
+              id: routeRow.id,
+              promoterId: routeRow.promoterId,
+              campaignId: routeRow.campaignId,
+              startTime: routeRow.startTime,
+              endTime: routeRow.endTime,
+              points: pointsByRouteId[routeRow.id] ?? [],
+              isCompleted: routeRow.isCompleted,
+            ))
+        .toList();
+  }
+
+  /// Batch load GPS points for multiple routes in a single query
+  Future<List<model.GpsPoint>> _getGpsPointsForRoutes(
+      List<String> routeIds) async {
+    if (routeIds.isEmpty) return [];
+
+    final pointRows = await (db.select(db.gpsPoints)
+          ..where((tbl) => tbl.routeId.isIn(routeIds)))
+        .get();
+
+    return pointRows
+        .map((row) => model.GpsPoint(
+              id: row.id,
+              routeId: row.routeId ?? '',
+              latitude: row.latitude,
+              longitude: row.longitude,
+              timestamp: row.timestamp,
+              speed: row.speed,
+              accuracy: row.accuracy,
+            ))
+        .toList();
   }
 
   @override
@@ -137,21 +166,29 @@ class GpsLocalDataSourceImpl implements GpsLocalDataSource {
           ..where((tbl) => tbl.isCompleted.equals(true)))
         .get();
 
-    final routes = <model_route.Route>[];
-    for (final routeRow in routeRows) {
-      final points = await getGpsPoints(routeRow.id);
-      routes.add(model_route.Route(
-        id: routeRow.id,
-        promoterId: routeRow.promoterId,
-        campaignId: routeRow.campaignId,
-        startTime: routeRow.startTime,
-        endTime: routeRow.endTime,
-        points: points,
-        isCompleted: routeRow.isCompleted,
-      ));
+    if (routeRows.isEmpty) return [];
+
+    // Batch load all GPS points for all routes in a single query
+    final routeIds = routeRows.map((r) => r.id).toList();
+    final allPoints = await _getGpsPointsForRoutes(routeIds);
+
+    // Group points by route ID
+    final pointsByRouteId = <String, List<model.GpsPoint>>{};
+    for (final point in allPoints) {
+      pointsByRouteId.putIfAbsent(point.routeId, () => []).add(point);
     }
 
-    return routes;
+    return routeRows
+        .map((routeRow) => model_route.Route(
+              id: routeRow.id,
+              promoterId: routeRow.promoterId,
+              campaignId: routeRow.campaignId,
+              startTime: routeRow.startTime,
+              endTime: routeRow.endTime,
+              points: pointsByRouteId[routeRow.id] ?? [],
+              isCompleted: routeRow.isCompleted,
+            ))
+        .toList();
   }
 
   /// Save a GPS point for campaign execution tracking

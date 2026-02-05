@@ -112,15 +112,13 @@ class PermissionNotifier extends StateNotifier<PermissionState> {
     state = state.copyWith(isLoading: true);
 
     try {
-      // Request permissions one by one to avoid dialog conflicts
-      // Add small delays between requests to ensure dialogs don't conflict
+      // Request permissions one by one - each await naturally blocks
+      // until the user responds to the permission dialog
       final locationStatus = await Permission.locationWhenInUse.request();
       state = state.copyWith(locationGranted: locationStatus.isGranted);
-      await Future.delayed(const Duration(milliseconds: 500));
 
       final notificationStatus = await Permission.notification.request();
       state = state.copyWith(notificationGranted: notificationStatus.isGranted);
-      await Future.delayed(const Duration(milliseconds: 500));
 
       final microphoneStatus = await Permission.microphone.request();
 
