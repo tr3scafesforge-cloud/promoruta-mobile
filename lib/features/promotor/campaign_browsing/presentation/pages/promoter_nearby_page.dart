@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/core/models/campaign.dart';
-import 'package:promoruta/features/advertiser/campaign_management/domain/use_cases/campaign_use_cases.dart';
-import 'package:promoruta/features/location/data/providers/location_provider.dart';
+import 'package:promoruta/core/models/campaign_query_params.dart';
+import 'package:promoruta/shared/providers/location_provider.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
 
@@ -18,8 +18,8 @@ enum CampaignFilter {
 
 // Provider for campaign filter parameters
 final campaignFilterParamsProvider =
-    StateProvider.autoDispose<GetCampaignsParams>((ref) {
-  return const GetCampaignsParams(perPage: 15);
+    StateProvider.autoDispose<CampaignQueryParams>((ref) {
+  return const CampaignQueryParams(perPage: 15);
 });
 
 // Provider for selected filter tab
@@ -57,11 +57,11 @@ final filteredCampaignsProvider =
   final selectedFilter = ref.watch(selectedFilterProvider);
   final userLocation = await ref.watch(userLocationProvider.future);
 
-  GetCampaignsParams params;
+  CampaignQueryParams params;
 
   switch (selectedFilter) {
     case CampaignFilter.all:
-      params = const GetCampaignsParams(
+      params = const CampaignQueryParams(
         perPage: 15,
         sortBy: 'created_at',
         sortOrder: 'desc',
@@ -69,7 +69,7 @@ final filteredCampaignsProvider =
       break;
 
     case CampaignFilter.urgent:
-      params = const GetCampaignsParams(
+      params = const CampaignQueryParams(
         perPage: 15,
         upcoming: true,
         sortBy: 'start_time',
@@ -79,7 +79,7 @@ final filteredCampaignsProvider =
 
     case CampaignFilter.nearby:
       if (userLocation != null) {
-        params = GetCampaignsParams(
+        params = CampaignQueryParams(
           perPage: 15,
           lat: userLocation.latitude,
           lng: userLocation.longitude,
@@ -89,7 +89,7 @@ final filteredCampaignsProvider =
         );
       } else {
         // Fallback to all campaigns if location not available
-        params = const GetCampaignsParams(
+        params = const CampaignQueryParams(
           perPage: 15,
           sortBy: 'created_at',
           sortOrder: 'desc',
@@ -98,7 +98,7 @@ final filteredCampaignsProvider =
       break;
 
     case CampaignFilter.bestPaid:
-      params = const GetCampaignsParams(
+      params = const CampaignQueryParams(
         perPage: 15,
         sortBy: 'suggested_price',
         sortOrder: 'desc',

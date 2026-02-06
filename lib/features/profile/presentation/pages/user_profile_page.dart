@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:promoruta/app/routes/app_router.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/core/core.dart' as model;
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
-import 'package:promoruta/features/promotor/presentation/pages/map_screen.dart';
-import 'package:promoruta/features/promotor/presentation/pages/simple_map_test.dart';
-import 'package:promoruta/features/promotor/presentation/pages/point_annotation_test.dart';
-import 'package:promoruta/features/promotor/presentation/pages/polyline_test.dart';
 
 class UserProfilePage extends ConsumerStatefulWidget {
   const UserProfilePage({
@@ -166,121 +161,6 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
                     ),
 
                     const SizedBox(height: 24),
-
-                    // TEST: Mapbox Integration Test (Only for advertisers, remove after testing)
-                    if (user.role == model.UserRole.advertiser) ...[
-                      const Text(
-                        '🧪 MAPBOX TEST FEATURES',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
-                          color: Colors.orange,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-
-                      // Basic tests based on official Mapbox examples
-                      CustomButton(
-                        text: '1️⃣ Simple Map Test',
-                        backgroundColor: Colors.blue,
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SimpleMapTest(),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 8),
-
-                      CustomButton(
-                        text: '2️⃣ Point Annotations Test',
-                        backgroundColor: Colors.green,
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const PointAnnotationTest(),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 8),
-
-                      CustomButton(
-                        text: '3️⃣ Polyline Test',
-                        backgroundColor: Colors.purple,
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const PolylineTest(),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 8),
-
-                      // Full integration tests with services
-                      CustomButton(
-                        text: '4️⃣ Full Map Screen (with Location)',
-                        backgroundColor: Colors.teal,
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const MapScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 8),
-
-                      CustomButton(
-                        text: '5️⃣ Route to Single Destination',
-                        backgroundColor: Colors.orange,
-                        onPressed: () {
-                          final destination = [
-                            LatLng(4.6097, -74.0817), // Plaza de Bolívar
-                          ];
-
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MapScreen(
-                                waypoints: destination,
-                                showRoute: true,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 8),
-
-                      CustomButton(
-                        text: '6️⃣ Multi-Waypoint Route',
-                        backgroundColor: Colors.deepOrange,
-                        onPressed: () {
-                          final waypoints = [
-                            LatLng(4.7110, -74.0721), // Bogotá
-                            LatLng(4.6533, -74.0836), // Near Bogotá
-                            LatLng(4.6870, -74.0547), // Another point
-                          ];
-
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MapScreen(
-                                waypoints: waypoints,
-                                showRoute: true,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 24),
-                    ],
 
                     // Eliminar cuenta (destructive)
                     CustomButton(

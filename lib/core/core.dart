@@ -1,5 +1,6 @@
 // Models
 export 'models/campaign.dart';
+export 'models/campaign_query_params.dart';
 export 'models/gps_point.dart';
 export 'models/route.dart';
 export 'models/user.dart';

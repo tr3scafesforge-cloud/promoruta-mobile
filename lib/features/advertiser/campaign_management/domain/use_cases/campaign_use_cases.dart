@@ -2,43 +2,14 @@ import 'dart:io';
 import '../repositories/campaign_repository.dart';
 import 'package:promoruta/core/core.dart' as model;
 import 'package:promoruta/core/models/app_error.dart';
+import 'package:promoruta/core/models/campaign_query_params.dart';
 import 'package:promoruta/shared/shared.dart';
 
-/// Parameters for getting campaigns
-///
-/// Available status values: pending, created, accepted, in_progress, completed, cancelled, expired
-/// Sort by values: created_at, start_time, suggested_price
-class GetCampaignsParams {
-  final String? status;
-  final String? zone;
-  final String? createdBy;
-  final String? acceptedBy;
-  final bool? upcoming;
-  final DateTime? startTimeFrom;
-  final DateTime? startTimeTo;
-  final String? sortBy;
-  final String? sortOrder;
-  final double? lat;
-  final double? lng;
-  final double? radius;
-  final int? perPage;
+// Re-export CampaignQueryParams as GetCampaignsParams for backward compatibility
+export 'package:promoruta/core/models/campaign_query_params.dart';
 
-  const GetCampaignsParams({
-    this.status,
-    this.zone,
-    this.createdBy,
-    this.acceptedBy,
-    this.upcoming,
-    this.startTimeFrom,
-    this.startTimeTo,
-    this.sortBy,
-    this.sortOrder,
-    this.lat,
-    this.lng,
-    this.radius,
-    this.perPage,
-  });
-}
+/// Alias for CampaignQueryParams for backward compatibility
+typedef GetCampaignsParams = CampaignQueryParams;
 
 /// Use case for getting all campaigns
 class GetCampaignsUseCase

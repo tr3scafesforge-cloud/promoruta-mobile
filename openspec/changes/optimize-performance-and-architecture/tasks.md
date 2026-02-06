@@ -147,11 +147,16 @@
   - Safe parsing (Task 3.4) already handles format variations gracefully
   - Recommendation: Coordinate with backend team before removing fallbacks
 
-- [ ] 4.4 Remove feature-to-feature dependencies (DEFERRED)
-  - RATIONALE: Requires comprehensive codebase audit
-  - Current cross-feature imports work correctly
-  - Moving shared logic could introduce regressions
-  - Recommendation: Address during feature development as needed
+- [x] 4.4 Remove feature-to-feature dependencies
+  - Removed test page imports from `user_profile_page.dart` (profile → promotor)
+  - Created `lib/core/models/campaign_query_params.dart` for shared campaign query parameters
+  - Updated `promoter_nearby_page.dart` to use `CampaignQueryParams` from core instead of advertiser
+  - Created `lib/shared/providers/location_provider.dart` for shared location service
+  - Added typedef `GetCampaignsParams = CampaignQueryParams` for backward compatibility
+  - Documented remaining legitimate cross-feature dependencies:
+    - `auth` imports: Foundational feature, all features need auth context
+    - `promoter → campaign_providers`: Sync service cross-cutting concern (acceptable)
+    - Within-feature subfolder imports: Same feature domain (acceptable)
 
 ## Validation & Testing
 
@@ -199,11 +204,11 @@
 
 ## Implementation Summary (Final)
 
-### Completed (19/22 tasks):
+### Completed (20/22 tasks):
 - Phase 1: 3/3 completed
 - Phase 2: 5/5 completed
 - Phase 3: 7/7 completed
-- Phase 4: 1/4 completed (4.2-4.4 deferred - lower priority, higher risk)
+- Phase 4: 2/4 completed (4.2-4.3 deferred - lower priority, requires backend coordination)
 - Phase 5: 3/4 completed (5.3 deferred - requires runtime profiling)
 - Phase 6: 1/1 completed
 
@@ -217,9 +222,11 @@
 - `lib/shared/constants/time_thresholds.dart` - Time-related constants
 - `lib/core/models/result.dart` - Result<T, E> type for error handling
 - `lib/core/models/app_error.dart` - Error type hierarchy
+- `lib/core/models/campaign_query_params.dart` - Shared campaign query parameters
 - `lib/shared/services/error_logger.dart` - Structured error logging
 - `lib/shared/services/retry_service.dart` - Retry with exponential backoff
 - `lib/shared/providers/infrastructure_providers.dart` - Core infrastructure providers
+- `lib/shared/providers/location_provider.dart` - Shared location service provider
 - `lib/features/advertiser/campaign_management/presentation/providers/campaign_providers.dart` - Campaign-specific providers
 - `lib/features/promotor/presentation/providers/promoter_providers.dart` - Promoter/GPS providers
 - `lib/features/profile/presentation/providers/profile_providers.dart` - Profile providers
@@ -236,3 +243,6 @@
 - `lib/features/advertiser/campaign_management/data/repositories/campaign_repository_impl.dart` - Result type implementation
 - `lib/features/advertiser/campaign_management/domain/use_cases/campaign_use_cases.dart` - Handle Result type
 - `lib/features/advertiser/campaign_management/data/datasources/remote/advertiser_live_remote_data_source.dart` - Safe JSON parsing
+- `lib/features/profile/presentation/pages/user_profile_page.dart` - Remove test page imports (cross-feature dependency)
+- `lib/features/promotor/campaign_browsing/presentation/pages/promoter_nearby_page.dart` - Use core CampaignQueryParams
+- `lib/core/core.dart` - Export campaign_query_params.dart
