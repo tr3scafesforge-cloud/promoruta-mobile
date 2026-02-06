@@ -1,9 +1,8 @@
 import 'dart:io';
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:promoruta/shared/shared.dart';
+import 'package:promoruta/shared/services/sync_service.dart';
+import 'package:promoruta/shared/services/sync_service_impl.dart';
 import 'package:promoruta/features/profile/data/datasources/local/user_local_data_source.dart'
     as user_ds;
 import 'package:promoruta/features/profile/data/datasources/remote/user_remote_data_source.dart'
@@ -29,22 +28,12 @@ import 'package:promoruta/core/models/promoter_kpi_stats.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:promoruta/core/core.dart' as model;
-import 'package:promoruta/core/models/config.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/features/promotor/route_execution/data/services/campaign_audio_service.dart';
 import 'package:promoruta/core/theme.dart';
-import 'package:promoruta/features/auth/data/datasources/local/auth_local_data_source.dart';
-import 'package:promoruta/features/auth/data/datasources/remote/auth_remote_data_source.dart';
-import 'package:promoruta/features/auth/data/repositories/auth_repository_impl.dart';
-import 'package:promoruta/features/auth/domain/repositories/auth_repository.dart';
-import 'package:promoruta/features/auth/domain/use_cases/auth_use_cases.dart';
-import 'package:promoruta/features/auth/domain/use_cases/two_factor_use_cases.dart';
-import 'package:promoruta/features/auth/domain/use_cases/registration_use_cases.dart';
-import 'package:promoruta/features/auth/domain/models/two_factor_models.dart';
 import 'package:promoruta/app/routes/app_router.dart';
 import 'package:promoruta/shared/services/notification_service.dart';
 import 'package:promoruta/shared/services/overlay_notification_service.dart';
-import 'package:promoruta/shared/services/token_refresh_interceptor.dart';
 import 'package:promoruta/shared/services/route_service.dart';
 import 'package:promoruta/shared/services/route_service_impl.dart';
 import 'package:promoruta/shared/services/geocoding_service.dart';
@@ -60,89 +49,20 @@ import 'package:promoruta/features/advertiser/campaign_management/data/datasourc
 import 'package:promoruta/features/advertiser/campaign_management/data/repositories/advertiser_live_repository_impl.dart';
 import 'package:promoruta/features/advertiser/campaign_management/domain/repositories/advertiser_live_repository.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:logger/logger.dart';
 
-// Database provider
-final databaseProvider = Provider<AppDatabase>((ref) {
-  final database = AppDatabase();
-  // Don't dispose in provider to avoid multiple database instances
-  return database;
-});
+// Re-export infrastructure providers (database, dio, connectivity, logger, config)
+export 'infrastructure_providers.dart';
 
-// Config service provider
-final configServiceProvider = Provider<ConfigService>((ref) {
-  // For now, no remote config URL - will use assets fallback
-  // In production, you can set: remoteConfigUrl: 'https://your-config-server.com/config'
-  return ConfigServiceImpl();
-});
+// Re-export auth providers from feature layer
+export 'package:promoruta/features/auth/presentation/providers/auth_providers.dart';
 
-// Config provider
-final configProvider = FutureProvider<AppConfig>((ref) async {
-  final configService = ref.watch(configServiceProvider);
-  return await configService.getConfig();
-});
+// Import infrastructure providers for use in this file
+import 'package:promoruta/shared/providers/infrastructure_providers.dart';
 
-// Dio provider
-final dioProvider = Provider<Dio>((ref) {
-  // Wait for config to be loaded
-  final configAsync = ref.watch(configProvider);
-  final config = configAsync.maybeWhen(
-    data: (config) => config,
-    orElse: () =>
-        const AppConfig(baseUrl: 'http://172.81.177.85/api/'), // Fallback
-  );
+// Import auth providers for use in this file
+import 'package:promoruta/features/auth/presentation/providers/auth_providers.dart';
 
-  final dio = Dio(BaseOptions(
-    baseUrl: config.baseUrl,
-    connectTimeout: const Duration(seconds: 10),
-    receiveTimeout: const Duration(seconds: 10),
-  ));
-
-  // Add token refresh interceptor (must be added before logging interceptor)
-  final authLocalDataSource = ref.watch(authLocalDataSourceProvider);
-  dio.interceptors.add(TokenRefreshInterceptor(
-    localDataSource: authLocalDataSource,
-    dio: dio,
-  ));
-
-  // Add logging interceptor
-  dio.interceptors.add(LogInterceptor(
-    request: true,
-    requestHeader: true,
-    requestBody: true,
-    responseHeader: true,
-    responseBody: true,
-    error: true,
-  ));
-
-  return dio;
-});
-
-// Connectivity provider
-final connectivityProvider = Provider<Connectivity>((ref) {
-  return Connectivity();
-});
-
-// Logger provider
-final loggerProvider = Provider<Logger>((ref) {
-  return Logger(
-    printer: PrettyPrinter(
-      methodCount: 0,
-      errorMethodCount: 5,
-      lineLength: 50,
-      colors: true,
-      printEmojis: true,
-    ),
-  );
-});
-
-// Services
-final connectivityServiceProvider = Provider<ConnectivityService>((ref) {
-  final connectivity = ref.watch(connectivityProvider);
-  final service = ConnectivityServiceImpl(connectivity);
-  ref.onDispose(() => service.dispose());
-  return service;
-});
+// ============ Services ============
 
 final routeServiceProvider = Provider<RouteService>((ref) {
   final dio = ref.watch(dioProvider);
@@ -184,17 +104,7 @@ final campaignAudioServiceProvider = Provider<CampaignAudioService>((ref) {
   return service;
 });
 
-// Data Sources
-final authLocalDataSourceProvider = Provider<AuthLocalDataSource>((ref) {
-  final database = ref.watch(databaseProvider);
-  return AuthLocalDataSourceImpl(database);
-});
-
-final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {
-  final dio = ref.watch(dioProvider);
-  final localDataSource = ref.watch(authLocalDataSourceProvider);
-  return AuthRemoteDataSourceImpl(dio: dio, localDataSource: localDataSource);
-});
+// ============ Data Sources ============
 
 final campaignLocalDataSourceProvider =
     Provider<CampaignLocalDataSource>((ref) {
@@ -239,7 +149,8 @@ final mediaRemoteDataSourceProvider = Provider<MediaRemoteDataSource>((ref) {
   return MediaRemoteDataSourceImpl(dio: dio);
 });
 
-// Sync Service
+// ============ Sync Service ============
+
 final syncServiceProvider = Provider<SyncService>((ref) {
   final connectivityService = ref.watch(connectivityServiceProvider);
   final authLocal = ref.watch(authLocalDataSourceProvider);
@@ -270,18 +181,7 @@ final syncGpsPointsUseCaseProvider = Provider<SyncGpsPointsUseCase>((ref) {
   );
 });
 
-// Repositories
-final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  final localDataSource = ref.watch(authLocalDataSourceProvider);
-  final remoteDataSource = ref.watch(authRemoteDataSourceProvider);
-  final connectivityService = ref.watch(connectivityServiceProvider);
-
-  return AuthRepositoryImpl(
-    localDataSource,
-    remoteDataSource,
-    connectivityService,
-  );
-});
+// ============ Repositories ============
 
 final campaignRepositoryProvider = Provider<CampaignRepository>((ref) {
   final localDataSource = ref.watch(campaignLocalDataSourceProvider);
@@ -358,61 +258,7 @@ final advertiserLiveRepositoryProvider =
   return AdvertiserLiveRepositoryImpl(remoteDataSource: remoteDataSource);
 });
 
-// Use Cases
-final changePasswordUseCaseProvider = Provider<ChangePasswordUseCase>((ref) {
-  final repository = ref.watch(authRepositoryProvider);
-  return ChangePasswordUseCase(repository);
-});
-
-// 2FA Use Case Providers
-final enable2FAUseCaseProvider = Provider<Enable2FAUseCase>((ref) {
-  final repository = ref.watch(authRepositoryProvider);
-  return Enable2FAUseCase(repository);
-});
-
-final confirm2FAUseCaseProvider = Provider<Confirm2FAUseCase>((ref) {
-  final repository = ref.watch(authRepositoryProvider);
-  return Confirm2FAUseCase(repository);
-});
-
-final disable2FAUseCaseProvider = Provider<Disable2FAUseCase>((ref) {
-  final repository = ref.watch(authRepositoryProvider);
-  return Disable2FAUseCase(repository);
-});
-
-final verify2FACodeUseCaseProvider = Provider<Verify2FACodeUseCase>((ref) {
-  final repository = ref.watch(authRepositoryProvider);
-  return Verify2FACodeUseCase(repository);
-});
-
-final getRecoveryCodesUseCaseProvider =
-    Provider<GetRecoveryCodesUseCase>((ref) {
-  final repository = ref.watch(authRepositoryProvider);
-  return GetRecoveryCodesUseCase(repository);
-});
-
-final regenerateRecoveryCodesUseCaseProvider =
-    Provider<RegenerateRecoveryCodesUseCase>((ref) {
-  final repository = ref.watch(authRepositoryProvider);
-  return RegenerateRecoveryCodesUseCase(repository);
-});
-
-// Registration Use Case Providers
-final registerUseCaseProvider = Provider<RegisterUseCase>((ref) {
-  final repository = ref.watch(authRepositoryProvider);
-  return RegisterUseCase(repository);
-});
-
-final verifyEmailUseCaseProvider = Provider<VerifyEmailUseCase>((ref) {
-  final repository = ref.watch(authRepositoryProvider);
-  return VerifyEmailUseCase(repository);
-});
-
-final resendVerificationCodeUseCaseProvider =
-    Provider<ResendVerificationCodeUseCase>((ref) {
-  final repository = ref.watch(authRepositoryProvider);
-  return ResendVerificationCodeUseCase(repository);
-});
+// ============ Campaign Use Cases ============
 
 final getCampaignsUseCaseProvider = Provider<GetCampaignsUseCase>((ref) {
   final repository = ref.watch(campaignRepositoryProvider);
@@ -451,12 +297,7 @@ final campaignByIdProvider = FutureProvider.autoDispose
   return await getCampaignUseCase(campaignId);
 });
 
-// State Notifiers for UI
-final authStateProvider =
-    StateNotifierProvider<AuthNotifier, AsyncValue<model.User?>>((ref) {
-  final repository = ref.watch(authRepositoryProvider);
-  return AuthNotifier(repository);
-});
+// ============ State Notifiers for UI ============
 
 final campaignsProvider =
     StateNotifierProvider<CampaignsNotifier, AsyncValue<List<model.Campaign>>>(
@@ -679,71 +520,6 @@ class LocaleNotifier extends StateNotifier<Locale> {
     state = locale;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('languageCode', locale.languageCode);
-  }
-}
-
-class AuthNotifier extends StateNotifier<AsyncValue<model.User?>> {
-  final AuthRepository _repository;
-
-  AuthNotifier(this._repository) : super(const AsyncValue.loading()) {
-    _loadUser();
-  }
-
-  Future<void> _loadUser() async {
-    state = const AsyncValue.loading();
-    try {
-      final user = await _repository.getCurrentUser();
-      if (mounted) {
-        state = AsyncValue.data(user);
-      }
-    } catch (e, stack) {
-      if (mounted) {
-        state = AsyncValue.error(e, stack);
-      }
-    }
-  }
-
-  Future<void> login(String email, String password) async {
-    state = const AsyncValue.loading();
-    try {
-      final user = await _repository.login(email, password);
-      if (mounted) {
-        state = AsyncValue.data(user);
-      }
-    } on TwoFactorRequiredException {
-      // Reset state to data(null) when 2FA is required
-      // so the UI can redirect to 2FA page
-      if (mounted) {
-        state = const AsyncValue.data(null);
-      }
-      rethrow;
-    } catch (e, stack) {
-      if (mounted) {
-        state = AsyncValue.error(e, stack);
-      }
-      rethrow;
-    }
-  }
-
-  Future<void> logout() async {
-    try {
-      await _repository.logout();
-      if (mounted) {
-        state = const AsyncValue.data(null);
-      }
-    } catch (e, stack) {
-      if (mounted) {
-        state = AsyncValue.error(e, stack);
-      }
-    }
-  }
-
-  /// Sets the authenticated user directly.
-  /// Use this after email verification or 2FA login completes successfully.
-  void setUser(model.User user) {
-    if (mounted) {
-      state = AsyncValue.data(user);
-    }
   }
 }
 
