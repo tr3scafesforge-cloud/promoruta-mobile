@@ -103,10 +103,6 @@ class Campaign {
   final String? id; // Optional for creation
   final String title;
   final String? description; // Optional
-  final String?
-      advertiserId; // Optional - will be set by backend (deprecated, use createdBy)
-  final DateTime? startDate; // Optional - deprecated, use startTime
-  final DateTime? endDate; // Optional - deprecated, use endTime
   final CampaignStatus? status; // Optional - will be set by backend
 
   // API fields
@@ -120,7 +116,7 @@ class Campaign {
   final DateTime startTime;
   final DateTime endTime;
 
-  // New fields from API response
+  // Fields from API response
   final CampaignUser? createdBy;
   final CampaignUser? acceptedBy;
   final String? selectedBidId;
@@ -133,9 +129,6 @@ class Campaign {
     this.id,
     required this.title,
     this.description,
-    this.advertiserId,
-    this.startDate,
-    this.endDate,
     this.status,
     this.audioUrl,
     required this.zone,
@@ -160,7 +153,6 @@ class Campaign {
       if (id != null) 'id': id,
       'title': title,
       if (description != null) 'description': description,
-      if (advertiserId != null) 'advertiser_id': advertiserId,
       if (audioUrl != null) 'audio_url': audioUrl,
       'zone': zone,
       'suggested_price': suggestedPrice,
@@ -186,7 +178,6 @@ class Campaign {
       id: json['id'] as String?,
       title: json['title'] as String,
       description: json['description'] as String?,
-      advertiserId: json['advertiser_id'] as String?,
       audioUrl: json['audio_url'] as String?,
       zone: json['zone'] as String,
       suggestedPrice: json['suggested_price'] is String
@@ -229,12 +220,6 @@ class Campaign {
       updatedAt: json['updated_at'] != null
           ? DateTime.parse(json['updated_at'] as String)
           : null,
-      startDate: json['start_date'] != null
-          ? DateTime.parse(json['start_date'] as String)
-          : null,
-      endDate: json['end_date'] != null
-          ? DateTime.parse(json['end_date'] as String)
-          : null,
     );
   }
 
@@ -242,9 +227,6 @@ class Campaign {
     String? id,
     String? title,
     String? description,
-    String? advertiserId,
-    DateTime? startDate,
-    DateTime? endDate,
     CampaignStatus? status,
     String? audioUrl,
     String? zone,
@@ -267,9 +249,6 @@ class Campaign {
       id: id ?? this.id,
       title: title ?? this.title,
       description: description ?? this.description,
-      advertiserId: advertiserId ?? this.advertiserId,
-      startDate: startDate ?? this.startDate,
-      endDate: endDate ?? this.endDate,
       status: status ?? this.status,
       audioUrl: audioUrl ?? this.audioUrl,
       zone: zone ?? this.zone,

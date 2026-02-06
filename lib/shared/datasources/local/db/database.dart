@@ -86,7 +86,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 7;
+  int get schemaVersion => 8;
 
   @override
   MigrationStrategy get migration {
@@ -200,6 +200,57 @@ class AppDatabase extends _$AppDatabase {
               // Table exists, just add the new columns
               await m.addColumn(gpsPoints, gpsPoints.campaignId);
               await m.addColumn(gpsPoints, gpsPoints.syncedAt);
+            }
+          });
+        }
+
+        /// Handle migration from version 7 to 8 (rename campaign columns and add new fields)
+        if (from <= 7 && to >= 8) {
+          AppLogger.database.i(
+              'Migration 7→8: Renaming campaign columns and adding zone/suggestedPrice');
+          await transaction(() async {
+            // Check if campaigns_entity table exists
+            final campaignsTableExists = await customSelect(
+              "SELECT name FROM sqlite_master WHERE type='table' AND name='campaigns_entity'",
+            ).get();
+
+            if (campaignsTableExists.isNotEmpty) {
+              // SQLite doesn't support ALTER TABLE RENAME COLUMN in older versions
+              // We need to recreate the table with the new schema
+              // Step 1: Create new table with new column names
+              await customStatement('''
+                CREATE TABLE campaigns_entity_new (
+                  id TEXT NOT NULL PRIMARY KEY,
+                  title TEXT NOT NULL,
+                  description TEXT NOT NULL,
+                  created_by_id TEXT NOT NULL,
+                  start_time INTEGER NOT NULL,
+                  end_time INTEGER NOT NULL,
+                  status TEXT NOT NULL DEFAULT 'active',
+                  zone TEXT NOT NULL DEFAULT '',
+                  suggested_price REAL NOT NULL DEFAULT 0.0
+                )
+              ''');
+
+              // Step 2: Copy data from old table to new table
+              await customStatement('''
+                INSERT INTO campaigns_entity_new (id, title, description, created_by_id, start_time, end_time, status, zone, suggested_price)
+                SELECT id, title, description, advertiser_id, start_date, end_date, status, '', 0.0
+                FROM campaigns_entity
+              ''');
+
+              // Step 3: Drop old table
+              await customStatement('DROP TABLE campaigns_entity');
+
+              // Step 4: Rename new table to original name
+              await customStatement(
+                  'ALTER TABLE campaigns_entity_new RENAME TO campaigns_entity');
+
+              AppLogger.database.i('Campaign table migration completed');
+            } else {
+              // Table doesn't exist, create it with new schema
+              AppLogger.database.i('Creating campaigns_entity table with new schema');
+              await m.createTable(campaignsEntity);
             }
           });
         }

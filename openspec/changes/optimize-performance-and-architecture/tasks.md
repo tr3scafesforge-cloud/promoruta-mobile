@@ -9,9 +9,14 @@
   - Added constants for retry logic, timeouts, signal strength thresholds
   - Validation: All hardcoded numbers replaced with constants
 
-- [ ] 1.2 Remove deprecated fields from Campaign model
-  - BLOCKED: Requires database schema migration - the CampaignsEntity table uses advertiserId, startDate, endDate fields
-  - Need to create migration to rename startDate→startTime, endDate→endTime, and advertiserId→createdById
+- [x] 1.2 Remove deprecated fields from Campaign model
+  - Updated `CampaignsEntity` to use new column names (createdById, startTime, endTime)
+  - Added zone and suggestedPrice columns to CampaignsEntity
+  - Created database migration (version 7→8) to rename columns and migrate data
+  - Updated `CampaignLocalDataSourceImpl` to use new column names
+  - Removed `advertiserId`, `startDate`, `endDate` from Campaign model
+  - Updated `campaign_mappers.dart` to remove deprecated field references
+  - Regenerated database code with `dart run build_runner build`
   - Validation: Code compiles, no references to deprecated fields
 
 - [x] 1.3 Remove incomplete feature implementations
@@ -194,8 +199,8 @@
 
 ## Implementation Summary (Final)
 
-### Completed (15/19 tasks):
-- Phase 1: 2/3 completed (1.2 blocked by database migration)
+### Completed (16/19 tasks):
+- Phase 1: 3/3 completed
 - Phase 2: 5/5 completed
 - Phase 3: 7/7 completed
 - Phase 4: 1/4 completed (4.2-4.4 deferred - lower priority, higher risk)

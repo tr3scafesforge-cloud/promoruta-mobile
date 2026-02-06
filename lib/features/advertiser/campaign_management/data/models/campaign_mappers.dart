@@ -49,9 +49,6 @@ extension UiCampaignMappers on ui.Campaign {
       id: id,
       title: title,
       description: subtitle ?? '',
-      advertiserId: '', // Would need to be provided from context
-      startDate: campaignDate,
-      endDate: campaignDate.add(const Duration(days: 1)),
       status: _mapStatusToCore(status),
       zone: location,
       suggestedPrice: payUsd?.toDouble() ?? 0.0,

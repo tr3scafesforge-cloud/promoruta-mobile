@@ -9,9 +9,6 @@ final _mockCampaigns = <model.Campaign>[
     id: '1',
     title: 'Promoción Agua',
     description: 'Campaña de promoción de agua mineral',
-    advertiserId: 'advertiser_1',
-    startDate: DateTime(2025, 1, 1, 10, 50),
-    endDate: DateTime(2025, 1, 2, 10, 50),
     status: model.CampaignStatus.completed,
     zone: 'Norte',
     suggestedPrice: 150.0,
@@ -29,9 +26,6 @@ final _mockCampaigns = <model.Campaign>[
     id: '2',
     title: 'Promoción Agua II',
     description: 'Segunda campaña de promoción de agua mineral',
-    advertiserId: 'advertiser_1',
-    startDate: DateTime(2025, 1, 1, 14, 50),
-    endDate: DateTime(2025, 1, 2, 14, 50),
     status: model.CampaignStatus.canceled,
     zone: 'Sur',
     suggestedPrice: 200.0,
@@ -49,9 +43,6 @@ final _mockCampaigns = <model.Campaign>[
     id: '3',
     title: 'Promoción Agua III',
     description: 'Tercera campaña de promoción de agua mineral',
-    advertiserId: 'advertiser_1',
-    startDate: DateTime(2025, 1, 1, 9, 50),
-    endDate: DateTime(2025, 1, 2, 9, 50),
     status: model.CampaignStatus.expired,
     zone: 'Este',
     suggestedPrice: 100.0,
@@ -94,11 +85,7 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
     await db.batch((batch) {
       for (final campaign in campaigns) {
         // Only save campaigns that have all required fields
-        if (campaign.id == null ||
-            campaign.advertiserId == null ||
-            campaign.startDate == null ||
-            campaign.endDate == null ||
-            campaign.status == null) {
+        if (campaign.id == null || campaign.status == null) {
           continue;
         }
 
@@ -108,19 +95,23 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
             id: Value(campaign.id!),
             title: Value(campaign.title),
             description: Value(campaign.description ?? ''),
-            advertiserId: Value(campaign.advertiserId!),
-            startDate: Value(campaign.startDate!),
-            endDate: Value(campaign.endDate!),
+            createdById: Value(campaign.createdBy?.id ?? ''),
+            startTime: Value(campaign.startTime),
+            endTime: Value(campaign.endTime),
             status: Value(campaign.status!.name),
+            zone: Value(campaign.zone),
+            suggestedPrice: Value(campaign.suggestedPrice),
           ),
           onConflict: DoUpdate(
             (_) => CampaignsEntityCompanion(
               title: Value(campaign.title),
               description: Value(campaign.description ?? ''),
-              advertiserId: Value(campaign.advertiserId!),
-              startDate: Value(campaign.startDate!),
-              endDate: Value(campaign.endDate!),
+              createdById: Value(campaign.createdBy?.id ?? ''),
+              startTime: Value(campaign.startTime),
+              endTime: Value(campaign.endTime),
               status: Value(campaign.status!.name),
+              zone: Value(campaign.zone),
+              suggestedPrice: Value(campaign.suggestedPrice),
             ),
           ),
         );
@@ -144,19 +135,15 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
               id: row.id,
               title: row.title,
               description: row.description,
-              advertiserId: row.advertiserId,
-              startDate: row.startDate,
-              endDate: row.endDate,
               status: _parseStatus(row.status),
-              // Use deprecated fields as fallback for required fields
-              zone: 'Unknown',
-              suggestedPrice: 0.0,
-              bidDeadline: row.startDate,
+              zone: row.zone,
+              suggestedPrice: row.suggestedPrice,
+              bidDeadline: row.startTime,
               audioDuration: 30,
               distance: 0.0,
               routeCoordinates: [],
-              startTime: row.startDate,
-              endTime: row.endDate,
+              startTime: row.startTime,
+              endTime: row.endTime,
             ))
         .toList();
   }
@@ -164,11 +151,7 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
   @override
   Future<void> saveCampaign(model.Campaign campaign) async {
     // Only save campaigns that have all required fields
-    if (campaign.id == null ||
-        campaign.advertiserId == null ||
-        campaign.startDate == null ||
-        campaign.endDate == null ||
-        campaign.status == null) {
+    if (campaign.id == null || campaign.status == null) {
       return;
     }
 
@@ -177,10 +160,12 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
             id: Value(campaign.id!),
             title: Value(campaign.title),
             description: Value(campaign.description ?? ''),
-            advertiserId: Value(campaign.advertiserId!),
-            startDate: Value(campaign.startDate!),
-            endDate: Value(campaign.endDate!),
+            createdById: Value(campaign.createdBy?.id ?? ''),
+            startTime: Value(campaign.startTime),
+            endTime: Value(campaign.endTime),
             status: Value(campaign.status!.name),
+            zone: Value(campaign.zone),
+            suggestedPrice: Value(campaign.suggestedPrice),
           ),
         );
   }
@@ -197,19 +182,15 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
       id: campaignRow.id,
       title: campaignRow.title,
       description: campaignRow.description,
-      advertiserId: campaignRow.advertiserId,
-      startDate: campaignRow.startDate,
-      endDate: campaignRow.endDate,
       status: _parseStatus(campaignRow.status),
-      // Use deprecated fields as fallback for required fields
-      zone: 'Unknown',
-      suggestedPrice: 0.0,
-      bidDeadline: campaignRow.startDate,
+      zone: campaignRow.zone,
+      suggestedPrice: campaignRow.suggestedPrice,
+      bidDeadline: campaignRow.startTime,
       audioDuration: 30,
       distance: 0.0,
       routeCoordinates: [],
-      startTime: campaignRow.startDate,
-      endTime: campaignRow.endDate,
+      startTime: campaignRow.startTime,
+      endTime: campaignRow.endTime,
     );
   }
 

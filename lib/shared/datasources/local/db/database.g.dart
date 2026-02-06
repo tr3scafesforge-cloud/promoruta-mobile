@@ -780,23 +780,23 @@ class $CampaignsEntityTable extends CampaignsEntity
   late final GeneratedColumn<String> description = GeneratedColumn<String>(
       'description', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _advertiserIdMeta =
-      const VerificationMeta('advertiserId');
+  static const VerificationMeta _createdByIdMeta =
+      const VerificationMeta('createdById');
   @override
-  late final GeneratedColumn<String> advertiserId = GeneratedColumn<String>(
-      'advertiser_id', aliasedName, false,
+  late final GeneratedColumn<String> createdById = GeneratedColumn<String>(
+      'created_by_id', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _startDateMeta =
-      const VerificationMeta('startDate');
+  static const VerificationMeta _startTimeMeta =
+      const VerificationMeta('startTime');
   @override
-  late final GeneratedColumn<DateTime> startDate = GeneratedColumn<DateTime>(
-      'start_date', aliasedName, false,
+  late final GeneratedColumn<DateTime> startTime = GeneratedColumn<DateTime>(
+      'start_time', aliasedName, false,
       type: DriftSqlType.dateTime, requiredDuringInsert: true);
-  static const VerificationMeta _endDateMeta =
-      const VerificationMeta('endDate');
+  static const VerificationMeta _endTimeMeta =
+      const VerificationMeta('endTime');
   @override
-  late final GeneratedColumn<DateTime> endDate = GeneratedColumn<DateTime>(
-      'end_date', aliasedName, false,
+  late final GeneratedColumn<DateTime> endTime = GeneratedColumn<DateTime>(
+      'end_time', aliasedName, false,
       type: DriftSqlType.dateTime, requiredDuringInsert: true);
   static const VerificationMeta _statusMeta = const VerificationMeta('status');
   @override
@@ -805,9 +805,33 @@ class $CampaignsEntityTable extends CampaignsEntity
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       defaultValue: const Constant('active'));
+  static const VerificationMeta _zoneMeta = const VerificationMeta('zone');
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, title, description, advertiserId, startDate, endDate, status];
+  late final GeneratedColumn<String> zone = GeneratedColumn<String>(
+      'zone', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(''));
+  static const VerificationMeta _suggestedPriceMeta =
+      const VerificationMeta('suggestedPrice');
+  @override
+  late final GeneratedColumn<double> suggestedPrice = GeneratedColumn<double>(
+      'suggested_price', aliasedName, false,
+      type: DriftSqlType.double,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0.0));
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        title,
+        description,
+        createdById,
+        startTime,
+        endTime,
+        status,
+        zone,
+        suggestedPrice
+      ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -838,29 +862,39 @@ class $CampaignsEntityTable extends CampaignsEntity
     } else if (isInserting) {
       context.missing(_descriptionMeta);
     }
-    if (data.containsKey('advertiser_id')) {
+    if (data.containsKey('created_by_id')) {
       context.handle(
-          _advertiserIdMeta,
-          advertiserId.isAcceptableOrUnknown(
-              data['advertiser_id']!, _advertiserIdMeta));
+          _createdByIdMeta,
+          createdById.isAcceptableOrUnknown(
+              data['created_by_id']!, _createdByIdMeta));
     } else if (isInserting) {
-      context.missing(_advertiserIdMeta);
+      context.missing(_createdByIdMeta);
     }
-    if (data.containsKey('start_date')) {
-      context.handle(_startDateMeta,
-          startDate.isAcceptableOrUnknown(data['start_date']!, _startDateMeta));
+    if (data.containsKey('start_time')) {
+      context.handle(_startTimeMeta,
+          startTime.isAcceptableOrUnknown(data['start_time']!, _startTimeMeta));
     } else if (isInserting) {
-      context.missing(_startDateMeta);
+      context.missing(_startTimeMeta);
     }
-    if (data.containsKey('end_date')) {
-      context.handle(_endDateMeta,
-          endDate.isAcceptableOrUnknown(data['end_date']!, _endDateMeta));
+    if (data.containsKey('end_time')) {
+      context.handle(_endTimeMeta,
+          endTime.isAcceptableOrUnknown(data['end_time']!, _endTimeMeta));
     } else if (isInserting) {
-      context.missing(_endDateMeta);
+      context.missing(_endTimeMeta);
     }
     if (data.containsKey('status')) {
       context.handle(_statusMeta,
           status.isAcceptableOrUnknown(data['status']!, _statusMeta));
+    }
+    if (data.containsKey('zone')) {
+      context.handle(
+          _zoneMeta, zone.isAcceptableOrUnknown(data['zone']!, _zoneMeta));
+    }
+    if (data.containsKey('suggested_price')) {
+      context.handle(
+          _suggestedPriceMeta,
+          suggestedPrice.isAcceptableOrUnknown(
+              data['suggested_price']!, _suggestedPriceMeta));
     }
     return context;
   }
@@ -877,14 +911,18 @@ class $CampaignsEntityTable extends CampaignsEntity
           .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
       description: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}description'])!,
-      advertiserId: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}advertiser_id'])!,
-      startDate: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}start_date'])!,
-      endDate: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}end_date'])!,
+      createdById: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}created_by_id'])!,
+      startTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}start_time'])!,
+      endTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}end_time'])!,
       status: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}status'])!,
+      zone: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}zone'])!,
+      suggestedPrice: attachedDatabase.typeMapping.read(
+          DriftSqlType.double, data['${effectivePrefix}suggested_price'])!,
     );
   }
 
@@ -899,28 +937,34 @@ class CampaignsEntityData extends DataClass
   final String id;
   final String title;
   final String description;
-  final String advertiserId;
-  final DateTime startDate;
-  final DateTime endDate;
+  final String createdById;
+  final DateTime startTime;
+  final DateTime endTime;
   final String status;
+  final String zone;
+  final double suggestedPrice;
   const CampaignsEntityData(
       {required this.id,
       required this.title,
       required this.description,
-      required this.advertiserId,
-      required this.startDate,
-      required this.endDate,
-      required this.status});
+      required this.createdById,
+      required this.startTime,
+      required this.endTime,
+      required this.status,
+      required this.zone,
+      required this.suggestedPrice});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['title'] = Variable<String>(title);
     map['description'] = Variable<String>(description);
-    map['advertiser_id'] = Variable<String>(advertiserId);
-    map['start_date'] = Variable<DateTime>(startDate);
-    map['end_date'] = Variable<DateTime>(endDate);
+    map['created_by_id'] = Variable<String>(createdById);
+    map['start_time'] = Variable<DateTime>(startTime);
+    map['end_time'] = Variable<DateTime>(endTime);
     map['status'] = Variable<String>(status);
+    map['zone'] = Variable<String>(zone);
+    map['suggested_price'] = Variable<double>(suggestedPrice);
     return map;
   }
 
@@ -929,10 +973,12 @@ class CampaignsEntityData extends DataClass
       id: Value(id),
       title: Value(title),
       description: Value(description),
-      advertiserId: Value(advertiserId),
-      startDate: Value(startDate),
-      endDate: Value(endDate),
+      createdById: Value(createdById),
+      startTime: Value(startTime),
+      endTime: Value(endTime),
       status: Value(status),
+      zone: Value(zone),
+      suggestedPrice: Value(suggestedPrice),
     );
   }
 
@@ -943,10 +989,12 @@ class CampaignsEntityData extends DataClass
       id: serializer.fromJson<String>(json['id']),
       title: serializer.fromJson<String>(json['title']),
       description: serializer.fromJson<String>(json['description']),
-      advertiserId: serializer.fromJson<String>(json['advertiserId']),
-      startDate: serializer.fromJson<DateTime>(json['startDate']),
-      endDate: serializer.fromJson<DateTime>(json['endDate']),
+      createdById: serializer.fromJson<String>(json['createdById']),
+      startTime: serializer.fromJson<DateTime>(json['startTime']),
+      endTime: serializer.fromJson<DateTime>(json['endTime']),
       status: serializer.fromJson<String>(json['status']),
+      zone: serializer.fromJson<String>(json['zone']),
+      suggestedPrice: serializer.fromJson<double>(json['suggestedPrice']),
     );
   }
   @override
@@ -956,10 +1004,12 @@ class CampaignsEntityData extends DataClass
       'id': serializer.toJson<String>(id),
       'title': serializer.toJson<String>(title),
       'description': serializer.toJson<String>(description),
-      'advertiserId': serializer.toJson<String>(advertiserId),
-      'startDate': serializer.toJson<DateTime>(startDate),
-      'endDate': serializer.toJson<DateTime>(endDate),
+      'createdById': serializer.toJson<String>(createdById),
+      'startTime': serializer.toJson<DateTime>(startTime),
+      'endTime': serializer.toJson<DateTime>(endTime),
       'status': serializer.toJson<String>(status),
+      'zone': serializer.toJson<String>(zone),
+      'suggestedPrice': serializer.toJson<double>(suggestedPrice),
     };
   }
 
@@ -967,18 +1017,22 @@ class CampaignsEntityData extends DataClass
           {String? id,
           String? title,
           String? description,
-          String? advertiserId,
-          DateTime? startDate,
-          DateTime? endDate,
-          String? status}) =>
+          String? createdById,
+          DateTime? startTime,
+          DateTime? endTime,
+          String? status,
+          String? zone,
+          double? suggestedPrice}) =>
       CampaignsEntityData(
         id: id ?? this.id,
         title: title ?? this.title,
         description: description ?? this.description,
-        advertiserId: advertiserId ?? this.advertiserId,
-        startDate: startDate ?? this.startDate,
-        endDate: endDate ?? this.endDate,
+        createdById: createdById ?? this.createdById,
+        startTime: startTime ?? this.startTime,
+        endTime: endTime ?? this.endTime,
         status: status ?? this.status,
+        zone: zone ?? this.zone,
+        suggestedPrice: suggestedPrice ?? this.suggestedPrice,
       );
   CampaignsEntityData copyWithCompanion(CampaignsEntityCompanion data) {
     return CampaignsEntityData(
@@ -986,12 +1040,15 @@ class CampaignsEntityData extends DataClass
       title: data.title.present ? data.title.value : this.title,
       description:
           data.description.present ? data.description.value : this.description,
-      advertiserId: data.advertiserId.present
-          ? data.advertiserId.value
-          : this.advertiserId,
-      startDate: data.startDate.present ? data.startDate.value : this.startDate,
-      endDate: data.endDate.present ? data.endDate.value : this.endDate,
+      createdById:
+          data.createdById.present ? data.createdById.value : this.createdById,
+      startTime: data.startTime.present ? data.startTime.value : this.startTime,
+      endTime: data.endTime.present ? data.endTime.value : this.endTime,
       status: data.status.present ? data.status.value : this.status,
+      zone: data.zone.present ? data.zone.value : this.zone,
+      suggestedPrice: data.suggestedPrice.present
+          ? data.suggestedPrice.value
+          : this.suggestedPrice,
     );
   }
 
@@ -1001,17 +1058,19 @@ class CampaignsEntityData extends DataClass
           ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('description: $description, ')
-          ..write('advertiserId: $advertiserId, ')
-          ..write('startDate: $startDate, ')
-          ..write('endDate: $endDate, ')
-          ..write('status: $status')
+          ..write('createdById: $createdById, ')
+          ..write('startTime: $startTime, ')
+          ..write('endTime: $endTime, ')
+          ..write('status: $status, ')
+          ..write('zone: $zone, ')
+          ..write('suggestedPrice: $suggestedPrice')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      id, title, description, advertiserId, startDate, endDate, status);
+  int get hashCode => Object.hash(id, title, description, createdById,
+      startTime, endTime, status, zone, suggestedPrice);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1019,64 +1078,76 @@ class CampaignsEntityData extends DataClass
           other.id == this.id &&
           other.title == this.title &&
           other.description == this.description &&
-          other.advertiserId == this.advertiserId &&
-          other.startDate == this.startDate &&
-          other.endDate == this.endDate &&
-          other.status == this.status);
+          other.createdById == this.createdById &&
+          other.startTime == this.startTime &&
+          other.endTime == this.endTime &&
+          other.status == this.status &&
+          other.zone == this.zone &&
+          other.suggestedPrice == this.suggestedPrice);
 }
 
 class CampaignsEntityCompanion extends UpdateCompanion<CampaignsEntityData> {
   final Value<String> id;
   final Value<String> title;
   final Value<String> description;
-  final Value<String> advertiserId;
-  final Value<DateTime> startDate;
-  final Value<DateTime> endDate;
+  final Value<String> createdById;
+  final Value<DateTime> startTime;
+  final Value<DateTime> endTime;
   final Value<String> status;
+  final Value<String> zone;
+  final Value<double> suggestedPrice;
   final Value<int> rowid;
   const CampaignsEntityCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
     this.description = const Value.absent(),
-    this.advertiserId = const Value.absent(),
-    this.startDate = const Value.absent(),
-    this.endDate = const Value.absent(),
+    this.createdById = const Value.absent(),
+    this.startTime = const Value.absent(),
+    this.endTime = const Value.absent(),
     this.status = const Value.absent(),
+    this.zone = const Value.absent(),
+    this.suggestedPrice = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   CampaignsEntityCompanion.insert({
     required String id,
     required String title,
     required String description,
-    required String advertiserId,
-    required DateTime startDate,
-    required DateTime endDate,
+    required String createdById,
+    required DateTime startTime,
+    required DateTime endTime,
     this.status = const Value.absent(),
+    this.zone = const Value.absent(),
+    this.suggestedPrice = const Value.absent(),
     this.rowid = const Value.absent(),
   })  : id = Value(id),
         title = Value(title),
         description = Value(description),
-        advertiserId = Value(advertiserId),
-        startDate = Value(startDate),
-        endDate = Value(endDate);
+        createdById = Value(createdById),
+        startTime = Value(startTime),
+        endTime = Value(endTime);
   static Insertable<CampaignsEntityData> custom({
     Expression<String>? id,
     Expression<String>? title,
     Expression<String>? description,
-    Expression<String>? advertiserId,
-    Expression<DateTime>? startDate,
-    Expression<DateTime>? endDate,
+    Expression<String>? createdById,
+    Expression<DateTime>? startTime,
+    Expression<DateTime>? endTime,
     Expression<String>? status,
+    Expression<String>? zone,
+    Expression<double>? suggestedPrice,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (title != null) 'title': title,
       if (description != null) 'description': description,
-      if (advertiserId != null) 'advertiser_id': advertiserId,
-      if (startDate != null) 'start_date': startDate,
-      if (endDate != null) 'end_date': endDate,
+      if (createdById != null) 'created_by_id': createdById,
+      if (startTime != null) 'start_time': startTime,
+      if (endTime != null) 'end_time': endTime,
       if (status != null) 'status': status,
+      if (zone != null) 'zone': zone,
+      if (suggestedPrice != null) 'suggested_price': suggestedPrice,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1085,19 +1156,23 @@ class CampaignsEntityCompanion extends UpdateCompanion<CampaignsEntityData> {
       {Value<String>? id,
       Value<String>? title,
       Value<String>? description,
-      Value<String>? advertiserId,
-      Value<DateTime>? startDate,
-      Value<DateTime>? endDate,
+      Value<String>? createdById,
+      Value<DateTime>? startTime,
+      Value<DateTime>? endTime,
       Value<String>? status,
+      Value<String>? zone,
+      Value<double>? suggestedPrice,
       Value<int>? rowid}) {
     return CampaignsEntityCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
       description: description ?? this.description,
-      advertiserId: advertiserId ?? this.advertiserId,
-      startDate: startDate ?? this.startDate,
-      endDate: endDate ?? this.endDate,
+      createdById: createdById ?? this.createdById,
+      startTime: startTime ?? this.startTime,
+      endTime: endTime ?? this.endTime,
       status: status ?? this.status,
+      zone: zone ?? this.zone,
+      suggestedPrice: suggestedPrice ?? this.suggestedPrice,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1114,17 +1189,23 @@ class CampaignsEntityCompanion extends UpdateCompanion<CampaignsEntityData> {
     if (description.present) {
       map['description'] = Variable<String>(description.value);
     }
-    if (advertiserId.present) {
-      map['advertiser_id'] = Variable<String>(advertiserId.value);
+    if (createdById.present) {
+      map['created_by_id'] = Variable<String>(createdById.value);
     }
-    if (startDate.present) {
-      map['start_date'] = Variable<DateTime>(startDate.value);
+    if (startTime.present) {
+      map['start_time'] = Variable<DateTime>(startTime.value);
     }
-    if (endDate.present) {
-      map['end_date'] = Variable<DateTime>(endDate.value);
+    if (endTime.present) {
+      map['end_time'] = Variable<DateTime>(endTime.value);
     }
     if (status.present) {
       map['status'] = Variable<String>(status.value);
+    }
+    if (zone.present) {
+      map['zone'] = Variable<String>(zone.value);
+    }
+    if (suggestedPrice.present) {
+      map['suggested_price'] = Variable<double>(suggestedPrice.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -1138,10 +1219,12 @@ class CampaignsEntityCompanion extends UpdateCompanion<CampaignsEntityData> {
           ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('description: $description, ')
-          ..write('advertiserId: $advertiserId, ')
-          ..write('startDate: $startDate, ')
-          ..write('endDate: $endDate, ')
+          ..write('createdById: $createdById, ')
+          ..write('startTime: $startTime, ')
+          ..write('endTime: $endTime, ')
           ..write('status: $status, ')
+          ..write('zone: $zone, ')
+          ..write('suggestedPrice: $suggestedPrice, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -2327,10 +2410,12 @@ typedef $$CampaignsEntityTableCreateCompanionBuilder = CampaignsEntityCompanion
   required String id,
   required String title,
   required String description,
-  required String advertiserId,
-  required DateTime startDate,
-  required DateTime endDate,
+  required String createdById,
+  required DateTime startTime,
+  required DateTime endTime,
   Value<String> status,
+  Value<String> zone,
+  Value<double> suggestedPrice,
   Value<int> rowid,
 });
 typedef $$CampaignsEntityTableUpdateCompanionBuilder = CampaignsEntityCompanion
@@ -2338,10 +2423,12 @@ typedef $$CampaignsEntityTableUpdateCompanionBuilder = CampaignsEntityCompanion
   Value<String> id,
   Value<String> title,
   Value<String> description,
-  Value<String> advertiserId,
-  Value<DateTime> startDate,
-  Value<DateTime> endDate,
+  Value<String> createdById,
+  Value<DateTime> startTime,
+  Value<DateTime> endTime,
   Value<String> status,
+  Value<String> zone,
+  Value<double> suggestedPrice,
   Value<int> rowid,
 });
 
@@ -2363,17 +2450,24 @@ class $$CampaignsEntityTableFilterComposer
   ColumnFilters<String> get description => $composableBuilder(
       column: $table.description, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get advertiserId => $composableBuilder(
-      column: $table.advertiserId, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get createdById => $composableBuilder(
+      column: $table.createdById, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<DateTime> get startDate => $composableBuilder(
-      column: $table.startDate, builder: (column) => ColumnFilters(column));
+  ColumnFilters<DateTime> get startTime => $composableBuilder(
+      column: $table.startTime, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<DateTime> get endDate => $composableBuilder(
-      column: $table.endDate, builder: (column) => ColumnFilters(column));
+  ColumnFilters<DateTime> get endTime => $composableBuilder(
+      column: $table.endTime, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get status => $composableBuilder(
       column: $table.status, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get zone => $composableBuilder(
+      column: $table.zone, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<double> get suggestedPrice => $composableBuilder(
+      column: $table.suggestedPrice,
+      builder: (column) => ColumnFilters(column));
 }
 
 class $$CampaignsEntityTableOrderingComposer
@@ -2394,18 +2488,24 @@ class $$CampaignsEntityTableOrderingComposer
   ColumnOrderings<String> get description => $composableBuilder(
       column: $table.description, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get advertiserId => $composableBuilder(
-      column: $table.advertiserId,
-      builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get createdById => $composableBuilder(
+      column: $table.createdById, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<DateTime> get startDate => $composableBuilder(
-      column: $table.startDate, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<DateTime> get startTime => $composableBuilder(
+      column: $table.startTime, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<DateTime> get endDate => $composableBuilder(
-      column: $table.endDate, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<DateTime> get endTime => $composableBuilder(
+      column: $table.endTime, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get status => $composableBuilder(
       column: $table.status, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get zone => $composableBuilder(
+      column: $table.zone, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<double> get suggestedPrice => $composableBuilder(
+      column: $table.suggestedPrice,
+      builder: (column) => ColumnOrderings(column));
 }
 
 class $$CampaignsEntityTableAnnotationComposer
@@ -2426,17 +2526,23 @@ class $$CampaignsEntityTableAnnotationComposer
   GeneratedColumn<String> get description => $composableBuilder(
       column: $table.description, builder: (column) => column);
 
-  GeneratedColumn<String> get advertiserId => $composableBuilder(
-      column: $table.advertiserId, builder: (column) => column);
+  GeneratedColumn<String> get createdById => $composableBuilder(
+      column: $table.createdById, builder: (column) => column);
 
-  GeneratedColumn<DateTime> get startDate =>
-      $composableBuilder(column: $table.startDate, builder: (column) => column);
+  GeneratedColumn<DateTime> get startTime =>
+      $composableBuilder(column: $table.startTime, builder: (column) => column);
 
-  GeneratedColumn<DateTime> get endDate =>
-      $composableBuilder(column: $table.endDate, builder: (column) => column);
+  GeneratedColumn<DateTime> get endTime =>
+      $composableBuilder(column: $table.endTime, builder: (column) => column);
 
   GeneratedColumn<String> get status =>
       $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get zone =>
+      $composableBuilder(column: $table.zone, builder: (column) => column);
+
+  GeneratedColumn<double> get suggestedPrice => $composableBuilder(
+      column: $table.suggestedPrice, builder: (column) => column);
 }
 
 class $$CampaignsEntityTableTableManager extends RootTableManager<
@@ -2469,40 +2575,48 @@ class $$CampaignsEntityTableTableManager extends RootTableManager<
             Value<String> id = const Value.absent(),
             Value<String> title = const Value.absent(),
             Value<String> description = const Value.absent(),
-            Value<String> advertiserId = const Value.absent(),
-            Value<DateTime> startDate = const Value.absent(),
-            Value<DateTime> endDate = const Value.absent(),
+            Value<String> createdById = const Value.absent(),
+            Value<DateTime> startTime = const Value.absent(),
+            Value<DateTime> endTime = const Value.absent(),
             Value<String> status = const Value.absent(),
+            Value<String> zone = const Value.absent(),
+            Value<double> suggestedPrice = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               CampaignsEntityCompanion(
             id: id,
             title: title,
             description: description,
-            advertiserId: advertiserId,
-            startDate: startDate,
-            endDate: endDate,
+            createdById: createdById,
+            startTime: startTime,
+            endTime: endTime,
             status: status,
+            zone: zone,
+            suggestedPrice: suggestedPrice,
             rowid: rowid,
           ),
           createCompanionCallback: ({
             required String id,
             required String title,
             required String description,
-            required String advertiserId,
-            required DateTime startDate,
-            required DateTime endDate,
+            required String createdById,
+            required DateTime startTime,
+            required DateTime endTime,
             Value<String> status = const Value.absent(),
+            Value<String> zone = const Value.absent(),
+            Value<double> suggestedPrice = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               CampaignsEntityCompanion.insert(
             id: id,
             title: title,
             description: description,
-            advertiserId: advertiserId,
-            startDate: startDate,
-            endDate: endDate,
+            createdById: createdById,
+            startTime: startTime,
+            endTime: endTime,
             status: status,
+            zone: zone,
+            suggestedPrice: suggestedPrice,
             rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0
