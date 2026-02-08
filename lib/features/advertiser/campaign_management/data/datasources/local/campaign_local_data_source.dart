@@ -148,6 +148,43 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
         .toList();
   }
 
+  /// Get campaigns with pagination support (for future use with backend pagination)
+  @override
+  Future<List<model.Campaign>> getCampaignsWithPagination({
+    int page = 1,
+    int pageSize = 10,
+  }) async {
+    final offset = (page - 1) * pageSize;
+
+    final campaignRows = await (db.select(db.campaignsEntity)
+          ..limit(pageSize, offset: offset))
+        .get();
+
+    // If no data in database, return mock data for offline scenarios
+    if (campaignRows.isEmpty && page == 1) {
+      // Save mock data to database for future use
+      await saveCampaigns(_mockCampaigns);
+      return _mockCampaigns.take(pageSize).toList();
+    }
+
+    return campaignRows
+        .map((row) => model.Campaign(
+              id: row.id,
+              title: row.title,
+              description: row.description,
+              status: _parseStatus(row.status),
+              zone: row.zone,
+              suggestedPrice: row.suggestedPrice,
+              bidDeadline: row.startTime,
+              audioDuration: 30,
+              distance: 0.0,
+              routeCoordinates: [],
+              startTime: row.startTime,
+              endTime: row.endTime,
+            ))
+        .toList();
+  }
+
   @override
   Future<void> saveCampaign(model.Campaign campaign) async {
     // Only save campaigns that have all required fields

@@ -31,6 +31,7 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
     double? lat,
     double? lng,
     double? radius,
+    int? page,
     int? perPage,
   }) async {
     try {
@@ -51,6 +52,7 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
       if (lat != null) filters.add('lat=$lat');
       if (lng != null) filters.add('lng=$lng');
       if (radius != null) filters.add('radius=$radius');
+      if (page != null) filters.add('page=$page');
       if (perPage != null) filters.add('per_page=$perPage');
 
       AppLogger.auth.i(
@@ -73,6 +75,7 @@ class CampaignRemoteDataSourceImpl implements CampaignRemoteDataSource {
       if (lat != null) queryParameters['lat'] = lat;
       if (lng != null) queryParameters['lng'] = lng;
       if (radius != null) queryParameters['radius'] = radius;
+      if (page != null) queryParameters['page'] = page;
       if (perPage != null) queryParameters['per_page'] = perPage;
 
       final response = await dio.get(

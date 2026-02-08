@@ -50,70 +50,15 @@ class _HomeContentState extends ConsumerState<_HomeContent> {
     final hasCreatedFirstCampaign = ref.watch(
       firstCampaignProvider.select((value) => value),
     );
-    final zonesCovered = ref.watch(
-      zonesCoveredThisWeekProvider.select((value) => value),
-    );
-    final kpiStatsAsync = ref.watch(kpiStatsProvider);
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
       children: [
-        // KPI cards
-        Row(
-          children: [
-            Expanded(
-              child: StatCard(
-                icon: Icons.trending_up_rounded,
-                value: widget.isLoading
-                    ? '--'
-                    : '${widget.activeCampaigns.length}',
-                labelTop: widget.l10n.campaigns,
-                labelBottom: widget.l10n.active,
-                iconColor: AppColors.blueDark,
-                backgroundColor: AppColors.blueDark.withValues(alpha: .2),
-              ),
-            ),
-            const SizedBox(width: 5),
-            Expanded(
-              child: StatCard(
-                icon: Icons.place_rounded,
-                value: '$zonesCovered',
-                labelTop: widget.l10n.zonesCovered,
-                labelBottom: widget.l10n.thisWeek,
-                iconColor: AppColors.green,
-                backgroundColor: AppColors.green.withValues(alpha: .2),
-              ),
-            ),
-            const SizedBox(width: 5),
-            Expanded(
-              child: kpiStatsAsync.when(
-                loading: () => StatCard(
-                  icon: Icons.attach_money_rounded,
-                  value: '--',
-                  labelTop: widget.l10n.investment,
-                  labelBottom: widget.l10n.accumulated,
-                  iconColor: AppColors.secondary,
-                  backgroundColor: AppColors.secondary.withValues(alpha: .2),
-                ),
-                error: (error, stack) => StatCard(
-                  icon: Icons.attach_money_rounded,
-                  value: '\$0',
-                  labelTop: widget.l10n.investment,
-                  labelBottom: widget.l10n.accumulated,
-                  iconColor: AppColors.secondary,
-                  backgroundColor: AppColors.secondary.withValues(alpha: .2),
-                ),
-                data: (kpiStats) => StatCard(
-                  icon: Icons.attach_money_rounded,
-                  value: '\$${kpiStats.totalInvestment.toStringAsFixed(0)}',
-                  labelTop: widget.l10n.investment,
-                  labelBottom: widget.l10n.accumulated,
-                  iconColor: AppColors.secondary,
-                  backgroundColor: AppColors.secondary.withValues(alpha: .2),
-                ),
-              ),
-            ),
-          ],
+        // KPI cards section - split into separate widgets for better optimization
+        _KpiCardsRow(
+          isLoading: widget.isLoading,
+          activeCampaignsCount: widget.activeCampaigns.length,
+          l10n: widget.l10n,
         ),
         const SizedBox(height: 10),
 
@@ -158,7 +103,7 @@ class _HomeContentState extends ConsumerState<_HomeContent> {
               ),
             ),
           )
-        else
+        else ...[
           ...widget.activeCampaigns.take(5).map((campaign) => Padding(
                 padding: const EdgeInsets.only(bottom: 12),
                 child: _CampaignCard(
@@ -166,6 +111,13 @@ class _HomeContentState extends ConsumerState<_HomeContent> {
                   l10n: widget.l10n,
                 ),
               )),
+          // Load more button if more campaigns are available
+          if (widget.activeCampaigns.length > 5)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: _LoadMoreButton(l10n: widget.l10n),
+            ),
+        ],
       ],
     );
   }
@@ -446,6 +398,125 @@ class _SectionHeader extends ConsumerWidget {
           child: Text(l10n.seeAll),
         ),
       ],
+    );
+  }
+}
+
+class _LoadMoreButton extends ConsumerWidget {
+  final AppLocalizations l10n;
+
+  const _LoadMoreButton({required this.l10n});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Center(
+      child: CustomButton(
+        text: l10n.seeAll,
+        backgroundColor: AppColors.secondary.withValues(alpha: 0.1),
+        textColor: AppColors.secondary,
+        onPressed: () {
+          // Navigate to campaigns tab to see all campaigns
+          ref.read(advertiserTabProvider.notifier).setTab(1);
+        },
+      ),
+    );
+  }
+}
+
+/// KPI Cards Row - split into separate widgets for better provider optimization
+class _KpiCardsRow extends StatelessWidget {
+  final bool isLoading;
+  final int activeCampaignsCount;
+  final AppLocalizations l10n;
+
+  const _KpiCardsRow({
+    required this.isLoading,
+    required this.activeCampaignsCount,
+    required this.l10n,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        // Active campaigns card - no provider dependency
+        Expanded(
+          child: StatCard(
+            icon: Icons.trending_up_rounded,
+            value: isLoading ? '--' : '$activeCampaignsCount',
+            labelTop: l10n.campaigns,
+            labelBottom: l10n.active,
+            iconColor: AppColors.blueDark,
+            backgroundColor: AppColors.blueDark.withValues(alpha: .2),
+          ),
+        ),
+        const SizedBox(width: 5),
+        // Zones covered card - optimized with separate ConsumerWidget
+        const Expanded(child: _ZonesCoveredCard()),
+        const SizedBox(width: 5),
+        // Investment card - optimized with separate ConsumerWidget
+        const Expanded(child: _InvestmentCard()),
+      ],
+    );
+  }
+}
+
+/// Zones covered KPI card - optimized as separate ConsumerWidget
+class _ZonesCoveredCard extends ConsumerWidget {
+  const _ZonesCoveredCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final zonesCovered = ref.watch(
+      zonesCoveredThisWeekProvider.select((value) => value),
+    );
+    final l10n = AppLocalizations.of(context);
+
+    return StatCard(
+      icon: Icons.place_rounded,
+      value: '$zonesCovered',
+      labelTop: l10n.zonesCovered,
+      labelBottom: l10n.thisWeek,
+      iconColor: AppColors.green,
+      backgroundColor: AppColors.green.withValues(alpha: .2),
+    );
+  }
+}
+
+/// Investment KPI card - optimized as separate ConsumerWidget
+class _InvestmentCard extends ConsumerWidget {
+  const _InvestmentCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final kpiStatsAsync = ref.watch(kpiStatsProvider);
+    final l10n = AppLocalizations.of(context);
+
+    return kpiStatsAsync.when(
+      loading: () => StatCard(
+        icon: Icons.attach_money_rounded,
+        value: '--',
+        labelTop: l10n.investment,
+        labelBottom: l10n.accumulated,
+        iconColor: AppColors.secondary,
+        backgroundColor: AppColors.secondary.withValues(alpha: .2),
+      ),
+      error: (error, stack) => StatCard(
+        icon: Icons.attach_money_rounded,
+        value: '\$0',
+        labelTop: l10n.investment,
+        labelBottom: l10n.accumulated,
+        iconColor: AppColors.secondary,
+        backgroundColor: AppColors.secondary.withValues(alpha: .2),
+      ),
+      data: (kpiStats) => StatCard(
+        icon: Icons.attach_money_rounded,
+        value: '\$${kpiStats.totalInvestment.toStringAsFixed(0)}',
+        labelTop: l10n.investment,
+        labelBottom: l10n.accumulated,
+        iconColor: AppColors.secondary,
+        backgroundColor: AppColors.secondary.withValues(alpha: .2),
+      ),
     );
   }
 }

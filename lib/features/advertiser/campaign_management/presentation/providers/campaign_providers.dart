@@ -5,6 +5,7 @@
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/core/core.dart' as model;
+import 'package:promoruta/core/utils/logger.dart';
 import 'package:promoruta/shared/providers/infrastructure_providers.dart';
 import 'package:promoruta/features/advertiser/campaign_creation/data/datasources/remote/media_remote_data_source.dart';
 import 'package:promoruta/features/advertiser/campaign_creation/domain/repositories/media_repository.dart';
@@ -134,16 +135,18 @@ final campaignsProvider =
 });
 
 // Provider for active campaigns (status = in_progress)
+// Note: keepAlive prevents re-fetching when navigating away and back to this tab
 final activeCampaignsProvider =
-    FutureProvider.autoDispose<List<model.Campaign>>((ref) async {
+    FutureProvider<List<model.Campaign>>((ref) async {
   final getCampaignsUseCase = ref.watch(getCampaignsUseCaseProvider);
   return await getCampaignsUseCase(
       const GetCampaignsParams(status: 'in_progress'));
 });
 
 // Provider for promoter's active campaigns (accepted by current user, status = in_progress)
+// Note: keepAlive prevents re-fetching when navigating away and back to this tab
 final promoterActiveCampaignsProvider =
-    FutureProvider.autoDispose<List<model.Campaign>>((ref) async {
+    FutureProvider<List<model.Campaign>>((ref) async {
   final authState = ref.watch(authStateProvider);
   final getCampaignsUseCase = ref.watch(getCampaignsUseCaseProvider);
 
@@ -157,8 +160,9 @@ final promoterActiveCampaignsProvider =
 });
 
 // Provider for promoter's accepted campaigns (all statuses for history)
+// Note: keepAlive prevents re-fetching when navigating away and back to this tab
 final promoterAcceptedCampaignsProvider =
-    FutureProvider.autoDispose<List<model.Campaign>>((ref) async {
+    FutureProvider<List<model.Campaign>>((ref) async {
   final authState = ref.watch(authStateProvider);
   final getCampaignsUseCase = ref.watch(getCampaignsUseCaseProvider);
 
@@ -171,8 +175,9 @@ final promoterAcceptedCampaignsProvider =
 });
 
 // Provider for advertiser KPI stats from backend
+// Note: keepAlive prevents re-fetching when navigating away and back to dashboard
 final kpiStatsProvider =
-    FutureProvider.autoDispose<model.AdvertiserKpiStats>((ref) async {
+    FutureProvider<model.AdvertiserKpiStats>((ref) async {
   final repository = ref.watch(campaignRepositoryProvider);
   final result = await repository.getKpiStats();
   return result.fold(
@@ -225,7 +230,9 @@ final advertiserTabProvider =
   return AdvertiserTabNotifier();
 });
 
-// First campaign flag provider
+/// First campaign flag notifier
+/// Tracks whether the user has created their first campaign
+/// This flag is persisted in SharedPreferences and used to show onboarding UI
 class FirstCampaignNotifier extends StateNotifier<bool> {
   FirstCampaignNotifier() : super(false) {
     _loadFlag();
@@ -244,12 +251,6 @@ class FirstCampaignNotifier extends StateNotifier<bool> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('hasCreatedFirstCampaign', true);
   }
-
-  Future<void> syncWithCampaigns(int totalCampaignCount) async {
-    if (!state && totalCampaignCount > 0) {
-      await markFirstCampaignCreated();
-    }
-  }
 }
 
 final firstCampaignProvider =
@@ -259,12 +260,32 @@ final firstCampaignProvider =
 
 // ============ Notifiers ============
 
+/// CampaignsNotifier
+///
+/// Manages the list of campaigns with pagination support.
+/// This is the single source of truth for campaign data in the advertiser flow.
+///
+/// Refresh triggers:
+/// - Initial load: Called automatically in constructor via loadCampaigns()
+/// - User filter: Call loadCampaigns() with new filter parameters (this resets pagination)
+/// - Load more: Call loadMoreCampaigns() to append next page
+/// - After campaign creation/update/deletion: Automatically updates in-memory list
+///
+/// Data persistence: The notifier keeps the full list in memory and manages pagination state.
+/// When filters change, the pagination is reset (page=1) to avoid confusion.
 class CampaignsNotifier
     extends StateNotifier<AsyncValue<List<model.Campaign>>> {
   final GetCampaignsUseCase _getCampaignsUseCase;
   final CreateCampaignUseCase _createCampaignUseCase;
   final UpdateCampaignUseCase _updateCampaignUseCase;
   final DeleteCampaignUseCase _deleteCampaignUseCase;
+
+  int _currentPage = 1;
+  int _pageSize = 10;
+  bool _hasMoreCampaigns = true;
+  String? _currentStatus;
+  String? _currentZone;
+  String? _currentCreatedBy;
 
   CampaignsNotifier(
     this._getCampaignsUseCase,
@@ -281,6 +302,14 @@ class CampaignsNotifier
     String? createdBy,
     int? perPage,
   }) async {
+    // Reset pagination state when reloading
+    _currentPage = 1;
+    _hasMoreCampaigns = true;
+    _currentStatus = status;
+    _currentZone = zone;
+    _currentCreatedBy = createdBy;
+    if (perPage != null) _pageSize = perPage;
+
     state = const AsyncValue.loading();
     try {
       final campaigns = await _getCampaignsUseCase(
@@ -289,12 +318,18 @@ class CampaignsNotifier
                 status: status,
                 zone: zone,
                 createdBy: createdBy,
-                perPage: perPage,
+                page: _currentPage,
+                perPage: perPage ?? _pageSize,
               )
-            : null,
+            : GetCampaignsParams(
+                page: _currentPage,
+                perPage: _pageSize,
+              ),
       );
       if (mounted) {
         state = AsyncValue.data(campaigns);
+        // If we got fewer items than requested, we've reached the end
+        _hasMoreCampaigns = campaigns.length >= _pageSize;
       }
     } catch (e, stack) {
       if (mounted) {
@@ -302,6 +337,52 @@ class CampaignsNotifier
       }
     }
   }
+
+  /// Load the next page of campaigns and append to existing list
+  Future<void> loadMoreCampaigns() async {
+    if (!_hasMoreCampaigns) return;
+
+    try {
+      // Only proceed if we have data state
+      final currentList = state.maybeWhen(
+        data: (list) => list,
+        orElse: () => null,
+      );
+
+      if (currentList == null) return;
+
+      _currentPage++;
+
+      final nextCampaigns = await _getCampaignsUseCase(
+        GetCampaignsParams(
+          status: _currentStatus,
+          zone: _currentZone,
+          createdBy: _currentCreatedBy,
+          page: _currentPage,
+          perPage: _pageSize,
+        ),
+      );
+
+      if (mounted) {
+        if (nextCampaigns.isEmpty) {
+          _hasMoreCampaigns = false;
+        } else {
+          // Append new campaigns to existing list
+          state = AsyncValue.data([...currentList, ...nextCampaigns]);
+          _hasMoreCampaigns = nextCampaigns.length >= _pageSize;
+        }
+      }
+    } catch (e) {
+      // Log error but keep existing data
+      AppLogger.auth.e('Error loading more campaigns: $e');
+    }
+  }
+
+  /// Check if there are more campaigns to load
+  bool get hasMoreCampaigns => _hasMoreCampaigns;
+
+  /// Get current page number
+  int get currentPage => _currentPage;
 
   Future<void> createCampaign(model.Campaign campaign,
       {File? audioFile}) async {

@@ -18,6 +18,7 @@ class CampaignQueryParams {
   final double? lat;
   final double? lng;
   final double? radius;
+  final int? page;
   final int? perPage;
 
   const CampaignQueryParams({
@@ -33,6 +34,7 @@ class CampaignQueryParams {
     this.lat,
     this.lng,
     this.radius,
+    this.page,
     this.perPage,
   });
 
@@ -50,6 +52,7 @@ class CampaignQueryParams {
     double? lat,
     double? lng,
     double? radius,
+    int? page,
     int? perPage,
   }) {
     return CampaignQueryParams(
@@ -65,6 +68,7 @@ class CampaignQueryParams {
       lat: lat ?? this.lat,
       lng: lng ?? this.lng,
       radius: radius ?? this.radius,
+      page: page ?? this.page,
       perPage: perPage ?? this.perPage,
     );
   }

@@ -22,6 +22,7 @@ abstract class CampaignRepository {
     double? lat,
     double? lng,
     double? radius,
+    int? page,
     int? perPage,
   });
   Future<Result<Campaign, AppError>> getCampaign(String id);
@@ -41,6 +42,10 @@ abstract class CampaignLocalDataSource {
   Future<Campaign?> getCampaign(String id);
   Future<void> deleteCampaign(String id);
   Future<void> clearCampaigns();
+  Future<List<Campaign>> getCampaignsWithPagination({
+    int page = 1,
+    int pageSize = 10,
+  });
 }
 
 /// Abstract remote data source for campaigns
@@ -58,6 +63,7 @@ abstract class CampaignRemoteDataSource {
     double? lat,
     double? lng,
     double? radius,
+    int? page,
     int? perPage,
   });
   Future<Campaign> getCampaign(String id);

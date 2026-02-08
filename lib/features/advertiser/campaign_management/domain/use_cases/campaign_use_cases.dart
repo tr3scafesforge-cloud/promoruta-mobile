@@ -33,6 +33,7 @@ class GetCampaignsUseCase
       lat: params?.lat,
       lng: params?.lng,
       radius: params?.radius,
+      page: params?.page,
       perPage: params?.perPage,
     );
 

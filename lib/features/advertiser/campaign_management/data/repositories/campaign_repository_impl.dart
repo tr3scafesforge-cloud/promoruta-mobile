@@ -33,6 +33,7 @@ class CampaignRepositoryImpl implements CampaignRepository {
     double? lat,
     double? lng,
     double? radius,
+    int? page,
     int? perPage,
   }) async {
     final isConnected = await _connectivityService.isConnected;
@@ -52,6 +53,7 @@ class CampaignRepositoryImpl implements CampaignRepository {
           lat: lat,
           lng: lng,
           radius: radius,
+          page: page,
           perPage: perPage,
         );
 
