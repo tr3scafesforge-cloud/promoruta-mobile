@@ -86,7 +86,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 8;
+  int get schemaVersion => 9;
 
   @override
   MigrationStrategy get migration {
@@ -251,6 +251,41 @@ class AppDatabase extends _$AppDatabase {
               // Table doesn't exist, create it with new schema
               AppLogger.database.i('Creating campaigns_entity table with new schema');
               await m.createTable(campaignsEntity);
+            }
+          });
+        }
+
+        /// Handle migration from version 8 to 9 (add performance indexes)
+        if (from <= 8 && to >= 9) {
+          AppLogger.database.i('Migration 8→9: Adding performance indexes');
+          await transaction(() async {
+            try {
+              // Indexes for GpsPoints table
+              await customStatement(
+                'CREATE INDEX IF NOT EXISTS idx_gps_points_route_id ON gps_points(route_id)',
+              );
+              await customStatement(
+                'CREATE INDEX IF NOT EXISTS idx_gps_points_campaign_id ON gps_points(campaign_id)',
+              );
+              await customStatement(
+                'CREATE INDEX IF NOT EXISTS idx_gps_points_synced_at ON gps_points(synced_at)',
+              );
+              await customStatement(
+                'CREATE INDEX IF NOT EXISTS idx_gps_points_route_synced ON gps_points(route_id, synced_at)',
+              );
+
+              // Indexes for CampaignsEntity table
+              await customStatement(
+                'CREATE INDEX IF NOT EXISTS idx_campaigns_status ON campaigns_entity(status)',
+              );
+              await customStatement(
+                'CREATE INDEX IF NOT EXISTS idx_campaigns_created ON campaigns_entity(created_by_id)',
+              );
+
+              AppLogger.database.i('Performance indexes created successfully');
+            } catch (e) {
+              AppLogger.database.w('Error creating indexes: $e');
+              // Don't fail migration if indexes already exist
             }
           });
         }

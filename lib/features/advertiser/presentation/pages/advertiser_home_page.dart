@@ -44,27 +44,15 @@ class _HomeContent extends ConsumerStatefulWidget {
 
 class _HomeContentState extends ConsumerState<_HomeContent> {
   @override
-  void initState() {
-    super.initState();
-    // Sync flag with campaign data after the first frame
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _syncFirstCampaignFlag();
-    });
-  }
-
-  Future<void> _syncFirstCampaignFlag() async {
-    final allCampaignsAsync = ref.read(campaignsProvider);
-    allCampaignsAsync.whenData((campaigns) {
-      ref
-          .read(firstCampaignProvider.notifier)
-          .syncWithCampaigns(campaigns.length);
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final hasCreatedFirstCampaign = ref.watch(firstCampaignProvider);
-    final zonesCovered = ref.watch(zonesCoveredThisWeekProvider);
+    // Use select() to watch only the specific values we need
+    // This reduces rebuilds when other provider state changes
+    final hasCreatedFirstCampaign = ref.watch(
+      firstCampaignProvider.select((value) => value),
+    );
+    final zonesCovered = ref.watch(
+      zonesCoveredThisWeekProvider.select((value) => value),
+    );
     final kpiStatsAsync = ref.watch(kpiStatsProvider);
 
     return ListView(

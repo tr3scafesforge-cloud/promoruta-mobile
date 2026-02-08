@@ -15,6 +15,7 @@ import 'package:promoruta/shared/services/connectivity_service_impl.dart';
 import 'package:promoruta/features/auth/data/datasources/local/auth_local_data_source.dart';
 import 'package:promoruta/features/auth/domain/repositories/auth_repository.dart';
 import 'package:promoruta/shared/services/token_refresh_interceptor.dart';
+import 'package:promoruta/shared/models/gps_tracking_config.dart';
 
 // ============ Database ============
 
@@ -107,4 +108,18 @@ final dioProvider = Provider<Dio>((ref) {
   ));
 
   return dio;
+});
+
+// ============ GPS Tracking Config ============
+
+final gpsTrackingConfigProvider = Provider<GpsTrackingConfig>((ref) {
+  // Default configuration that can be overridden based on app state or preferences
+  // For high-frequency tracking (urban areas): lower batch size and distance filter
+  // For low-frequency tracking (highways): higher batch size and distance filter
+  return const GpsTrackingConfig(
+    batchSize: 20,
+    syncIntervalSeconds: 60,
+    distanceFilterMeters: 10,
+    minSpeedMetersSec: 0.1,
+  );
 });

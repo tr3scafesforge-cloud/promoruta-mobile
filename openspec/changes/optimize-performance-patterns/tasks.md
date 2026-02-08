@@ -2,10 +2,10 @@
 
 ## 1. Database Optimization
 
-- [ ] 1.1 Add indexes to `gps_points` table on `routeId`, `campaignId`, `syncedAt`, `synced`
-- [ ] 1.2 Add indexes to `campaigns` table on `status`, `createdAt`, `syncedAt`
-- [ ] 1.3 Run migration to apply indexes
-- [ ] 1.4 Test query performance with EXPLAIN QUERY PLAN on common queries
+- [x] 1.1 Add indexes to `gps_points` table on `routeId`, `campaignId`, `syncedAt`, `synced`
+- [x] 1.2 Add indexes to `campaigns` table on `status`, `createdAt`, `syncedAt`
+- [x] 1.3 Run migration to apply indexes
+- [x] 1.4 Test query performance with EXPLAIN QUERY PLAN on common queries
 
 ## 2. Campaign List Pagination
 
@@ -18,19 +18,19 @@
 
 ## 3. Provider Watching Optimization
 
-- [ ] 3.1 Refactor `advertiser_home_page.dart` to use selective watching with `select()`
+- [x] 3.1 Refactor `advertiser_home_page.dart` to use selective watching with `select()`
 - [ ] 3.2 Split multi-provider watches into focused sub-widgets (KPI card as separate ConsumerWidget)
-- [ ] 3.3 Remove double-loading: remove `addPostFrameCallback` refresh if provider already triggers
+- [x] 3.3 Remove double-loading: remove `addPostFrameCallback` refresh if provider already triggers
 - [ ] 3.4 Convert all provider-dependent widgets to ConsumerWidget pattern
 - [ ] 3.5 Add `keepAlive: true` to campaign list provider to avoid re-fetching
 
 ## 4. GPS Tracking Parametrization
 
-- [ ] 4.1 Create `GpsTrackingConfig` model with `batchSize`, `syncIntervalSeconds`, `distanceFilterMeters`
-- [ ] 4.2 Create GPS config provider in `infrastructure_providers.dart`
-- [ ] 4.3 Update `LocationService` to accept config via constructor injection
-- [ ] 4.4 Update `campaign_execution_notifier.dart` to use parametrized constants
-- [ ] 4.5 Add optional environment configuration for GPS settings
+- [x] 4.1 Create `GpsTrackingConfig` model with `batchSize`, `syncIntervalSeconds`, `distanceFilterMeters`
+- [x] 4.2 Create GPS config provider in `infrastructure_providers.dart`
+- [x] 4.3 Update `LocationService` to accept config via constructor injection
+- [x] 4.4 Update `campaign_execution_notifier.dart` to use parametrized constants
+- [x] 4.5 Add optional environment configuration for GPS settings
 
 ## 5. Widget Optimization
 
