@@ -3,12 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/features/promotor/campaign_browsing/presentation/pages/promoter_nearby_page.dart';
 import 'package:promoruta/features/promotor/presentation/pages/promoter_earnings_page.dart';
-import 'package:promoruta/presentation/promotor/pages/promoter_profile_page.dart';
-import 'package:promoruta/presentation/promotor/pages/promoter_home_page.dart';
 import 'package:promoruta/features/promotor/presentation/pages/promoter_active_page.dart';
 import 'package:promoruta/shared/widgets/promoter_app_bar.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
-import 'package:promoruta/app/routes/app_router.dart';
 
 class PromoterHomeScreen extends ConsumerStatefulWidget {
   const PromoterHomeScreen({super.key});
@@ -35,9 +32,7 @@ class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
         top: false,
         child: _getPage(_currentIndex),
       ),
-      floatingActionButton: _currentIndex == 4
-          ? null
-          : FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
               elevation: 0.0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50),
@@ -94,13 +89,6 @@ class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
               onTap: () => setState(() => _currentIndex = 3),
               splashColor: _accent.withValues(alpha: .10),
             ),
-            _BottomNavigationItem(
-              isSelected: _currentIndex == 4,
-              icon: Icons.person_rounded,
-              label: l10n.profile,
-              onTap: () => setState(() => _currentIndex = 4),
-              splashColor: _accent.withValues(alpha: .10),
-            ),
           ],
         ),
       ),
@@ -110,20 +98,15 @@ class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
   Widget _getPage(int index) {
     switch (index) {
       case 0:
-        return const PromoterHomePage();
+        return const PromoterNearbyPage();
       case 1:
         return const PromoterNearbyPage();
       case 2:
         return const PromoterActivePage();
       case 3:
         return const PromoterEarningsPage();
-      case 4:
-        return PromoterProfilePage(
-          onTapSecurity: () =>
-              const PromoterSecuritySettingsRoute().push(context),
-        );
       default:
-        return const PromoterHomePage();
+        return const PromoterNearbyPage();
     }
   }
 
@@ -151,8 +134,6 @@ class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
           title: l10n.earningsPageTitle,
           subtitle: l10n.earningsPageSubtitle,
         );
-      case 4: // Profile
-        return PromoterAppBar(title: l10n.profile);
       default:
         return PromoterAppBar(title: l10n.home);
     }

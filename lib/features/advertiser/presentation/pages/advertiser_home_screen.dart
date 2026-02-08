@@ -9,8 +9,6 @@ import 'package:promoruta/shared/widgets/bottom_navigation_item.dart';
 import '../widgets/advertiser_app_bar.dart';
 import 'package:promoruta/features/advertiser/campaign_management/presentation/pages/advertiser_campaigns_page.dart';
 import 'package:promoruta/features/advertiser/campaign_management/presentation/pages/advertiser_live_map_page.dart';
-import 'package:promoruta/presentation/advertiser/pages/advertiser_history_page.dart';
-import 'package:promoruta/presentation/advertiser/pages/advertiser_profile_page.dart';
 import 'package:promoruta/shared/providers/providers.dart';
 
 class AdvertiserHomeScreen extends ConsumerStatefulWidget {
@@ -46,10 +44,6 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
         return 1;
       case 'live':
         return 2;
-      case 'history':
-        return 3;
-      case 'profile':
-        return 4;
       default:
         return null;
     }
@@ -66,9 +60,7 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
         top: false,
         child: _getPage(currentIndex),
       ),
-      floatingActionButton: currentIndex == 4
-          ? null
-          : FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
               elevation: 0.0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50),
@@ -116,20 +108,6 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
               onTap: () => ref.read(advertiserTabProvider.notifier).setTab(2),
               splashColor: AppColors.secondary.withValues(alpha: .10),
             ),
-            BottomNavigationItem(
-              isSelected: currentIndex == 3,
-              icon: Icons.history_rounded,
-              label: l10n.history,
-              onTap: () => ref.read(advertiserTabProvider.notifier).setTab(3),
-              splashColor: AppColors.secondary.withValues(alpha: .10),
-            ),
-            BottomNavigationItem(
-              isSelected: currentIndex == 4,
-              icon: Icons.person_rounded,
-              label: l10n.profile,
-              onTap: () => ref.read(advertiserTabProvider.notifier).setTab(4),
-              splashColor: AppColors.secondary.withValues(alpha: .10),
-            ),
           ],
         ),
       ),
@@ -144,14 +122,6 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
         return const AdvertiserCampaignsPage();
       case 2:
         return const AdvertiserLiveMapPage();
-      case 3:
-        return const AdvertiserHistoryPage();
-      case 4:
-        return AdvertiserProfilePage(
-          onTapSecurity: () =>
-              const AdvertiserSecuritySettingsRoute().push(context),
-          onTapAccount: () => const UserProfileRoute().push(context),
-        );
       default:
         return const AdvertiserHomePage();
     }

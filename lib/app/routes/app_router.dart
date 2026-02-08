@@ -18,15 +18,13 @@ import 'package:promoruta/features/auth/presentation/pages/verify_reset_code_pag
 import 'package:promoruta/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:promoruta/features/auth/presentation/pages/verify_email_page.dart';
 import 'package:promoruta/features/auth/presentation/pages/two_factor_login_page.dart';
-import 'package:promoruta/presentation/home_screen.dart';
-import 'package:promoruta/presentation/advertiser/pages/advertiser_security_settings_page.dart';
-import 'package:promoruta/presentation/advertiser/pages/language_settings_page.dart';
+import 'package:promoruta/features/profile/presentation/pages/security_settings_page.dart';
+import 'package:promoruta/features/profile/presentation/pages/language_settings_page.dart';
 import 'package:promoruta/features/payments/presentation/pages/payment_methods_page.dart';
-import 'package:promoruta/presentation/advertiser/pages/change_password_page.dart';
-import 'package:promoruta/presentation/advertiser/pages/two_factor_auth_page.dart';
-import 'package:promoruta/presentation/advertiser/pages/two_factor_setup_page.dart';
-import 'package:promoruta/presentation/advertiser/pages/recovery_codes_page.dart';
-import 'package:promoruta/presentation/promotor/pages/promoter_security_settings_page.dart';
+import 'package:promoruta/features/profile/presentation/pages/change_password_page.dart';
+import 'package:promoruta/features/profile/presentation/pages/two_factor_auth_page.dart';
+import 'package:promoruta/features/profile/presentation/pages/two_factor_setup_page.dart';
+import 'package:promoruta/features/profile/presentation/pages/recovery_codes_page.dart';
 import 'package:promoruta/features/advertiser/campaign_creation/presentation/pages/create_campaign_page.dart';
 import 'package:promoruta/features/advertiser/presentation/pages/campaign_details_page.dart';
 import 'package:promoruta/shared/shared.dart';
@@ -68,7 +66,14 @@ class HomeRoute extends GoRouteData with _$HomeRoute {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const HomeScreen();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('PromoRuta'),
+      ),
+      body: const Center(
+        child: Text('Welcome to PromoRuta'),
+      ),
+    );
   }
 }
 
@@ -460,7 +465,7 @@ class PromoterSecuritySettingsRoute extends GoRouteData
   Page<void> buildPage(BuildContext context, GoRouterState state) {
     return CustomTransitionPage(
       key: state.pageKey,
-      child: const PromoterSecuritySettingsPage(),
+      child: const SecuritySettingsPage(),
       opaque: true,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return _slideTransition(

@@ -49,13 +49,6 @@ final geocodingServiceProvider = Provider<GeocodingService>((ref) {
   return GeocodingServiceImpl(logger: logger);
 });
 
-// ============ Connectivity Status ============
-
-final connectivityStatusProvider = StreamProvider<bool>((ref) {
-  final connectivityService = ref.watch(connectivityServiceProvider);
-  return connectivityService.connectivityStream;
-});
-
 // ============ Theme Providers ============
 
 final themeModeProvider =
