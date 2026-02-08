@@ -36,8 +36,8 @@
 
 - [x] 5.1 Add `const` constructors to KPI card widgets in advertiser_home_page.dart
 - [x] 5.2 Add `const` constructors to campaign list item widgets
-- [ ] 5.3 Add `const` constructors to location tracking UI widgets
-- [ ] 5.4 Audit all presentation widgets for unnecessary rebuilds (use DevTools profiler)
+- [x] 5.3 Add `const` constructors to location tracking UI widgets
+- [x] 5.4 Audit all presentation widgets for unnecessary rebuilds (use DevTools profiler)
 
 ## 6. State Synchronization Cleanup
 
