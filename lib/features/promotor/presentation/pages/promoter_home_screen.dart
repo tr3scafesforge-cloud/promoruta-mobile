@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:promoruta/app/routes/app_router.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/features/promotor/campaign_browsing/presentation/pages/promoter_nearby_page.dart';
 import 'package:promoruta/features/promotor/presentation/pages/promoter_earnings_page.dart';
 import 'package:promoruta/features/promotor/presentation/pages/promoter_active_page.dart';
+import 'package:promoruta/features/promotor/presentation/pages/promoter_profile_page.dart';
 import 'package:promoruta/shared/widgets/promoter_app_bar.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 
@@ -32,7 +34,9 @@ class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
         top: false,
         child: _getPage(_currentIndex),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: _currentIndex == 4
+          ? null
+          : FloatingActionButton(
               elevation: 0.0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50),
@@ -89,6 +93,13 @@ class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
               onTap: () => setState(() => _currentIndex = 3),
               splashColor: _accent.withValues(alpha: .10),
             ),
+            _BottomNavigationItem(
+              isSelected: _currentIndex == 4,
+              icon: Icons.person_rounded,
+              label: l10n.profile,
+              onTap: () => setState(() => _currentIndex = 4),
+              splashColor: _accent.withValues(alpha: .10),
+            ),
           ],
         ),
       ),
@@ -105,6 +116,12 @@ class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
         return const PromoterActivePage();
       case 3:
         return const PromoterEarningsPage();
+      case 4:
+        return PromoterProfilePage(
+          onTapSecurity: () =>
+              const PromoterSecuritySettingsRoute().push(context),
+          onTapAccount: () => const UserProfileRoute().push(context),
+        );
       default:
         return const PromoterNearbyPage();
     }
@@ -134,6 +151,8 @@ class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
           title: l10n.earningsPageTitle,
           subtitle: l10n.earningsPageSubtitle,
         );
+      case 4: // Profile
+        return PromoterAppBar(title: l10n.profile);
       default:
         return PromoterAppBar(title: l10n.home);
     }
