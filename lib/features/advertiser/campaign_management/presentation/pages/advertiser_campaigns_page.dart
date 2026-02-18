@@ -79,7 +79,7 @@ class _AdvertiserCampaignsPageState
     final backendCampaigns = campaignsAsync.valueOrNull ?? [];
     final filtered =
         isLoading ? <ui.Campaign>[] : _getFilteredCampaigns(backendCampaigns);
-
+    final l10n = AppLocalizations.of(context);
     return SafeArea(
       child: ListView(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
@@ -107,10 +107,10 @@ class _AdvertiserCampaignsPageState
               opacity: isLoading ? 0.5 : 1.0,
               child: MultiSwitch(
                 options: [
-                  AppLocalizations.of(context).campaignFilterAll,
-                  AppLocalizations.of(context).campaignFilterActive,
-                  AppLocalizations.of(context).campaignFilterPending,
-                  AppLocalizations.of(context).campaignFilterCompleted,
+                  l10n.campaignFilterAll,
+                  l10n.campaignFilterActive,
+                  l10n.campaignFilterPending,
+                  l10n.campaignFilterCompleted,
                 ],
                 initialIndex: _statuses.indexOf(_selected),
                 onChanged: (index) =>
@@ -147,7 +147,7 @@ class _AdvertiserCampaignsPageState
                   const Icon(Icons.error_outline, size: 48, color: Colors.red),
                   const SizedBox(height: 16),
                   Text(
-                    'Error loading campaigns',
+                    l10n.errorLoadingCampaigns,
                     style: theme.textTheme.titleMedium,
                   ),
                   const SizedBox(height: 8),
@@ -160,7 +160,7 @@ class _AdvertiserCampaignsPageState
                   ElevatedButton(
                     onPressed: () =>
                         ref.read(campaignsProvider.notifier).loadCampaigns(),
-                    child: const Text('Retry'),
+                    child: Text(l10n.retry),
                   ),
                 ],
               ),
@@ -242,6 +242,7 @@ class _ActiveFiltersBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final chips = <Widget>[];
 
     if (maxDistanceKm != null) {
@@ -261,7 +262,7 @@ class _ActiveFiltersBar extends StatelessWidget {
         const Spacer(),
         TextButton(
           onPressed: onClearAll,
-          child: const Text('Limpiar'),
+          child: Text(l10n.clear),
         ),
       ],
     );
@@ -377,14 +378,14 @@ class _CampaignCard extends StatelessWidget {
                 children: [
                   _StatTile(
                       value: '${campaign.distanceKm.toStringAsFixed(1)}km',
-                      label: 'Ruta'),
+                      label: l10n.route),
                   _StatTile(
-                      value: '${campaign.completionPct}%', label: 'Completado'),
+                      value: '${campaign.completionPct}%', label: l10n.completed),
                   // _StatTile(value: '${campaign.audioSeconds}s', label: 'Audio'),
                   _StatTile(
                       value:
                           '\$${campaign.budget?.toStringAsFixed(2) ?? '0.00'}',
-                      label: 'Presupuesto'),
+                      label: l10n.budget),
                 ],
               ),
             ],
@@ -563,6 +564,7 @@ class _SliderTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 10, 12, 6),
       decoration: BoxDecoration(
@@ -579,7 +581,7 @@ class _SliderTile extends StatelessWidget {
                   child: Text(title,
                       style: const TextStyle(fontWeight: FontWeight.w600))),
               if (value != null)
-                TextButton(onPressed: onClear, child: const Text('Limpiar')),
+                TextButton(onPressed: onClear, child: Text(l10n.clear)),
             ],
           ),
           if (value == null)
