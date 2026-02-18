@@ -752,17 +752,6 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
       return;
     }
 
-    // Validate audio file is selected
-    if (_audioFile == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.pleaseSelectAudioFile),
-          backgroundColor: AppColors.error,
-        ),
-      );
-      return;
-    }
-
     // Validate route waypoints are selected
     if (_routeWaypoints.length < 2) {
       ScaffoldMessenger.of(context).showSnackBar(
