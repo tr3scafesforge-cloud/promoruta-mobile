@@ -72,7 +72,39 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw Exception('Login failed: ${response.statusMessage}');
       }
     } on DioException catch (e) {
-      throw Exception('Network error: ${e.message}');
+      AppLogger.auth.e(
+          'Login failed: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}');
+
+      if (e.response != null) {
+        final statusCode = e.response!.statusCode;
+        final responseData = e.response!.data;
+
+        switch (statusCode) {
+          case 302:
+            // Server redirects typically indicate invalid credentials
+            throw Exception('invalidCredentials');
+          case 401:
+            throw Exception('invalidCredentials');
+          case 422:
+            if (responseData is Map && responseData.containsKey('errors')) {
+              final errors = responseData['errors'] as Map?;
+              if (errors != null && errors.isNotEmpty) {
+                final firstError = errors.values.first;
+                if (firstError is List && firstError.isNotEmpty) {
+                  throw Exception(firstError.first.toString());
+                }
+              }
+            }
+            throw Exception('invalidCredentials');
+          case 429:
+            throw Exception('tooManyLoginAttempts');
+          default:
+            throw Exception('loginFailed');
+        }
+      } else {
+        throw Exception(
+            'Network error. Please check your connection and try again.');
+      }
     }
   }
 

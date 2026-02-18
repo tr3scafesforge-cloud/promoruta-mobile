@@ -31,6 +31,24 @@ class _LoginState extends ConsumerState<Login> {
     super.dispose();
   }
 
+  String _getLocalizedLoginError(BuildContext context, Object error) {
+    final errorString = error.toString();
+    final l10n = AppLocalizations.of(context);
+
+    if (errorString.contains('invalidCredentials')) {
+      return l10n.invalidCredentials;
+    } else if (errorString.contains('tooManyLoginAttempts')) {
+      return l10n.tooManyLoginAttempts;
+    } else if (errorString.contains('loginFailed')) {
+      return l10n.loginFailed;
+    } else if (errorString.contains('Network error')) {
+      return l10n.loginFailed;
+    }
+
+    // Fallback to the generic login failed message
+    return l10n.loginFailed;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -360,12 +378,13 @@ class _LoginState extends ConsumerState<Login> {
                                     ).push(context);
                                   }
                                 } catch (e) {
-                                  // Show error message
+                                  // Show localized error message
                                   if (context.mounted) {
+                                    final errorMessage =
+                                        _getLocalizedLoginError(context, e);
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                        content: Text(
-                                            'Login failed: ${e.toString()}'),
+                                        content: Text(errorMessage),
                                         backgroundColor: Colors.red,
                                       ),
                                     );

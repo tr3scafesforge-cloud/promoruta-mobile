@@ -1911,5 +1911,17 @@
   "noCurrentLiveCampaigns": "No hay campañas en vivo actualmente",
   "@noCurrentLiveCampaigns": {
     "description": "Message shown when there are no live campaigns to display"
+  },
+  "invalidCredentials": "Correo o contraseña incorrectos. Por favor verifica tus datos e intenta de nuevo.",
+  "@invalidCredentials": {
+    "description": "Error message when login credentials are incorrect"
+  },
+  "tooManyLoginAttempts": "Demasiados intentos de inicio de sesión. Por favor intenta más tarde.",
+  "@tooManyLoginAttempts": {
+    "description": "Error message when user has exceeded login attempt limit"
+  },
+  "loginFailed": "Error al iniciar sesión. Por favor intenta más tarde.",
+  "@loginFailed": {
+    "description": "Generic error message when login fails"
   }
 }

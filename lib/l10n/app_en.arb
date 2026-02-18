@@ -2024,5 +2024,17 @@
   "noCurrentLiveCampaigns": "There are no current live campaigns",
   "@noCurrentLiveCampaigns": {
     "description": "Message shown when there are no live campaigns to display"
+  },
+  "invalidCredentials": "Invalid email or password. Please check your data and try again.",
+  "@invalidCredentials": {
+    "description": "Error message when login credentials are incorrect"
+  },
+  "tooManyLoginAttempts": "Too many login attempts. Please try again later.",
+  "@tooManyLoginAttempts": {
+    "description": "Error message when user has exceeded login attempt limit"
+  },
+  "loginFailed": "Login failed. Please try again later.",
+  "@loginFailed": {
+    "description": "Generic error message when login fails"
   }
 }

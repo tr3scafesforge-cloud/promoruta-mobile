@@ -1519,4 +1519,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noCurrentLiveCampaigns => 'There are no current live campaigns';
+
+  @override
+  String get invalidCredentials =>
+      'Invalid email or password. Please check your data and try again.';
+
+  @override
+  String get tooManyLoginAttempts =>
+      'Too many login attempts. Please try again later.';
+
+  @override
+  String get loginFailed => 'Login failed. Please try again later.';
 }

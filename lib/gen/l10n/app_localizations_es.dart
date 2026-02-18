@@ -1531,4 +1531,16 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get noCurrentLiveCampaigns => 'No hay campañas en vivo actualmente';
+
+  @override
+  String get invalidCredentials =>
+      'Correo o contraseña incorrectos. Por favor verifica tus datos e intenta de nuevo.';
+
+  @override
+  String get tooManyLoginAttempts =>
+      'Demasiados intentos de inicio de sesión. Por favor intenta más tarde.';
+
+  @override
+  String get loginFailed =>
+      'Error al iniciar sesión. Por favor intenta más tarde.';
 }

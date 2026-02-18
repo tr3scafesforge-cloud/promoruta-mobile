@@ -2865,6 +2865,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'There are no current live campaigns'**
   String get noCurrentLiveCampaigns;
+
+  /// Error message when login credentials are incorrect
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email or password. Please check your data and try again.'**
+  String get invalidCredentials;
+
+  /// Error message when user has exceeded login attempt limit
+  ///
+  /// In en, this message translates to:
+  /// **'Too many login attempts. Please try again later.'**
+  String get tooManyLoginAttempts;
+
+  /// Generic error message when login fails
+  ///
+  /// In en, this message translates to:
+  /// **'Login failed. Please try again later.'**
+  String get loginFailed;
 }
 
 class _AppLocalizationsDelegate
