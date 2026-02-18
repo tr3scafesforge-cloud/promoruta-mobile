@@ -23,6 +23,7 @@ class _LoginState extends ConsumerState<Login> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -320,78 +321,97 @@ class _LoginState extends ConsumerState<Login> {
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton.icon(
-                            icon: Icon(
-                              Icons.login,
-                              size: 24,
-                              color: Theme.of(context).colorScheme.onPrimary,
-                            ),
+                            icon: _isLoading
+                                ? const SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2.5,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : Icon(
+                                    Icons.login,
+                                    size: 24,
+                                    color: Theme.of(context).colorScheme.onPrimary,
+                                  ),
                             iconAlignment: IconAlignment.start,
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                try {
-                                  // Use the auth notifier to login, which updates the auth state
-                                  await ref
-                                      .read(authStateProvider.notifier)
-                                      .login(
-                                        _emailController.text.trim(),
-                                        _passwordController.text,
-                                      );
+                            onPressed: _isLoading
+                                ? null
+                                : () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      setState(() {
+                                        _isLoading = true;
+                                      });
+                                      try {
+                                        await Future.wait([
+                                          ref
+                                              .read(authStateProvider.notifier)
+                                              .login(
+                                                _emailController.text.trim(),
+                                                _passwordController.text,
+                                              ),
+                                          Future.delayed(const Duration(milliseconds: 500)),
+                                        ]);
 
-                                  // Navigate based on the updated auth state
-                                  if (context.mounted) {
-                                    final authState =
-                                        ref.read(authStateProvider);
-                                    authState.maybeWhen(
-                                      data: (user) {
-                                        if (user != null) {
-                                          if (user.role == UserRole.promoter) {
-                                            const PromoterHomeRoute()
-                                                .go(context);
-                                          } else if (user.role ==
-                                              UserRole.advertiser) {
-                                            const AdvertiserHomeRoute()
-                                                .go(context);
-                                          } else {
-                                            const HomeRoute().go(context);
-                                          }
+                                        if (context.mounted) {
+                                          final authState =
+                                              ref.read(authStateProvider);
+                                          authState.maybeWhen(
+                                            data: (user) {
+                                              if (user != null) {
+                                                if (user.role == UserRole.promoter) {
+                                                  const PromoterHomeRoute()
+                                                      .go(context);
+                                                } else if (user.role ==
+                                                    UserRole.advertiser) {
+                                                  const AdvertiserHomeRoute()
+                                                      .go(context);
+                                                } else {
+                                                  const HomeRoute().go(context);
+                                                }
+                                              }
+                                            },
+                                            orElse: () {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(
+                                                  content: Text(
+                                                      'Login failed: Unable to determine user role'),
+                                                  backgroundColor: Colors.red,
+                                                ),
+                                              );
+                                            },
+                                          );
                                         }
-                                      },
-                                      orElse: () {
-                                        // If login failed or state not updated, show error
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                                'Login failed: Unable to determine user role'),
-                                            backgroundColor: Colors.red,
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  }
-                                } on TwoFactorRequiredException catch (e) {
-                                  // 2FA is required - redirect to 2FA verification page
-                                  if (context.mounted) {
-                                    TwoFactorLoginRoute(
-                                      email: e.email,
-                                      password: _passwordController.text,
-                                    ).push(context);
-                                  }
-                                } catch (e) {
-                                  // Show localized error message
-                                  if (context.mounted) {
-                                    final errorMessage =
-                                        _getLocalizedLoginError(context, e);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(errorMessage),
-                                        backgroundColor: Colors.red,
-                                      ),
-                                    );
-                                  }
-                                }
-                              }
-                            },
+                                      } on TwoFactorRequiredException catch (e) {
+                                        if (context.mounted) {
+                                          TwoFactorLoginRoute(
+                                            email: e.email,
+                                            password: _passwordController.text,
+                                          ).push(context);
+                                        }
+                                      } catch (e) {
+                                        if (context.mounted) {
+                                          final errorMessage =
+                                              _getLocalizedLoginError(context, e);
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(errorMessage),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                        }
+                                      } finally {
+                                        if (mounted) {
+                                          setState(() {
+                                            _isLoading = false;
+                                          });
+                                        }
+                                      }
+                                    }
+                                  },
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
                                   Theme.of(context).colorScheme.primary,
