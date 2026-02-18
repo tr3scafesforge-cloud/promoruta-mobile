@@ -380,7 +380,7 @@ class _CampaignCard extends StatelessWidget {
                       label: 'Ruta'),
                   _StatTile(
                       value: '${campaign.completionPct}%', label: 'Completado'),
-                  _StatTile(value: '${campaign.audioSeconds}s', label: 'Audio'),
+                  // _StatTile(value: '${campaign.audioSeconds}s', label: 'Audio'),
                   _StatTile(
                       value:
                           '\$${campaign.budget?.toStringAsFixed(2) ?? '0.00'}',
