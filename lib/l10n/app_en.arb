@@ -2036,5 +2036,9 @@
   "loginFailed": "Login failed. Please try again later.",
   "@loginFailed": {
     "description": "Generic error message when login fails"
+  },
+  "noAccountFoundWithEmail": "No account found with this email.",
+  "@noAccountFoundWithEmail": {
+    "description": "Error message when email does not exist in forgot password"
   }
 }

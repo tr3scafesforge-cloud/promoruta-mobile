@@ -28,6 +28,14 @@ class _VerifyResetCodePageState extends ConsumerState<VerifyResetCodePage> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
 
+  String _friendlyErrorMessage(Object error, AppLocalizations l10n) {
+    final message = error.toString().replaceAll('Exception: ', '');
+    if (message.contains('noAccountFoundWithEmail')) {
+      return l10n.noAccountFoundWithEmail;
+    }
+    return message;
+  }
+
   @override
   void dispose() {
     _codeController.dispose();
@@ -68,7 +76,9 @@ class _VerifyResetCodePageState extends ConsumerState<VerifyResetCodePage> {
       // Show error message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(e.toString().replaceAll('Exception: ', '')),
+          content: Text(
+            _friendlyErrorMessage(e, AppLocalizations.of(context)),
+          ),
           backgroundColor: Colors.red,
           duration: const Duration(seconds: 4),
         ),
@@ -101,7 +111,9 @@ class _VerifyResetCodePageState extends ConsumerState<VerifyResetCodePage> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(e.toString().replaceAll('Exception: ', '')),
+          content: Text(
+            _friendlyErrorMessage(e, AppLocalizations.of(context)),
+          ),
           backgroundColor: Colors.orange,
         ),
       );

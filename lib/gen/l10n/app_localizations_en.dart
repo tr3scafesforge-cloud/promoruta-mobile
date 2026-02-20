@@ -1530,4 +1530,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loginFailed => 'Login failed. Please try again later.';
+
+  @override
+  String get noAccountFoundWithEmail => 'No account found with this email.';
 }

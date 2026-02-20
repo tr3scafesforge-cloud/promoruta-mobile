@@ -16,6 +16,14 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
   final _emailController = TextEditingController();
   bool _isLoading = false;
 
+  String _friendlyErrorMessage(Object error, AppLocalizations l10n) {
+    final message = error.toString().replaceAll('Exception: ', '');
+    if (message.contains('noAccountFoundWithEmail')) {
+      return l10n.noAccountFoundWithEmail;
+    }
+    return message;
+  }
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -51,7 +59,9 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
       // Show error message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(e.toString().replaceAll('Exception: ', '')),
+          content: Text(
+            _friendlyErrorMessage(e, AppLocalizations.of(context)),
+          ),
           backgroundColor: Colors.red,
         ),
       );

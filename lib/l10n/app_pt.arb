@@ -1911,5 +1911,9 @@
   "loginFailed": "Falha no login. Por favor tente mais tarde.",
   "@loginFailed": {
     "description": "Generic error message when login fails"
+  },
+  "noAccountFoundWithEmail": "Nenhuma conta encontrada com este e-mail.",
+  "@noAccountFoundWithEmail": {
+    "description": "Error message when email does not exist in forgot password"
   }
 }

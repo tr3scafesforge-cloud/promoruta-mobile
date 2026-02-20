@@ -1537,4 +1537,8 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get loginFailed => 'Falha no login. Por favor tente mais tarde.';
+
+  @override
+  String get noAccountFoundWithEmail =>
+      'Nenhuma conta encontrada com este e-mail.';
 }

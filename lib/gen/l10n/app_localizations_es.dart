@@ -1543,4 +1543,8 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get loginFailed =>
       'Error al iniciar sesión. Por favor intenta más tarde.';
+
+  @override
+  String get noAccountFoundWithEmail =>
+      'No se encontró una cuenta con este correo.';
 }

@@ -2883,6 +2883,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Login failed. Please try again later.'**
   String get loginFailed;
+
+  /// Error message when email does not exist in forgot password
+  ///
+  /// In en, this message translates to:
+  /// **'No account found with this email.'**
+  String get noAccountFoundWithEmail;
 }
 
 class _AppLocalizationsDelegate

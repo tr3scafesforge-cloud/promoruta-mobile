@@ -15,6 +15,25 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required AuthLocalDataSource localDataSource,
   }) : _localDataSource = localDataSource;
 
+  String? _extractFirstErrorMessage(dynamic responseData) {
+    if (responseData is Map && responseData.containsKey('errors')) {
+      final errors = responseData['errors'] as Map?;
+      if (errors != null && errors.isNotEmpty) {
+        final firstError = errors.values.first;
+        if (firstError is List && firstError.isNotEmpty) {
+          return firstError.first.toString();
+        }
+      }
+    }
+    return null;
+  }
+
+  bool _isNoAccountFoundMessage(String? message) {
+    if (message == null) return false;
+    return message.trim().toLowerCase() ==
+        'no account found with this email.'.toLowerCase();
+  }
+
   @override
   Future<User> login(String email, String password) async {
     try {
@@ -246,12 +265,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         return data['message'] ?? 'Password reset code sent to your email';
       } else if (response.statusCode == 422) {
         final data = response.data;
-        final errors = data['errors'] as Map?;
-        if (errors != null && errors.isNotEmpty) {
-          final firstError = errors.values.first;
-          if (firstError is List && firstError.isNotEmpty) {
-            throw Exception(firstError.first.toString());
-          }
+        final errorMessage = _extractFirstErrorMessage(data);
+        if (_isNoAccountFoundMessage(errorMessage)) {
+          throw Exception('noAccountFoundWithEmail');
+        }
+        if (errorMessage != null && errorMessage.isNotEmpty) {
+          throw Exception(errorMessage);
         }
         throw Exception(data['message'] ?? 'Validation error');
       } else if (response.statusCode == 429) {
@@ -269,14 +288,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
         switch (statusCode) {
           case 422:
-            if (responseData is Map && responseData.containsKey('errors')) {
-              final errors = responseData['errors'] as Map?;
-              if (errors != null && errors.isNotEmpty) {
-                final firstError = errors.values.first;
-                if (firstError is List && firstError.isNotEmpty) {
-                  throw Exception(firstError.first.toString());
-                }
-              }
+            final errorMessage = _extractFirstErrorMessage(responseData);
+            if (_isNoAccountFoundMessage(errorMessage)) {
+              throw Exception('noAccountFoundWithEmail');
+            }
+            if (errorMessage != null && errorMessage.isNotEmpty) {
+              throw Exception(errorMessage);
             }
             throw Exception('Invalid email format. Please check your input.');
           case 429:
