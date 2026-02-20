@@ -834,7 +834,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }) async {
     try {
       final response = await dio.post(
-        '/auth/email/verify',
+        '/auth/verify-email-code',
         data: {
           'email': email,
           'code': code,
@@ -893,7 +893,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<String> resendVerificationCode(String email) async {
     try {
       final response = await dio.post(
-        '/auth/email/resend',
+        '/auth/email/verification-notification',
         data: {'email': email},
         options: Options(
           headers: {
