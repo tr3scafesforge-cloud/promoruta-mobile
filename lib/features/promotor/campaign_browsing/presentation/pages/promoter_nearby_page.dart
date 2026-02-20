@@ -537,11 +537,15 @@ class _CampaignCard extends ConsumerWidget {
               children: [
                 Icon(Icons.location_on, size: 16, color: Colors.grey[600]),
                 const SizedBox(width: 2),
-                Text(
-                  campaign.zone,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Colors.grey[700],
+                Expanded(
+                  child: Text(
+                    campaign.zone,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.grey[700],
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
