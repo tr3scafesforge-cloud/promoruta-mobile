@@ -264,11 +264,13 @@ class _PromoterNearbyPageState extends ConsumerState<PromoterNearbyPage> {
                   children: [
                     Icon(Icons.location_on, color: Colors.green[700], size: 16),
                     const SizedBox(width: 8),
-                    Text(
-                      l10n.showingCampaignsWithinRadius,
-                      style: TextStyle(
-                        color: Colors.green[700],
-                        fontSize: 13,
+                    Expanded(
+                      child: Text(
+                        l10n.showingCampaignsWithinRadius,
+                        style: TextStyle(
+                          color: Colors.green[700],
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ],
