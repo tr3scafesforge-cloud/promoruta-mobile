@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:promoruta/app/routes/app_router.dart';
+import 'package:promoruta/core/core.dart' as model;
+import 'package:promoruta/features/auth/presentation/providers/auth_providers.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 
-class SecuritySettingsPage extends StatelessWidget {
+class SecuritySettingsPage extends ConsumerWidget {
   const SecuritySettingsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     const bg = Color(0xFFF3F5F7);
     final l10n = AppLocalizations.of(context);
+    final user = ref.watch(authStateProvider).maybeWhen(
+          data: (user) => user,
+          orElse: () => null,
+        );
+    final isPromoter = user?.role == model.UserRole.promoter;
 
     return Scaffold(
       backgroundColor: bg,
@@ -44,7 +52,9 @@ class SecuritySettingsPage extends StatelessWidget {
                 _SettingsTile(
                   icon: Icons.lock_outline,
                   title: l10n.twoFactorAuth,
-                  onTap: () => const TwoFactorAuthRoute().push(context),
+                  onTap: () => isPromoter
+                      ? const PromoterTwoFactorAuthRoute().push(context)
+                      : const TwoFactorAuthRoute().push(context),
                 ),
               ],
             ),
