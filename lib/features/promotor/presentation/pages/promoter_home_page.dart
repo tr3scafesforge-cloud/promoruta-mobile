@@ -34,7 +34,7 @@ class _PromoterHomeContent extends StatelessWidget {
             SizedBox(width: 12),
             Expanded(
               child: _KpiCard(
-                icon: Icons.trending_up_rounded,
+                icon: Icons.attach_money_rounded,
                 value: '\$320',
                 top: 'Este',
                 bottom: 'mes',
@@ -260,6 +260,7 @@ class _NearbyCampaignCard extends StatelessWidget {
                     text: l10n.acceptPromotion,
                     backgroundColor: _accent,
                     textColor: AppColors.primary,
+                    shrinkToFit: true,
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

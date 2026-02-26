@@ -7,6 +7,7 @@ class CustomButton extends StatelessWidget {
   final Color textColor;
   final bool isOutlined;
   final Color? outlineColor;
+  final bool shrinkToFit;
 
   const CustomButton({
     super.key,
@@ -16,6 +17,7 @@ class CustomButton extends StatelessWidget {
     this.textColor = Colors.white,
     this.isOutlined = false,
     this.outlineColor,
+    this.shrinkToFit = false,
   });
 
   static CustomButton outlined({
@@ -52,15 +54,31 @@ class CustomButton extends StatelessWidget {
                 : null,
             borderRadius: BorderRadius.circular(10),
           ),
-          child: Text(
-            text,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: textColor,
-            ),
-            textAlign: TextAlign.center,
-          ),
+          child: shrinkToFit
+              ? FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.center,
+                  child: Text(
+                    text,
+                    maxLines: 1,
+                    softWrap: false,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: textColor,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                )
+              : Text(
+                  text,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: textColor,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
         ),
       ),
     );
