@@ -6,6 +6,7 @@ import 'package:promoruta/core/models/campaign.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
 import 'package:promoruta/features/advertiser/campaign_management/domain/use_cases/campaign_use_cases.dart';
+import 'package:promoruta/features/advertiser/presentation/widgets/advertiser_app_bar.dart';
 
 class CampaignDetailsPage extends ConsumerStatefulWidget {
   final String campaignId;
@@ -127,10 +128,8 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
     final campaignAsync = ref.watch(campaignByIdProvider(widget.campaignId));
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.campaignDetails),
-        backgroundColor: AppColors.blueDark,
-        foregroundColor: Colors.white,
+      appBar: AdvertiserAppBar(
+        title: l10n.campaignDetails,
       ),
       body: campaignAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
