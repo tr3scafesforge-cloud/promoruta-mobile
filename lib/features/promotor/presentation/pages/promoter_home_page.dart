@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:promoruta/core/constants/colors.dart';
+import 'package:promoruta/gen/l10n/app_localizations.dart';
+import 'package:promoruta/shared/widgets/custom_button.dart';
 
 class PromoterHomePage extends StatelessWidget {
   const PromoterHomePage({super.key});
@@ -163,6 +165,8 @@ class _NearbyCampaignCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Card(
       elevation: 0,
       color: Colors.white,
@@ -237,38 +241,31 @@ class _NearbyCampaignCard extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.grey[800],
-                      side: BorderSide(color: Colors.grey[300]!),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
+                  child: CustomButton(
+                    text: l10n.preview,
+                    backgroundColor: Colors.white,
+                    textColor: Colors.grey[800]!,
+                    isOutlined: true,
+                    outlineColor: Colors.grey[300]!,
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Preview (WIP)')),
+                        SnackBar(content: Text('${l10n.preview} (WIP)')),
                       );
                     },
-                    child: const Text('Preview'),
                   ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _accent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
+                  child: CustomButton(
+                    text: l10n.acceptPromotion,
+                    backgroundColor: _accent,
+                    textColor: AppColors.primary,
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('Aceptar promoción (WIP)')),
+                        SnackBar(
+                            content: Text('${l10n.acceptPromotion} (WIP)')),
                       );
                     },
-                    child: const Text('Aceptar promoción'),
                   ),
                 ),
               ],
