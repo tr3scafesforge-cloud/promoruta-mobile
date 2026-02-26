@@ -333,23 +333,14 @@ class _ActiveCampaignCard extends StatelessWidget {
             ),
             const SizedBox(height: 14),
             // CTA
-            SizedBox(
-              height: 44,
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.deepOrange,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Continuar ruta (WIP)')),
-                  );
-                },
-                child: const Text('Continuar Ruta'),
-              ),
+            CustomButton(
+              text: "Continuar Ruta",
+              backgroundColor: AppColors.deepOrange,
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Continuar ruta (WIP)')),
+                );
+              },
             ),
           ],
         ),
