@@ -116,13 +116,6 @@ class _PromoterEarningsPageState extends State<PromoterEarningsPage> {
                         onTap: () => setState(() => _selectedSegment = 1),
                       ),
                     ),
-                    Expanded(
-                      child: _SegmentButton(
-                        label: l10n.payments,
-                        isSelected: _selectedSegment == 2,
-                        onTap: () => setState(() => _selectedSegment = 2),
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -131,7 +124,6 @@ class _PromoterEarningsPageState extends State<PromoterEarningsPage> {
               // Content based on selected segment
               if (_selectedSegment == 0) _HistoricoView(l10n: l10n),
               if (_selectedSegment == 1) _EstadisticasView(l10n: l10n),
-              if (_selectedSegment == 2) _PagosView(l10n: l10n),
             ],
           ),
         ),
@@ -711,187 +703,6 @@ class _EarningBar extends StatelessWidget {
   }
 }
 
-class _PagosView extends StatelessWidget {
-  final AppLocalizations l10n;
-
-  _PagosView({required this.l10n});
-
-  final List<PaymentMethod> paymentMethods = [
-    PaymentMethod(
-      type: 'Transferencia Bancaria',
-      identifier: '****1234 - Santander',
-      icon: Icons.account_balance,
-      isPrimary: true,
-    ),
-    PaymentMethod(
-      type: 'Paypal',
-      identifier: 'john.doe@gmail.com',
-      icon: Icons.payment,
-      isPrimary: false,
-    ),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: AppColors.grayLightStroke,
-          width: 1,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                child: Text(
-                  l10n.paymentMethods,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              Flexible(
-                child: TextButton.icon(
-                  onPressed: () {
-                    // Handle add payment method
-                  },
-                  icon: const Icon(Icons.add, size: 18),
-                  label: Text(
-                    l10n.addPaymentMethod,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  style: TextButton.styleFrom(
-                    foregroundColor: AppColors.secondary,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          ...paymentMethods.map((method) => Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: _PaymentMethodItem(paymentMethod: method, l10n: l10n),
-              )),
-        ],
-      ),
-    );
-  }
-}
-
-class _PaymentMethodItem extends StatelessWidget {
-  final PaymentMethod paymentMethod;
-  final AppLocalizations l10n;
-
-  const _PaymentMethodItem({required this.paymentMethod, required this.l10n});
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: AppColors.grayLightStroke,
-          width: 1,
-        ),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: AppColors.secondary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(
-              paymentMethod.icon,
-              color: AppColors.secondary,
-              size: 24,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Flexible(
-                      child: Text(
-                        paymentMethod.type,
-                        style: theme.textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textPrimary,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    if (paymentMethod.isPrimary) ...[
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: AppColors.secondary.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          l10n.primary,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: AppColors.secondary,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 11,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  paymentMethod.identifier,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 12),
-          TextButton(
-            onPressed: () {
-              // Handle edit payment method
-            },
-            style: TextButton.styleFrom(
-              foregroundColor: AppColors.secondary,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            ),
-            child: Text(l10n.edit),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class MonthlyEarning {
   final String month;
   final int amount;
@@ -914,19 +725,5 @@ class EarningTransaction {
     required this.amount,
     required this.status,
     required this.paymentMethod,
-  });
-}
-
-class PaymentMethod {
-  final String type;
-  final String identifier;
-  final IconData icon;
-  final bool isPrimary;
-
-  PaymentMethod({
-    required this.type,
-    required this.identifier,
-    required this.icon,
-    required this.isPrimary,
   });
 }
