@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/widgets/custom_button.dart';
+import 'package:promoruta/shared/widgets/stat_card.dart';
 
 class PromoterHomePage extends StatelessWidget {
   const PromoterHomePage({super.key});
@@ -22,22 +23,26 @@ class _PromoterHomeContent extends StatelessWidget {
       children: [
         // KPI cards
         Row(
-          children: const [
+          children: [
             Expanded(
-              child: _KpiCard(
+              child: StatCard(
                 icon: Icons.attach_money_rounded,
                 value: '\$284',
-                top: 'Esta',
-                bottom: 'semana',
+                labelTop: 'Esta',
+                labelBottom: 'semana',
+                iconColor: AppColors.deepOrange,
+                backgroundColor: AppColors.deepOrange.withValues(alpha: .1),
               ),
             ),
             SizedBox(width: 12),
             Expanded(
-              child: _KpiCard(
-                icon: Icons.attach_money_rounded,
+              child: StatCard(
+                icon: Icons.trending_up_rounded,
                 value: '\$320',
-                top: 'Este',
-                bottom: 'mes',
+                labelTop: 'Este',
+                labelBottom: 'mes',
+                iconColor: AppColors.green,
+                backgroundColor: AppColors.green.withValues(alpha: .1),
               ),
             ),
           ],
@@ -89,61 +94,6 @@ class _PromoterHomeContent extends StatelessWidget {
   }
 }
 
-class _KpiCard extends StatelessWidget {
-  final IconData icon;
-  final String value;
-  final String top;
-  final String bottom;
-
-  const _KpiCard({
-    required this.icon,
-    required this.value,
-    required this.top,
-    required this.bottom,
-  });
-
-  static const Color _pill = Color(0xFFEFF7F5);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 0,
-      color: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(
-          children: [
-            CircleAvatar(
-              radius: 18,
-              backgroundColor: _pill,
-              child: Icon(icon, color: AppColors.primary),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              value,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
-            ),
-            const SizedBox(height: 2),
-            Text(top,
-                style: Theme.of(context)
-                    .textTheme
-                    .labelMedium
-                    ?.copyWith(color: Colors.grey[700])),
-            Text(bottom,
-                style: Theme.of(context)
-                    .textTheme
-                    .labelMedium
-                    ?.copyWith(color: Colors.grey[700])),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class _NearbyCampaignCard extends StatelessWidget {
   final String title;
   final String amountRight;
@@ -160,8 +110,6 @@ class _NearbyCampaignCard extends StatelessWidget {
     required this.duration,
     required this.audio,
   });
-
-  static const Color _accent = Color(0xFFFF7A1A);
 
   @override
   Widget build(BuildContext context) {
@@ -258,7 +206,7 @@ class _NearbyCampaignCard extends StatelessWidget {
                 Expanded(
                   child: CustomButton(
                     text: l10n.acceptPromotion,
-                    backgroundColor: _accent,
+                    backgroundColor: AppColors.deepOrange,
                     textColor: AppColors.primary,
                     shrinkToFit: true,
                     onPressed: () {
@@ -301,8 +249,6 @@ class _NearbyCampaignCard extends StatelessWidget {
 
 class _ActiveCampaignCard extends StatelessWidget {
   const _ActiveCampaignCard();
-
-  static const Color _accent = Color(0xFFFF7A1A);
 
   @override
   Widget build(BuildContext context) {
@@ -364,7 +310,7 @@ class _ActiveCampaignCard extends StatelessWidget {
               children: [
                 Text('75% para completar la ruta',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: _accent,
+                          color: AppColors.deepOrange,
                           fontWeight: FontWeight.w700,
                         )),
                 Text('1.6/2.1km',
@@ -382,7 +328,7 @@ class _ActiveCampaignCard extends StatelessWidget {
                 value: 0.75,
                 minHeight: 10,
                 backgroundColor: const Color(0xFFEDEDED),
-                color: _accent,
+                color: AppColors.deepOrange,
               ),
             ),
             const SizedBox(height: 14),
@@ -392,7 +338,7 @@ class _ActiveCampaignCard extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: _accent,
+                  backgroundColor: AppColors.deepOrange,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
