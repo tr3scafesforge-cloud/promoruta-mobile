@@ -84,16 +84,24 @@ The system SHALL enforce that a promoter can only execute one campaign at a time
 
 ### Requirement: Campaign Execution State Management
 
-The system SHALL manage campaign execution state throughout the promoter's session.
+The system SHALL manage campaign execution state throughout the promoter's session, including payment-gated start.
 
 #### Scenario: Start campaign execution
 - **WHEN** promoter taps "Start" on an assigned campaign
+- **AND** the campaign status is `accepted`
+- **AND** the payment status is `paid`
 - **AND** no other campaign is currently in execution
 - **AND** location permission is granted
 - **THEN** execution status changes to "active"
 - **AND** GPS tracking begins
 - **AND** start time is recorded
 - **AND** campaign audio is loaded and ready to play
+
+#### Scenario: Block start when payment is pending
+- **WHEN** promoter taps "Start" on an assigned campaign
+- **AND** the payment status is `pending`
+- **THEN** execution does not start
+- **AND** the UI indicates the campaign is waiting for payment
 
 #### Scenario: Pause campaign execution
 - **WHEN** promoter taps "Pause" during active execution
