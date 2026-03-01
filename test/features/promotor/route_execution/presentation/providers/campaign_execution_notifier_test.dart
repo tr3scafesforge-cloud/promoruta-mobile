@@ -8,18 +8,40 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:promoruta/features/promotor/route_execution/domain/models/campaign_execution_state.dart';
 import 'package:promoruta/features/promotor/route_execution/domain/use_cases/sync_gps_points_use_case.dart';
 import 'package:promoruta/features/promotor/route_execution/presentation/providers/campaign_execution_notifier.dart';
+import 'package:promoruta/features/campaign_bidding/domain/use_cases/campaign_bidding_use_cases.dart';
 import 'package:promoruta/shared/services/location_service.dart';
+import 'package:promoruta/core/models/campaign.dart' as model;
 
 // Mocks
 class MockLocationService extends Mock implements LocationService {}
 
 class MockSyncGpsPointsUseCase extends Mock implements SyncGpsPointsUseCase {}
+class MockStartCampaignUseCase extends Mock implements StartCampaignUseCase {}
+class MockCompleteCampaignUseCase extends Mock
+    implements CompleteCampaignUseCase {}
 
 void main() {
   late CampaignExecutionNotifier notifier;
   late MockLocationService mockLocationService;
   late MockSyncGpsPointsUseCase mockSyncUseCase;
+  late MockStartCampaignUseCase mockStartCampaignUseCase;
+  late MockCompleteCampaignUseCase mockCompleteCampaignUseCase;
   late StreamController<Position> positionStreamController;
+
+  model.Campaign sampleCampaign() {
+    return model.Campaign(
+      id: 'campaign-1',
+      title: 'Test Campaign',
+      zone: 'Test Zone',
+      suggestedPrice: 100.0,
+      bidDeadline: DateTime(2025, 1, 1, 10, 0),
+      audioDuration: 30,
+      distance: 1.0,
+      routeCoordinates: const [],
+      startTime: DateTime(2025, 1, 1, 10, 0),
+      endTime: DateTime(2025, 1, 1, 11, 0),
+    );
+  }
 
   setUpAll(() {
     registerFallbackValue(Duration.zero);
@@ -32,12 +54,18 @@ void main() {
 
     mockLocationService = MockLocationService();
     mockSyncUseCase = MockSyncGpsPointsUseCase();
+    mockStartCampaignUseCase = MockStartCampaignUseCase();
+    mockCompleteCampaignUseCase = MockCompleteCampaignUseCase();
     positionStreamController = StreamController<Position>.broadcast();
 
     // Default mocks
     when(() => mockLocationService.positionStream)
         .thenAnswer((_) => positionStreamController.stream);
     when(() => mockLocationService.isTracking).thenReturn(false);
+    when(() => mockStartCampaignUseCase.call(any()))
+        .thenAnswer((_) async => sampleCampaign());
+    when(() => mockCompleteCampaignUseCase.call(any()))
+        .thenAnswer((_) async => sampleCampaign());
   });
 
   tearDown(() {
@@ -45,7 +73,12 @@ void main() {
   });
 
   CampaignExecutionNotifier createNotifier() {
-    return CampaignExecutionNotifier(mockLocationService, mockSyncUseCase);
+    return CampaignExecutionNotifier(
+      mockLocationService,
+      mockSyncUseCase,
+      mockStartCampaignUseCase,
+      mockCompleteCampaignUseCase,
+    );
   }
 
   group('CampaignExecutionNotifier', () {

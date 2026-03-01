@@ -22,6 +22,7 @@ import 'package:promoruta/features/promotor/route_execution/data/services/campai
 import 'package:promoruta/features/promotor/route_execution/domain/models/campaign_execution_state.dart';
 import 'package:promoruta/features/promotor/route_execution/presentation/providers/campaign_execution_notifier.dart';
 import 'package:promoruta/features/promotor/route_execution/domain/use_cases/sync_gps_points_use_case.dart';
+import 'package:promoruta/features/campaign_bidding/presentation/providers/bidding_providers.dart';
 
 // Import campaign providers for sync service dependencies
 import 'package:promoruta/features/advertiser/campaign_management/presentation/providers/campaign_providers.dart';
@@ -133,7 +134,14 @@ final campaignExecutionProvider =
         (ref) {
   final locationService = ref.watch(campaignLocationServiceProvider);
   final syncUseCase = ref.watch(syncGpsPointsUseCaseProvider);
-  return CampaignExecutionNotifier(locationService, syncUseCase);
+  final startCampaignUseCase = ref.watch(startCampaignUseCaseProvider);
+  final completeCampaignUseCase = ref.watch(completeCampaignUseCaseProvider);
+  return CampaignExecutionNotifier(
+    locationService,
+    syncUseCase,
+    startCampaignUseCase,
+    completeCampaignUseCase,
+  );
 });
 
 // Provider for promoter KPI stats from backend

@@ -29,6 +29,7 @@ export 'package:promoruta/features/auth/presentation/providers/auth_providers.da
 
 // Re-export feature providers
 export 'package:promoruta/features/advertiser/campaign_management/presentation/providers/campaign_providers.dart';
+export 'package:promoruta/features/campaign_bidding/presentation/providers/bidding_providers.dart';
 export 'package:promoruta/features/promotor/presentation/providers/promoter_providers.dart';
 export 'package:promoruta/features/profile/presentation/providers/profile_providers.dart';
 

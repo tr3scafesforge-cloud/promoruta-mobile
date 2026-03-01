@@ -703,11 +703,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String nActive(num count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
-      locale: localeName,
-    );
-    final String countString = countNumberFormat.format(count);
-
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -1451,6 +1446,82 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get campaignInProgress => 'Campaign in progress';
+
+  @override
+  String get bidsTitle => 'Bids';
+
+  @override
+  String get noBidsYet => 'No bids yet';
+
+  @override
+  String get placeBid => 'Place bid';
+
+  @override
+  String get updateBid => 'Update bid';
+
+  @override
+  String get withdrawBid => 'Withdraw bid';
+
+  @override
+  String get proposedPrice => 'Proposed price';
+
+  @override
+  String get messageOptional => 'Message (optional)';
+
+  @override
+  String get invalidPrice => 'Please enter a valid price';
+
+  @override
+  String get submitBid => 'Submit bid';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get bidSaved => 'Bid saved';
+
+  @override
+  String get bidWithdrawn => 'Bid withdrawn';
+
+  @override
+  String get yourBid => 'Your bid';
+
+  @override
+  String get noBidYet => 'You haven\'t placed a bid yet';
+
+  @override
+  String bidStatusValue(Object status) {
+    return 'Status: $status';
+  }
+
+  @override
+  String proposedPriceValue(Object price) {
+    return 'Proposed price: \$$price';
+  }
+
+  @override
+  String get acceptBid => 'Accept bid';
+
+  @override
+  String get paymentPendingNoCheckout =>
+      'Payment pending. Checkout link not available yet.';
+
+  @override
+  String get statusOpenForBids => 'Open for bids';
+
+  @override
+  String get statusWaitingForPayment => 'Offer accepted, waiting for payment';
+
+  @override
+  String get statusReadyToStart => 'Ready to start';
+
+  @override
+  String promoterStats(Object rating, Object count) {
+    return '$rating★ · $count completed';
+  }
+
+  @override
+  String get paymentCheckout => 'Payment checkout';
 
   @override
   String get mustCompleteActiveCampaign =>

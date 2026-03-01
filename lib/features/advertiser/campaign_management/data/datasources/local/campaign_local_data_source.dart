@@ -65,6 +65,12 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
 
   model.CampaignStatus _parseStatus(String statusString) {
     switch (statusString) {
+      case 'created':
+        return model.CampaignStatus.created;
+      case 'accepted':
+        return model.CampaignStatus.accepted;
+      case 'in_progress':
+        return model.CampaignStatus.inProgress;
       case 'active':
         return model.CampaignStatus.active;
       case 'pending':
@@ -98,7 +104,7 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
             createdById: Value(campaign.createdBy?.id ?? ''),
             startTime: Value(campaign.startTime),
             endTime: Value(campaign.endTime),
-            status: Value(campaign.status!.name),
+            status: Value(campaign.status!.apiValue),
             zone: Value(campaign.zone),
             suggestedPrice: Value(campaign.suggestedPrice),
           ),
@@ -109,7 +115,7 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
               createdById: Value(campaign.createdBy?.id ?? ''),
               startTime: Value(campaign.startTime),
               endTime: Value(campaign.endTime),
-              status: Value(campaign.status!.name),
+              status: Value(campaign.status!.apiValue),
               zone: Value(campaign.zone),
               suggestedPrice: Value(campaign.suggestedPrice),
             ),
@@ -200,7 +206,7 @@ class CampaignLocalDataSourceImpl implements CampaignLocalDataSource {
             createdById: Value(campaign.createdBy?.id ?? ''),
             startTime: Value(campaign.startTime),
             endTime: Value(campaign.endTime),
-            status: Value(campaign.status!.name),
+            status: Value(campaign.status!.apiValue),
             zone: Value(campaign.zone),
             suggestedPrice: Value(campaign.suggestedPrice),
           ),

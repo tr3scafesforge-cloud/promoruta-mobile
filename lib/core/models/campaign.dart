@@ -1,14 +1,24 @@
+import 'package:promoruta/core/models/payment_status.dart';
+
 /// Campaign status enumeration
 enum CampaignStatus {
+  created,
+  accepted,
+  inProgress,
   active,
   pending,
   completed,
   canceled,
-  expired,
-  created; // New status from API
+  expired;
 
   static CampaignStatus fromString(String status) {
     switch (status.toLowerCase()) {
+      case 'created':
+        return CampaignStatus.created;
+      case 'accepted':
+        return CampaignStatus.accepted;
+      case 'in_progress':
+        return CampaignStatus.inProgress;
       case 'active':
         return CampaignStatus.active;
       case 'pending':
@@ -20,10 +30,19 @@ enum CampaignStatus {
         return CampaignStatus.canceled;
       case 'expired':
         return CampaignStatus.expired;
-      case 'created':
-        return CampaignStatus.created;
       default:
         return CampaignStatus.pending;
+    }
+  }
+
+  String get apiValue {
+    switch (this) {
+      case CampaignStatus.inProgress:
+        return 'in_progress';
+      case CampaignStatus.canceled:
+        return 'cancelled';
+      default:
+        return name;
     }
   }
 }
@@ -121,6 +140,7 @@ class Campaign {
   final CampaignUser? acceptedBy;
   final String? selectedBidId;
   final double? finalPrice;
+  final PaymentStatus? paymentStatus;
   final CampaignUser? lastUpdatedBy;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -143,6 +163,7 @@ class Campaign {
     this.acceptedBy,
     this.selectedBidId,
     this.finalPrice,
+    this.paymentStatus,
     this.lastUpdatedBy,
     this.createdAt,
     this.updatedAt,
@@ -162,11 +183,12 @@ class Campaign {
       'route_coordinates': routeCoordinates.map((c) => c.toJson()).toList(),
       'start_time': startTime.toIso8601String(),
       'end_time': endTime.toIso8601String(),
-      if (status != null) 'status': status!.name,
+      if (status != null) 'status': status!.apiValue,
       if (createdBy != null) 'created_by': createdBy!.toJson(),
       if (acceptedBy != null) 'accepted_by': acceptedBy!.toJson(),
       if (selectedBidId != null) 'selected_bid_id': selectedBidId,
       if (finalPrice != null) 'final_price': finalPrice,
+      if (paymentStatus != null) 'payment_status': paymentStatus!.apiValue,
       if (lastUpdatedBy != null) 'last_updated_by': lastUpdatedBy!.toJson(),
       if (createdAt != null) 'created_at': createdAt!.toIso8601String(),
       if (updatedAt != null) 'updated_at': updatedAt!.toIso8601String(),
@@ -208,6 +230,9 @@ class Campaign {
               ? double.parse(json['final_price'] as String)
               : (json['final_price'] as num).toDouble())
           : null,
+      paymentStatus: json['payment_status'] != null
+          ? PaymentStatus.fromString(json['payment_status'] as String)
+          : null,
       lastUpdatedBy: json['last_updated_by'] != null
           ? (json['last_updated_by'] is String
               ? null // If it's just a UUID string, we can't create a full user object
@@ -241,6 +266,7 @@ class Campaign {
     CampaignUser? acceptedBy,
     String? selectedBidId,
     double? finalPrice,
+    PaymentStatus? paymentStatus,
     CampaignUser? lastUpdatedBy,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -263,6 +289,7 @@ class Campaign {
       acceptedBy: acceptedBy ?? this.acceptedBy,
       selectedBidId: selectedBidId ?? this.selectedBidId,
       finalPrice: finalPrice ?? this.finalPrice,
+      paymentStatus: paymentStatus ?? this.paymentStatus,
       lastUpdatedBy: lastUpdatedBy ?? this.lastUpdatedBy,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,

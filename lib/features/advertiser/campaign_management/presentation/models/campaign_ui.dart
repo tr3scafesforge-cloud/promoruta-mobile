@@ -74,9 +74,11 @@ class Campaign {
     if (status == null) return CampaignStatus.pending;
 
     switch (status) {
+      case backend.CampaignStatus.accepted:
       case backend.CampaignStatus.pending:
       case backend.CampaignStatus.created:
         return CampaignStatus.pending;
+      case backend.CampaignStatus.inProgress:
       case backend.CampaignStatus.active:
         return CampaignStatus.active;
       case backend.CampaignStatus.completed:

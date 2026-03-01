@@ -7,6 +7,7 @@ import 'package:promoruta/core/models/campaign_query_params.dart';
 import 'package:promoruta/shared/providers/location_provider.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
+import 'package:promoruta/features/promotor/campaign_browsing/presentation/pages/promoter_campaign_details_page.dart';
 
 // Filter types enum
 enum CampaignFilter {
@@ -625,14 +626,23 @@ class _CampaignCard extends ConsumerWidget {
                   ),
                 ),
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                        content: Text(
-                            '${l10n.acceptCampaign}: ${campaign.title} (WIP)')),
+                  if (campaign.id == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(l10n.unknownError)),
+                    );
+                    return;
+                  }
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => PromoterCampaignDetailsPage(
+                        campaignId: campaign.id!,
+                      ),
+                    ),
                   );
                 },
                 child: Text(
-                  l10n.acceptCampaign,
+                  l10n.placeBid,
                   style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 15,

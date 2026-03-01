@@ -1,11 +1,17 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/core/models/campaign.dart';
+import 'package:promoruta/core/models/campaign_bid.dart';
+import 'package:promoruta/core/models/payment_status.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
+import 'package:promoruta/shared/widgets/payment_webview_page.dart';
 import 'package:promoruta/features/advertiser/campaign_management/domain/use_cases/campaign_use_cases.dart';
+import 'package:promoruta/features/campaign_bidding/domain/use_cases/campaign_bidding_use_cases.dart';
 import 'package:promoruta/features/advertiser/presentation/widgets/advertiser_app_bar.dart';
 
 class CampaignDetailsPage extends ConsumerStatefulWidget {
@@ -23,12 +29,52 @@ class CampaignDetailsPage extends ConsumerStatefulWidget {
 
 class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
   final _reasonController = TextEditingController();
+  Timer? _pollingTimer;
+  Duration _pollingInterval = const Duration(seconds: 20);
   bool _isLoading = false;
+  bool _isAccepting = false;
 
   @override
   void dispose() {
     _reasonController.dispose();
+    _pollingTimer?.cancel();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startPolling(const Duration(seconds: 20));
+  }
+
+  void _startPolling(Duration interval) {
+    _pollingInterval = interval;
+    _pollingTimer?.cancel();
+    _pollingTimer = Timer.periodic(interval, (_) {
+      ref.invalidate(campaignByIdProvider(widget.campaignId));
+      ref.invalidate(campaignBidsProvider(widget.campaignId));
+    });
+  }
+
+  void _stopPolling() {
+    _pollingTimer?.cancel();
+    _pollingTimer = null;
+  }
+
+  void _updatePollingForStatus(CampaignStatus? status) {
+    if (_isTerminalStatus(status)) {
+      _stopPolling();
+      return;
+    }
+
+    final nextInterval =
+        status == CampaignStatus.inProgress || status == CampaignStatus.active
+            ? const Duration(seconds: 45)
+            : const Duration(seconds: 20);
+
+    if (_pollingTimer == null || nextInterval != _pollingInterval) {
+      _startPolling(nextInterval);
+    }
   }
 
   Future<void> _cancelCampaign(Campaign campaign) async {
@@ -126,6 +172,7 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final campaignAsync = ref.watch(campaignByIdProvider(widget.campaignId));
+    final bidsAsync = ref.watch(campaignBidsProvider(widget.campaignId));
 
     return Scaffold(
       appBar: AdvertiserAppBar(
@@ -147,6 +194,11 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
           if (campaign == null) {
             return Center(child: Text(l10n.noActiveCampaigns));
           }
+
+          _updatePollingForStatus(campaign.status);
+
+          final paymentStatus =
+              campaign.paymentStatus ?? bidsAsync.valueOrNull?.paymentStatus;
 
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16),
@@ -175,17 +227,20 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
                               vertical: 6,
                             ),
                             decoration: BoxDecoration(
-                              color: _getStatusColor(campaign.status)
+                              color: _getStatusColor(
+                                      campaign.status, paymentStatus)
                                   .withValues(alpha: .2),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
-                              _getStatusLabel(campaign.status, l10n),
+                              _getStatusLabel(
+                                  campaign.status, paymentStatus, l10n),
                               style: Theme.of(context)
                                   .textTheme
                                   .labelLarge
                                   ?.copyWith(
-                                    color: _getStatusColor(campaign.status),
+                                    color: _getStatusColor(
+                                        campaign.status, paymentStatus),
                                     fontWeight: FontWeight.bold,
                                   ),
                             ),
@@ -253,8 +308,55 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
                 ),
                 const SizedBox(height: 16),
 
-                // Cancel button (only show for pending campaigns)
-                if (campaign.status == CampaignStatus.pending)
+                // Bids section
+                AppCard(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.bidsTitle,
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                      ),
+                      const SizedBox(height: 12),
+                      bidsAsync.when(
+                        loading: () =>
+                            const Center(child: CircularProgressIndicator()),
+                        error: (error, _) => Text(
+                          error.toString(),
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                        data: (summary) {
+                          if (summary.bids.isEmpty) {
+                            return Text(l10n.noBidsYet);
+                          }
+                          return Column(
+                            children: summary.bids
+                                .map((bid) => _BidCard(
+                                      bid: bid,
+                                      onAccept: campaign.status ==
+                                              CampaignStatus.created
+                                          ? () => _acceptBid(
+                                                bidId: bid.id,
+                                                campaignId: campaign.id ?? '',
+                                              )
+                                          : null,
+                                      isAccepting: _isAccepting,
+                                      l10n: l10n,
+                                    ))
+                                .toList(),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                // Cancel button (hide for terminal statuses)
+                if (!_isTerminalStatus(campaign.status))
                   SizedBox(
                     width: double.infinity,
                     child: _isLoading
@@ -273,34 +375,228 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
     );
   }
 
-  Color _getStatusColor(CampaignStatus? status) {
+  Color _getStatusColor(CampaignStatus? status, PaymentStatus? paymentStatus) {
     switch (status) {
+      case CampaignStatus.inProgress:
       case CampaignStatus.active:
         return AppColors.activeCampaignColor;
+      case CampaignStatus.accepted:
+        return paymentStatus == PaymentStatus.paid
+            ? AppColors.green
+            : AppColors.pendingOrangeColor;
       case CampaignStatus.pending:
+      case CampaignStatus.created:
         return AppColors.pendingOrangeColor;
       case CampaignStatus.completed:
         return AppColors.completedGreenColor;
       case CampaignStatus.canceled:
         return Colors.red;
+      case CampaignStatus.expired:
+        return AppColors.greyUnknown;
       default:
         return AppColors.greyUnknown;
     }
   }
 
-  String _getStatusLabel(CampaignStatus? status, AppLocalizations l10n) {
+  String _getStatusLabel(CampaignStatus? status, PaymentStatus? paymentStatus,
+      AppLocalizations l10n) {
     switch (status) {
+      case CampaignStatus.created:
+        return l10n.statusOpenForBids;
+      case CampaignStatus.accepted:
+        return paymentStatus == PaymentStatus.paid
+            ? l10n.statusReadyToStart
+            : l10n.statusWaitingForPayment;
+      case CampaignStatus.inProgress:
       case CampaignStatus.active:
-        return l10n.active;
+        return l10n.inProgressStatus;
       case CampaignStatus.pending:
         return l10n.pending;
       case CampaignStatus.completed:
         return l10n.completed;
       case CampaignStatus.canceled:
         return l10n.cancelled;
+      case CampaignStatus.expired:
+        return l10n.expired;
       default:
         return l10n.pending;
     }
+  }
+
+  bool _isTerminalStatus(CampaignStatus? status) {
+    return status == CampaignStatus.completed ||
+        status == CampaignStatus.canceled ||
+        status == CampaignStatus.expired;
+  }
+
+  Future<void> _acceptBid({
+    required String bidId,
+    required String campaignId,
+  }) async {
+    final l10n = AppLocalizations.of(context);
+    setState(() => _isAccepting = true);
+    try {
+      final acceptUseCase = ref.read(acceptBidUseCaseProvider);
+      final paymentInfo = await acceptUseCase(
+        AcceptBidParams(campaignId: campaignId, bidId: bidId),
+      );
+
+      ref.invalidate(campaignByIdProvider(campaignId));
+      ref.invalidate(campaignBidsProvider(campaignId));
+
+      if (paymentInfo.checkoutUrl != null &&
+          paymentInfo.checkoutUrl!.isNotEmpty) {
+        final uri = Uri.tryParse(paymentInfo.checkoutUrl!);
+        if (uri != null) {
+          final launched =
+              await launchUrl(uri, mode: LaunchMode.externalApplication);
+          if (!launched && mounted) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => PaymentWebViewPage(checkoutUri: uri),
+              ),
+            );
+          }
+        }
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(l10n.paymentPendingNoCheckout)),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString())),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isAccepting = false);
+      }
+    }
+  }
+}
+
+class _BidCard extends StatelessWidget {
+  final CampaignBid bid;
+  final VoidCallback? onAccept;
+  final bool isAccepting;
+  final AppLocalizations l10n;
+
+  const _BidCard({
+    required this.bid,
+    required this.onAccept,
+    required this.isAccepting,
+    required this.l10n,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final profile = bid.promoterProfile;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppColors.grayLightStroke),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 16,
+                  backgroundColor: AppColors.grayLightStroke,
+                  backgroundImage: profile?.avatarUrl != null
+                      ? NetworkImage(profile!.avatarUrl!)
+                      : null,
+                  child: profile?.avatarUrl == null
+                      ? Text(
+                          (profile?.name.isNotEmpty == true
+                              ? profile!.name[0]
+                              : '?'),
+                        )
+                      : null,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        profile?.name ?? l10n.promoter,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
+                      Text(
+                        l10n.promoterStats(
+                          profile?.averageRating.toStringAsFixed(1) ?? '0.0',
+                          profile?.completedCampaignsCount ?? 0,
+                        ),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AppColors.textSecondary,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppColors.grayLightStroke.withValues(alpha: 0.6),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    bid.status.name,
+                    style: const TextStyle(fontSize: 11),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              l10n.proposedPriceValue(bid.proposedPrice.toStringAsFixed(2)),
+              style: const TextStyle(fontWeight: FontWeight.w600),
+            ),
+            if (bid.message != null && bid.message!.isNotEmpty) ...[
+              const SizedBox(height: 6),
+              Text(
+                bid.message!,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ],
+            if (onAccept != null) ...[
+              const SizedBox(height: 12),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: isAccepting ? null : onAccept,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.activeCampaignColor,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: isAccepting
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : Text(l10n.acceptBid),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
   }
 }
 

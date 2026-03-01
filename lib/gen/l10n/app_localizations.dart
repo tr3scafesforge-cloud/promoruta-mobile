@@ -2746,6 +2746,144 @@ abstract class AppLocalizations {
   /// **'Campaign in progress'**
   String get campaignInProgress;
 
+  /// Section title for campaign bids
+  ///
+  /// In en, this message translates to:
+  /// **'Bids'**
+  String get bidsTitle;
+
+  /// Empty state when there are no bids
+  ///
+  /// In en, this message translates to:
+  /// **'No bids yet'**
+  String get noBidsYet;
+
+  /// Button text to place a bid
+  ///
+  /// In en, this message translates to:
+  /// **'Place bid'**
+  String get placeBid;
+
+  /// Button text to update an existing bid
+  ///
+  /// In en, this message translates to:
+  /// **'Update bid'**
+  String get updateBid;
+
+  /// Button text to withdraw a bid
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw bid'**
+  String get withdrawBid;
+
+  /// Label for proposed price input
+  ///
+  /// In en, this message translates to:
+  /// **'Proposed price'**
+  String get proposedPrice;
+
+  /// Label for optional bid message
+  ///
+  /// In en, this message translates to:
+  /// **'Message (optional)'**
+  String get messageOptional;
+
+  /// Validation message for invalid price
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid price'**
+  String get invalidPrice;
+
+  /// Button text to submit a bid
+  ///
+  /// In en, this message translates to:
+  /// **'Submit bid'**
+  String get submitBid;
+
+  /// Generic save button label
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// Snackbar message when bid is saved
+  ///
+  /// In en, this message translates to:
+  /// **'Bid saved'**
+  String get bidSaved;
+
+  /// Snackbar message when bid is withdrawn
+  ///
+  /// In en, this message translates to:
+  /// **'Bid withdrawn'**
+  String get bidWithdrawn;
+
+  /// Section title for promoter's own bid
+  ///
+  /// In en, this message translates to:
+  /// **'Your bid'**
+  String get yourBid;
+
+  /// Message when promoter has no bid
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t placed a bid yet'**
+  String get noBidYet;
+
+  /// Label showing bid status
+  ///
+  /// In en, this message translates to:
+  /// **'Status: {status}'**
+  String bidStatusValue(Object status);
+
+  /// Label showing proposed price
+  ///
+  /// In en, this message translates to:
+  /// **'Proposed price: \${price}'**
+  String proposedPriceValue(Object price);
+
+  /// Button text to accept a bid
+  ///
+  /// In en, this message translates to:
+  /// **'Accept bid'**
+  String get acceptBid;
+
+  /// Message when payment is pending and no checkout URL is available
+  ///
+  /// In en, this message translates to:
+  /// **'Payment pending. Checkout link not available yet.'**
+  String get paymentPendingNoCheckout;
+
+  /// Status label for created campaigns
+  ///
+  /// In en, this message translates to:
+  /// **'Open for bids'**
+  String get statusOpenForBids;
+
+  /// Status label for accepted campaigns with pending payment
+  ///
+  /// In en, this message translates to:
+  /// **'Offer accepted, waiting for payment'**
+  String get statusWaitingForPayment;
+
+  /// Status label for accepted campaigns with paid payment
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to start'**
+  String get statusReadyToStart;
+
+  /// Promoter stats line with rating and completed campaigns
+  ///
+  /// In en, this message translates to:
+  /// **'{rating}★ · {count} completed'**
+  String promoterStats(Object rating, Object count);
+
+  /// Title for payment checkout webview
+  ///
+  /// In en, this message translates to:
+  /// **'Payment checkout'**
+  String get paymentCheckout;
+
   /// Message explaining that the active campaign must be completed first
   ///
   /// In en, this message translates to:

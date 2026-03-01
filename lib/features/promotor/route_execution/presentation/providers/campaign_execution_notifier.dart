@@ -9,11 +9,14 @@ import 'package:promoruta/core/utils/logger.dart';
 import 'package:promoruta/shared/services/location_service.dart';
 import 'package:promoruta/features/promotor/route_execution/domain/models/campaign_execution_state.dart';
 import 'package:promoruta/features/promotor/route_execution/domain/use_cases/sync_gps_points_use_case.dart';
+import 'package:promoruta/features/campaign_bidding/domain/use_cases/campaign_bidding_use_cases.dart';
 
 /// Notifier for managing campaign execution state
 class CampaignExecutionNotifier extends StateNotifier<CampaignExecutionState> {
   final LocationService _locationService;
   final SyncGpsPointsUseCase _syncUseCase;
+  final StartCampaignUseCase _startCampaignUseCase;
+  final CompleteCampaignUseCase _completeCampaignUseCase;
   final Uuid _uuid = const Uuid();
 
   StreamSubscription<Position>? _positionSubscription;
@@ -36,7 +39,12 @@ class CampaignExecutionNotifier extends StateNotifier<CampaignExecutionState> {
   static const String _keyExecutionState = 'campaign_execution_state';
   static const String _keyAudioPosition = 'campaign_audio_position';
 
-  CampaignExecutionNotifier(this._locationService, this._syncUseCase)
+  CampaignExecutionNotifier(
+    this._locationService,
+    this._syncUseCase,
+    this._startCampaignUseCase,
+    this._completeCampaignUseCase,
+  )
       : super(CampaignExecutionState.idle()) {
     _restoreState();
   }
@@ -202,6 +210,17 @@ class CampaignExecutionNotifier extends StateNotifier<CampaignExecutionState> {
       clearError: true,
     );
 
+    // Notify backend to start campaign (payment gate enforced server-side)
+    try {
+      await _startCampaignUseCase(campaignId);
+    } catch (e) {
+      state = state.copyWith(
+        status: CampaignExecutionStatus.error,
+        errorMessage: _mapStartError(e),
+      );
+      return false;
+    }
+
     // Request location permission
     final permissionResult = await _locationService.requestPermission();
 
@@ -326,6 +345,14 @@ class CampaignExecutionNotifier extends StateNotifier<CampaignExecutionState> {
 
     // Perform final sync
     await _syncPendingPoints();
+
+    try {
+      if (state.campaignId != null) {
+        await _completeCampaignUseCase(state.campaignId!);
+      }
+    } catch (e) {
+      AppLogger.location.e('Failed to complete campaign on backend: $e');
+    }
 
     final summary = CampaignExecutionSummary(
       campaignId: state.campaignId!,
@@ -509,6 +536,14 @@ class CampaignExecutionNotifier extends StateNotifier<CampaignExecutionState> {
       case LocationPermissionResult.granted:
         return '';
     }
+  }
+
+  String _mapStartError(Object error) {
+    final message = error.toString();
+    if (message.contains('Access denied')) {
+      return 'Payment is still pending. Please wait for confirmation.';
+    }
+    return message;
   }
 
   @override

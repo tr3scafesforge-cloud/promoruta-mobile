@@ -315,14 +315,19 @@ class _CampaignCard extends StatelessWidget {
 
   Color _getStatusColor(model.CampaignStatus? status) {
     switch (status) {
+      case model.CampaignStatus.inProgress:
       case model.CampaignStatus.active:
         return AppColors.activeCampaignColor;
+      case model.CampaignStatus.accepted:
+      case model.CampaignStatus.created:
       case model.CampaignStatus.pending:
         return AppColors.pendingOrangeColor;
       case model.CampaignStatus.completed:
         return AppColors.completedGreenColor;
       case model.CampaignStatus.canceled:
         return Colors.red;
+      case model.CampaignStatus.expired:
+        return AppColors.greyUnknown;
       default:
         return AppColors.greyUnknown;
     }
@@ -330,16 +335,22 @@ class _CampaignCard extends StatelessWidget {
 
   String _getStatusLabel(model.CampaignStatus? status, AppLocalizations l10n) {
     switch (status) {
+      case model.CampaignStatus.created:
+      case model.CampaignStatus.accepted:
+        return l10n.pending;
+      case model.CampaignStatus.inProgress:
       case model.CampaignStatus.active:
-        return l10n.active;
+        return l10n.inProgressStatus;
       case model.CampaignStatus.pending:
         return l10n.pending;
       case model.CampaignStatus.completed:
         return l10n.completed;
       case model.CampaignStatus.canceled:
         return l10n.cancelled;
+      case model.CampaignStatus.expired:
+        return l10n.expired;
       default:
-        return l10n.active;
+        return l10n.pending;
     }
   }
 }

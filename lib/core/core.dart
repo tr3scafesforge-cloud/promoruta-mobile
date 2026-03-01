@@ -1,7 +1,10 @@
 // Models
 export 'models/campaign.dart';
+export 'models/campaign_bid.dart';
 export 'models/campaign_query_params.dart';
 export 'models/gps_point.dart';
+export 'models/payment_info.dart';
+export 'models/payment_status.dart';
 export 'models/route.dart';
 export 'models/user.dart';
 export 'models/advertiser_kpi_stats.dart';

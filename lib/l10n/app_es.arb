@@ -903,8 +903,7 @@
     "description": "Label for active campaigns with plural message",
     "placeholders": {
       "count": {
-        "type": "num",
-        "format": "compact"
+        "type": "num"
       }
     }
   },
@@ -1809,6 +1808,108 @@
   "campaignInProgress": "Campaña en progreso",
   "@campaignInProgress": {
     "description": "Message when a campaign is already in progress"
+  },
+  "bidsTitle": "Ofertas",
+  "@bidsTitle": {
+    "description": "Section title for campaign bids"
+  },
+  "noBidsYet": "Aún no hay ofertas",
+  "@noBidsYet": {
+    "description": "Empty state when there are no bids"
+  },
+  "placeBid": "Hacer oferta",
+  "@placeBid": {
+    "description": "Button text to place a bid"
+  },
+  "updateBid": "Actualizar oferta",
+  "@updateBid": {
+    "description": "Button text to update an existing bid"
+  },
+  "withdrawBid": "Retirar oferta",
+  "@withdrawBid": {
+    "description": "Button text to withdraw a bid"
+  },
+  "proposedPrice": "Precio propuesto",
+  "@proposedPrice": {
+    "description": "Label for proposed price input"
+  },
+  "messageOptional": "Mensaje (opcional)",
+  "@messageOptional": {
+    "description": "Label for optional bid message"
+  },
+  "invalidPrice": "Ingresa un precio válido",
+  "@invalidPrice": {
+    "description": "Validation message for invalid price"
+  },
+  "submitBid": "Enviar oferta",
+  "@submitBid": {
+    "description": "Button text to submit a bid"
+  },
+  "save": "Guardar",
+  "@save": {
+    "description": "Generic save button label"
+  },
+  "bidSaved": "Oferta guardada",
+  "@bidSaved": {
+    "description": "Snackbar message when bid is saved"
+  },
+  "bidWithdrawn": "Oferta retirada",
+  "@bidWithdrawn": {
+    "description": "Snackbar message when bid is withdrawn"
+  },
+  "yourBid": "Tu oferta",
+  "@yourBid": {
+    "description": "Section title for promoter's own bid"
+  },
+  "noBidYet": "Aún no has enviado una oferta",
+  "@noBidYet": {
+    "description": "Message when promoter has no bid"
+  },
+  "bidStatusValue": "Estado: {status}",
+  "@bidStatusValue": {
+    "description": "Label showing bid status",
+    "placeholders": {
+      "status": {}
+    }
+  },
+  "proposedPriceValue": "Precio propuesto: ${price}",
+  "@proposedPriceValue": {
+    "description": "Label showing proposed price",
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "acceptBid": "Aceptar oferta",
+  "@acceptBid": {
+    "description": "Button text to accept a bid"
+  },
+  "paymentPendingNoCheckout": "Pago pendiente. El enlace de pago aún no está disponible.",
+  "@paymentPendingNoCheckout": {
+    "description": "Message when payment is pending and no checkout URL is available"
+  },
+  "statusOpenForBids": "Abierta a ofertas",
+  "@statusOpenForBids": {
+    "description": "Status label for created campaigns"
+  },
+  "statusWaitingForPayment": "Oferta aceptada, esperando pago",
+  "@statusWaitingForPayment": {
+    "description": "Status label for accepted campaigns with pending payment"
+  },
+  "statusReadyToStart": "Lista para iniciar",
+  "@statusReadyToStart": {
+    "description": "Status label for accepted campaigns with paid payment"
+  },
+  "promoterStats": "{rating}★ · {count} completadas",
+  "@promoterStats": {
+    "description": "Promoter stats line with rating and completed campaigns",
+    "placeholders": {
+      "rating": {},
+      "count": {}
+    }
+  },
+  "paymentCheckout": "Finalizar pago",
+  "@paymentCheckout": {
+    "description": "Title for payment checkout webview"
   },
   "mustCompleteActiveCampaign": "Debes completar o cancelar la campaña activa antes de iniciar una nueva.",
   "@mustCompleteActiveCampaign": {

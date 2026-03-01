@@ -22,8 +22,11 @@ extension CampaignMappers on model.Campaign {
 
   ui.CampaignStatus _mapStatusToUi(model.CampaignStatus status) {
     switch (status) {
+      case model.CampaignStatus.inProgress:
       case model.CampaignStatus.active:
         return ui.CampaignStatus.active;
+      case model.CampaignStatus.accepted:
+      case model.CampaignStatus.created:
       case model.CampaignStatus.pending:
         return ui.CampaignStatus.pending;
       case model.CampaignStatus.completed:
@@ -32,8 +35,6 @@ extension CampaignMappers on model.Campaign {
         return ui.CampaignStatus.canceled;
       case model.CampaignStatus.expired:
         return ui.CampaignStatus.expired;
-      case model.CampaignStatus.created:
-        return ui.CampaignStatus.pending; // Map created to pending
     }
   }
 }

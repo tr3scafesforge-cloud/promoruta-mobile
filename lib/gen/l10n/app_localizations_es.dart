@@ -709,11 +709,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String nActive(num count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
-      locale: localeName,
-    );
-    final String countString = countNumberFormat.format(count);
-
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -1463,6 +1458,82 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get campaignInProgress => 'Campaña en progreso';
+
+  @override
+  String get bidsTitle => 'Ofertas';
+
+  @override
+  String get noBidsYet => 'Aún no hay ofertas';
+
+  @override
+  String get placeBid => 'Hacer oferta';
+
+  @override
+  String get updateBid => 'Actualizar oferta';
+
+  @override
+  String get withdrawBid => 'Retirar oferta';
+
+  @override
+  String get proposedPrice => 'Precio propuesto';
+
+  @override
+  String get messageOptional => 'Mensaje (opcional)';
+
+  @override
+  String get invalidPrice => 'Ingresa un precio válido';
+
+  @override
+  String get submitBid => 'Enviar oferta';
+
+  @override
+  String get save => 'Guardar';
+
+  @override
+  String get bidSaved => 'Oferta guardada';
+
+  @override
+  String get bidWithdrawn => 'Oferta retirada';
+
+  @override
+  String get yourBid => 'Tu oferta';
+
+  @override
+  String get noBidYet => 'Aún no has enviado una oferta';
+
+  @override
+  String bidStatusValue(Object status) {
+    return 'Estado: $status';
+  }
+
+  @override
+  String proposedPriceValue(Object price) {
+    return 'Precio propuesto: \$$price';
+  }
+
+  @override
+  String get acceptBid => 'Aceptar oferta';
+
+  @override
+  String get paymentPendingNoCheckout =>
+      'Pago pendiente. El enlace de pago aún no está disponible.';
+
+  @override
+  String get statusOpenForBids => 'Abierta a ofertas';
+
+  @override
+  String get statusWaitingForPayment => 'Oferta aceptada, esperando pago';
+
+  @override
+  String get statusReadyToStart => 'Lista para iniciar';
+
+  @override
+  String promoterStats(Object rating, Object count) {
+    return '$rating★ · $count completadas';
+  }
+
+  @override
+  String get paymentCheckout => 'Finalizar pago';
 
   @override
   String get mustCompleteActiveCampaign =>
