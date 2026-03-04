@@ -467,9 +467,11 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
         }
       }
     } catch (e) {
+      ref.invalidate(campaignByIdProvider(campaignId));
+      ref.invalidate(campaignBidsProvider(campaignId));
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
+          SnackBar(content: Text(_mapAcceptBidErrorMessage(e, l10n))),
         );
       }
     } finally {
@@ -477,6 +479,29 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
         setState(() => _isAccepting = false);
       }
     }
+  }
+
+  String _mapAcceptBidErrorMessage(Object error, AppLocalizations l10n) {
+    var message = error.toString().trim();
+
+    if (message.startsWith('Exception:')) {
+      message = message.replaceFirst('Exception:', '').trim();
+    }
+
+    if (message.startsWith('AuthError:')) {
+      message = message.replaceFirst('AuthError:', '').trim();
+    }
+
+    final upper = message.toUpperCase();
+    if (upper.contains('BID_WITHDRAWN')) {
+      return l10n.bidWithdrawn;
+    }
+
+    if (upper.contains('BID_NOT_AVAILABLE')) {
+      return l10n.bidNotAvailable;
+    }
+
+    return message.isNotEmpty ? message : l10n.unknownError;
   }
 }
 

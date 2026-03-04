@@ -1845,6 +1845,10 @@
   "@bidWithdrawn": {
     "description": "Snackbar message when bid is withdrawn"
   },
+  "bidNotAvailable": "Esta oferta não está mais disponível",
+  "@bidNotAvailable": {
+    "description": "Snackbar message when selected bid is no longer available"
+  },
   "yourBid": "Sua oferta",
   "@yourBid": {
     "description": "Section title for promoter's own bid"

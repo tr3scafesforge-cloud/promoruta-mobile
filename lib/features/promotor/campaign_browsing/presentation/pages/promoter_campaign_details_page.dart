@@ -74,69 +74,13 @@ class _PromoterCampaignDetailsPageState
 
   Future<_BidFormResult?> _showBidDialog(
       AppLocalizations l10n, CampaignBid? existing) async {
-    final priceController = TextEditingController(
-        text: existing?.proposedPrice.toStringAsFixed(2));
-    final messageController =
-        TextEditingController(text: existing?.message ?? '');
-
-    final result = await showDialog<_BidFormResult>(
+    return showDialog<_BidFormResult>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(existing == null ? l10n.placeBid : l10n.updateBid),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: priceController,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-              decoration: InputDecoration(
-                labelText: l10n.proposedPrice,
-                border: const OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: messageController,
-              maxLines: 3,
-              decoration: InputDecoration(
-                labelText: l10n.messageOptional,
-                border: const OutlineInputBorder(),
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(l10n.cancel),
-          ),
-          FilledButton(
-            onPressed: () {
-              final price = double.tryParse(priceController.text.trim());
-              if (price == null || price <= 0) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(l10n.invalidPrice)),
-                );
-                return;
-              }
-              Navigator.pop(
-                context,
-                _BidFormResult(
-                  price: price,
-                  message: messageController.text.trim(),
-                ),
-              );
-            },
-            child: Text(existing == null ? l10n.submitBid : l10n.save),
-          ),
-        ],
+      builder: (_) => _BidDialog(
+        l10n: l10n,
+        existing: existing,
       ),
     );
-
-    priceController.dispose();
-    messageController.dispose();
-    return result;
   }
 
   Future<void> _submitBid({
@@ -485,4 +429,104 @@ class _BidFormResult {
     required this.price,
     required this.message,
   });
+}
+
+class _BidDialog extends StatefulWidget {
+  final AppLocalizations l10n;
+  final CampaignBid? existing;
+
+  const _BidDialog({
+    required this.l10n,
+    required this.existing,
+  });
+
+  @override
+  State<_BidDialog> createState() => _BidDialogState();
+}
+
+class _BidDialogState extends State<_BidDialog> {
+  late final TextEditingController _priceController;
+  late final TextEditingController _messageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _priceController = TextEditingController(
+      text: widget.existing?.proposedPrice.toStringAsFixed(2),
+    );
+    _messageController = TextEditingController(
+      text: widget.existing?.message ?? '',
+    );
+  }
+
+  @override
+  void dispose() {
+    _priceController.dispose();
+    _messageController.dispose();
+    super.dispose();
+  }
+
+  void _submit() {
+    final price = double.tryParse(_priceController.text.trim());
+    if (price == null || price <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(widget.l10n.invalidPrice)),
+      );
+      return;
+    }
+
+    Navigator.pop(
+      context,
+      _BidFormResult(
+        price: price,
+        message: _messageController.text.trim(),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(
+        widget.existing == null ? widget.l10n.placeBid : widget.l10n.updateBid,
+      ),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: _priceController,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+              decoration: InputDecoration(
+                labelText: widget.l10n.proposedPrice,
+                border: const OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: _messageController,
+              maxLines: 3,
+              decoration: InputDecoration(
+                labelText: widget.l10n.messageOptional,
+                border: const OutlineInputBorder(),
+              ),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(widget.l10n.cancel),
+        ),
+        FilledButton(
+          onPressed: _submit,
+          child: Text(
+            widget.existing == null ? widget.l10n.submitBid : widget.l10n.save,
+          ),
+        ),
+      ],
+    );
+  }
 }

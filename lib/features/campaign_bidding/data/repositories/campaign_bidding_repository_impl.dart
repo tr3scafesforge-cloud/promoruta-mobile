@@ -216,6 +216,8 @@ class CampaignBiddingRepositoryImpl implements CampaignBiddingRepository {
       case DioExceptionType.badResponse:
         final statusCode = error.response?.statusCode;
         final responseData = error.response?.data;
+        final serverMessage = _extractServerMessage(responseData);
+        final errorCode = _extractErrorCode(responseData);
 
         if (statusCode == null) {
           return UnknownError.fromException(error, stackTrace);
@@ -228,7 +230,15 @@ class CampaignBiddingRepositoryImpl implements CampaignBiddingRepository {
             return AuthError.forbidden(cause: error, stackTrace: stackTrace);
           case 404:
             return NotFoundError(
-              message: 'Resource not found',
+              message: serverMessage ?? 'Resource not found',
+              cause: error,
+              stackTrace: stackTrace,
+            );
+          case 409:
+            final conflictMessage =
+                serverMessage ?? _mapConflictErrorCode(errorCode);
+            return UnknownError(
+              message: conflictMessage ?? 'Resource state conflict',
               cause: error,
               stackTrace: stackTrace,
             );
@@ -293,5 +303,54 @@ class CampaignBiddingRepositoryImpl implements CampaignBiddingRepository {
     }
 
     return {};
+  }
+
+  String? _extractServerMessage(dynamic responseData) {
+    if (responseData is Map<String, dynamic>) {
+      final message = responseData['message'];
+      if (message != null) {
+        final value = message.toString().trim();
+        if (value.isNotEmpty) return value;
+      }
+    } else if (responseData is Map) {
+      final typedMap = Map<String, dynamic>.from(responseData);
+      final message = typedMap['message'];
+      if (message != null) {
+        final value = message.toString().trim();
+        if (value.isNotEmpty) return value;
+      }
+    }
+
+    return null;
+  }
+
+  String? _extractErrorCode(dynamic responseData) {
+    if (responseData is Map<String, dynamic>) {
+      final errorCode = responseData['error_code'];
+      if (errorCode != null) {
+        final value = errorCode.toString().trim();
+        if (value.isNotEmpty) return value;
+      }
+    } else if (responseData is Map) {
+      final typedMap = Map<String, dynamic>.from(responseData);
+      final errorCode = typedMap['error_code'];
+      if (errorCode != null) {
+        final value = errorCode.toString().trim();
+        if (value.isNotEmpty) return value;
+      }
+    }
+
+    return null;
+  }
+
+  String? _mapConflictErrorCode(String? errorCode) {
+    switch (errorCode) {
+      case 'BID_WITHDRAWN':
+        return 'This offer was withdrawn by the promoter';
+      case 'BID_NOT_AVAILABLE':
+        return 'This offer is no longer available';
+      default:
+        return null;
+    }
   }
 }

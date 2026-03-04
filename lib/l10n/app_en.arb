@@ -1970,6 +1970,10 @@
   "@bidWithdrawn": {
     "description": "Snackbar message when bid is withdrawn"
   },
+  "bidNotAvailable": "This offer is no longer available",
+  "@bidNotAvailable": {
+    "description": "Snackbar message when selected bid is no longer available"
+  },
   "yourBid": "Your bid",
   "@yourBid": {
     "description": "Section title for promoter's own bid"

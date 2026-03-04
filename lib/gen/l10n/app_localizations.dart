@@ -2818,6 +2818,12 @@ abstract class AppLocalizations {
   /// **'Bid withdrawn'**
   String get bidWithdrawn;
 
+  /// Snackbar message when selected bid is no longer available
+  ///
+  /// In en, this message translates to:
+  /// **'This offer is no longer available'**
+  String get bidNotAvailable;
+
   /// Section title for promoter's own bid
   ///
   /// In en, this message translates to:

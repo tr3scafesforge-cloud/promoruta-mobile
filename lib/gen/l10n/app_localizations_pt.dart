@@ -1491,6 +1491,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get bidWithdrawn => 'Oferta retirada';
 
   @override
+  String get bidNotAvailable => 'Esta oferta não está mais disponível';
+
+  @override
   String get yourBid => 'Sua oferta';
 
   @override
