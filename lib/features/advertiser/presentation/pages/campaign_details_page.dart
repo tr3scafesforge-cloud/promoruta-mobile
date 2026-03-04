@@ -492,6 +492,14 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
       message = message.replaceFirst('AuthError:', '').trim();
     }
 
+    if (message.startsWith('ServerError:')) {
+      message = message.replaceFirst('ServerError:', '').trim();
+    }
+
+    if (message.startsWith('UnknownError:')) {
+      message = message.replaceFirst('UnknownError:', '').trim();
+    }
+
     final upper = message.toUpperCase();
     if (upper.contains('BID_WITHDRAWN')) {
       return l10n.bidWithdrawn;
@@ -499,6 +507,13 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
 
     if (upper.contains('BID_NOT_AVAILABLE')) {
       return l10n.bidNotAvailable;
+    }
+
+    if (upper.contains('PAYMENT_CHECKOUT_UNAVAILABLE') ||
+        upper.contains('CHECKOUT IS TEMPORARILY UNAVAILABLE') ||
+        upper.contains('CHECKOUT DE PAGO NO ESTA DISPONIBLE') ||
+        upper.contains('CHECKOUT DE PAGO NO ESTA DISPONIBLE TEMPORALMENTE')) {
+      return l10n.paymentPendingNoCheckout;
     }
 
     return message.isNotEmpty ? message : l10n.unknownError;

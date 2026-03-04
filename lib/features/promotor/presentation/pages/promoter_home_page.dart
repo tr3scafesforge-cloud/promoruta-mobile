@@ -1,27 +1,41 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/core/constants/colors.dart';
+import 'package:promoruta/core/models/campaign.dart';
+import 'package:promoruta/core/models/campaign_query_params.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
-import 'package:promoruta/shared/widgets/custom_button.dart';
-import 'package:promoruta/shared/widgets/stat_card.dart';
+import 'package:promoruta/shared/shared.dart';
 
-class PromoterHomePage extends StatelessWidget {
+final promoterHomeLatestCampaignsProvider =
+    FutureProvider.autoDispose<List<Campaign>>((ref) async {
+  final getCampaignsUseCase = ref.watch(getCampaignsUseCaseProvider);
+  return getCampaignsUseCase(const CampaignQueryParams(
+    perPage: 3,
+    sortBy: 'created_at',
+    sortOrder: 'desc',
+  ));
+});
+
+class PromoterHomePage extends ConsumerWidget {
   const PromoterHomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return const _PromoterHomeContent();
   }
 }
 
-class _PromoterHomeContent extends StatelessWidget {
+class _PromoterHomeContent extends ConsumerWidget {
   const _PromoterHomeContent();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final latestCampaignsAsync = ref.watch(promoterHomeLatestCampaignsProvider);
+
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
       children: [
-        // KPI cards
         Row(
           children: [
             Expanded(
@@ -34,7 +48,7 @@ class _PromoterHomeContent extends StatelessWidget {
                 backgroundColor: AppColors.deepOrange.withValues(alpha: .1),
               ),
             ),
-            SizedBox(width: 12),
+            const SizedBox(width: 12),
             Expanded(
               child: StatCard(
                 icon: Icons.trending_up_rounded,
@@ -48,46 +62,65 @@ class _PromoterHomeContent extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 16),
-
-        // Section header
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Campañas cerca tuyo',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    )),
+            Text(
+              l10n.nearbyCampaignsTitle,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+            ),
             TextButton(
               onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Ver Mapa (WIP)')),
+                SnackBar(content: Text('${l10n.viewOnMap} (WIP)')),
               ),
-              child: const Text('Ver Mapa'),
+              child: Text(l10n.viewOnMap),
             ),
           ],
         ),
+        latestCampaignsAsync.when(
+          loading: () => const Padding(
+            padding: EdgeInsets.symmetric(vertical: 20),
+            child: Center(child: CircularProgressIndicator()),
+          ),
+          error: (error, stack) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Text(
+              l10n.noCampaignsFound,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Colors.grey[600],
+                  ),
+            ),
+          ),
+          data: (campaigns) {
+            if (campaigns.isEmpty) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Text(
+                  l10n.noCampaignsFound,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Colors.grey[600],
+                      ),
+                ),
+              );
+            }
 
-        // Nearby campaign cards
-        const _NearbyCampaignCard(
-          title: 'Promoción Cafetería Centro',
-          amountRight: '\$18.00',
-          amountRightSub: 'Estimado',
-          distance: '1.4km',
-          duration: '35 min',
-          audio: '45s',
+            return Column(
+              children: campaigns.asMap().entries.map((entry) {
+                return Padding(
+                  padding: EdgeInsets.only(
+                    bottom: entry.key < campaigns.length - 1 ? 12 : 0,
+                  ),
+                  child: _NearbyCampaignCard(campaign: entry.value),
+                );
+              }).toList(),
+            );
+          },
         ),
-        const SizedBox(height: 12),
-        const _NearbyCampaignCard(
-          title: 'Promoción Cafetería',
-          amountRight: '\$48.20',
-          amountRightSub: 'Estimado',
-          distance: '2.4km',
-          duration: '35 min',
-          audio: '45s',
-        ),
-
         const SizedBox(height: 16),
-
-        // Active campaign
         const _ActiveCampaignCard(),
       ],
     );
@@ -95,25 +128,17 @@ class _PromoterHomeContent extends StatelessWidget {
 }
 
 class _NearbyCampaignCard extends StatelessWidget {
-  final String title;
-  final String amountRight;
-  final String amountRightSub;
-  final String distance;
-  final String duration;
-  final String audio;
+  final Campaign campaign;
 
   const _NearbyCampaignCard({
-    required this.title,
-    required this.amountRight,
-    required this.amountRightSub,
-    required this.distance,
-    required this.duration,
-    required this.audio,
+    required this.campaign,
   });
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final durationMinutes =
+        campaign.endTime.difference(campaign.startTime).inMinutes;
 
     return Card(
       elevation: 0,
@@ -123,7 +148,6 @@ class _NearbyCampaignCard extends StatelessWidget {
         padding: const EdgeInsets.all(14),
         child: Column(
           children: [
-            // Header
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -137,22 +161,31 @@ class _NearbyCampaignCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(title,
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                  )),
+                      Text(
+                        campaign.title,
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                       const SizedBox(height: 2),
                       Row(
                         children: [
                           Icon(Icons.near_me_rounded,
                               size: 16, color: Colors.grey[700]),
                           const SizedBox(width: 4),
-                          Text('A 0.8km de distancia',
+                          Expanded(
+                            child: Text(
+                              campaign.zone,
                               style: Theme.of(context)
                                   .textTheme
                                   .labelMedium
-                                  ?.copyWith(color: Colors.grey[700])),
+                                  ?.copyWith(color: Colors.grey[700]),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                         ],
                       ),
                     ],
@@ -161,31 +194,36 @@ class _NearbyCampaignCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(amountRight,
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w800,
-                            )),
-                    Text(amountRightSub,
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelSmall
-                            ?.copyWith(color: Colors.grey[700])),
+                    Text(
+                      '\$${campaign.suggestedPrice.toStringAsFixed(2)}',
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w800,
+                          ),
+                    ),
+                    Text(
+                      l10n.suggestedPrice,
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelSmall
+                          ?.copyWith(color: Colors.grey[700]),
+                    ),
                   ],
                 ),
               ],
             ),
             const SizedBox(height: 12),
-            // Metrics
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _miniMetric(Icons.alt_route_rounded, distance, 'Ruta'),
-                _miniMetric(Icons.timer_outlined, duration, 'Duración'),
-                _miniMetric(Icons.graphic_eq_rounded, audio, 'Audio'),
+                _miniMetric(Icons.alt_route_rounded,
+                    '${campaign.distance.toStringAsFixed(1)}km', l10n.route),
+                _miniMetric(
+                    Icons.timer_outlined, '$durationMinutes min', l10n.duration),
+                _miniMetric(Icons.graphic_eq_rounded,
+                    '${campaign.audioDuration}s', l10n.audio),
               ],
             ),
             const SizedBox(height: 12),
-            // Actions
             Row(
               children: [
                 Expanded(
@@ -261,7 +299,6 @@ class _ActiveCampaignCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header
             Row(
               children: [
                 const CircleAvatar(
@@ -274,7 +311,7 @@ class _ActiveCampaignCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Campaña Activa',
+                      Text('Campana Activa',
                           style:
                               Theme.of(context).textTheme.titleMedium?.copyWith(
                                     fontWeight: FontWeight.w700,
@@ -304,7 +341,6 @@ class _ActiveCampaignCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            // Progress label
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -321,7 +357,6 @@ class _ActiveCampaignCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8),
-            // Progress bar
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: LinearProgressIndicator(
@@ -332,9 +367,8 @@ class _ActiveCampaignCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 14),
-            // CTA
             CustomButton(
-              text: "Continuar Ruta",
+              text: 'Continuar Ruta',
               backgroundColor: AppColors.deepOrange,
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(

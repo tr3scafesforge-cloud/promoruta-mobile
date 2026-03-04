@@ -247,8 +247,9 @@ class CampaignBiddingRepositoryImpl implements CampaignBiddingRepository {
             return ValidationError.fromFields(fieldErrors,
                 cause: error, stackTrace: stackTrace);
           case >= 500:
+            final mappedMessage = serverMessage ?? _mapServerErrorCode(errorCode);
             return ServerError(
-              message: 'Server error: $statusCode',
+              message: mappedMessage ?? 'Server error: $statusCode',
               statusCode: statusCode,
               cause: error,
               stackTrace: stackTrace,
@@ -349,6 +350,15 @@ class CampaignBiddingRepositoryImpl implements CampaignBiddingRepository {
         return 'This offer was withdrawn by the promoter';
       case 'BID_NOT_AVAILABLE':
         return 'This offer is no longer available';
+      default:
+        return null;
+    }
+  }
+
+  String? _mapServerErrorCode(String? errorCode) {
+    switch (errorCode) {
+      case 'PAYMENT_CHECKOUT_UNAVAILABLE':
+        return 'Payment checkout is temporarily unavailable. Please try again.';
       default:
         return null;
     }
