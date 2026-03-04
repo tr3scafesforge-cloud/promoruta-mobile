@@ -9,6 +9,7 @@ import 'package:promoruta/core/models/campaign_bid.dart';
 import 'package:promoruta/core/models/payment_status.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
+import 'package:promoruta/shared/services/notification_service.dart';
 import 'package:promoruta/shared/widgets/payment_webview_page.dart';
 import 'package:promoruta/features/advertiser/campaign_management/domain/use_cases/campaign_use_cases.dart';
 import 'package:promoruta/features/campaign_bidding/domain/use_cases/campaign_bidding_use_cases.dart';
@@ -434,6 +435,7 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
     required String campaignId,
   }) async {
     final l10n = AppLocalizations.of(context);
+    final notificationService = ref.read(notificationServiceProvider);
     setState(() => _isAccepting = true);
     try {
       final acceptUseCase = ref.read(acceptBidUseCaseProvider);
@@ -461,8 +463,10 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
         }
       } else {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(l10n.paymentPendingNoCheckout)),
+          notificationService.showToast(
+            l10n.paymentPendingNoCheckout,
+            type: ToastType.info,
+            context: context,
           );
         }
       }
@@ -470,8 +474,10 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
       ref.invalidate(campaignByIdProvider(campaignId));
       ref.invalidate(campaignBidsProvider(campaignId));
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(_mapAcceptBidErrorMessage(e, l10n))),
+        notificationService.showToast(
+          _mapAcceptBidErrorMessage(e, l10n),
+          type: ToastType.error,
+          context: context,
         );
       }
     } finally {
