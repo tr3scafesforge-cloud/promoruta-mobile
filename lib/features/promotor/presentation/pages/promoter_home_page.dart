@@ -3,17 +3,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/core/models/campaign.dart';
 import 'package:promoruta/core/models/campaign_query_params.dart';
+import 'package:promoruta/features/promotor/campaign_browsing/presentation/pages/promoter_campaign_details_page.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
 
 final promoterHomeLatestCampaignsProvider =
     FutureProvider.autoDispose<List<Campaign>>((ref) async {
   final getCampaignsUseCase = ref.watch(getCampaignsUseCaseProvider);
-  return getCampaignsUseCase(const CampaignQueryParams(
-    perPage: 3,
+  final campaigns = await getCampaignsUseCase(const CampaignQueryParams(
+    perPage: 15,
     sortBy: 'created_at',
     sortOrder: 'desc',
   ));
+
+  return campaigns
+      .where(
+        (campaign) =>
+            campaign.status == CampaignStatus.pending ||
+            campaign.status == CampaignStatus.created,
+      )
+      .take(3)
+      .toList();
 });
 
 class PromoterHomePage extends ConsumerWidget {
@@ -243,14 +253,25 @@ class _NearbyCampaignCard extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: CustomButton(
-                    text: l10n.acceptPromotion,
+                    text: l10n.placeBid,
                     backgroundColor: AppColors.deepOrange,
                     textColor: AppColors.primary,
                     shrinkToFit: true,
                     onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                            content: Text('${l10n.acceptPromotion} (WIP)')),
+                      if (campaign.id == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.unknownError)),
+                        );
+                        return;
+                      }
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => PromoterCampaignDetailsPage(
+                            campaignId: campaign.id!,
+                          ),
+                        ),
                       );
                     },
                   ),
