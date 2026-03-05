@@ -298,29 +298,20 @@ class _PromoterCampaignDetailsPageState
                             ),
                           const SizedBox(height: 12),
                           if (campaign.status == CampaignStatus.created)
-                            SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                onPressed: _isSubmitting
-                                    ? null
-                                    : () => _submitBid(
-                                          campaignId: widget.campaignId,
-                                          existing: hasBid ? ownBid : null,
-                                        ),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      AppColors.activeCampaignColor,
-                                  foregroundColor: Colors.white,
+                            Opacity(
+                              opacity: _isSubmitting ? 0.7 : 1,
+                              child: IgnorePointer(
+                                ignoring: _isSubmitting,
+                                child: CustomButton(
+                                  text: hasBid ? l10n.updateBid : l10n.placeBid,
+                                  backgroundColor: AppColors.deepOrange,
+                                  textColor: AppColors.primary,
+                                  shrinkToFit: true,
+                                  onPressed: () => _submitBid(
+                                    campaignId: widget.campaignId,
+                                    existing: hasBid ? ownBid : null,
+                                  ),
                                 ),
-                                child: _isSubmitting
-                                    ? const SizedBox(
-                                        width: 18,
-                                        height: 18,
-                                        child: CircularProgressIndicator(
-                                            strokeWidth: 2),
-                                      )
-                                    : Text(
-                                        hasBid ? l10n.updateBid : l10n.placeBid),
                               ),
                             ),
                           if (canEdit) ...[
