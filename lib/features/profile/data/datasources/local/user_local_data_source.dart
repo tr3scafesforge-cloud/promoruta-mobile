@@ -29,8 +29,8 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
             tokenExpiry: Value(user.tokenExpiry),
             username: Value(user.username),
             photoUrl: Value(user.photoUrl),
-            refreshExpiresIn: Value(user.refreshExpiresIn!),
-            refreshToken: Value(user.refreshToken!),
+            refreshExpiresIn: Value(user.refreshExpiresIn),
+            refreshToken: Value(user.refreshToken),
           ),
         );
   }
