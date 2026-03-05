@@ -316,16 +316,21 @@ class _PromoterCampaignDetailsPageState
                             ),
                           if (canEdit) ...[
                             const SizedBox(height: 8),
-                            SizedBox(
-                              width: double.infinity,
-                              child: OutlinedButton(
-                                onPressed: _isSubmitting
-                                    ? null
-                                    : () => _withdrawBid(
-                                          campaignId: widget.campaignId,
-                                          bidId: ownBid.id,
-                                        ),
-                                child: Text(l10n.withdrawBid),
+                            Opacity(
+                              opacity: _isSubmitting ? 0.7 : 1,
+                              child: IgnorePointer(
+                                ignoring: _isSubmitting,
+                                child: CustomButton(
+                                  text: l10n.withdrawBid,
+                                  backgroundColor: Colors.white,
+                                  textColor: Colors.black,
+                                  isOutlined: true,
+                                  outlineColor: Colors.grey[300]!,
+                                  onPressed: () => _withdrawBid(
+                                    campaignId: widget.campaignId,
+                                    bidId: ownBid.id,
+                                  ),
+                                ),
                               ),
                             ),
                           ],
