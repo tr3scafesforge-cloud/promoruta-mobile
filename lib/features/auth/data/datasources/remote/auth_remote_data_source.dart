@@ -958,4 +958,18 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
     }
   }
+
+  @override
+  Future<void> registerDeviceToken(String token) async {
+    await dio.put(
+      '/users/me/device-token',
+      data: {'token': token},
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      ),
+    );
+  }
 }

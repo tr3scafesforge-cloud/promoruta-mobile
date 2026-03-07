@@ -355,34 +355,36 @@ class _LoginState extends ConsumerState<Login> {
                                         ]);
 
                                         if (context.mounted) {
-                                          final authState =
-                                              ref.read(authStateProvider);
-                                          authState.maybeWhen(
-                                            data: (user) {
-                                              if (user != null) {
-                                                if (user.role == UserRole.promoter) {
-                                                  const PromoterHomeRoute()
-                                                      .go(context);
-                                                } else if (user.role ==
-                                                    UserRole.advertiser) {
-                                                  const AdvertiserHomeRoute()
-                                                      .go(context);
-                                                } else {
-                                                  const HomeRoute().go(context);
-                                                }
-                                              }
-                                            },
-                                            orElse: () {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                const SnackBar(
-                                                  content: Text(
-                                                      'Login failed: Unable to determine user role'),
-                                                  backgroundColor: Colors.red,
-                                                ),
-                                              );
-                                            },
-                                          );
+                                          final user = ref
+                                              .read(authStateProvider)
+                                              .valueOrNull;
+
+                                          if (user == null) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                    'Login failed: Unable to determine user role'),
+                                                backgroundColor: Colors.red,
+                                              ),
+                                            );
+                                            return;
+                                          }
+
+                                          await ref
+                                              .read(pushNotificationServiceProvider)
+                                              .registerCurrentToken();
+
+                                          if (user.role == UserRole.promoter) {
+                                            const PromoterHomeRoute()
+                                                .go(context);
+                                          } else if (user.role ==
+                                              UserRole.advertiser) {
+                                            const AdvertiserHomeRoute()
+                                                .go(context);
+                                          } else {
+                                            const HomeRoute().go(context);
+                                          }
                                         }
                                       } on TwoFactorRequiredException catch (e) {
                                         if (context.mounted) {

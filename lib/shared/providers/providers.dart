@@ -20,6 +20,8 @@ import 'package:promoruta/shared/services/geocoding_service.dart';
 import 'package:promoruta/shared/services/geocoding_service_impl.dart';
 import 'package:promoruta/shared/services/update_check_service.dart';
 import 'package:promoruta/shared/services/update_check_service_impl.dart';
+import 'package:promoruta/shared/services/notification_channel_service.dart';
+import 'package:promoruta/shared/services/push_notification_service.dart';
 
 // Re-export infrastructure providers (database, dio, connectivity, logger, config)
 export 'infrastructure_providers.dart';
@@ -137,6 +139,20 @@ class LocaleNotifier extends StateNotifier<Locale> {
 
 final notificationServiceProvider = Provider<NotificationService>((ref) {
   return OverlayNotificationService(AppRouter.navigatorKey);
+});
+
+final notificationChannelServiceProvider = Provider<NotificationChannelService>((ref) {
+  return const NotificationChannelService();
+});
+
+final pushNotificationServiceProvider = Provider<PushNotificationService>((ref) {
+  final authRepository = ref.watch(authRepositoryProvider);
+  final notificationChannelService = ref.watch(notificationChannelServiceProvider);
+  return PushNotificationService(
+    authRepository: authRepository,
+    notificationChannelService: notificationChannelService,
+    navigatorKey: AppRouter.navigatorKey,
+  );
 });
 
 // ============ Update Check Service ============

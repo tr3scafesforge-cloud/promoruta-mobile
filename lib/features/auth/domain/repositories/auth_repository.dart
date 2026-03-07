@@ -85,6 +85,9 @@ abstract class AuthRepository {
 
   /// Resends the verification code to the email.
   Future<String> resendVerificationCode(String email);
+
+  /// Registers the FCM token for the current authenticated user.
+  Future<void> registerDeviceToken(String token);
 }
 
 /// Abstract local data source for authentication.
@@ -169,4 +172,7 @@ abstract class AuthRemoteDataSource {
 
   /// Regenerates recovery codes (requires password confirmation).
   Future<RecoveryCodesResponse> regenerateRecoveryCodes(String password);
+
+  /// Registers the FCM token for the authenticated user.
+  Future<void> registerDeviceToken(String token);
 }

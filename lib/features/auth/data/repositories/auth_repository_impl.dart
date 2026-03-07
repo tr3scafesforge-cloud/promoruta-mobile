@@ -356,4 +356,14 @@ class AuthRepositoryImpl implements AuthRepository {
           'No internet connection. Please check your connection and try again.');
     }
   }
+
+  @override
+  Future<void> registerDeviceToken(String token) async {
+    final isConnected = await _connectivityService.isConnected;
+    if (!isConnected) {
+      throw Exception('No internet connection. Unable to register device token.');
+    }
+
+    await _remoteDataSource.registerDeviceToken(token);
+  }
 }

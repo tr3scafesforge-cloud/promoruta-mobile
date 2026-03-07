@@ -44,6 +44,14 @@
   "@notificationsSubtitle": {
     "description": "Subtitle for notifications permission"
   },
+  "newCampaignNotificationTitle": "New campaign available",
+  "@newCampaignNotificationTitle": {
+    "description": "Title for foreground notification when a campaign becomes available"
+  },
+  "newCampaignNotificationBody": "A new campaign is ready for your bid.",
+  "@newCampaignNotificationBody": {
+    "description": "Body for foreground notification when a campaign becomes available"
+  },
   "microphoneTitle": "Allow microphone",
   "@microphoneTitle": {
     "description": "Title for microphone permission"

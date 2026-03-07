@@ -46,6 +46,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Follow the status of campaigns and don\'t miss what\'s coming up';
 
   @override
+  String get newCampaignNotificationTitle => 'New campaign available';
+
+  @override
+  String get newCampaignNotificationBody =>
+      'A new campaign is ready for your bid.';
+
+  @override
   String get microphoneTitle => 'Allow microphone';
 
   @override

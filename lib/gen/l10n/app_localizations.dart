@@ -166,6 +166,18 @@ abstract class AppLocalizations {
   /// **'Follow the status of campaigns and don\'t miss what\'s coming up'**
   String get notificationsSubtitle;
 
+  /// Title for foreground notification when a campaign becomes available
+  ///
+  /// In en, this message translates to:
+  /// **'New campaign available'**
+  String get newCampaignNotificationTitle;
+
+  /// Body for foreground notification when a campaign becomes available
+  ///
+  /// In en, this message translates to:
+  /// **'A new campaign is ready for your bid.'**
+  String get newCampaignNotificationBody;
+
   /// Title for microphone permission
   ///
   /// In en, this message translates to:

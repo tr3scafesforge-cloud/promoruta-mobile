@@ -5,6 +5,7 @@ import 'package:promoruta/core/utils/logger.dart';
 import 'package:promoruta/features/advertiser/presentation/pages/advertiser_home_screen.dart';
 import 'package:promoruta/features/profile/presentation/pages/user_profile_page.dart';
 import 'package:promoruta/features/promotor/presentation/pages/promoter_home_screen.dart';
+import 'package:promoruta/features/promotor/campaign_browsing/presentation/pages/promoter_campaign_details_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:promoruta/core/core.dart' as model;
 import 'package:promoruta/core/models/user.dart';
@@ -563,7 +564,16 @@ class AppRouter {
     return GoRouter(
       initialLocation: '/',
       navigatorKey: navigatorKey,
-      routes: $appRoutes,
+      routes: [
+        ...$appRoutes,
+        GoRoute(
+          path: '/promoter-campaign-details/:campaignId',
+          builder: (context, state) {
+            final campaignId = state.pathParameters['campaignId'] ?? '';
+            return PromoterCampaignDetailsPage(campaignId: campaignId);
+          },
+        ),
+      ],
       refreshListenable: authNotifier,
       redirect: (context, state) {
         final user = authNotifier.user;

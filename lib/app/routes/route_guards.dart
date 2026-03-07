@@ -45,6 +45,7 @@ class RouteGuards {
 
     // Promoter-only routes
     '/promoter-home': promoterOnly,
+    '/promoter-campaign-details/:campaignId': promoterOnly,
 
     // Advertiser-only routes
     '/advertiser-home': advertiserOnly,

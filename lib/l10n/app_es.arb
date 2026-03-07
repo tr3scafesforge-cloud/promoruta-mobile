@@ -44,6 +44,14 @@
   "@notificationsSubtitle": {
     "description": "Subtitle for notifications permission"
   },
+  "newCampaignNotificationTitle": "Nueva campaña disponible",
+  "@newCampaignNotificationTitle": {
+    "description": "Título para notificación en primer plano cuando hay nueva campaña"
+  },
+  "newCampaignNotificationBody": "Hay una nueva campaña lista para tu oferta.",
+  "@newCampaignNotificationBody": {
+    "description": "Mensaje para notificación en primer plano cuando hay nueva campaña"
+  },
   "microphoneTitle": "Permitir micrófono",
   "@microphoneTitle": {
     "description": "Title for microphone permission"

@@ -82,6 +82,7 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
 
       // Update auth state
       ref.read(authStateProvider.notifier).setUser(user);
+      await ref.read(pushNotificationServiceProvider).registerCurrentToken();
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
