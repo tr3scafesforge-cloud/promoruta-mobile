@@ -8,12 +8,15 @@ import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:promoruta/core/utils/logger.dart';
 import 'package:promoruta/features/auth/domain/repositories/auth_repository.dart';
+import 'package:promoruta/firebase_options.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/services/notification_channel_service.dart';
 
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   AppLogger.router.i('Received background push: ${message.messageId}');
 }
 

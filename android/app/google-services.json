@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "428983193335",
+    "project_id": "promoruta-b0905",
+    "storage_bucket": "promoruta-b0905.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:428983193335:android:a72e6188a1bbe376b80df2",
+        "android_client_info": {
+          "package_name": "com.promoruta.app.promoruta"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCg-yvlWe3gB83YhFj3HF7-VFYmUNXPpFg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:428983193335:android:2d93ae9af2dbcd71b80df2",
+        "android_client_info": {
+          "package_name": "com.tr3scafes.promoruta"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCg-yvlWe3gB83YhFj3HF7-VFYmUNXPpFg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
