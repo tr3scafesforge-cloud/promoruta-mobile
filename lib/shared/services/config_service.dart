@@ -101,7 +101,7 @@ class ConfigServiceImpl implements ConfigService {
     } catch (e) {
       // If assets config fails, use hardcoded fallback
       return const AppConfig(
-        baseUrl: 'http://172.81.177.85/',
+        baseUrl: 'https://api.promoruta.com.uy/',
         configVersion: 'fallback',
       );
     }

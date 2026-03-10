@@ -81,7 +81,7 @@ final dioProvider = Provider<Dio>((ref) {
   final configAsync = ref.watch(configProvider);
   final config = configAsync.maybeWhen(
     data: (config) => config,
-    orElse: () => const AppConfig(baseUrl: 'http://172.81.177.85/api/'),
+    orElse: () => const AppConfig(baseUrl: 'https://api.promoruta.com.uy/api/'),
   );
 
   final dio = Dio(BaseOptions(
