@@ -252,12 +252,16 @@ class _CampaignCard extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 8),
-                          Text(
-                            campaign.zone,
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium
-                                ?.copyWith(color: Colors.grey[700]),
+                          Expanded(
+                            child: Text(
+                              campaign.zone,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelMedium
+                                  ?.copyWith(color: Colors.grey[700]),
+                            ),
                           ),
                         ],
                       ),
