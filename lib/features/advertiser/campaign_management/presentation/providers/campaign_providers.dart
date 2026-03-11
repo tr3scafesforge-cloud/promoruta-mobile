@@ -122,15 +122,19 @@ final campaignByIdProvider = FutureProvider.autoDispose
 final campaignsProvider =
     StateNotifierProvider<CampaignsNotifier, AsyncValue<List<model.Campaign>>>(
         (ref) {
+  final authState = ref.watch(authStateProvider);
   final getCampaignsUseCase = ref.watch(getCampaignsUseCaseProvider);
   final createCampaignUseCase = ref.watch(createCampaignUseCaseProvider);
   final updateCampaignUseCase = ref.watch(updateCampaignUseCaseProvider);
   final deleteCampaignUseCase = ref.watch(deleteCampaignUseCaseProvider);
+  final user = authState.valueOrNull;
+
   return CampaignsNotifier(
     getCampaignsUseCase,
     createCampaignUseCase,
     updateCampaignUseCase,
     deleteCampaignUseCase,
+    shouldAutoLoad: user?.role == model.UserRole.advertiser,
   );
 });
 
@@ -138,7 +142,14 @@ final campaignsProvider =
 // Note: keepAlive prevents re-fetching when navigating away and back to this tab
 final activeCampaignsProvider =
     FutureProvider<List<model.Campaign>>((ref) async {
+  final authState = ref.watch(authStateProvider);
   final getCampaignsUseCase = ref.watch(getCampaignsUseCaseProvider);
+  final user = authState.valueOrNull;
+
+  if (user == null || user.role != model.UserRole.advertiser) {
+    return [];
+  }
+
   return await getCampaignsUseCase(
       const GetCampaignsParams(status: 'in_progress'));
 });
@@ -292,8 +303,13 @@ class CampaignsNotifier
     this._createCampaignUseCase,
     this._updateCampaignUseCase,
     this._deleteCampaignUseCase,
+    {bool shouldAutoLoad = true}
   ) : super(const AsyncValue.loading()) {
-    loadCampaigns();
+    if (shouldAutoLoad) {
+      loadCampaigns();
+    } else {
+      state = const AsyncValue.data([]);
+    }
   }
 
   Future<void> loadCampaigns({

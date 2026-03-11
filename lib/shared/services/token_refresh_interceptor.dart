@@ -179,12 +179,16 @@ class TokenRefreshInterceptor extends Interceptor {
         handler.next(err);
       }
     } on DioException catch (e) {
-      AppLogger.auth.e('Token refresh error: ${e.message}');
+      AppLogger.auth.e(
+        'Token refresh error: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}',
+      );
+      await _localDataSource.clearUser();
       _refreshCompleter!.complete(null);
       _refreshCompleter = null;
       handler.next(err);
     } catch (e) {
       AppLogger.auth.e('Unexpected error during token refresh: $e');
+      await _localDataSource.clearUser();
       _refreshCompleter!.complete(null);
       _refreshCompleter = null;
       handler.next(err);
