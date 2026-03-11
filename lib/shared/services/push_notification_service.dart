@@ -115,6 +115,7 @@ class PushNotificationService {
     if (!Platform.isAndroid) return;
 
     final user = await _authRepository.getCurrentUser();
+    _logIncomingMessage('foreground', message, user?.role);
     if (!_shouldHandleMessageForUser(message, user?.role)) {
       AppLogger.router.i(
         'Skipping push display for user role ${user?.role} with payload ${message.data}',
@@ -124,14 +125,9 @@ class PushNotificationService {
 
     final context = _navigatorKey.currentContext;
     final l10n = context != null ? AppLocalizations.of(context) : null;
-
-    final title = message.notification?.title ??
-        l10n?.newCampaignNotificationTitle ??
-        'New campaign available';
-    final body =
-        message.notification?.body ??
-        l10n?.newCampaignNotificationBody ??
-        'A new campaign is ready for your bid.';
+    final notificationContent = _notificationContentForMessage(message, l10n);
+    final title = message.notification?.title ?? notificationContent.title;
+    final body = message.notification?.body ?? notificationContent.body;
 
     await _localNotifications.show(
       message.hashCode,
@@ -152,6 +148,7 @@ class PushNotificationService {
 
   Future<void> _handleNotificationNavigation(RemoteMessage message) async {
     final user = await _authRepository.getCurrentUser();
+    _logIncomingMessage('navigation', message, user?.role);
     if (!_shouldHandleMessageForUser(message, user?.role)) {
       AppLogger.router.i(
         'Skipping push navigation for user role ${user?.role} with payload ${message.data}',
@@ -255,4 +252,70 @@ class PushNotificationService {
   String _normalizedValue(String? value) {
     return value?.trim().toLowerCase().replaceAll(' ', '_') ?? '';
   }
+
+  void _logIncomingMessage(
+    String source,
+    RemoteMessage message,
+    model.UserRole? userRole,
+  ) {
+    final type = _normalizedValue(
+      message.data['type']?.toString() ??
+          message.data['notification_type']?.toString() ??
+          message.data['event']?.toString(),
+    );
+    final targetRole = _targetRoleForMessage(message);
+
+    AppLogger.router.i(
+      'Push $source received: messageId=${message.messageId}, userRole=$userRole, targetRole=$targetRole, type=$type, data=${message.data}',
+    );
+  }
+
+  _NotificationContent _notificationContentForMessage(
+    RemoteMessage message,
+    AppLocalizations? l10n,
+  ) {
+    final type = _normalizedValue(
+      message.data['type']?.toString() ??
+          message.data['notification_type']?.toString() ??
+          message.data['event']?.toString(),
+    );
+
+    switch (type) {
+      case 'new_bid':
+      case 'bid_created':
+      case 'bid_received':
+      case 'promoter_bid':
+      case 'campaign_bid':
+        return const _NotificationContent(
+          title: 'New bid received',
+          body: 'A promoter submitted a bid for one of your campaigns.',
+        );
+      case 'bid_accepted':
+      case 'campaign_started':
+        return const _NotificationContent(
+          title: 'Campaign update',
+          body: 'Your campaign has a new status update.',
+        );
+      case 'new_campaign':
+      case 'campaign_created':
+      case 'campaign_available':
+      case 'new_campaign_available':
+      default:
+        return _NotificationContent(
+          title: l10n?.newCampaignNotificationTitle ?? 'New campaign available',
+          body: l10n?.newCampaignNotificationBody ??
+              'A new campaign is ready for your bid.',
+        );
+    }
+  }
+}
+
+class _NotificationContent {
+  const _NotificationContent({
+    required this.title,
+    required this.body,
+  });
+
+  final String title;
+  final String body;
 }

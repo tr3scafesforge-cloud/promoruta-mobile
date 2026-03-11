@@ -16,7 +16,7 @@ class TokenRefreshInterceptor extends Interceptor {
 
   /// Completer that coordinates concurrent refresh requests.
   /// When set, a refresh is in progress and all new requests should wait on it.
-  Completer<String?>? _refreshCompleter;
+  static Completer<String?>? _refreshCompleter;
 
   TokenRefreshInterceptor({
     required AuthLocalDataSource localDataSource,
@@ -183,13 +183,13 @@ class TokenRefreshInterceptor extends Interceptor {
         'Token refresh error: ${e.response?.statusCode} - ${e.response?.data} - ${e.message}',
       );
       await _localDataSource.clearUser();
-      _refreshCompleter!.complete(null);
+      _refreshCompleter?.complete(null);
       _refreshCompleter = null;
       handler.next(err);
     } catch (e) {
       AppLogger.auth.e('Unexpected error during token refresh: $e');
       await _localDataSource.clearUser();
-      _refreshCompleter!.complete(null);
+      _refreshCompleter?.complete(null);
       _refreshCompleter = null;
       handler.next(err);
     }
