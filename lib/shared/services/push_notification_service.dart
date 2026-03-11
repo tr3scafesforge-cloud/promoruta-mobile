@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:promoruta/core/core.dart' as model;
 import 'package:promoruta/core/utils/logger.dart';
 import 'package:promoruta/features/auth/domain/repositories/auth_repository.dart';
 import 'package:promoruta/firebase_options.dart';
@@ -113,6 +114,14 @@ class PushNotificationService {
   Future<void> _handleForegroundMessage(RemoteMessage message) async {
     if (!Platform.isAndroid) return;
 
+    final user = await _authRepository.getCurrentUser();
+    if (!_shouldHandleMessageForUser(message, user?.role)) {
+      AppLogger.router.i(
+        'Skipping push display for user role ${user?.role} with payload ${message.data}',
+      );
+      return;
+    }
+
     final context = _navigatorKey.currentContext;
     final l10n = context != null ? AppLocalizations.of(context) : null;
 
@@ -141,16 +150,109 @@ class PushNotificationService {
     );
   }
 
-  void _handleNotificationNavigation(RemoteMessage message) {
+  Future<void> _handleNotificationNavigation(RemoteMessage message) async {
+    final user = await _authRepository.getCurrentUser();
+    if (!_shouldHandleMessageForUser(message, user?.role)) {
+      AppLogger.router.i(
+        'Skipping push navigation for user role ${user?.role} with payload ${message.data}',
+      );
+      return;
+    }
+
     final context = _navigatorKey.currentContext;
     if (context == null) return;
 
     final campaignId = message.data['campaignId']?.toString();
+    final targetRole = _targetRoleForMessage(message) ?? user?.role;
+
+    if (targetRole == model.UserRole.advertiser) {
+      if (campaignId == null || campaignId.isEmpty) {
+        GoRouter.of(context).go('/advertiser-home');
+        return;
+      }
+
+      GoRouter.of(context).go('/campaign-details/$campaignId');
+      return;
+    }
+
     if (campaignId == null || campaignId.isEmpty) {
       GoRouter.of(context).go('/promoter-home');
       return;
     }
 
     GoRouter.of(context).go('/promoter-campaign-details/$campaignId');
+  }
+
+  bool _shouldHandleMessageForUser(
+    RemoteMessage message,
+    model.UserRole? userRole,
+  ) {
+    if (userRole == null) return false;
+
+    final targetRole = _targetRoleForMessage(message);
+    if (targetRole == null) {
+      return true;
+    }
+
+    return targetRole == userRole;
+  }
+
+  model.UserRole? _targetRoleForMessage(RemoteMessage message) {
+    final explicitRole = _parseRole(
+      message.data['target_role']?.toString() ??
+          message.data['targetRole']?.toString() ??
+          message.data['role']?.toString() ??
+          message.data['user_role']?.toString(),
+    );
+    if (explicitRole != null) {
+      return explicitRole;
+    }
+
+    final type = _normalizedValue(
+      message.data['type']?.toString() ??
+          message.data['notification_type']?.toString() ??
+          message.data['event']?.toString(),
+    );
+
+    const promoterTypes = {
+      'new_campaign',
+      'campaign_created',
+      'campaign_available',
+      'new_campaign_available',
+    };
+    if (promoterTypes.contains(type)) {
+      return model.UserRole.promoter;
+    }
+
+    const advertiserTypes = {
+      'new_bid',
+      'bid_created',
+      'bid_received',
+      'promoter_bid',
+      'campaign_bid',
+    };
+    if (advertiserTypes.contains(type)) {
+      return model.UserRole.advertiser;
+    }
+
+    return null;
+  }
+
+  model.UserRole? _parseRole(String? rawRole) {
+    final value = _normalizedValue(rawRole);
+    switch (value) {
+      case 'promoter':
+      case 'promotor':
+        return model.UserRole.promoter;
+      case 'advertiser':
+      case 'anunciante':
+        return model.UserRole.advertiser;
+      default:
+        return null;
+    }
+  }
+
+  String _normalizedValue(String? value) {
+    return value?.trim().toLowerCase().replaceAll(' ', '_') ?? '';
   }
 }
