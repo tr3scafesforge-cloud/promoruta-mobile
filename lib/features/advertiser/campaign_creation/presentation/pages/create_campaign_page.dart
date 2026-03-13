@@ -11,6 +11,7 @@ import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/widgets/custom_button.dart';
 import 'package:promoruta/shared/widgets/app_card.dart';
 import 'package:promoruta/shared/providers/providers.dart';
+import 'package:promoruta/shared/services/notification_service.dart';
 import 'package:promoruta/shared/constants/map_constants.dart';
 import 'package:promoruta/shared/models/route_model.dart';
 import 'coverage_zone_map_screen.dart';
@@ -748,6 +749,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
 
   Future<void> _createCampaign() async {
     final l10n = AppLocalizations.of(context);
+    final notificationService = ref.read(notificationServiceProvider);
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -879,12 +881,10 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
       );
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.campaignCreatedSuccessfully),
-            backgroundColor: AppColors.secondary,
-            duration: const Duration(seconds: 4),
-          ),
+        notificationService.showToast(
+          l10n.campaignCreatedSuccessfully,
+          type: ToastType.success,
+          context: context,
         );
 
         // Mark first campaign as created
