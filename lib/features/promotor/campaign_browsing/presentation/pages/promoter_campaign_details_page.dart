@@ -8,6 +8,7 @@ import 'package:promoruta/core/models/campaign_bid.dart';
 import 'package:promoruta/core/models/payment_status.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
+import 'package:promoruta/shared/services/notification_service.dart';
 import 'package:promoruta/features/campaign_bidding/domain/use_cases/campaign_bidding_use_cases.dart';
 import 'package:promoruta/features/promotor/presentation/pages/active_campaign_map_view.dart';
 
@@ -88,6 +89,7 @@ class _PromoterCampaignDetailsPageState
     CampaignBid? existing,
   }) async {
     final l10n = AppLocalizations.of(context);
+    final notificationService = ref.read(notificationServiceProvider);
     final result = await _showBidDialog(l10n, existing);
     if (result == null) return;
 
@@ -114,8 +116,10 @@ class _PromoterCampaignDetailsPageState
       ref.invalidate(campaignBidsProvider(campaignId));
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.bidSaved)),
+        notificationService.showToast(
+          l10n.bidSaved,
+          type: ToastType.success,
+          context: context,
         );
       }
     } catch (e) {
@@ -136,6 +140,7 @@ class _PromoterCampaignDetailsPageState
     required String bidId,
   }) async {
     final l10n = AppLocalizations.of(context);
+    final notificationService = ref.read(notificationServiceProvider);
     setState(() => _isSubmitting = true);
     try {
       final withdrawUseCase = ref.read(withdrawBidUseCaseProvider);
@@ -147,8 +152,10 @@ class _PromoterCampaignDetailsPageState
       ref.invalidate(campaignBidsProvider(campaignId));
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.bidWithdrawn)),
+        notificationService.showToast(
+          l10n.bidWithdrawn,
+          type: ToastType.success,
+          context: context,
         );
       }
     } catch (e) {
@@ -261,8 +268,10 @@ class _PromoterCampaignDetailsPageState
                         ),
                       );
                       final hasBid = ownBid.id.isNotEmpty;
-                      final canEdit = campaign.status == CampaignStatus.created &&
-                          ownBid.status == CampaignBidStatus.pending;
+                      final hasActiveBid =
+                          hasBid && ownBid.status != CampaignBidStatus.withdrawn;
+                      final canSubmitBid =
+                          campaign.status == CampaignStatus.created;
 
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -297,24 +306,26 @@ class _PromoterCampaignDetailsPageState
                               ],
                             ),
                           const SizedBox(height: 12),
-                          if (campaign.status == CampaignStatus.created)
+                          if (canSubmitBid)
                             Opacity(
                               opacity: _isSubmitting ? 0.7 : 1,
                               child: IgnorePointer(
                                 ignoring: _isSubmitting,
                                 child: CustomButton(
-                                  text: hasBid ? l10n.updateBid : l10n.placeBid,
+                                  text: hasActiveBid
+                                      ? l10n.updateBid
+                                      : l10n.placeBid,
                                   backgroundColor: AppColors.deepOrange,
                                   textColor: AppColors.primary,
                                   shrinkToFit: true,
                                   onPressed: () => _submitBid(
                                     campaignId: widget.campaignId,
-                                    existing: hasBid ? ownBid : null,
+                                    existing: hasActiveBid ? ownBid : null,
                                   ),
                                 ),
                               ),
                             ),
-                          if (canEdit) ...[
+                          if (hasActiveBid) ...[
                             const SizedBox(height: 8),
                             Opacity(
                               opacity: _isSubmitting ? 0.7 : 1,
