@@ -124,8 +124,10 @@ class _PromoterCampaignDetailsPageState
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
+        notificationService.showToast(
+          _formatErrorMessage(e),
+          type: ToastType.error,
+          context: context,
         );
       }
     } finally {
@@ -160,8 +162,10 @@ class _PromoterCampaignDetailsPageState
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
+        notificationService.showToast(
+          _formatErrorMessage(e),
+          type: ToastType.error,
+          context: context,
         );
       }
     } finally {
@@ -390,6 +394,15 @@ class _PromoterCampaignDetailsPageState
     return status == CampaignStatus.completed ||
         status == CampaignStatus.canceled ||
         status == CampaignStatus.expired;
+  }
+
+  String _formatErrorMessage(Object error) {
+    final message = error.toString();
+    const exceptionPrefix = 'Exception: ';
+    if (message.startsWith(exceptionPrefix)) {
+      return message.substring(exceptionPrefix.length);
+    }
+    return message;
   }
 }
 
