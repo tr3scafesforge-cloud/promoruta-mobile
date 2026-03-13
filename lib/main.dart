@@ -43,6 +43,14 @@ class _PromorutaAppState extends ConsumerState<PromorutaApp> {
     Future.microtask(() async {
       await ref.read(pushNotificationServiceProvider).initialize();
     });
+
+    ref.listenManual(authStateProvider, (previous, next) {
+      final wasLoggedOut = previous?.valueOrNull == null;
+      final isLoggedIn = next.valueOrNull != null;
+      if (wasLoggedOut && isLoggedIn) {
+        ref.read(pushNotificationServiceProvider).registerCurrentToken();
+      }
+    });
   }
 
   @override
