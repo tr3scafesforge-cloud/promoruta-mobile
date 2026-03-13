@@ -26,7 +26,8 @@ flutter test test/features/promotor/route_execution/presentation/providers/campa
 flutter test --coverage
 
 # Lint and analyze
-flutter analyze
+# Do not run `flutter analyze` in this repository from Codex by default.
+# It times out in this environment. Prefer targeted verification instead.
 
 # Format code
 dart format .
@@ -40,9 +41,19 @@ flutter packages pub run build_runner watch --delete-conflicting-outputs
 
 ### Development Workflow
 1. Always run `flutter pub get` after modifying pubspec.yaml
-2. Use `flutter analyze` before committing to check for issues
-3. Run `flutter test` to ensure all tests pass
-4. Use `dart format .` to maintain consistent formatting
+2. Do not run `flutter analyze` from Codex by default because it times out in this environment
+3. Prefer targeted verification for the files changed, and mention clearly if no verification was run
+4. Run `flutter test` when the change is covered by tests or when a relevant targeted test exists
+5. Use `dart format .` to maintain consistent formatting when the formatter completes successfully
+
+### Codex Workflow Rules
+1. Read existing feature files before editing and preserve the current architecture and naming conventions
+2. Use `rg` for code search and prefer targeted file reads over broad scans
+3. Use `apply_patch` for manual file edits
+4. Do not run `flutter analyze` unless the user explicitly asks for it
+5. If a command times out or is known to time out, stop retrying it and report that limitation in the final response
+6. When verification is skipped, state that explicitly
+7. Prefer focused tests or formatting on changed files instead of full-project verification when possible
 
 ## Project Architecture
 
@@ -228,10 +239,11 @@ void main() {
 ## Git Workflow
 
 ### Before Committing
-1. Run `flutter analyze` - fix all issues
-2. Run `flutter test` - ensure all tests pass
-3. Run `dart format .` - format code consistently
+1. Do not run `flutter analyze` from Codex by default because it times out in this environment
+2. Run relevant `flutter test` commands when applicable
+3. Run `dart format .` or format the changed files when the formatter completes successfully
 4. Check for any generated files that need updating
+5. Mention any skipped verification in the final response
 
 ### Commit Message Style
 - Use conventional commits: `feat:`, `fix:`, `refactor:`, `test:`, etc.
