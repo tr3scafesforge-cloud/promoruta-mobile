@@ -1,6 +1,8 @@
-# Specification Delta: App Performance
+# app-performance Specification
 
-## ADDED Requirements
+## Purpose
+TBD - created by archiving change optimize-performance-patterns. Update Purpose after archive.
+## Requirements
 ### Requirement: Database Query Optimization
 The database layer SHALL use indexes on frequently queried columns to improve query performance.
 
@@ -60,10 +62,10 @@ Widgets SHALL use `const` constructors where applicable to reduce allocation ove
 - **WHEN** a widget has no mutable state or external dependencies
 - **THEN** it is declared with `const` keyword to enable compiler deduplication
 
-## MODIFIED Requirements
 ### Requirement: First Campaign Sync Logic
 The first campaign detection mechanism SHALL not cause double-loading of campaign data.
 
 #### Scenario: Single load on first campaign change
 - **WHEN** campaigns are fetched from remote
 - **THEN** FirstCampaignNotifier updates based on provider change, without triggering additional refresh
+
