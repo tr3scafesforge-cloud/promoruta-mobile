@@ -3045,6 +3045,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No account found with this email.'**
   String get noAccountFoundWithEmail;
+
+  /// Push notification title when a promoter places a bid
+  ///
+  /// In en, this message translates to:
+  /// **'New bid on your campaign'**
+  String get bidPlacedNotificationTitle;
+
+  /// Push notification body when a promoter places a bid
+  ///
+  /// In en, this message translates to:
+  /// **'A promoter submitted a bid on your campaign.'**
+  String get bidPlacedNotificationBody;
+
+  /// Push notification title when a promoter updates their bid
+  ///
+  /// In en, this message translates to:
+  /// **'Bid updated'**
+  String get bidUpdatedNotificationTitle;
+
+  /// Push notification body when a promoter updates their bid
+  ///
+  /// In en, this message translates to:
+  /// **'A promoter updated their bid on your campaign.'**
+  String get bidUpdatedNotificationBody;
+
+  /// Push notification title when a promoter withdraws their bid
+  ///
+  /// In en, this message translates to:
+  /// **'Bid withdrawn'**
+  String get bidWithdrawnNotificationTitle;
+
+  /// Push notification body when a promoter withdraws their bid
+  ///
+  /// In en, this message translates to:
+  /// **'A promoter withdrew their bid from your campaign.'**
+  String get bidWithdrawnNotificationBody;
+
+  /// Toast shown to promoter after successfully submitting a bid
+  ///
+  /// In en, this message translates to:
+  /// **'Your bid was submitted'**
+  String get bidSubmittedToast;
+
+  /// Toast shown to promoter after successfully updating a bid
+  ///
+  /// In en, this message translates to:
+  /// **'Your bid was updated'**
+  String get bidUpdatedToast;
+
+  /// Toast shown to promoter after successfully withdrawing a bid
+  ///
+  /// In en, this message translates to:
+  /// **'Your bid was withdrawn'**
+  String get bidWithdrawnToast;
 }
 
 class _AppLocalizationsDelegate

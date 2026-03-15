@@ -164,6 +164,9 @@ class PushNotificationService {
 
     if (targetRole == model.UserRole.advertiser) {
       if (campaignId == null || campaignId.isEmpty) {
+        AppLogger.router.w(
+          'Bid notification missing campaignId, falling back to advertiser home',
+        );
         GoRouter.of(context).go('/advertiser-home');
         return;
       }
@@ -227,6 +230,9 @@ class PushNotificationService {
       'bid_received',
       'promoter_bid',
       'campaign_bid',
+      'bid_placed',
+      'bid_updated',
+      'bid_withdrawn',
     };
     if (advertiserTypes.contains(type)) {
       return model.UserRole.advertiser;
@@ -281,14 +287,33 @@ class PushNotificationService {
     );
 
     switch (type) {
+      case 'bid_placed':
+        return _NotificationContent(
+          title: l10n?.bidPlacedNotificationTitle ?? 'New bid on your campaign',
+          body: l10n?.bidPlacedNotificationBody ??
+              'A promoter submitted a bid on your campaign.',
+        );
+      case 'bid_updated':
+        return _NotificationContent(
+          title: l10n?.bidUpdatedNotificationTitle ?? 'Bid updated',
+          body: l10n?.bidUpdatedNotificationBody ??
+              'A promoter updated their bid on your campaign.',
+        );
+      case 'bid_withdrawn':
+        return _NotificationContent(
+          title: l10n?.bidWithdrawnNotificationTitle ?? 'Bid withdrawn',
+          body: l10n?.bidWithdrawnNotificationBody ??
+              'A promoter withdrew their bid from your campaign.',
+        );
       case 'new_bid':
       case 'bid_created':
       case 'bid_received':
       case 'promoter_bid':
       case 'campaign_bid':
-        return const _NotificationContent(
-          title: 'New bid received',
-          body: 'A promoter submitted a bid for one of your campaigns.',
+        return _NotificationContent(
+          title: l10n?.bidPlacedNotificationTitle ?? 'New bid received',
+          body: l10n?.bidPlacedNotificationBody ??
+              'A promoter submitted a bid for one of your campaigns.',
         );
       case 'bid_accepted':
       case 'campaign_started':

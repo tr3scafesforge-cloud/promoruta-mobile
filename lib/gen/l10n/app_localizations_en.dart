@@ -1614,4 +1614,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noAccountFoundWithEmail => 'No account found with this email.';
+
+  @override
+  String get bidPlacedNotificationTitle => 'New bid on your campaign';
+
+  @override
+  String get bidPlacedNotificationBody =>
+      'A promoter submitted a bid on your campaign.';
+
+  @override
+  String get bidUpdatedNotificationTitle => 'Bid updated';
+
+  @override
+  String get bidUpdatedNotificationBody =>
+      'A promoter updated their bid on your campaign.';
+
+  @override
+  String get bidWithdrawnNotificationTitle => 'Bid withdrawn';
+
+  @override
+  String get bidWithdrawnNotificationBody =>
+      'A promoter withdrew their bid from your campaign.';
+
+  @override
+  String get bidSubmittedToast => 'Your bid was submitted';
+
+  @override
+  String get bidUpdatedToast => 'Your bid was updated';
+
+  @override
+  String get bidWithdrawnToast => 'Your bid was withdrawn';
 }

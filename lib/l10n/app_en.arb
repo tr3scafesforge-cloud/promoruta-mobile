@@ -2153,5 +2153,41 @@
   "noAccountFoundWithEmail": "No account found with this email.",
   "@noAccountFoundWithEmail": {
     "description": "Error message when email does not exist in forgot password"
+  },
+  "bidPlacedNotificationTitle": "New bid on your campaign",
+  "@bidPlacedNotificationTitle": {
+    "description": "Push notification title when a promoter places a bid"
+  },
+  "bidPlacedNotificationBody": "A promoter submitted a bid on your campaign.",
+  "@bidPlacedNotificationBody": {
+    "description": "Push notification body when a promoter places a bid"
+  },
+  "bidUpdatedNotificationTitle": "Bid updated",
+  "@bidUpdatedNotificationTitle": {
+    "description": "Push notification title when a promoter updates their bid"
+  },
+  "bidUpdatedNotificationBody": "A promoter updated their bid on your campaign.",
+  "@bidUpdatedNotificationBody": {
+    "description": "Push notification body when a promoter updates their bid"
+  },
+  "bidWithdrawnNotificationTitle": "Bid withdrawn",
+  "@bidWithdrawnNotificationTitle": {
+    "description": "Push notification title when a promoter withdraws their bid"
+  },
+  "bidWithdrawnNotificationBody": "A promoter withdrew their bid from your campaign.",
+  "@bidWithdrawnNotificationBody": {
+    "description": "Push notification body when a promoter withdraws their bid"
+  },
+  "bidSubmittedToast": "Your bid was submitted",
+  "@bidSubmittedToast": {
+    "description": "Toast shown to promoter after successfully submitting a bid"
+  },
+  "bidUpdatedToast": "Your bid was updated",
+  "@bidUpdatedToast": {
+    "description": "Toast shown to promoter after successfully updating a bid"
+  },
+  "bidWithdrawnToast": "Your bid was withdrawn",
+  "@bidWithdrawnToast": {
+    "description": "Toast shown to promoter after successfully withdrawing a bid"
   }
 }

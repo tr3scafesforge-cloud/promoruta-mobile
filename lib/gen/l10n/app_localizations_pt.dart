@@ -1622,4 +1622,34 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get noAccountFoundWithEmail =>
       'Nenhuma conta encontrada com este e-mail.';
+
+  @override
+  String get bidPlacedNotificationTitle => 'Nova oferta na sua campanha';
+
+  @override
+  String get bidPlacedNotificationBody =>
+      'Um promotor enviou uma oferta na sua campanha.';
+
+  @override
+  String get bidUpdatedNotificationTitle => 'Oferta atualizada';
+
+  @override
+  String get bidUpdatedNotificationBody =>
+      'Um promotor atualizou sua oferta na sua campanha.';
+
+  @override
+  String get bidWithdrawnNotificationTitle => 'Oferta retirada';
+
+  @override
+  String get bidWithdrawnNotificationBody =>
+      'Um promotor retirou sua oferta da sua campanha.';
+
+  @override
+  String get bidSubmittedToast => 'Sua oferta foi enviada';
+
+  @override
+  String get bidUpdatedToast => 'Sua oferta foi atualizada';
+
+  @override
+  String get bidWithdrawnToast => 'Sua oferta foi retirada';
 }

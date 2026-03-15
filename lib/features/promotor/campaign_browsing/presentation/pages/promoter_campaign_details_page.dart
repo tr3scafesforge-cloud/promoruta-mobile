@@ -117,7 +117,7 @@ class _PromoterCampaignDetailsPageState
 
       if (mounted) {
         notificationService.showToast(
-          l10n.bidSaved,
+          existing == null ? l10n.bidSubmittedToast : l10n.bidUpdatedToast,
           type: ToastType.success,
           context: context,
         );
@@ -155,7 +155,7 @@ class _PromoterCampaignDetailsPageState
 
       if (mounted) {
         notificationService.showToast(
-          l10n.bidWithdrawn,
+          l10n.bidWithdrawnToast,
           type: ToastType.success,
           context: context,
         );

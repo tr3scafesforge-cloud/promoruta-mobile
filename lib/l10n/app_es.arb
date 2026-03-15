@@ -2040,5 +2040,41 @@
   "noAccountFoundWithEmail": "No se encontró una cuenta con este correo.",
   "@noAccountFoundWithEmail": {
     "description": "Error message when email does not exist in forgot password"
+  },
+  "bidPlacedNotificationTitle": "Nueva oferta en tu campaña",
+  "@bidPlacedNotificationTitle": {
+    "description": "Push notification title when a promoter places a bid"
+  },
+  "bidPlacedNotificationBody": "Un promotor envió una oferta en tu campaña.",
+  "@bidPlacedNotificationBody": {
+    "description": "Push notification body when a promoter places a bid"
+  },
+  "bidUpdatedNotificationTitle": "Oferta actualizada",
+  "@bidUpdatedNotificationTitle": {
+    "description": "Push notification title when a promoter updates their bid"
+  },
+  "bidUpdatedNotificationBody": "Un promotor actualizó su oferta en tu campaña.",
+  "@bidUpdatedNotificationBody": {
+    "description": "Push notification body when a promoter updates their bid"
+  },
+  "bidWithdrawnNotificationTitle": "Oferta retirada",
+  "@bidWithdrawnNotificationTitle": {
+    "description": "Push notification title when a promoter withdraws their bid"
+  },
+  "bidWithdrawnNotificationBody": "Un promotor retiró su oferta de tu campaña.",
+  "@bidWithdrawnNotificationBody": {
+    "description": "Push notification body when a promoter withdraws their bid"
+  },
+  "bidSubmittedToast": "Tu oferta fue enviada",
+  "@bidSubmittedToast": {
+    "description": "Toast shown to promoter after successfully submitting a bid"
+  },
+  "bidUpdatedToast": "Tu oferta fue actualizada",
+  "@bidUpdatedToast": {
+    "description": "Toast shown to promoter after successfully updating a bid"
+  },
+  "bidWithdrawnToast": "Tu oferta fue retirada",
+  "@bidWithdrawnToast": {
+    "description": "Toast shown to promoter after successfully withdrawing a bid"
   }
 }
