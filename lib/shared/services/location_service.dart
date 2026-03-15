@@ -17,8 +17,12 @@ enum LocationPermissionResult {
 /// Provides stream-based location updates with platform-specific settings
 /// for Android and iOS devices.
 class LocationService {
+  final int _distanceFilterMeters;
   StreamSubscription<Position>? _positionSubscription;
   final _positionController = StreamController<Position>.broadcast();
+
+  LocationService({int distanceFilterMeters = 10})
+      : _distanceFilterMeters = distanceFilterMeters;
 
   /// Stream of position updates
   Stream<Position> get positionStream => _positionController.stream;
@@ -184,7 +188,7 @@ class LocationService {
     if (Platform.isAndroid) {
       return AndroidSettings(
         accuracy: LocationAccuracy.high,
-        distanceFilter: 10, // meters
+        distanceFilter: _distanceFilterMeters,
         intervalDuration: const Duration(seconds: 5), // minimum interval
         forceLocationManager: false,
         foregroundNotificationConfig: const ForegroundNotificationConfig(
@@ -201,16 +205,16 @@ class LocationService {
       return AppleSettings(
         accuracy: LocationAccuracy.high,
         activityType: ActivityType.automotiveNavigation,
-        distanceFilter: 10, // meters
+        distanceFilter: _distanceFilterMeters,
         pauseLocationUpdatesAutomatically: false,
         showBackgroundLocationIndicator: true,
         allowBackgroundLocationUpdates: false, // v1: foreground only
       );
     } else {
       // Fallback for other platforms
-      return const LocationSettings(
+      return LocationSettings(
         accuracy: LocationAccuracy.high,
-        distanceFilter: 10,
+        distanceFilter: _distanceFilterMeters,
       );
     }
   }

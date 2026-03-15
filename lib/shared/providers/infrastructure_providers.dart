@@ -116,10 +116,5 @@ final gpsTrackingConfigProvider = Provider<GpsTrackingConfig>((ref) {
   // Default configuration that can be overridden based on app state or preferences
   // For high-frequency tracking (urban areas): lower batch size and distance filter
   // For low-frequency tracking (highways): higher batch size and distance filter
-  return const GpsTrackingConfig(
-    batchSize: 20,
-    syncIntervalSeconds: 60,
-    distanceFilterMeters: 10,
-    minSpeedMetersSec: 0.1,
-  );
+  return const GpsTrackingConfig();
 });

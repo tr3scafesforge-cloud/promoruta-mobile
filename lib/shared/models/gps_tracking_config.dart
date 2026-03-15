@@ -18,8 +18,8 @@ class GpsTrackingConfig {
   const GpsTrackingConfig({
     this.batchSize = 20,
     this.syncIntervalSeconds = 60,
-    this.distanceFilterMeters = 10,
-    this.minSpeedMetersSec = 0.1,
+    this.distanceFilterMeters = 5,
+    this.minSpeedMetersSec = 0.5,
   });
 
   /// Create a copy with modified fields

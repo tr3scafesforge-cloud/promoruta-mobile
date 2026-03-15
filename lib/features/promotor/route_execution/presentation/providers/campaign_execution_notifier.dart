@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:promoruta/core/utils/logger.dart';
+import 'package:promoruta/shared/models/gps_tracking_config.dart';
 import 'package:promoruta/shared/services/location_service.dart';
 import 'package:promoruta/features/promotor/route_execution/domain/models/campaign_execution_state.dart';
 import 'package:promoruta/features/promotor/route_execution/domain/use_cases/sync_gps_points_use_case.dart';
@@ -17,23 +18,12 @@ class CampaignExecutionNotifier extends StateNotifier<CampaignExecutionState> {
   final SyncGpsPointsUseCase _syncUseCase;
   final StartCampaignUseCase _startCampaignUseCase;
   final CompleteCampaignUseCase _completeCampaignUseCase;
+  final GpsTrackingConfig _gpsConfig;
   final Uuid _uuid = const Uuid();
 
   StreamSubscription<Position>? _positionSubscription;
   Timer? _syncTimer;
   Timer? _elapsedTimeTimer;
-
-  /// Batch size for triggering sync
-  static const int _batchSyncThreshold = 20;
-
-  /// Sync interval in seconds
-  static const int _syncIntervalSeconds = 60;
-
-  /// Minimum distance to record a new point (meters)
-  static const double _minDistanceFilter = 5.0;
-
-  /// Minimum speed to record a point (m/s) - filter out stationary GPS drift
-  static const double _minSpeedFilter = 0.5;
 
   /// Persistence keys
   static const String _keyExecutionState = 'campaign_execution_state';
@@ -43,9 +33,10 @@ class CampaignExecutionNotifier extends StateNotifier<CampaignExecutionState> {
     this._locationService,
     this._syncUseCase,
     this._startCampaignUseCase,
-    this._completeCampaignUseCase,
-  )
-      : super(CampaignExecutionState.idle()) {
+    this._completeCampaignUseCase, {
+    GpsTrackingConfig gpsConfig = const GpsTrackingConfig(),
+  })  : _gpsConfig = gpsConfig,
+        super(CampaignExecutionState.idle()) {
     _restoreState();
   }
 
@@ -417,8 +408,8 @@ class CampaignExecutionNotifier extends StateNotifier<CampaignExecutionState> {
       );
 
       // Skip if moved less than minimum distance and speed is low
-      if (distance < _minDistanceFilter &&
-          (newPoint.speed ?? 0) < _minSpeedFilter) {
+      if (distance < _gpsConfig.distanceFilterMeters &&
+          (newPoint.speed ?? 0) < _gpsConfig.minSpeedMetersSec) {
         return;
       }
 
@@ -439,7 +430,7 @@ class CampaignExecutionNotifier extends StateNotifier<CampaignExecutionState> {
     );
 
     // Check if we should sync
-    if (updatedPending.length >= _batchSyncThreshold) {
+    if (updatedPending.length >= _gpsConfig.batchSize) {
       _syncPendingPoints();
     }
   }
@@ -448,7 +439,7 @@ class CampaignExecutionNotifier extends StateNotifier<CampaignExecutionState> {
   void _startSyncTimer() {
     _syncTimer?.cancel();
     _syncTimer = Timer.periodic(
-      const Duration(seconds: _syncIntervalSeconds),
+      Duration(seconds: _gpsConfig.syncIntervalSeconds),
       (_) => _syncPendingPoints(),
     );
   }

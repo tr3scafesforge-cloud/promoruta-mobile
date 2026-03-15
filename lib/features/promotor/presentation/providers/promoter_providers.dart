@@ -68,7 +68,10 @@ final syncServiceProvider = Provider<SyncService>((ref) {
 
 // Location Service for GPS tracking during campaign execution
 final campaignLocationServiceProvider = Provider<LocationService>((ref) {
-  final service = LocationService();
+  final gpsConfig = ref.watch(gpsTrackingConfigProvider);
+  final service = LocationService(
+    distanceFilterMeters: gpsConfig.distanceFilterMeters,
+  );
   ref.onDispose(() => service.dispose());
   return service;
 });
@@ -136,11 +139,13 @@ final campaignExecutionProvider =
   final syncUseCase = ref.watch(syncGpsPointsUseCaseProvider);
   final startCampaignUseCase = ref.watch(startCampaignUseCaseProvider);
   final completeCampaignUseCase = ref.watch(completeCampaignUseCaseProvider);
+  final gpsConfig = ref.watch(gpsTrackingConfigProvider);
   return CampaignExecutionNotifier(
     locationService,
     syncUseCase,
     startCampaignUseCase,
     completeCampaignUseCase,
+    gpsConfig: gpsConfig,
   );
 });
 
