@@ -10,6 +10,7 @@ import 'package:promoruta/core/models/campaign.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/widgets/custom_button.dart';
 import 'package:promoruta/shared/widgets/app_card.dart';
+import 'package:promoruta/shared/widgets/common_input_field.dart';
 import 'package:promoruta/shared/providers/providers.dart';
 import 'package:promoruta/shared/services/notification_service.dart';
 import 'package:promoruta/shared/constants/map_constants.dart';
@@ -115,29 +116,9 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  TextFormField(
+                  CommonInputField(
                     controller: _titleController,
-                    decoration: InputDecoration(
-                      hintText: l10n.campaignNameHint,
-                      hintStyle: TextStyle(color: AppColors.textHint),
-                      filled: true,
-                      fillColor: AppColors.surface,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: AppColors.grayStroke),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: AppColors.grayStroke),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                            BorderSide(color: AppColors.secondary, width: 2),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 12),
-                    ),
+                    hintText: l10n.campaignNameHint,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return l10n.pleaseEnterCampaignTitle;
@@ -154,30 +135,10 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  TextFormField(
+                  CommonInputField(
                     controller: _descriptionController,
+                    hintText: l10n.briefCampaignDescription,
                     maxLines: 3,
-                    decoration: InputDecoration(
-                      hintText: l10n.briefCampaignDescription,
-                      hintStyle: TextStyle(color: AppColors.textHint),
-                      filled: true,
-                      fillColor: AppColors.surface,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: AppColors.grayStroke),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: AppColors.grayStroke),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                            BorderSide(color: AppColors.secondary, width: 2),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 12),
-                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return l10n.pleaseEnterDescription;
@@ -289,30 +250,10 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  TextFormField(
+                  CommonInputField(
                     controller: _budgetController,
+                    hintText: '50',
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      hintText: '50',
-                      hintStyle: TextStyle(color: AppColors.textHint),
-                      filled: true,
-                      fillColor: AppColors.surface,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: AppColors.grayStroke),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: AppColors.grayStroke),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                            BorderSide(color: AppColors.secondary, width: 2),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 12),
-                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return l10n.pleaseEnterBudget;
@@ -416,31 +357,13 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  TextFormField(
+                  CommonInputField(
                     controller: _dateController,
+                    hintText: l10n.dateFormatHint,
                     readOnly: true,
-                    decoration: InputDecoration(
-                      hintText: l10n.dateFormatHint,
-                      hintStyle: TextStyle(color: AppColors.textHint),
-                      filled: true,
-                      fillColor: AppColors.surface,
-                      suffixIcon: Icon(Icons.calendar_today,
-                          color: AppColors.textSecondary),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: AppColors.grayStroke),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: AppColors.grayStroke),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                            BorderSide(color: AppColors.secondary, width: 2),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 12),
+                    suffixIcon: const Icon(
+                      Icons.calendar_today,
+                      color: AppColors.textSecondary,
                     ),
                     onTap: _selectDate,
                     validator: (value) {
@@ -465,33 +388,13 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                               ),
                             ),
                             const SizedBox(height: 8),
-                            TextFormField(
+                            CommonInputField(
                               controller: _startTimeController,
+                              hintText: '09:00',
                               readOnly: true,
-                              decoration: InputDecoration(
-                                hintText: '09:00',
-                                hintStyle: TextStyle(color: AppColors.textHint),
-                                filled: true,
-                                fillColor: AppColors.surface,
-                                suffixIcon: Icon(Icons.access_time,
-                                    color: AppColors.textSecondary),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                      BorderSide(color: AppColors.grayStroke),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                      BorderSide(color: AppColors.grayStroke),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(
-                                      color: AppColors.secondary, width: 2),
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 12),
+                              suffixIcon: const Icon(
+                                Icons.access_time,
+                                color: AppColors.textSecondary,
                               ),
                               onTap: () => _selectTime(isStartTime: true),
                               validator: (value) {
@@ -517,33 +420,13 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                               ),
                             ),
                             const SizedBox(height: 8),
-                            TextFormField(
+                            CommonInputField(
                               controller: _endTimeController,
+                              hintText: '17:00',
                               readOnly: true,
-                              decoration: InputDecoration(
-                                hintText: '17:00',
-                                hintStyle: TextStyle(color: AppColors.textHint),
-                                filled: true,
-                                fillColor: AppColors.surface,
-                                suffixIcon: Icon(Icons.access_time,
-                                    color: AppColors.textSecondary),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                      BorderSide(color: AppColors.grayStroke),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                      BorderSide(color: AppColors.grayStroke),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(
-                                      color: AppColors.secondary, width: 2),
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 12),
+                              suffixIcon: const Icon(
+                                Icons.access_time,
+                                color: AppColors.textSecondary,
                               ),
                               onTap: () => _selectTime(isStartTime: false),
                               validator: (value) {
