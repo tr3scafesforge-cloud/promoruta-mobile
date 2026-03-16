@@ -329,6 +329,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get applyFilter => 'Apply Filter';
 
   @override
+  String get filters => 'Filters';
+
+  @override
+  String get maxDistanceKm => 'Maximum distance (km)';
+
+  @override
+  String get minBudgetUsd => 'Minimum budget (\$)';
+
+  @override
+  String get noLimit => 'No limit';
+
+  @override
   String get darkMode => 'Dark Mode';
 
   @override

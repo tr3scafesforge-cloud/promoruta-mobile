@@ -380,7 +380,8 @@ class _CampaignCard extends StatelessWidget {
                       value: '${campaign.distanceKm.toStringAsFixed(1)}km',
                       label: l10n.route),
                   _StatTile(
-                      value: '${campaign.completionPct}%', label: l10n.completed),
+                      value: '${campaign.completionPct}%',
+                      label: l10n.completed),
                   // _StatTile(value: '${campaign.audioSeconds}s', label: 'Audio'),
                   _StatTile(
                       value:
@@ -476,6 +477,7 @@ class _FiltersSheetState extends State<_FiltersSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final bottom = MediaQuery.of(context).viewInsets.bottom;
 
     return Padding(
@@ -483,14 +485,14 @@ class _FiltersSheetState extends State<_FiltersSheet> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('Filtros',
+          Text(l10n.filters,
               style: Theme.of(context)
                   .textTheme
                   .titleMedium
                   ?.copyWith(fontWeight: FontWeight.w700)),
           const SizedBox(height: 16),
           _SliderTile(
-            title: 'Distancia máxima (km)',
+            title: l10n.maxDistanceKm,
             value: _maxDistance?.toDouble(),
             min: 0,
             max: 10,
@@ -501,7 +503,7 @@ class _FiltersSheetState extends State<_FiltersSheet> {
           ),
           const SizedBox(height: 8),
           _SliderTile(
-            title: 'Presupuesto mínimo (\$)',
+            title: l10n.minBudgetUsd,
             value: _minBudget?.toDouble(),
             min: 0,
             max: 3000,
@@ -514,22 +516,24 @@ class _FiltersSheetState extends State<_FiltersSheet> {
           Row(
             children: [
               Expanded(
-                child: OutlinedButton(
+                child: CustomButton.outlined(
+                  text: l10n.cancel,
+                  backgroundColor: Colors.white,
+                  outlineColor: AppColors.grayDarkStroke,
+                  textColor: AppColors.textPrimary,
                   onPressed: () => Navigator.pop(context),
-                  child: const Text('Cancelar'),
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: FilledButton(
+                child: CustomButton(
+                  text: l10n.applyFilter,
+                  backgroundColor: AppColors.activeCampaignColor,
                   onPressed: () => Navigator.pop(
                     context,
                     _FilterResult(
                         maxDistanceKm: _maxDistance, minBudget: _minBudget),
                   ),
-                  style: FilledButton.styleFrom(
-                      backgroundColor: const Color(0xFF11A192)),
-                  child: const Text('Aplicar'),
                 ),
               ),
             ],
@@ -589,7 +593,7 @@ class _SliderTile extends StatelessWidget {
               children: [
                 const Icon(Icons.info_outline, size: 16),
                 const SizedBox(width: 6),
-                Text('Sin límite', style: TextStyle(color: Colors.grey[700])),
+                Text(l10n.noLimit, style: TextStyle(color: Colors.grey[700])),
               ],
             )
           else

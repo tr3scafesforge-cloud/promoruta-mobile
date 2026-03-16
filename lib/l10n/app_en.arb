@@ -408,6 +408,22 @@
   "@applyFilter": {
     "description": "Button text to apply filter"
   },
+  "filters": "Filters",
+  "@filters": {
+    "description": "Title for the campaign filters sheet"
+  },
+  "maxDistanceKm": "Maximum distance (km)",
+  "@maxDistanceKm": {
+    "description": "Label for the maximum distance filter in kilometers"
+  },
+  "minBudgetUsd": "Minimum budget (\$)",
+  "@minBudgetUsd": {
+    "description": "Label for the minimum budget filter in USD"
+  },
+  "noLimit": "No limit",
+  "@noLimit": {
+    "description": "Text shown when a filter has no limit applied"
+  },
   "darkMode": "Dark Mode",
   "@darkMode": {
     "description": "Label for dark mode toggle"

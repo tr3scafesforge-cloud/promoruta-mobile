@@ -331,6 +331,18 @@ class AppLocalizationsPt extends AppLocalizations {
   String get applyFilter => 'Aplicar Filtro';
 
   @override
+  String get filters => 'Filtros';
+
+  @override
+  String get maxDistanceKm => 'Distância máxima (km)';
+
+  @override
+  String get minBudgetUsd => 'Orçamento mínimo (\$)';
+
+  @override
+  String get noLimit => 'Sem limite';
+
+  @override
   String get darkMode => 'Modo Escuro';
 
   @override

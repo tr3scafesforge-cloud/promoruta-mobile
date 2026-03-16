@@ -712,6 +712,30 @@ abstract class AppLocalizations {
   /// **'Apply Filter'**
   String get applyFilter;
 
+  /// Title for the campaign filters sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get filters;
+
+  /// Label for the maximum distance filter in kilometers
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum distance (km)'**
+  String get maxDistanceKm;
+
+  /// Label for the minimum budget filter in USD
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum budget ($)'**
+  String get minBudgetUsd;
+
+  /// Text shown when a filter has no limit applied
+  ///
+  /// In en, this message translates to:
+  /// **'No limit'**
+  String get noLimit;
+
   /// Label for dark mode toggle
   ///
   /// In en, this message translates to:
