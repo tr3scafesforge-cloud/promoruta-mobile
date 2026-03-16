@@ -1288,6 +1288,12 @@ abstract class AppLocalizations {
   /// **'Please enter a valid number'**
   String get enterValidNumber;
 
+  /// Validation message for budget values less than or equal to 1 UYU
+  ///
+  /// In en, this message translates to:
+  /// **'Budget must be greater than 1 UYU'**
+  String get budgetMustBeGreaterThanOneUyu;
+
   /// Label for coverage zone
   ///
   /// In en, this message translates to:

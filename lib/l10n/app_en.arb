@@ -807,6 +807,10 @@
   "@enterValidNumber": {
     "description": "Validation message for invalid number"
   },
+  "budgetMustBeGreaterThanOneUyu": "Budget must be greater than 1 UYU",
+  "@budgetMustBeGreaterThanOneUyu": {
+    "description": "Validation message for budget values less than or equal to 1 UYU"
+  },
   "coverageZone": "Coverage zone",
   "@coverageZone": {
     "description": "Label for coverage zone"

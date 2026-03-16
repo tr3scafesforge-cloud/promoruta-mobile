@@ -258,21 +258,37 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  CommonInputField(
-                    controller: _budgetController,
-                    hintText: '1.500,00',
-                    keyboardType: const TextInputType.numberWithOptions(
-                      decimal: true,
-                    ),
-                    inputFormatters: [_UyCurrencyInputFormatter()],
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return l10n.pleaseEnterBudget;
-                      }
-                      if (_parseUyCurrency(value) == null) {
-                        return l10n.enterValidNumber;
-                      }
-                      return null;
+                  ValueListenableBuilder<TextEditingValue>(
+                    valueListenable: _budgetController,
+                    builder: (context, budgetValue, _) {
+                      return CommonInputField(
+                        controller: _budgetController,
+                        hintText: '1.500,00',
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        inputFormatters: [_UyCurrencyInputFormatter()],
+                        tailIcon:
+                            budgetValue.text.isNotEmpty ? Icons.clear : null,
+                        onTailIconPressed: () {
+                          _budgetController.clear();
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return l10n.pleaseEnterBudget;
+                          }
+
+                          final budget = _parseUyCurrency(value);
+                          if (budget == null) {
+                            return l10n.enterValidNumber;
+                          }
+                          if (budget <= 1) {
+                            return l10n.budgetMustBeGreaterThanOneUyu;
+                          }
+
+                          return null;
+                        },
+                      );
                     },
                   ),
                   const SizedBox(height: 16),

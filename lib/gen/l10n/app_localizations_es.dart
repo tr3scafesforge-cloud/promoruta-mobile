@@ -641,6 +641,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get enterValidNumber => 'Por favor ingresa un número válido';
 
   @override
+  String get budgetMustBeGreaterThanOneUyu =>
+      'El presupuesto debe ser mayor a 1 UYU';
+
+  @override
   String get coverageZone => 'Zona de cobertura';
 
   @override
