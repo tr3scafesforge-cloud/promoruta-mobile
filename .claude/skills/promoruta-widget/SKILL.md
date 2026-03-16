@@ -116,32 +116,50 @@ ElevatedButton.styleFrom(
 )
 ```
 
-**Input fields — follow the established `TextFormField` pattern:**
+**Input fields — use `CommonInputField`:**
+
+The project has a standard input widget at `lib/shared/widgets/common_input_field.dart`. Always use it instead of raw `TextFormField` — it already handles border states, fill color, and consistent styling.
 
 ```dart
-TextFormField(
-  controller: _controller,
-  decoration: InputDecoration(
-    filled: true,
-    fillColor: theme.colorScheme.surface,
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(color: theme.colorScheme.outline),
-    ),
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(color: theme.colorScheme.outline),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(color: theme.colorScheme.primary, width: 2),
-    ),
-    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-  ),
+CommonInputField(
+  controller: _nameController,
+  hintText: l10n.nameHint,
+  validator: (value) {
+    if (value == null || value.trim().isEmpty) {
+      return l10n.nameRequired;
+    }
+    return null;
+  },
+)
+
+// With extra options
+CommonInputField(
+  controller: _emailController,
+  hintText: l10n.emailHint,
+  keyboardType: TextInputType.emailAddress,
+  validator: (value) { /* ... */ },
+)
+
+// Multiline
+CommonInputField(
+  controller: _messageController,
+  hintText: l10n.messageHint,
+  maxLines: 4,
+)
+
+// Read-only with tap action (e.g., date picker)
+CommonInputField(
+  controller: _dateController,
+  hintText: l10n.selectDate,
+  readOnly: true,
+  onTap: () { /* show picker */ },
+  suffixIcon: const Icon(Icons.calendar_today),
 )
 ```
 
-Always define all three border states (border, enabledBorder, focusedBorder). Use 8px border radius for inputs. Add a label `Text` widget above the field (not `labelText` in decoration) with `titleMedium` bold style — this is how the project does labeled fields.
+`CommonInputField` provides: filled background (`AppColors.surface`), 10px border radius, hint styling (`AppColors.textHint`), enabled border (`AppColors.grayStroke`), focused border (`AppColors.secondary`, width 2), configurable `contentPadding`, `suffixIcon`, `inputFormatters`, and `readOnly`/`onTap` support.
+
+Add a label `Text` widget above the field (not `labelText` in decoration) with `titleMedium` bold style — this is how the project does labeled fields.
 
 For search bars, reference `AdvertiserSearchFilterBar` which uses `TextField` (not `TextFormField`) with `InputBorder.none` inside a custom `Container` with 12px radius.
 
@@ -228,7 +246,7 @@ This lets other files import it via `import 'package:promoruta/shared/shared.dar
 - Access colors via `theme.colorScheme` (primary, secondary, surface, outline, error, etc.)
 - Access text styles via `theme.textTheme` (headlineLarge, titleMedium, bodyMedium, etc.)
 - Project-specific colors in `AppColors` from `core/constants/colors.dart` — use for status indicators (completedGreenColor, canceledRedColor, pendingOrangeColor)
-- Cards use 16px border radius (`AppCard`), inputs use 8px, buttons use 10px
+- Cards use 16px border radius (`AppCard`), inputs use 10px (`CommonInputField`), buttons use 10px
 
 ## Composition Patterns
 
@@ -247,4 +265,5 @@ This lets other files import it via `import 'package:promoruta/shared/shared.dar
 - Not disposing TextEditingControllers
 - Missing `context.mounted` checks after await
 - Creating a new button style when `CustomButton` works
+- Writing raw `TextFormField` with manual `InputDecoration` instead of using `CommonInputField`
 - Using `labelText` in InputDecoration instead of a separate label Text widget above the field

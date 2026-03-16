@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/core/models/campaign.dart';
@@ -25,6 +27,12 @@ class CreateCampaignPage extends ConsumerStatefulWidget {
 }
 
 class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
+  static final NumberFormat _uyCurrencyFormat = NumberFormat.currency(
+    locale: 'es_UY',
+    symbol: '',
+    decimalDigits: 2,
+  );
+
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
@@ -252,13 +260,16 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                   const SizedBox(height: 8),
                   CommonInputField(
                     controller: _budgetController,
-                    hintText: '50',
-                    keyboardType: TextInputType.number,
+                    hintText: '1.500,00',
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                    inputFormatters: [_UyCurrencyInputFormatter()],
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return l10n.pleaseEnterBudget;
                       }
-                      if (double.tryParse(value) == null) {
+                      if (_parseUyCurrency(value) == null) {
                         return l10n.enterValidNumber;
                       }
                       return null;
@@ -747,7 +758,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
         zone: _locationController.text.trim().isEmpty
             ? 'Default Zone'
             : _locationController.text.trim(),
-        suggestedPrice: double.tryParse(_budgetController.text.trim()) ?? 0.0,
+        suggestedPrice: _parseUyCurrency(_budgetController.text.trim()) ?? 0.0,
         bidDeadline: bidDeadline,
         audioDuration: 30, // Placeholder - should be calculated from audio file
         distance: totalDistance,
@@ -824,6 +835,42 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
   // Helper function to convert degrees to radians
   double _toRadians(double degrees) {
     return degrees * math.pi / 180.0;
+  }
+
+  double? _parseUyCurrency(String value) {
+    final normalizedValue = value
+        .replaceAll('.', '')
+        .replaceAll(',', '.')
+        .replaceAll(RegExp(r'[^0-9.]'), '');
+
+    if (normalizedValue.isEmpty) {
+      return null;
+    }
+
+    return double.tryParse(normalizedValue);
+  }
+}
+
+class _UyCurrencyInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final digitsOnly = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
+
+    if (digitsOnly.isEmpty) {
+      return const TextEditingValue();
+    }
+
+    final cents = int.parse(digitsOnly);
+    final formattedValue =
+        _CreateCampaignPageState._uyCurrencyFormat.format(cents / 100);
+
+    return TextEditingValue(
+      text: formattedValue,
+      selection: TextSelection.collapsed(offset: formattedValue.length),
+    );
   }
 }
 

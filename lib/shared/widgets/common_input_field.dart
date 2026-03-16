@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:promoruta/core/constants/colors.dart';
 
@@ -9,6 +10,7 @@ class CommonInputField extends StatelessWidget {
     this.validator,
     this.maxLines = 1,
     this.keyboardType,
+    this.inputFormatters,
     this.readOnly = false,
     this.onTap,
     this.suffixIcon,
@@ -21,6 +23,7 @@ class CommonInputField extends StatelessWidget {
   final FormFieldValidator<String>? validator;
   final int maxLines;
   final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
   final bool readOnly;
   final VoidCallback? onTap;
   final Widget? suffixIcon;
@@ -32,6 +35,7 @@ class CommonInputField extends StatelessWidget {
       controller: controller,
       maxLines: maxLines,
       keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
       readOnly: readOnly,
       onTap: onTap,
       validator: validator,

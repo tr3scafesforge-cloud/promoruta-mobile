@@ -5,14 +5,13 @@ Read this file when you need the exact code from the project's existing widgets 
 ## Table of Contents
 
 1. CustomButton (complete source)
-2. AppCard (complete source)
-3. TextFormField pattern (from login_page.dart)
+2. CommonInputField (complete source)
+3. AppCard (complete source)
 4. Labeled field pattern
 5. AdvertiserSearchFilterBar (search input pattern)
-6. StatCard (data display pattern)
-7. Provider patterns
-8. ARB file format
-9. Barrel file exports
+6. Provider patterns
+7. ARB file format
+8. Barrel file exports
 
 ---
 
@@ -107,7 +106,111 @@ class CustomButton extends StatelessWidget {
 }
 ```
 
-## 2. AppCard — `lib/shared/widgets/app_card.dart`
+## 2. CommonInputField — `lib/shared/widgets/common_input_field.dart`
+
+The standard input field widget. Use this instead of raw `TextFormField`:
+
+```dart
+import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
+import 'package:promoruta/core/constants/colors.dart';
+
+class CommonInputField extends StatelessWidget {
+  const CommonInputField({
+    super.key,
+    required this.controller,
+    required this.hintText,
+    this.validator,
+    this.maxLines = 1,
+    this.keyboardType,
+    this.inputFormatters,
+    this.readOnly = false,
+    this.onTap,
+    this.suffixIcon,
+    this.contentPadding =
+        const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+  });
+
+  final TextEditingController controller;
+  final String hintText;
+  final FormFieldValidator<String>? validator;
+  final int maxLines;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
+  final bool readOnly;
+  final VoidCallback? onTap;
+  final Widget? suffixIcon;
+  final EdgeInsetsGeometry contentPadding;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      maxLines: maxLines,
+      keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
+      readOnly: readOnly,
+      onTap: onTap,
+      validator: validator,
+      decoration: InputDecoration(
+        hintText: hintText,
+        hintStyle: const TextStyle(color: AppColors.textHint),
+        filled: true,
+        fillColor: AppColors.surface,
+        suffixIcon: suffixIcon,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: AppColors.grayStroke),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: AppColors.grayStroke),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: AppColors.secondary, width: 2),
+        ),
+        contentPadding: contentPadding,
+      ),
+    );
+  }
+}
+```
+
+**Usage examples:**
+```dart
+// Basic
+CommonInputField(
+  controller: _nameController,
+  hintText: l10n.nameHint,
+  validator: (v) => v!.isEmpty ? l10n.nameRequired : null,
+)
+
+// Email
+CommonInputField(
+  controller: _emailController,
+  hintText: l10n.emailHint,
+  keyboardType: TextInputType.emailAddress,
+)
+
+// Multiline
+CommonInputField(
+  controller: _messageController,
+  hintText: l10n.messageHint,
+  maxLines: 4,
+)
+
+// Read-only with tap (date picker, etc.)
+CommonInputField(
+  controller: _dateController,
+  hintText: l10n.selectDate,
+  readOnly: true,
+  onTap: () { /* show picker */ },
+  suffixIcon: const Icon(Icons.calendar_today),
+)
+```
+
+## 3. AppCard — `lib/shared/widgets/app_card.dart`
 
 Standard card container with theme-aware border. Use this to wrap card-style content:
 
@@ -122,50 +225,6 @@ AppCard(
 - Border radius: 16px
 - Uses `theme.colorScheme.surface` background
 - Uses `theme.colorScheme.outline` border (when `hasBorder: true`)
-
-## 3. TextFormField Input Pattern
-
-From `login_page.dart` — the standard input decoration for form fields:
-
-```dart
-TextFormField(
-  controller: _controller,
-  keyboardType: TextInputType.emailAddress,
-  decoration: InputDecoration(
-    filled: true,
-    fillColor: Theme.of(context).colorScheme.surface,
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(
-        color: Theme.of(context).colorScheme.outline,
-      ),
-    ),
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(
-        color: Theme.of(context).colorScheme.outline,
-      ),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(
-        color: Theme.of(context).colorScheme.primary,
-        width: 2,
-      ),
-    ),
-    contentPadding: const EdgeInsets.symmetric(
-      horizontal: 16,
-      vertical: 16,
-    ),
-  ),
-  validator: (value) {
-    if (value == null || value.isEmpty) {
-      return AppLocalizations.of(context).validationMessage;
-    }
-    return null;
-  },
-)
-```
 
 ## 4. Labeled Field Pattern
 
@@ -183,7 +242,10 @@ Column(
       ),
     ),
     const SizedBox(height: 8),
-    TextFormField(/* ... */),
+    CommonInputField(
+      controller: _controller,
+      hintText: l10n.fieldHint,
+    ),
   ],
 )
 ```
@@ -220,6 +282,7 @@ Container(
 ```
 
 ## 6. Provider Patterns
+
 
 **StateNotifier with AsyncValue:**
 ```dart
