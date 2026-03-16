@@ -140,6 +140,15 @@ CommonInputField(
   validator: (value) { /* ... */ },
 )
 
+// With leading icon (headIcon) and trailing icon (tailIcon)
+CommonInputField(
+  controller: _searchController,
+  hintText: l10n.searchHint,
+  headIcon: Icons.search,
+  tailIcon: Icons.clear,
+  onTailIconPressed: () => _searchController.clear(),
+)
+
 // Multiline
 CommonInputField(
   controller: _messageController,
@@ -157,7 +166,7 @@ CommonInputField(
 )
 ```
 
-`CommonInputField` provides: filled background (`AppColors.surface`), 10px border radius, hint styling (`AppColors.textHint`), enabled border (`AppColors.grayStroke`), focused border (`AppColors.secondary`, width 2), configurable `contentPadding`, `suffixIcon`, `inputFormatters`, and `readOnly`/`onTap` support.
+`CommonInputField` provides: filled background (`AppColors.surface`), 10px border radius, hint styling (`AppColors.textHint`), enabled border (`AppColors.grayStroke`), focused border (`AppColors.secondary`, width 2), configurable `contentPadding`, `suffixIcon`, `inputFormatters`, `readOnly`/`onTap` support, and `headIcon`/`tailIcon` with optional press callbacks for prefix/suffix icon buttons.
 
 Add a label `Text` widget above the field (not `labelText` in decoration) with `titleMedium` bold style — this is how the project does labeled fields.
 

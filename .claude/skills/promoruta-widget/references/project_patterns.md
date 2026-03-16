@@ -126,6 +126,10 @@ class CommonInputField extends StatelessWidget {
     this.inputFormatters,
     this.readOnly = false,
     this.onTap,
+    this.headIcon,
+    this.onHeadIconPressed,
+    this.tailIcon,
+    this.onTailIconPressed,
     this.suffixIcon,
     this.contentPadding =
         const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -139,8 +143,24 @@ class CommonInputField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final bool readOnly;
   final VoidCallback? onTap;
+  final IconData? headIcon;
+  final VoidCallback? onHeadIconPressed;
+  final IconData? tailIcon;
+  final VoidCallback? onTailIconPressed;
   final Widget? suffixIcon;
   final EdgeInsetsGeometry contentPadding;
+
+  Widget? _buildIconButton({
+    required IconData? icon,
+    required VoidCallback? onPressed,
+  }) {
+    if (icon == null) return null;
+    return IconButton(
+      onPressed: onPressed,
+      icon: Icon(icon, color: AppColors.textHint),
+      splashRadius: 20,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +177,15 @@ class CommonInputField extends StatelessWidget {
         hintStyle: const TextStyle(color: AppColors.textHint),
         filled: true,
         fillColor: AppColors.surface,
-        suffixIcon: suffixIcon,
+        prefixIcon: _buildIconButton(
+          icon: headIcon,
+          onPressed: onHeadIconPressed,
+        ),
+        suffixIcon: suffixIcon ??
+            _buildIconButton(
+              icon: tailIcon,
+              onPressed: onTailIconPressed,
+            ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(color: AppColors.grayStroke),
@@ -191,6 +219,15 @@ CommonInputField(
   controller: _emailController,
   hintText: l10n.emailHint,
   keyboardType: TextInputType.emailAddress,
+)
+
+// With leading and trailing icons
+CommonInputField(
+  controller: _searchController,
+  hintText: l10n.searchHint,
+  headIcon: Icons.search,
+  tailIcon: Icons.clear,
+  onTailIconPressed: () => _searchController.clear(),
 )
 
 // Multiline
