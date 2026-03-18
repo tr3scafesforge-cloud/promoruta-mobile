@@ -2,6 +2,7 @@
 export 'services/config_service.dart';
 export 'services/connectivity_service.dart';
 export 'services/connectivity_service_impl.dart';
+export 'services/sync_domain_delegate.dart';
 export 'services/sync_service.dart';
 export 'services/sync_service_impl.dart';
 

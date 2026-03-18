@@ -161,6 +161,7 @@ class GpsLocalDataSourceImpl implements GpsLocalDataSource {
     await (db.delete(db.routes)..where((tbl) => tbl.id.equals(id))).go();
   }
 
+  @override
   Future<List<model_route.Route>> getPendingSyncRoutes() async {
     final routeRows = await (db.select(db.routes)
           ..where((tbl) => tbl.isCompleted.equals(true)))

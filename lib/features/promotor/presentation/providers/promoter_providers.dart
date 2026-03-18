@@ -10,6 +10,9 @@ import 'package:promoruta/shared/providers/infrastructure_providers.dart';
 import 'package:promoruta/shared/services/sync_service.dart';
 import 'package:promoruta/shared/services/sync_service_impl.dart';
 import 'package:promoruta/shared/services/location_service.dart';
+import 'package:promoruta/features/auth/data/services/auth_sync_delegate.dart';
+import 'package:promoruta/features/advertiser/campaign_management/data/services/campaign_sync_delegate.dart';
+import 'package:promoruta/features/promotor/gps_tracking/data/services/gps_sync_delegate.dart';
 import 'package:promoruta/features/auth/presentation/providers/auth_providers.dart';
 import 'package:promoruta/features/promotor/gps_tracking/data/datasources/local/gps_local_data_source.dart';
 import 'package:promoruta/features/promotor/gps_tracking/data/datasources/remote/gps_remote_data_source.dart';
@@ -56,14 +59,11 @@ final syncServiceProvider = Provider<SyncService>((ref) {
   final gpsLocal = ref.watch(gpsLocalDataSourceProvider);
   final gpsRemote = ref.watch(gpsRemoteDataSourceProvider);
 
-  return SyncServiceImpl(
-    connectivityService,
-    authLocal,
-    campaignLocal,
-    campaignRemote,
-    gpsLocal,
-    gpsRemote,
-  );
+  return SyncServiceImpl(connectivityService, {
+    'auth': AuthSyncDelegate(authLocal),
+    'campaigns': CampaignSyncDelegate(campaignLocal, campaignRemote),
+    'gps': GpsSyncDelegate(gpsLocal, gpsRemote),
+  });
 });
 
 // Location Service for GPS tracking during campaign execution

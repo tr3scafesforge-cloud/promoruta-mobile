@@ -416,7 +416,7 @@
   "@maxDistanceKm": {
     "description": "Label for the maximum distance filter in kilometers"
   },
-  "minBudgetUsd": "Minimum budget (\$)",
+  "minBudgetUsd": "Minimum budget ($)",
   "@minBudgetUsd": {
     "description": "Label for the minimum budget filter in USD"
   },

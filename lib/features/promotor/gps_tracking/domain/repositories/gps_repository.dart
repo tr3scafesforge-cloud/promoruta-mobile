@@ -23,6 +23,7 @@ abstract class GpsLocalDataSource {
   Future<List<GpsPoint>> getGpsPoints(String routeId);
   Future<void> updateRoute(route_model.Route route);
   Future<void> deleteRoute(String id);
+  Future<List<route_model.Route>> getPendingSyncRoutes();
 }
 
 /// Abstract remote data source for GPS

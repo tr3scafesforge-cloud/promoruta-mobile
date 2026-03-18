@@ -727,7 +727,7 @@ abstract class AppLocalizations {
   /// Label for the minimum budget filter in USD
   ///
   /// In en, this message translates to:
-  /// **'Minimum budget ($)'**
+  /// **'Minimum budget (\$)'**
   String get minBudgetUsd;
 
   /// Text shown when a filter has no limit applied
