@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:promoruta/core/core.dart';
 import 'package:promoruta/app/routes/app_router.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
@@ -32,9 +33,8 @@ class _LoginState extends ConsumerState<Login> {
     super.dispose();
   }
 
-  String _getLocalizedLoginError(BuildContext context, Object error) {
+  String _getLocalizedLoginError(AppLocalizations l10n, Object error) {
     final errorString = error.toString();
-    final l10n = AppLocalizations.of(context);
 
     if (errorString.contains('invalidCredentials')) {
       return l10n.invalidCredentials;
@@ -333,13 +333,20 @@ class _LoginState extends ConsumerState<Login> {
                                 : Icon(
                                     Icons.login,
                                     size: 24,
-                                    color: Theme.of(context).colorScheme.onPrimary,
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
                                   ),
                             iconAlignment: IconAlignment.start,
                             onPressed: _isLoading
                                 ? null
                                 : () async {
                                     if (_formKey.currentState!.validate()) {
+                                      final router = GoRouter.of(context);
+                                      final messenger =
+                                          ScaffoldMessenger.of(context);
+                                      final l10n = AppLocalizations.of(context);
+                                      final loginFailedMessage =
+                                          l10n.loginFailed;
                                       setState(() {
                                         _isLoading = true;
                                       });
@@ -351,60 +358,61 @@ class _LoginState extends ConsumerState<Login> {
                                                 _emailController.text.trim(),
                                                 _passwordController.text,
                                               ),
-                                          Future.delayed(const Duration(milliseconds: 500)),
+                                          Future.delayed(const Duration(
+                                              milliseconds: 500)),
                                         ]);
 
-                                        if (context.mounted) {
-                                          final user = ref
-                                              .read(authStateProvider)
-                                              .valueOrNull;
+                                        if (!mounted) return;
 
-                                          if (user == null) {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              const SnackBar(
-                                                content: Text(
-                                                    'Login failed: Unable to determine user role'),
-                                                backgroundColor: Colors.red,
-                                              ),
-                                            );
-                                            return;
-                                          }
+                                        final user = ref
+                                            .read(authStateProvider)
+                                            .valueOrNull;
 
-                                          await ref
-                                              .read(pushNotificationServiceProvider)
-                                              .registerCurrentToken();
-
-                                          if (user.role == UserRole.promoter) {
-                                            const PromoterHomeRoute()
-                                                .go(context);
-                                          } else if (user.role ==
-                                              UserRole.advertiser) {
-                                            const AdvertiserHomeRoute()
-                                                .go(context);
-                                          } else {
-                                            const HomeRoute().go(context);
-                                          }
-                                        }
-                                      } on TwoFactorRequiredException catch (e) {
-                                        if (context.mounted) {
-                                          TwoFactorLoginRoute(
-                                            email: e.email,
-                                            password: _passwordController.text,
-                                          ).push(context);
-                                        }
-                                      } catch (e) {
-                                        if (context.mounted) {
-                                          final errorMessage =
-                                              _getLocalizedLoginError(context, e);
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
+                                        if (user == null) {
+                                          messenger.showSnackBar(
                                             SnackBar(
-                                              content: Text(errorMessage),
+                                              content: Text(loginFailedMessage),
                                               backgroundColor: Colors.red,
                                             ),
                                           );
+                                          return;
                                         }
+
+                                        await ref
+                                            .read(
+                                                pushNotificationServiceProvider)
+                                            .registerCurrentToken();
+
+                                        if (!mounted) return;
+
+                                        if (user.role == UserRole.promoter) {
+                                          router.go(const PromoterHomeRoute()
+                                              .location);
+                                        } else if (user.role ==
+                                            UserRole.advertiser) {
+                                          router.go(const AdvertiserHomeRoute()
+                                              .location);
+                                        } else {
+                                          router.go(const HomeRoute().location);
+                                        }
+                                      } on TwoFactorRequiredException catch (e) {
+                                        if (!mounted) return;
+                                        router.push(
+                                          TwoFactorLoginRoute(
+                                            email: e.email,
+                                            password: _passwordController.text,
+                                          ).location,
+                                        );
+                                      } catch (e) {
+                                        if (!mounted) return;
+                                        final errorMessage =
+                                            _getLocalizedLoginError(l10n, e);
+                                        messenger.showSnackBar(
+                                          SnackBar(
+                                            content: Text(errorMessage),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
                                       } finally {
                                         if (mounted) {
                                           setState(() {

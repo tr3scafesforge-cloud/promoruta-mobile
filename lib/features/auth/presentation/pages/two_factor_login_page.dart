@@ -35,16 +35,18 @@ class _TwoFactorLoginPageState extends ConsumerState<TwoFactorLoginPage> {
   }
 
   Future<void> _handleVerify() async {
+    final l10n = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.of(context);
     final code = _useRecoveryCode
         ? _recoveryCodeController.text.trim()
         : _codeController.text.trim();
 
     if (code.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
+      messenger.showSnackBar(
         SnackBar(
           content: Text(_useRecoveryCode
-              ? AppLocalizations.of(context).pleaseEnterRecoveryCode
-              : AppLocalizations.of(context).pleaseEnterVerificationCode),
+              ? l10n.pleaseEnterRecoveryCode
+              : l10n.pleaseEnterVerificationCode),
           backgroundColor: Colors.red,
         ),
       );
@@ -52,9 +54,9 @@ class _TwoFactorLoginPageState extends ConsumerState<TwoFactorLoginPage> {
     }
 
     if (!_useRecoveryCode && code.length != 6) {
-      ScaffoldMessenger.of(context).showSnackBar(
+      messenger.showSnackBar(
         SnackBar(
-          content: Text(AppLocalizations.of(context).codeMustBeSixDigits),
+          content: Text(l10n.codeMustBeSixDigits),
           backgroundColor: Colors.red,
         ),
       );
@@ -86,9 +88,11 @@ class _TwoFactorLoginPageState extends ConsumerState<TwoFactorLoginPage> {
       ref.read(authStateProvider.notifier).setUser(user);
       await ref.read(pushNotificationServiceProvider).registerCurrentToken();
 
-      ScaffoldMessenger.of(context).showSnackBar(
+      if (!mounted) return;
+
+      messenger.showSnackBar(
         SnackBar(
-          content: Text(AppLocalizations.of(context).loginSuccessful),
+          content: Text(l10n.loginSuccessful),
           backgroundColor: Colors.green,
         ),
       );
@@ -103,7 +107,7 @@ class _TwoFactorLoginPageState extends ConsumerState<TwoFactorLoginPage> {
       }
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
+      messenger.showSnackBar(
         SnackBar(
           content: Text(e.toString().replaceAll('Exception: ', '')),
           backgroundColor: Colors.red,

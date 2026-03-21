@@ -58,11 +58,13 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
   }
 
   Future<void> _handleVerify() async {
+    final l10n = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.of(context);
     final code = _codeController.text.trim();
     if (code.isEmpty || code.length != 6) {
-      ScaffoldMessenger.of(context).showSnackBar(
+      messenger.showSnackBar(
         SnackBar(
-          content: Text(AppLocalizations.of(context).codeMustBeSixDigits),
+          content: Text(l10n.codeMustBeSixDigits),
           backgroundColor: Colors.red,
         ),
       );
@@ -84,9 +86,11 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
       ref.read(authStateProvider.notifier).setUser(user);
       await ref.read(pushNotificationServiceProvider).registerCurrentToken();
 
-      ScaffoldMessenger.of(context).showSnackBar(
+      if (!mounted) return;
+
+      messenger.showSnackBar(
         SnackBar(
-          content: Text(AppLocalizations.of(context).emailVerified),
+          content: Text(l10n.emailVerified),
           backgroundColor: Colors.green,
         ),
       );
@@ -101,7 +105,7 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
       }
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
+      messenger.showSnackBar(
         SnackBar(
           content: Text(e.toString().replaceAll('Exception: ', '')),
           backgroundColor: Colors.red,
@@ -115,6 +119,8 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
   }
 
   Future<void> _handleResendCode() async {
+    final messenger = ScaffoldMessenger.of(context);
+    final l10n = AppLocalizations.of(context);
     if (_resendCooldown > 0) return;
 
     setState(() => _isResending = true);
@@ -125,9 +131,9 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
 
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context).showSnackBar(
+      messenger.showSnackBar(
         SnackBar(
-          content: Text(AppLocalizations.of(context).verificationCodeSent),
+          content: Text(l10n.verificationCodeSent),
           backgroundColor: Colors.green,
         ),
       );
@@ -135,7 +141,7 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
       _startCooldown();
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
+      messenger.showSnackBar(
         SnackBar(
           content: Text(e.toString().replaceAll('Exception: ', '')),
           backgroundColor: Colors.red,

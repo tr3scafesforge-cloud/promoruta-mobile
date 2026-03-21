@@ -124,8 +124,10 @@ class PushNotificationService {
       return;
     }
 
-    final context = _navigatorKey.currentContext;
-    final l10n = context != null ? AppLocalizations.of(context) : null;
+    final navigatorState = _navigatorKey.currentState;
+    final l10n = navigatorState != null && navigatorState.mounted
+        ? AppLocalizations.of(navigatorState.context)
+        : null;
     final notificationContent = _notificationContentForMessage(message, l10n);
     final title = message.notification?.title ?? notificationContent.title;
     final body = message.notification?.body ?? notificationContent.body;
@@ -157,31 +159,32 @@ class PushNotificationService {
       return;
     }
 
-    final context = _navigatorKey.currentContext;
-    if (context == null) return;
+    final navigatorState = _navigatorKey.currentState;
+    if (navigatorState == null || !navigatorState.mounted) return;
 
     final campaignId = message.data['campaignId']?.toString();
     final targetRole = _targetRoleForMessage(message) ?? user?.role;
+    final router = GoRouter.of(navigatorState.context);
 
     if (targetRole == model.UserRole.advertiser) {
       if (campaignId == null || campaignId.isEmpty) {
         AppLogger.router.w(
           'Bid notification missing campaignId, falling back to advertiser home',
         );
-        GoRouter.of(context).go('/advertiser-home');
+        router.go('/advertiser-home');
         return;
       }
 
-      GoRouter.of(context).go('/campaign-details/$campaignId');
+      router.go('/campaign-details/$campaignId');
       return;
     }
 
     if (campaignId == null || campaignId.isEmpty) {
-      GoRouter.of(context).go('/promoter-home');
+      router.go('/promoter-home');
       return;
     }
 
-    GoRouter.of(context).go('/promoter-campaign-details/$campaignId');
+    router.go('/promoter-campaign-details/$campaignId');
   }
 
   bool _shouldHandleMessageForUser(
