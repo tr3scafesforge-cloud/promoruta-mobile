@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:promoruta/core/core.dart';
 import 'package:promoruta/core/utils/logger.dart';
+import 'package:promoruta/shared/contracts/auth_session_store.dart';
 
 import '../../../domain/repositories/auth_repository.dart';
 import '../../../domain/models/two_factor_models.dart';
@@ -8,11 +9,11 @@ import '../../models/registration_models.dart';
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final Dio dio;
-  final AuthLocalDataSource _localDataSource;
+  final AuthSessionStore _localDataSource;
 
   AuthRemoteDataSourceImpl({
     required this.dio,
-    required AuthLocalDataSource localDataSource,
+    required AuthSessionStore localDataSource,
   }) : _localDataSource = localDataSource;
 
   String? _extractFirstErrorMessage(dynamic responseData) {

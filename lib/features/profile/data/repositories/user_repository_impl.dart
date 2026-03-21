@@ -1,5 +1,5 @@
 import 'package:promoruta/core/core.dart';
-import 'package:promoruta/features/auth/domain/repositories/auth_repository.dart';
+import 'package:promoruta/shared/contracts/auth_session_store.dart';
 import '../datasources/local/user_local_data_source.dart' as local_ds;
 import '../datasources/remote/user_remote_data_source.dart' as remote_ds;
 import '../../domain/repositories/user_repository.dart';
@@ -7,7 +7,7 @@ import '../../domain/repositories/user_repository.dart';
 class UserRepositoryImpl implements UserRepository {
   final remote_ds.UserRemoteDataSource remoteDataSource;
   final local_ds.UserLocalDataSource localDataSource;
-  final AuthLocalDataSource authLocalDataSource;
+  final AuthSessionStore authLocalDataSource;
 
   UserRepositoryImpl({
     required this.remoteDataSource,

@@ -8,9 +8,9 @@ import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:promoruta/core/core.dart' as model;
 import 'package:promoruta/core/utils/logger.dart';
-import 'package:promoruta/features/auth/domain/repositories/auth_repository.dart';
 import 'package:promoruta/firebase_options.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
+import 'package:promoruta/shared/contracts/user_session_repository.dart';
 import 'package:promoruta/shared/services/notification_channel_service.dart';
 
 @pragma('vm:entry-point')
@@ -23,7 +23,7 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 class PushNotificationService {
   PushNotificationService({
-    required AuthRepository authRepository,
+    required UserSessionRepository authRepository,
     required NotificationChannelService notificationChannelService,
     required GlobalKey<NavigatorState> navigatorKey,
     FirebaseMessaging? messaging,
@@ -35,7 +35,7 @@ class PushNotificationService {
         _localNotifications =
             localNotifications ?? FlutterLocalNotificationsPlugin();
 
-  final AuthRepository _authRepository;
+  final UserSessionRepository _authRepository;
   final NotificationChannelService _notificationChannelService;
   final GlobalKey<NavigatorState> _navigatorKey;
   final FirebaseMessaging _messaging;
@@ -57,7 +57,8 @@ class PushNotificationService {
       });
 
       FirebaseMessaging.onMessage.listen(_handleForegroundMessage);
-      FirebaseMessaging.onMessageOpenedApp.listen(_handleNotificationNavigation);
+      FirebaseMessaging.onMessageOpenedApp
+          .listen(_handleNotificationNavigation);
 
       final initialMessage = await _messaging.getInitialMessage();
       if (initialMessage != null) {

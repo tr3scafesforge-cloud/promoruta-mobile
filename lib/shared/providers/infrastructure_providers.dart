@@ -9,11 +9,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:promoruta/core/models/config.dart';
 import 'package:promoruta/shared/datasources/local/db/database.dart';
+import 'package:promoruta/shared/contracts/auth_session_store.dart';
 import 'package:promoruta/shared/services/config_service.dart';
 import 'package:promoruta/shared/services/connectivity_service.dart';
 import 'package:promoruta/shared/services/connectivity_service_impl.dart';
 import 'package:promoruta/features/auth/data/datasources/local/auth_local_data_source.dart';
-import 'package:promoruta/features/auth/domain/repositories/auth_repository.dart';
 import 'package:promoruta/shared/services/token_refresh_interceptor.dart';
 import 'package:promoruta/shared/models/gps_tracking_config.dart';
 
@@ -70,7 +70,7 @@ final loggerProvider = Provider<Logger>((ref) {
 // ============ Auth Data Source (Infrastructure level) ============
 // This is defined here because Dio needs it for TokenRefreshInterceptor
 
-final authLocalDataSourceProvider = Provider<AuthLocalDataSource>((ref) {
+final authLocalDataSourceProvider = Provider<AuthSessionStore>((ref) {
   final database = ref.watch(databaseProvider);
   return AuthLocalDataSourceImpl(database);
 });

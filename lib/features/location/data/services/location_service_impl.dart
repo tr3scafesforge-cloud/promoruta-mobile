@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:logger/logger.dart';
+import 'package:promoruta/shared/contracts/location_lookup_service.dart';
 
 import '../../../../shared/constants/map_constants.dart';
-import '../../domain/location_service.dart';
 
-class LocationServiceImpl implements LocationService {
+class LocationServiceImpl implements LocationLookupService {
   final Logger _logger;
   StreamSubscription<Position>? _positionSubscription;
   final _locationController = StreamController<LatLng>.broadcast();

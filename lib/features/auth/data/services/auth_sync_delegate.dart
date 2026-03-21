@@ -1,9 +1,9 @@
 import 'package:promoruta/core/utils/logger.dart';
-import 'package:promoruta/features/auth/domain/repositories/auth_repository.dart';
+import 'package:promoruta/shared/contracts/auth_session_store.dart';
 import 'package:promoruta/shared/services/sync_domain_delegate.dart';
 
 class AuthSyncDelegate implements SyncDomainDelegate {
-  final AuthLocalDataSource _authLocalDataSource;
+  final AuthSessionStore _authLocalDataSource;
 
   AuthSyncDelegate(this._authLocalDataSource);
 

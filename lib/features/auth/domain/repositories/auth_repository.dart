@@ -1,10 +1,12 @@
 import 'package:promoruta/core/core.dart';
+import 'package:promoruta/shared/contracts/auth_session_store.dart';
+import 'package:promoruta/shared/contracts/user_session_repository.dart';
 import '../../data/models/registration_models.dart';
 import '../models/two_factor_models.dart';
 
 /// Abstract repository for authentication operations.
 /// Handles login, logout, and user session management with offline support.
-abstract class AuthRepository {
+abstract class AuthRepository implements UserSessionRepository {
   /// Attempts to log in with email and password.
   /// Returns User if successful, throws exception if failed.
   Future<User> login(String email, String password);
@@ -20,6 +22,7 @@ abstract class AuthRepository {
   Future<void> logout();
 
   /// Gets the current logged-in user, if any.
+  @override
   Future<User?> getCurrentUser();
 
   /// Checks if user is logged in.
@@ -87,21 +90,13 @@ abstract class AuthRepository {
   Future<String> resendVerificationCode(String email);
 
   /// Registers the FCM token for the current authenticated user.
+  @override
   Future<void> registerDeviceToken(String token);
 }
 
 /// Abstract local data source for authentication.
 /// Handles caching user session locally.
-abstract class AuthLocalDataSource {
-  /// Saves user session locally.
-  Future<void> saveUser(User user);
-
-  /// Retrieves cached user, if any.
-  Future<User?> getUser();
-
-  /// Clears local user session.
-  Future<void> clearUser();
-}
+abstract class AuthLocalDataSource implements AuthSessionStore {}
 
 /// Abstract remote data source for authentication.
 /// Handles API calls for auth operations.

@@ -1,5 +1,6 @@
 import 'package:promoruta/core/core.dart' as model;
 import 'package:promoruta/core/utils/logger.dart';
+import 'package:promoruta/shared/contracts/auth_session_store.dart';
 import 'package:promoruta/shared/services/connectivity_service.dart';
 
 import '../../domain/repositories/auth_repository.dart';
@@ -7,7 +8,7 @@ import '../../domain/models/two_factor_models.dart';
 import '../models/registration_models.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  final AuthLocalDataSource _localDataSource;
+  final AuthSessionStore _localDataSource;
   final AuthRemoteDataSource _remoteDataSource;
   final ConnectivityService _connectivityService;
 
@@ -361,7 +362,8 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<void> registerDeviceToken(String token) async {
     final isConnected = await _connectivityService.isConnected;
     if (!isConnected) {
-      throw Exception('No internet connection. Unable to register device token.');
+      throw Exception(
+          'No internet connection. Unable to register device token.');
     }
 
     await _remoteDataSource.registerDeviceToken(token);

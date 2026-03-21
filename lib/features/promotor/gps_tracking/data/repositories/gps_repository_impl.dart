@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:promoruta/core/core.dart';
-import 'package:promoruta/features/auth/domain/repositories/auth_repository.dart';
+import 'package:promoruta/shared/contracts/user_session_repository.dart';
 import 'package:promoruta/shared/shared.dart' hide Route, GpsPoint;
 import '../../domain/repositories/gps_repository.dart';
 
@@ -8,7 +8,7 @@ class GpsRepositoryImpl implements GpsRepository {
   final GpsLocalDataSource _localDataSource;
   final ConnectivityService _connectivityService;
   final SyncService _syncService;
-  final AuthRepository _authRepository;
+  final UserSessionRepository _authRepository;
 
   GpsRepositoryImpl(
     this._localDataSource,

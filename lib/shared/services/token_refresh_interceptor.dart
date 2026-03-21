@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:promoruta/core/core.dart';
 import 'package:promoruta/core/utils/logger.dart';
-import 'package:promoruta/features/auth/domain/repositories/auth_repository.dart';
+import 'package:promoruta/shared/contracts/auth_session_store.dart';
 
 /// Dio interceptor that handles automatic token refresh on 401 responses.
 ///
@@ -11,7 +11,7 @@ import 'package:promoruta/features/auth/domain/repositories/auth_repository.dart
 /// occurs at a time, preventing race conditions when multiple concurrent
 /// requests receive 401 responses.
 class TokenRefreshInterceptor extends Interceptor {
-  final AuthLocalDataSource _localDataSource;
+  final AuthSessionStore _localDataSource;
   final Dio _dio;
 
   /// Completer that coordinates concurrent refresh requests.
@@ -19,7 +19,7 @@ class TokenRefreshInterceptor extends Interceptor {
   static Completer<String?>? _refreshCompleter;
 
   TokenRefreshInterceptor({
-    required AuthLocalDataSource localDataSource,
+    required AuthSessionStore localDataSource,
     required Dio dio,
   })  : _localDataSource = localDataSource,
         _dio = dio;
