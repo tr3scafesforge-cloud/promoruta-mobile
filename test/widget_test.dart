@@ -1,20 +1,29 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mocktail/mocktail.dart';
 
 import 'package:promoruta/main.dart';
+import 'package:promoruta/shared/providers/providers.dart';
+import 'package:promoruta/shared/services/push_notification_service.dart';
+
+class MockPushNotificationService extends Mock
+    implements PushNotificationService {}
 
 void main() {
   testWidgets('App builds with ProviderScope', (WidgetTester tester) async {
+    final mockPushNotificationService = MockPushNotificationService();
+    when(() => mockPushNotificationService.initialize())
+        .thenAnswer((_) async {});
+    when(() => mockPushNotificationService.registerCurrentToken())
+        .thenAnswer((_) async {});
+
     await tester.pumpWidget(
-      const ProviderScope(
-        child: PromorutaApp(),
+      ProviderScope(
+        overrides: [
+          pushNotificationServiceProvider
+              .overrideWithValue(mockPushNotificationService),
+        ],
+        child: const PromorutaApp(),
       ),
     );
 
