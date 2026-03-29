@@ -701,24 +701,28 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
       builder: (context) => AlertDialog(
         title: Text(l10n.confirmCampaignCreation),
         content: Text(l10n.campaignCreationWarning),
+        actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(
-              l10n.cancel,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.secondary,
-              foregroundColor: Colors.white,
-            ),
-            child: Text(
-              l10n.confirm,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
+          Row(
+            children: [
+              Expanded(
+                child: CustomButton.outlined(
+                  text: l10n.cancel,
+                  backgroundColor: Colors.white,
+                  outlineColor: AppColors.grayDarkStroke,
+                  textColor: AppColors.textPrimary,
+                  onPressed: () => Navigator.of(context).pop(false),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: CustomButton(
+                  text: l10n.confirm,
+                  backgroundColor: AppColors.secondary,
+                  onPressed: () => Navigator.of(context).pop(true),
+                ),
+              ),
+            ],
           ),
         ],
       ),
