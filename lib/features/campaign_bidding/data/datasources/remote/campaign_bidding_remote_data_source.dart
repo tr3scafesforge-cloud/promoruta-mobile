@@ -180,6 +180,31 @@ class CampaignBiddingRemoteDataSourceImpl
   }
 
   @override
+  Future<PaymentInfo> retryPaymentCheckout(String campaignId) async {
+    try {
+      final response = await dio.post(
+        '/campaigns/$campaignId/retry-payment-checkout',
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final data = _normalizeMap(response.data);
+        return _extractPaymentInfo(data);
+      }
+      throw Exception(
+          'Failed to retry payment checkout: ${response.statusMessage}');
+    } catch (e) {
+      AppLogger.auth.e('Error retrying payment checkout: $e');
+      rethrow;
+    }
+  }
+
+  @override
   Future<Campaign> startCampaign(String campaignId) async {
     try {
       final response = await dio.post(

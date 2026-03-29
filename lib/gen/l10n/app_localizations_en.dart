@@ -1533,6 +1533,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Payment pending. Checkout link not available yet.';
 
   @override
+  String get retryPayment => 'Retry payment';
+
+  @override
   String get promoterPaymentNotConfigured =>
       'This promoter has not linked a Mercado Pago account yet. Ask them to connect it before accepting the offer.';
 

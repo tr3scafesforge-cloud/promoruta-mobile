@@ -1919,6 +1919,10 @@
   "@paymentPendingNoCheckout": {
     "description": "Message when payment is pending and no checkout URL is available"
   },
+  "retryPayment": "Reintentar pago",
+  "@retryPayment": {
+    "description": "Button text to retry a payment checkout"
+  },
   "promoterPaymentNotConfigured": "Este promotor aún no vinculó una cuenta de Mercado Pago. Pedile que la conecte antes de aceptar la oferta.",
   "@promoterPaymentNotConfigured": {
     "description": "Message shown when accepting a bid fails because the promoter has no linked Mercado Pago account"

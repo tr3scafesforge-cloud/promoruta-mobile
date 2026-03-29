@@ -30,6 +30,7 @@ abstract class CampaignBiddingRepository {
     required String campaignId,
     String? gatewayId,
   });
+  Future<Result<PaymentInfo, AppError>> retryPaymentCheckout(String campaignId);
   Future<Result<Campaign, AppError>> startCampaign(String campaignId);
   Future<Result<Campaign, AppError>> completeCampaign(String campaignId);
 }
@@ -59,6 +60,7 @@ abstract class CampaignBiddingRemoteDataSource {
     required String campaignId,
     String? gatewayId,
   });
+  Future<PaymentInfo> retryPaymentCheckout(String campaignId);
   Future<Campaign> startCampaign(String campaignId);
   Future<Campaign> completeCampaign(String campaignId);
 }

@@ -55,6 +55,12 @@ final confirmPaymentUseCaseProvider = Provider<ConfirmPaymentUseCase>((ref) {
   return ConfirmPaymentUseCase(repository);
 });
 
+final retryPaymentCheckoutUseCaseProvider =
+    Provider<RetryPaymentCheckoutUseCase>((ref) {
+  final repository = ref.watch(campaignBiddingRepositoryProvider);
+  return RetryPaymentCheckoutUseCase(repository);
+});
+
 final startCampaignUseCaseProvider = Provider<StartCampaignUseCase>((ref) {
   final repository = ref.watch(campaignBiddingRepositoryProvider);
   return StartCampaignUseCase(repository);

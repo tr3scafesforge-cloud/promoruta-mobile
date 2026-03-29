@@ -150,6 +150,24 @@ class CampaignBiddingRepositoryImpl implements CampaignBiddingRepository {
   }
 
   @override
+  Future<Result<PaymentInfo, AppError>> retryPaymentCheckout(
+      String campaignId) async {
+    final isConnected = await _connectivityService.isConnected;
+
+    if (!isConnected) {
+      return Result.failure(NetworkError.noConnection());
+    }
+
+    try {
+      final paymentInfo =
+          await _remoteDataSource.retryPaymentCheckout(campaignId);
+      return Result.success(paymentInfo);
+    } catch (e, stackTrace) {
+      return Result.failure(_mapException(e, stackTrace));
+    }
+  }
+
+  @override
   Future<Result<Campaign, AppError>> startCampaign(String campaignId) async {
     final isConnected = await _connectivityService.isConnected;
 

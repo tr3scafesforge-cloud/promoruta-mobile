@@ -171,6 +171,21 @@ class ConfirmPaymentUseCase
   }
 }
 
+class RetryPaymentCheckoutUseCase implements UseCase<PaymentInfo, String> {
+  final CampaignBiddingRepository _repository;
+
+  RetryPaymentCheckoutUseCase(this._repository);
+
+  @override
+  Future<PaymentInfo> call(String campaignId) async {
+    final result = await _repository.retryPaymentCheckout(campaignId);
+    return result.fold(
+      (info) => info,
+      (error) => throw _toException(error),
+    );
+  }
+}
+
 class StartCampaignUseCase implements UseCase<Campaign, String> {
   final CampaignBiddingRepository _repository;
 

@@ -2902,6 +2902,12 @@ abstract class AppLocalizations {
   /// **'Payment pending. Checkout link not available yet.'**
   String get paymentPendingNoCheckout;
 
+  /// Button text to retry a payment checkout
+  ///
+  /// In en, this message translates to:
+  /// **'Retry payment'**
+  String get retryPayment;
+
   /// Message shown when accepting a bid fails because the promoter has no linked Mercado Pago account
   ///
   /// In en, this message translates to:

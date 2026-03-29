@@ -34,6 +34,7 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
   Duration _pollingInterval = const Duration(seconds: 20);
   bool _isLoading = false;
   bool _isAccepting = false;
+  bool _isRetryingPayment = false;
 
   @override
   void dispose() {
@@ -356,6 +357,24 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
                 ),
                 const SizedBox(height: 16),
 
+                // Retry payment button (show when accepted but payment pending)
+                if (campaign.status == CampaignStatus.accepted &&
+                    paymentStatus != PaymentStatus.paid)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: _isRetryingPayment
+                          ? const Center(child: CircularProgressIndicator())
+                          : CustomButton(
+                              text: l10n.retryPayment,
+                              backgroundColor: AppColors.primary,
+                              onPressed: () =>
+                                  _retryPaymentCheckout(campaign.id ?? ''),
+                            ),
+                    ),
+                  ),
+
                 // Cancel button (hide for terminal statuses)
                 if (!_isTerminalStatus(campaign.status))
                   SizedBox(
@@ -483,6 +502,58 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
     } finally {
       if (mounted) {
         setState(() => _isAccepting = false);
+      }
+    }
+  }
+
+  Future<void> _retryPaymentCheckout(String campaignId) async {
+    final l10n = AppLocalizations.of(context);
+    final notificationService = ref.read(notificationServiceProvider);
+    setState(() => _isRetryingPayment = true);
+    try {
+      final retryUseCase = ref.read(retryPaymentCheckoutUseCaseProvider);
+      final paymentInfo = await retryUseCase(campaignId);
+
+      ref.invalidate(campaignByIdProvider(campaignId));
+      ref.invalidate(campaignBidsProvider(campaignId));
+
+      if (paymentInfo.checkoutUrl != null &&
+          paymentInfo.checkoutUrl!.isNotEmpty) {
+        final uri = Uri.tryParse(paymentInfo.checkoutUrl!);
+        if (uri != null) {
+          final launched =
+              await launchUrl(uri, mode: LaunchMode.externalApplication);
+          if (!launched && mounted) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => PaymentWebViewPage(checkoutUri: uri),
+              ),
+            );
+          }
+        }
+      } else {
+        if (mounted) {
+          notificationService.showToast(
+            l10n.paymentPendingNoCheckout,
+            type: ToastType.info,
+            context: context,
+          );
+        }
+      }
+    } catch (e) {
+      ref.invalidate(campaignByIdProvider(campaignId));
+      ref.invalidate(campaignBidsProvider(campaignId));
+      if (mounted) {
+        notificationService.showToast(
+          _mapAcceptBidErrorMessage(e, l10n),
+          type: ToastType.error,
+          context: context,
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isRetryingPayment = false);
       }
     }
   }
