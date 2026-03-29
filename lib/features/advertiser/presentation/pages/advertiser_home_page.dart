@@ -174,12 +174,19 @@ class _CreateFirstCampaignCard extends StatelessWidget {
               ),
             ],
           ),
-          CustomButton(
-            text: l10n.startCampaign,
-            backgroundColor: AppColors.secondary,
-            onPressed: () {
-              const CreateCampaignRoute().push(context);
-            },
+          Align(
+            alignment: Alignment.centerLeft,
+            child: SizedBox(
+              width: 190,
+              child: CustomButton(
+                text: l10n.startCampaign,
+                backgroundColor: AppColors.secondary,
+                shrinkToFit: true,
+                onPressed: () {
+                  const CreateCampaignRoute().push(context);
+                },
+              ),
+            ),
           ),
         ],
       ),

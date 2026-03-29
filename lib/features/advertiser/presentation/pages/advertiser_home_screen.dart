@@ -12,6 +12,7 @@ import 'package:promoruta/features/advertiser/campaign_management/presentation/p
 import 'package:promoruta/features/advertiser/campaign_management/presentation/pages/advertiser_live_map_page.dart';
 import 'package:promoruta/features/advertiser/campaign_management/presentation/pages/advertiser_history_page.dart';
 import 'package:promoruta/shared/providers/providers.dart';
+import 'package:promoruta/shared/widgets/custom_button.dart';
 
 class AdvertiserHomeScreen extends ConsumerStatefulWidget {
   const AdvertiserHomeScreen({super.key});
@@ -172,18 +173,16 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
             Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-              child: FilledButton.icon(
-                onPressed: () {
-                  const CreateCampaignRoute().push(context);
-                },
-                icon: const Icon(Icons.add),
-                label: Text(l10n.newCampaign),
-                style: FilledButton.styleFrom(
-                  backgroundColor: const Color(0xFF11A192),
-                  foregroundColor: Colors.white,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                  textStyle: const TextStyle(fontWeight: FontWeight.w600),
+              child: SizedBox(
+                width: 150,
+                child: CustomButton(
+                  text: l10n.newCampaign,
+                  backgroundColor: AppColors.secondary,
+                  leadingIcon: Icons.add,
+                  shrinkToFit: true,
+                  onPressed: () {
+                    const CreateCampaignRoute().push(context);
+                  },
                 ),
               ),
             ),

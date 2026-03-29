@@ -5,6 +5,7 @@ class CustomButton extends StatelessWidget {
   final Color backgroundColor;
   final VoidCallback onPressed;
   final Color textColor;
+  final IconData? leadingIcon;
   final bool isOutlined;
   final Color? outlineColor;
   final bool shrinkToFit;
@@ -15,6 +16,7 @@ class CustomButton extends StatelessWidget {
     required this.backgroundColor,
     required this.onPressed,
     this.textColor = Colors.white,
+    this.leadingIcon,
     this.isOutlined = false,
     this.outlineColor,
     this.shrinkToFit = false,
@@ -39,6 +41,28 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final buttonLabel = Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        if (leadingIcon != null) ...[
+          Icon(leadingIcon, size: 18, color: textColor),
+          const SizedBox(width: 8),
+        ],
+        Text(
+          text,
+          maxLines: 1,
+          softWrap: false,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: textColor,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+
     return SizedBox(
       height: 45,
       width: double.infinity,
@@ -58,27 +82,9 @@ class CustomButton extends StatelessWidget {
               ? FittedBox(
                   fit: BoxFit.scaleDown,
                   alignment: Alignment.center,
-                  child: Text(
-                    text,
-                    maxLines: 1,
-                    softWrap: false,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: textColor,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+                  child: buttonLabel,
                 )
-              : Text(
-                  text,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: textColor,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
+              : Center(child: buttonLabel),
         ),
       ),
     );
