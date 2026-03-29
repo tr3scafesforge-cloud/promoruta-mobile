@@ -522,6 +522,11 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
       return l10n.paymentPendingNoCheckout;
     }
 
+    if (upper.contains('CAMPAIGNS.PROMOTER_PAYMENT_NOT_CONFIGURED') ||
+        upper.contains('PROMOTER_PAYMENT_NOT_CONFIGURED')) {
+      return l10n.promoterPaymentNotConfigured;
+    }
+
     return message.isNotEmpty ? message : l10n.unknownError;
   }
 }

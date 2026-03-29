@@ -2902,6 +2902,12 @@ abstract class AppLocalizations {
   /// **'Payment pending. Checkout link not available yet.'**
   String get paymentPendingNoCheckout;
 
+  /// Message shown when accepting a bid fails because the promoter has no linked Mercado Pago account
+  ///
+  /// In en, this message translates to:
+  /// **'This promoter has not linked a Mercado Pago account yet. Ask them to connect it before accepting the offer.'**
+  String get promoterPaymentNotConfigured;
+
   /// Status label for created campaigns
   ///
   /// In en, this message translates to:

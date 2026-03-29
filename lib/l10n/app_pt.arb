@@ -1907,6 +1907,10 @@
   "@paymentPendingNoCheckout": {
     "description": "Message when payment is pending and no checkout URL is available"
   },
+  "promoterPaymentNotConfigured": "Este promotor ainda não vinculou uma conta do Mercado Pago. Peça para ele conectar a conta antes de aceitar a oferta.",
+  "@promoterPaymentNotConfigured": {
+    "description": "Message shown when accepting a bid fails because the promoter has no linked Mercado Pago account"
+  },
   "statusOpenForBids": "Aberta para ofertas",
   "@statusOpenForBids": {
     "description": "Status label for created campaigns"

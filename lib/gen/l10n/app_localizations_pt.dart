@@ -1540,6 +1540,10 @@ class AppLocalizationsPt extends AppLocalizations {
       'Pagamento pendente. Link de pagamento ainda não disponível.';
 
   @override
+  String get promoterPaymentNotConfigured =>
+      'Este promotor ainda não vinculou uma conta do Mercado Pago. Peça para ele conectar a conta antes de aceitar a oferta.';
+
+  @override
   String get statusOpenForBids => 'Aberta para ofertas';
 
   @override
