@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:promoruta/core/constants/app_shapes.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
@@ -68,7 +69,7 @@ class CustomButton extends StatelessWidget {
       width: double.infinity,
       child: InkWell(
         onTap: onPressed,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: AppShapes.buttonRadius,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
@@ -76,7 +77,7 @@ class CustomButton extends StatelessWidget {
             border: isOutlined
                 ? Border.all(color: outlineColor ?? backgroundColor, width: 1)
                 : null,
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: AppShapes.buttonRadius,
           ),
           child: shrinkToFit
               ? FittedBox(
