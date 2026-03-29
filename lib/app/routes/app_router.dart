@@ -22,6 +22,8 @@ import 'package:promoruta/features/auth/presentation/pages/two_factor_login_page
 import 'package:promoruta/features/profile/presentation/pages/security_settings_page.dart';
 import 'package:promoruta/features/profile/presentation/pages/language_settings_page.dart';
 import 'package:promoruta/features/payments/presentation/pages/payment_methods_page.dart';
+import 'package:promoruta/features/payments/presentation/pages/payment_checkout_result_page.dart';
+import 'package:promoruta/features/payments/presentation/pages/mercado_pago_oauth_result_page.dart';
 import 'package:promoruta/features/profile/presentation/pages/change_password_page.dart';
 import 'package:promoruta/features/profile/presentation/pages/two_factor_auth_page.dart';
 import 'package:promoruta/features/profile/presentation/pages/two_factor_setup_page.dart';
@@ -566,6 +568,81 @@ class AppRouter {
       navigatorKey: navigatorKey,
       routes: [
         ...$appRoutes,
+        GoRoute(
+          path: '/payments/result/:status',
+          builder: (context, state) {
+            final status = state.pathParameters['status'] ?? 'pending';
+            return PaymentCheckoutResultPage(status: status);
+          },
+        ),
+        GoRoute(
+          path: '/success',
+          builder: (context, state) {
+            return const PaymentCheckoutResultPage(status: 'success');
+          },
+        ),
+        GoRoute(
+          path: '/failure',
+          builder: (context, state) {
+            return const PaymentCheckoutResultPage(status: 'failure');
+          },
+        ),
+        GoRoute(
+          path: '/pending',
+          builder: (context, state) {
+            return const PaymentCheckoutResultPage(status: 'pending');
+          },
+        ),
+        // Custom scheme fallback when URI host is "payments":
+        // promoruta://payments/result/success
+        GoRoute(
+          path: '/result/:status',
+          builder: (context, state) {
+            final status = state.pathParameters['status'] ?? 'pending';
+            return PaymentCheckoutResultPage(status: status);
+          },
+        ),
+        GoRoute(
+          path: '/payments/mercadopago/oauth-result',
+          builder: (context, state) {
+            final status = state.uri.queryParameters['mp_oauth_status'] ??
+                state.uri.queryParameters['status'] ??
+                'failure';
+            final message = state.uri.queryParameters['message'];
+            return MercadoPagoOAuthResultPage(
+              status: status,
+              message: message,
+            );
+          },
+        ),
+        GoRoute(
+          path: '/oauth-result',
+          builder: (context, state) {
+            final status = state.uri.queryParameters['mp_oauth_status'] ??
+                state.uri.queryParameters['status'] ??
+                'failure';
+            final message = state.uri.queryParameters['message'];
+            return MercadoPagoOAuthResultPage(
+              status: status,
+              message: message,
+            );
+          },
+        ),
+        // Custom scheme fallback when URI host is "payments":
+        // promoruta://payments/mercadopago/oauth-result
+        GoRoute(
+          path: '/mercadopago/oauth-result',
+          builder: (context, state) {
+            final status = state.uri.queryParameters['mp_oauth_status'] ??
+                state.uri.queryParameters['status'] ??
+                'failure';
+            final message = state.uri.queryParameters['message'];
+            return MercadoPagoOAuthResultPage(
+              status: status,
+              message: message,
+            );
+          },
+        ),
         GoRoute(
           path: '/promoter-campaign-details/:campaignId',
           builder: (context, state) {

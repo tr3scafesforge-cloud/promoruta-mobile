@@ -2,15 +2,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/core/models/campaign.dart';
 import 'package:promoruta/core/models/campaign_bid.dart';
 import 'package:promoruta/core/models/payment_status.dart';
 import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/shared/shared.dart';
+import 'package:promoruta/shared/services/in_app_browser_launcher.dart';
 import 'package:promoruta/shared/services/notification_service.dart';
-import 'package:promoruta/shared/widgets/payment_webview_page.dart';
 import 'package:promoruta/features/advertiser/campaign_management/domain/use_cases/campaign_use_cases.dart';
 import 'package:promoruta/features/campaign_bidding/domain/use_cases/campaign_bidding_use_cases.dart';
 import 'package:promoruta/features/advertiser/presentation/widgets/advertiser_app_bar.dart';
@@ -318,9 +317,10 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
                     children: [
                       Text(
                         l10n.bidsTitle,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w700,
-                            ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                ),
                       ),
                       const SizedBox(height: 12),
                       bidsAsync.when(
@@ -469,16 +469,7 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
           paymentInfo.checkoutUrl!.isNotEmpty) {
         final uri = Uri.tryParse(paymentInfo.checkoutUrl!);
         if (uri != null) {
-          final launched =
-              await launchUrl(uri, mode: LaunchMode.externalApplication);
-          if (!launched && mounted) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => PaymentWebViewPage(checkoutUri: uri),
-              ),
-            );
-          }
+          await _openCheckoutUri(uri, notificationService, l10n);
         }
       } else {
         if (mounted) {
@@ -521,16 +512,7 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
           paymentInfo.checkoutUrl!.isNotEmpty) {
         final uri = Uri.tryParse(paymentInfo.checkoutUrl!);
         if (uri != null) {
-          final launched =
-              await launchUrl(uri, mode: LaunchMode.externalApplication);
-          if (!launched && mounted) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => PaymentWebViewPage(checkoutUri: uri),
-              ),
-            );
-          }
+          await _openCheckoutUri(uri, notificationService, l10n);
         }
       } else {
         if (mounted) {
@@ -555,6 +537,23 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
       if (mounted) {
         setState(() => _isRetryingPayment = false);
       }
+    }
+  }
+
+  Future<void> _openCheckoutUri(
+    Uri uri,
+    NotificationService notificationService,
+    AppLocalizations l10n,
+  ) async {
+    try {
+      await InAppBrowserLauncher.open(context, uri);
+    } catch (_) {
+      if (!mounted) return;
+      notificationService.showToast(
+        l10n.paymentPendingNoCheckout,
+        type: ToastType.error,
+        context: context,
+      );
     }
   }
 

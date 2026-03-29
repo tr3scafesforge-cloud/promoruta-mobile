@@ -1,12 +1,120 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:promoruta/core/models/user.dart';
+import 'package:promoruta/features/auth/presentation/providers/auth_providers.dart';
+import 'package:promoruta/features/payments/domain/models/mercado_pago_oauth_models.dart';
+import 'package:promoruta/features/payments/presentation/providers/mercado_pago_oauth_providers.dart';
+import 'package:promoruta/shared/services/in_app_browser_launcher.dart';
 
-class PaymentMethodsPage extends StatelessWidget {
+class PaymentMethodsPage extends ConsumerStatefulWidget {
   const PaymentMethodsPage({super.key});
+
+  @override
+  ConsumerState<PaymentMethodsPage> createState() => _PaymentMethodsPageState();
+}
+
+class _PaymentMethodsPageState extends ConsumerState<PaymentMethodsPage>
+    with WidgetsBindingObserver {
+  bool _isConnecting = false;
+  bool _isDisconnecting = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      ref.invalidate(mercadoPagoAccountStatusProvider);
+    }
+  }
+
+  Future<void> _connectMercadoPago() async {
+    setState(() => _isConnecting = true);
+    try {
+      final useCase = ref.read(getMercadoPagoAuthorizeUrlUseCaseProvider);
+      final data = await useCase();
+      final uri = Uri.tryParse(data.authorizeUrl);
+      if (uri == null) {
+        throw Exception('Invalid Mercado Pago authorize URL.');
+      }
+
+      await InAppBrowserLauncher.open(context, uri);
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Complete la autorización en Mercado Pago y vuelva a la app.',
+          ),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(_cleanError(e))),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isConnecting = false);
+      }
+      ref.invalidate(mercadoPagoAccountStatusProvider);
+    }
+  }
+
+  Future<void> _disconnectMercadoPago() async {
+    setState(() => _isDisconnecting = true);
+    try {
+      final useCase = ref.read(disconnectMercadoPagoUseCaseProvider);
+      await useCase();
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Cuenta de Mercado Pago desconectada.'),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(_cleanError(e))),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isDisconnecting = false);
+      }
+      ref.invalidate(mercadoPagoAccountStatusProvider);
+    }
+  }
+
+  String _cleanError(Object error) {
+    var message = error.toString().trim();
+    if (message.startsWith('Exception:')) {
+      message = message.replaceFirst('Exception:', '').trim();
+    }
+    return message.isEmpty ? 'Ocurrió un error inesperado.' : message;
+  }
 
   @override
   Widget build(BuildContext context) {
     const bg = Color(0xFFF3F5F7);
+    final user = ref.watch(authStateProvider).maybeWhen(
+          data: (value) => value,
+          orElse: () => null,
+        );
+    final isPromoter = user?.role == UserRole.promoter;
+    final fallbackSecurityRoute = isPromoter
+        ? '/promoter-security-settings'
+        : '/advertiser-security-settings';
 
     return Scaffold(
       backgroundColor: bg,
@@ -17,7 +125,7 @@ class PaymentMethodsPage extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, color: Colors.black87),
           onPressed: () => context.canPop()
               ? context.pop()
-              : context.go('/advertiser-security-settings'),
+              : context.go(fallbackSecurityRoute),
         ),
         title: const SizedBox.shrink(),
       ),
@@ -25,35 +133,18 @@ class PaymentMethodsPage extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
           children: [
-            _SettingsCard(
-              children: [
-                _SettingsTile(
-                  icon: Icons.credit_card,
-                  title: 'Tarjeta de Crédito',
-                  subtitle: '**** **** **** 1234',
-                  onTap: () {
-                    // TODO: Navigate to edit credit card
-                  },
-                ),
-                const _RowDivider(),
-                _SettingsTile(
-                  icon: Icons.account_balance,
-                  title: 'Transferencia Bancaria',
-                  subtitle: 'Cuenta corriente',
-                  onTap: () {
-                    // TODO: Navigate to edit bank account
-                  },
-                ),
-                const _RowDivider(),
-                _SettingsTile(
-                  icon: Icons.add,
-                  title: 'Agregar método de pago',
-                  onTap: () {
-                    // TODO: Navigate to add payment method
-                  },
-                ),
-              ],
-            ),
+            if (isPromoter)
+              _PromoterMercadoPagoCard(
+                statusAsync: ref.watch(mercadoPagoAccountStatusProvider),
+                isConnecting: _isConnecting,
+                isDisconnecting: _isDisconnecting,
+                onConnect: _connectMercadoPago,
+                onDisconnect: _disconnectMercadoPago,
+                onRefresh: () =>
+                    ref.invalidate(mercadoPagoAccountStatusProvider),
+              )
+            else
+              const _AdvertiserPaymentMethodsCard(),
           ],
         ),
       ),
@@ -61,7 +152,188 @@ class PaymentMethodsPage extends StatelessWidget {
   }
 }
 
-/// Rounded container that looks like the card in your screenshot.
+class _PromoterMercadoPagoCard extends StatelessWidget {
+  final AsyncValue<MercadoPagoAccountStatus> statusAsync;
+  final bool isConnecting;
+  final bool isDisconnecting;
+  final VoidCallback onConnect;
+  final VoidCallback onDisconnect;
+  final VoidCallback onRefresh;
+
+  const _PromoterMercadoPagoCard({
+    required this.statusAsync,
+    required this.isConnecting,
+    required this.isDisconnecting,
+    required this.onConnect,
+    required this.onDisconnect,
+    required this.onRefresh,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return _SettingsCard(
+      children: [
+        const _SettingsTile(
+          icon: Icons.account_balance_wallet_outlined,
+          title: 'Mercado Pago',
+          subtitle: 'Conecta tu cuenta para recibir pagos al aceptar ofertas.',
+        ),
+        const _RowDivider(),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(14, 14, 14, 16),
+          child: statusAsync.when(
+            loading: () => const Row(
+              children: [
+                SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+                SizedBox(width: 10),
+                Expanded(child: Text('Consultando estado de conexión...')),
+              ],
+            ),
+            error: (error, _) => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  error.toString(),
+                  style: const TextStyle(color: Colors.red),
+                ),
+                const SizedBox(height: 12),
+                OutlinedButton.icon(
+                  onPressed: onRefresh,
+                  icon: const Icon(Icons.refresh),
+                  label: const Text('Reintentar'),
+                ),
+              ],
+            ),
+            data: (status) => _ConnectedState(
+              status: status,
+              isConnecting: isConnecting,
+              isDisconnecting: isDisconnecting,
+              onConnect: onConnect,
+              onDisconnect: onDisconnect,
+              onRefresh: onRefresh,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ConnectedState extends StatelessWidget {
+  final MercadoPagoAccountStatus status;
+  final bool isConnecting;
+  final bool isDisconnecting;
+  final VoidCallback onConnect;
+  final VoidCallback onDisconnect;
+  final VoidCallback onRefresh;
+
+  const _ConnectedState({
+    required this.status,
+    required this.isConnecting,
+    required this.isDisconnecting,
+    required this.onConnect,
+    required this.onDisconnect,
+    required this.onRefresh,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isConnected = status.connected;
+    final subtitle = isConnected
+        ? 'Cuenta conectada${status.username != null ? ' (${status.username})' : ''}'
+        : 'Cuenta no conectada';
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          subtitle,
+          style: TextStyle(
+            color: isConnected ? const Color(0xFF147A3D) : Colors.black87,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        if (status.userId != null) ...[
+          const SizedBox(height: 6),
+          Text(
+            'ID Mercado Pago: ${status.userId}',
+            style: const TextStyle(color: Colors.black54),
+          ),
+        ],
+        if (status.tokenExpiresAt != null) ...[
+          const SizedBox(height: 6),
+          Text(
+            'Token vence: ${status.tokenExpiresAt}',
+            style: const TextStyle(color: Colors.black54),
+          ),
+        ],
+        const SizedBox(height: 14),
+        SizedBox(
+          width: double.infinity,
+          child: FilledButton.icon(
+            onPressed: (isConnecting || isDisconnecting)
+                ? null
+                : (isConnected ? onDisconnect : onConnect),
+            icon: (isConnecting || isDisconnecting)
+                ? const SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : Icon(isConnected ? Icons.link_off : Icons.link),
+            label: Text(
+              isConnected
+                  ? 'Desconectar Mercado Pago'
+                  : 'Conectar Mercado Pago',
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton.icon(
+            onPressed: (isConnecting || isDisconnecting) ? null : onRefresh,
+            icon: const Icon(Icons.refresh),
+            label: const Text('Actualizar estado'),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _AdvertiserPaymentMethodsCard extends StatelessWidget {
+  const _AdvertiserPaymentMethodsCard();
+
+  @override
+  Widget build(BuildContext context) {
+    return _SettingsCard(
+      children: const [
+        _SettingsTile(
+          icon: Icons.credit_card,
+          title: 'Tarjeta de Crédito',
+          subtitle: '**** **** **** 1234',
+        ),
+        _RowDivider(),
+        _SettingsTile(
+          icon: Icons.account_balance,
+          title: 'Transferencia Bancaria',
+          subtitle: 'Cuenta corriente',
+        ),
+        _RowDivider(),
+        _SettingsTile(
+          icon: Icons.add,
+          title: 'Agregar método de pago',
+        ),
+      ],
+    );
+  }
+}
+
 class _SettingsCard extends StatelessWidget {
   const _SettingsCard({required this.children});
   final List<Widget> children;
@@ -86,19 +358,16 @@ class _SettingsCard extends StatelessWidget {
   }
 }
 
-/// Single row with left icon, bold title, and trailing chevron.
 class _SettingsTile extends StatelessWidget {
   const _SettingsTile({
     required this.icon,
     required this.title,
     this.subtitle,
-    this.onTap,
   });
 
   final IconData icon;
   final String title;
   final String? subtitle;
-  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -110,30 +379,25 @@ class _SettingsTile extends StatelessWidget {
           color: Colors.black54,
         );
 
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
-        child: Row(
-          children: [
-            Icon(icon, size: 24, color: Colors.black87),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title, style: titleStyle),
-                  if (subtitle != null) ...[
-                    const SizedBox(height: 2),
-                    Text(subtitle!, style: subtitleStyle),
-                  ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
+      child: Row(
+        children: [
+          Icon(icon, size: 24, color: Colors.black87),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: titleStyle),
+                if (subtitle != null) ...[
+                  const SizedBox(height: 2),
+                  Text(subtitle!, style: subtitleStyle),
                 ],
-              ),
+              ],
             ),
-            const Icon(Icons.chevron_right, color: Colors.black54),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
