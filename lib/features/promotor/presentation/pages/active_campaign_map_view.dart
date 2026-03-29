@@ -5,6 +5,7 @@ import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:just_audio/just_audio.dart';
 
 import 'package:promoruta/gen/l10n/app_localizations.dart';
+import 'package:promoruta/core/constants/app_shapes.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/shared/providers/providers.dart';
 import 'package:promoruta/features/promotor/route_execution/domain/models/campaign_execution_state.dart';
@@ -427,8 +428,7 @@ class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
                       onPressed: _centerOnLocation,
                       elevation: 0,
                       backgroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                      shape: AppShapes.fabShape(
                         side: BorderSide(color: AppColors.grayDarkStroke),
                       ),
                       child: Icon(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:promoruta/app/routes/app_router.dart';
+import 'package:promoruta/core/constants/app_shapes.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/features/advertiser/presentation/pages/advertiser_home_page.dart';
 import 'package:promoruta/features/advertiser/presentation/pages/advertiser_profile_page.dart';
@@ -71,9 +72,7 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
           ? null
           : FloatingActionButton(
               elevation: 0.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
+              shape: AppShapes.fabShape(),
               backgroundColor: AppColors.secondary,
               onPressed: () {
                 const CreateCampaignRoute().push(context);

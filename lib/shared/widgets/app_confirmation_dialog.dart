@@ -1,3 +1,4 @@
+import 'package:promoruta/core/constants/app_shapes.dart';
 import 'package:flutter/material.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/shared/widgets/custom_button.dart';
@@ -54,7 +55,7 @@ class AppConfirmationDialog extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: AppShapes.dialogRadius,
           border: Border.all(color: AppColors.grayDarkStroke),
         ),
         child: Column(

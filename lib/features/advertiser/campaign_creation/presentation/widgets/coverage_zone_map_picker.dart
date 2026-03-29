@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
+import 'package:promoruta/core/constants/app_shapes.dart';
 import 'package:promoruta/core/constants/colors.dart';
 
 import '../../../../../shared/constants/map_constants.dart';
@@ -488,8 +489,7 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
                           heroTag: 'reset',
                           elevation: 0,
                           backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                          shape: AppShapes.fabShape(
                             side: BorderSide(color: AppColors.grayDarkStroke),
                           ),
                           onPressed: _resetRoute,
@@ -501,8 +501,7 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
                           heroTag: 'undo',
                           elevation: 0,
                           backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                          shape: AppShapes.fabShape(
                             side: BorderSide(color: AppColors.grayDarkStroke),
                           ),
                           onPressed: _removeLastWaypoint,

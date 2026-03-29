@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/app/routes/app_router.dart';
+import 'package:promoruta/core/constants/app_shapes.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/features/promotor/campaign_browsing/presentation/pages/promoter_nearby_page.dart';
 import 'package:promoruta/features/promotor/presentation/pages/promoter_earnings_page.dart';
@@ -39,9 +40,7 @@ class _PromoterHomeScreenState extends ConsumerState<PromoterHomeScreen> {
           ? null
           : FloatingActionButton(
               elevation: 0.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
+              shape: AppShapes.fabShape(),
               backgroundColor: _accent,
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
