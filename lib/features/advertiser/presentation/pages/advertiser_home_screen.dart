@@ -72,7 +72,7 @@ class _AdvertiserHomeScreenState extends ConsumerState<AdvertiserHomeScreen> {
           : FloatingActionButton(
               elevation: 0.0,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50),
+                borderRadius: BorderRadius.circular(10),
               ),
               backgroundColor: AppColors.secondary,
               onPressed: () {

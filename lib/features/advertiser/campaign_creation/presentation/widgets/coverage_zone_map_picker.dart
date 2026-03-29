@@ -486,7 +486,12 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
                         // Reset button
                         FloatingActionButton.small(
                           heroTag: 'reset',
+                          elevation: 0,
                           backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: BorderSide(color: AppColors.grayDarkStroke),
+                          ),
                           onPressed: _resetRoute,
                           child: Icon(Icons.refresh, color: AppColors.secondary),
                         ),
@@ -494,7 +499,12 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
                         // Undo last point button
                         FloatingActionButton.small(
                           heroTag: 'undo',
+                          elevation: 0,
                           backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: BorderSide(color: AppColors.grayDarkStroke),
+                          ),
                           onPressed: _removeLastWaypoint,
                           child: Icon(Icons.undo, color: AppColors.secondary),
                         ),

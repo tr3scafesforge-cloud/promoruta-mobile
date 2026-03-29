@@ -425,7 +425,12 @@ class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
                     bottom: 16,
                     child: FloatingActionButton.small(
                       onPressed: _centerOnLocation,
+                      elevation: 0,
                       backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: BorderSide(color: AppColors.grayDarkStroke),
+                      ),
                       child: Icon(
                         Icons.my_location,
                         color: AppColors.secondary,
