@@ -187,7 +187,7 @@ class _BottomNavigationItem extends StatelessWidget {
         onTap: onTap,
         splashColor: splashColor,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          padding: const EdgeInsets.symmetric(vertical: 6.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -196,12 +196,16 @@ class _BottomNavigationItem extends StatelessWidget {
                 color: isSelected ? selectedColor : unselectedColor,
                 size: 24,
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 2),
               Text(
                 label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
                 style: theme.textTheme.labelSmall?.copyWith(
                   color: isSelected ? selectedColor : unselectedColor,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                  height: 1.1,
                 ),
               ),
             ],
