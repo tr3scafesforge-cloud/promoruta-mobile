@@ -48,6 +48,7 @@ class _PaymentMethodsPageState extends ConsumerState<PaymentMethodsPage>
         throw Exception('Invalid Mercado Pago authorize URL.');
       }
 
+      if (!mounted) return;
       await InAppBrowserLauncher.open(context, uri);
 
       if (!mounted) return;
