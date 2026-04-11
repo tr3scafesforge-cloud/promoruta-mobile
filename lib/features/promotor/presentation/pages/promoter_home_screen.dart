@@ -183,32 +183,19 @@ class _BottomNavigationItem extends StatelessWidget {
         : theme.colorScheme.onSurfaceVariant;
 
     return Expanded(
-      child: InkWell(
-        onTap: onTap,
-        splashColor: splashColor,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 6.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                icon,
-                color: isSelected ? selectedColor : unselectedColor,
-                size: 24,
-              ),
-              const SizedBox(height: 2),
-              Text(
-                label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-                style: theme.textTheme.labelSmall?.copyWith(
-                  color: isSelected ? selectedColor : unselectedColor,
-                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                  height: 1.1,
-                ),
-              ),
-            ],
+      child: Semantics(
+        button: true,
+        selected: isSelected,
+        label: label,
+        child: InkWell(
+          onTap: onTap,
+          splashColor: splashColor,
+          child: Center(
+            child: Icon(
+              icon,
+              color: isSelected ? selectedColor : unselectedColor,
+              size: 24,
+            ),
           ),
         ),
       ),
