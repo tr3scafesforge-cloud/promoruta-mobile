@@ -50,10 +50,10 @@ class UpdateCheckServiceImpl implements UpdateCheckService {
   }
 
   Future<VersionInfo?> _fetchRemoteVersion() async {
-    try {
-      final client = HttpClient();
-      client.connectionTimeout = _timeout;
+    final client = HttpClient();
+    client.connectionTimeout = _timeout;
 
+    try {
       final uri = Uri.parse(versionCheckUrl);
       final request = await client.getUrl(uri);
       final response = await request.close().timeout(_timeout);
@@ -63,6 +63,14 @@ class UpdateCheckServiceImpl implements UpdateCheckService {
             await response.transform(utf8.decoder).join().timeout(_timeout);
         final json = jsonDecode(responseBody) as Map<String, dynamic>;
         return VersionInfo.fromJson(json);
+      }
+
+      if (response.statusCode == HttpStatus.forbidden ||
+          response.statusCode == HttpStatus.notFound) {
+        logger?.i(
+          'Version check endpoint unavailable (status: ${response.statusCode}). Skipping update check.',
+        );
+        return null;
       }
 
       logger?.w('Version check failed with status: ${response.statusCode}');
@@ -79,6 +87,8 @@ class UpdateCheckServiceImpl implements UpdateCheckService {
     } catch (e) {
       logger?.e('Unexpected error during version check: $e');
       return null;
+    } finally {
+      client.close(force: true);
     }
   }
 }
