@@ -1,5 +1,5 @@
 {
   "baseUrl": "https://api.promoruta.com.uy/api/",
   "configVersion": "1.0.0",
-  "versionCheckUrl": "https://api.promoruta.com.uy/releases/version.json"
+  "versionCheckUrl": "https://api.promoruta.com.uy/api/app/version"
 }

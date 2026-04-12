@@ -95,6 +95,30 @@ jobs:
           server-dir: releases/
           dangerous-clean-slate: true
 
+      - name: Update backend version
+        run: |
+          NOTES='${{ inputs.release_notes }}'
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "${{ secrets.BACKEND_API_URL }}/api/admin/app/version" \
+            -H "X-API-Key: ${{ secrets.CICD_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d "{
+              \"platform\": \"android\",
+              \"version\": \"${{ inputs.version }}\",
+              \"buildNumber\": ${{ steps.build_number.outputs.BUILD_NUMBER }},
+              \"downloadUrl\": \"${{ secrets.FTP_BASE_URL }}/releases/promoruta-${{ inputs.version }}.apk\",
+              \"releaseNotes\": \"$NOTES\"
+            }")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          echo "Backend API response (HTTP $HTTP_CODE):"
+          echo "$BODY"
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "::warning::Failed to update backend version (HTTP $HTTP_CODE). The APK was uploaded successfully, but version info may need manual update."
+          else
+            echo "Backend version updated successfully"
+          fi
+
       - name: Commit version update
         run: |
           git config user.name "github-actions[bot]"
