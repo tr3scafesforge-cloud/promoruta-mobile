@@ -8,6 +8,7 @@ class AppConfirmationDialog extends StatelessWidget {
   final String message;
   final String confirmText;
   final String cancelText;
+  final Color? confirmButtonColor;
   final VoidCallback? onConfirm;
   final VoidCallback? onCancel;
 
@@ -17,6 +18,7 @@ class AppConfirmationDialog extends StatelessWidget {
     required this.message,
     required this.confirmText,
     required this.cancelText,
+    this.confirmButtonColor,
     this.onConfirm,
     this.onCancel,
   });
@@ -27,6 +29,7 @@ class AppConfirmationDialog extends StatelessWidget {
     required String message,
     required String confirmText,
     required String cancelText,
+    Color? confirmButtonColor,
     bool barrierDismissible = true,
   }) {
     return showDialog<bool>(
@@ -37,6 +40,7 @@ class AppConfirmationDialog extends StatelessWidget {
         message: message,
         confirmText: confirmText,
         cancelText: cancelText,
+        confirmButtonColor: confirmButtonColor,
         onConfirm: () => Navigator.of(dialogContext).pop(true),
         onCancel: () => Navigator.of(dialogContext).pop(false),
       ),
@@ -93,7 +97,7 @@ class AppConfirmationDialog extends StatelessWidget {
                 Expanded(
                   child: CustomButton(
                     text: confirmText,
-                    backgroundColor: AppColors.secondary,
+                    backgroundColor: confirmButtonColor ?? AppColors.secondary,
                     onPressed: onConfirm ?? () => Navigator.of(context).pop(true),
                   ),
                 ),

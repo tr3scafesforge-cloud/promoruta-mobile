@@ -7,6 +7,7 @@ import 'package:promoruta/features/auth/presentation/providers/auth_providers.da
 import 'package:promoruta/features/payments/domain/models/mercado_pago_oauth_models.dart';
 import 'package:promoruta/features/payments/presentation/providers/mercado_pago_oauth_providers.dart';
 import 'package:promoruta/shared/services/in_app_browser_launcher.dart';
+import 'package:promoruta/shared/widgets/app_confirmation_dialog.dart';
 import 'package:promoruta/shared/widgets/custom_button.dart';
 
 class PaymentMethodsPage extends ConsumerStatefulWidget {
@@ -244,27 +245,13 @@ class _ConnectedState extends StatelessWidget {
   });
 
   Future<bool> _confirmDisconnect(BuildContext context) async {
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Desconectar Mercado Pago'),
-        content: const Text(
-          'Estas seguro de que deseas desconectar tu cuenta de Mercado Pago?',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancelar'),
-          ),
-          FilledButton(
-            style: FilledButton.styleFrom(
-              backgroundColor: const Color(0xFFCC0033),
-            ),
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Desconectar'),
-          ),
-        ],
-      ),
+    final result = await AppConfirmationDialog.show(
+      context,
+      title: 'Desconectar Mercado Pago',
+      message: 'Estas seguro de que deseas desconectar tu cuenta de Mercado Pago?',
+      confirmText: 'Desconectar',
+      cancelText: 'Cancelar',
+      confirmButtonColor: const Color(0xFFCC0033),
     );
     return result ?? false;
   }
