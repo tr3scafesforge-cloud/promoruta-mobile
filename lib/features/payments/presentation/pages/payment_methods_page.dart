@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/core/models/user.dart';
 import 'package:promoruta/features/auth/presentation/providers/auth_providers.dart';
 import 'package:promoruta/features/payments/domain/models/mercado_pago_oauth_models.dart';
 import 'package:promoruta/features/payments/presentation/providers/mercado_pago_oauth_providers.dart';
 import 'package:promoruta/shared/services/in_app_browser_launcher.dart';
+import 'package:promoruta/shared/widgets/custom_button.dart';
 
 class PaymentMethodsPage extends ConsumerStatefulWidget {
   const PaymentMethodsPage({super.key});
@@ -244,6 +246,7 @@ class _ConnectedState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isConnected = status.connected;
+    final isBusy = isConnecting || isDisconnecting;
     final subtitle = isConnected
         ? 'Cuenta conectada${status.username != null ? ' (${status.username})' : ''}'
         : 'Cuenta no conectada';
@@ -266,23 +269,21 @@ class _ConnectedState extends StatelessWidget {
           ),
         ],
         const SizedBox(height: 14),
-        SizedBox(
-          width: double.infinity,
-          child: FilledButton.icon(
-            onPressed: (isConnecting || isDisconnecting)
-                ? null
-                : (isConnected ? onDisconnect : onConnect),
-            icon: (isConnecting || isDisconnecting)
-                ? const SizedBox(
-                    width: 16,
-                    height: 16,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                : Icon(isConnected ? Icons.link_off : Icons.link),
-            label: Text(
-              isConnected
-                  ? 'Desconectar Mercado Pago'
-                  : 'Conectar Mercado Pago',
+        AbsorbPointer(
+          absorbing: isBusy,
+          child: Opacity(
+            opacity: isBusy ? 0.7 : 1,
+            child: CustomButton(
+              text: isBusy
+                  ? 'Procesando...'
+                  : (isConnected
+                        ? 'Desconectar Mercado Pago'
+                        : 'Conectar Mercado Pago'),
+              backgroundColor: AppColors.secondary,
+              leadingIcon: isBusy
+                  ? Icons.hourglass_top
+                  : (isConnected ? Icons.link_off : Icons.link),
+              onPressed: isConnected ? onDisconnect : onConnect,
             ),
           ),
         ),
