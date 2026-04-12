@@ -6,7 +6,10 @@ import 'package:promoruta/core/models/user.dart';
 import 'package:promoruta/features/auth/presentation/providers/auth_providers.dart';
 import 'package:promoruta/features/payments/domain/models/mercado_pago_oauth_models.dart';
 import 'package:promoruta/features/payments/presentation/providers/mercado_pago_oauth_providers.dart';
+import 'package:promoruta/shared/providers/providers.dart'
+    show notificationServiceProvider;
 import 'package:promoruta/shared/services/in_app_browser_launcher.dart';
+import 'package:promoruta/shared/services/notification_service.dart';
 import 'package:promoruta/shared/widgets/app_confirmation_dialog.dart';
 import 'package:promoruta/shared/widgets/custom_button.dart';
 
@@ -49,13 +52,15 @@ class _PaymentMethodsPageState extends ConsumerState<PaymentMethodsPage>
     try {
       await ref.refresh(mercadoPagoAccountStatusProvider.future);
       if (!mounted || !showFeedback) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Estado de Mercado Pago actualizado.')),
+      _showNotification(
+        'Estado de Mercado Pago actualizado.',
+        type: ToastType.success,
       );
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(_cleanError(e))),
+      _showNotification(
+        _cleanError(e),
+        type: ToastType.error,
       );
     } finally {
       if (mounted) {
@@ -78,17 +83,15 @@ class _PaymentMethodsPageState extends ConsumerState<PaymentMethodsPage>
       await InAppBrowserLauncher.open(context, uri);
 
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Complete la autorización en Mercado Pago y vuelva a la app.',
-          ),
-        ),
+      _showNotification(
+        'Complete la autorización en Mercado Pago y vuelva a la app.',
+        type: ToastType.info,
       );
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(_cleanError(e))),
+      _showNotification(
+        _cleanError(e),
+        type: ToastType.error,
       );
     } finally {
       if (mounted) {
@@ -105,15 +108,15 @@ class _PaymentMethodsPageState extends ConsumerState<PaymentMethodsPage>
       await useCase();
 
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Cuenta de Mercado Pago desconectada.'),
-        ),
+      _showNotification(
+        'Cuenta de Mercado Pago desconectada.',
+        type: ToastType.success,
       );
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(_cleanError(e))),
+      _showNotification(
+        _cleanError(e),
+        type: ToastType.error,
       );
     } finally {
       if (mounted) {
@@ -129,6 +132,17 @@ class _PaymentMethodsPageState extends ConsumerState<PaymentMethodsPage>
       message = message.replaceFirst('Exception:', '').trim();
     }
     return message.isEmpty ? 'Ocurrió un error inesperado.' : message;
+  }
+
+  void _showNotification(
+    String message, {
+    ToastType type = ToastType.info,
+  }) {
+    ref.read(notificationServiceProvider).showToast(
+          message,
+          type: type,
+          context: context,
+        );
   }
 
   @override
