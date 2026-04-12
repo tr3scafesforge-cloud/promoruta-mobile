@@ -243,6 +243,32 @@ class _ConnectedState extends StatelessWidget {
     required this.onRefresh,
   });
 
+  Future<bool> _confirmDisconnect(BuildContext context) async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Desconectar Mercado Pago'),
+        content: const Text(
+          'Estas seguro de que deseas desconectar tu cuenta de Mercado Pago?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancelar'),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: const Color(0xFFCC0033),
+            ),
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Desconectar'),
+          ),
+        ],
+      ),
+    );
+    return result ?? false;
+  }
+
   @override
   Widget build(BuildContext context) {
     final isConnected = status.connected;
@@ -279,11 +305,23 @@ class _ConnectedState extends StatelessWidget {
                   : (isConnected
                         ? 'Desconectar Mercado Pago'
                         : 'Conectar Mercado Pago'),
-              backgroundColor: AppColors.secondary,
+              backgroundColor: isConnected
+                  ? const Color(0xFFCC0033)
+                  : AppColors.secondary,
               leadingIcon: isBusy
                   ? Icons.hourglass_top
                   : (isConnected ? Icons.link_off : Icons.link),
-              onPressed: isConnected ? onDisconnect : onConnect,
+              onPressed: () async {
+                if (!isConnected) {
+                  onConnect();
+                  return;
+                }
+
+                final confirmed = await _confirmDisconnect(context);
+                if (confirmed) {
+                  onDisconnect();
+                }
+              },
             ),
           ),
         ),
