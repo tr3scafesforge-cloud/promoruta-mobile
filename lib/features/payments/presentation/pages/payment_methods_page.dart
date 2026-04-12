@@ -265,13 +265,6 @@ class _ConnectedState extends StatelessWidget {
             style: const TextStyle(color: Colors.black54),
           ),
         ],
-        if (status.tokenExpiresAt != null) ...[
-          const SizedBox(height: 6),
-          Text(
-            'Token vence: ${status.tokenExpiresAt}',
-            style: const TextStyle(color: Colors.black54),
-          ),
-        ],
         const SizedBox(height: 14),
         SizedBox(
           width: double.infinity,
