@@ -191,10 +191,21 @@ class _BottomNavigationItem extends StatelessWidget {
           onTap: onTap,
           splashColor: splashColor,
           child: Center(
-            child: Icon(
-              icon,
-              color: isSelected ? selectedColor : unselectedColor,
-              size: 24,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 180),
+              curve: Curves.easeOutCubic,
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? selectedColor.withValues(alpha: .16)
+                    : Colors.transparent,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                icon,
+                color: isSelected ? selectedColor : unselectedColor,
+                size: 24,
+              ),
             ),
           ),
         ),
