@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:promoruta/core/constants/app_shapes.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/core/models/campaign.dart';
 import 'package:promoruta/core/models/campaign_bid.dart';
@@ -468,6 +469,36 @@ class _BidDialogState extends State<_BidDialog> {
   late final TextEditingController _priceController;
   late final TextEditingController _messageController;
 
+  InputDecoration _inputDecoration(String labelText) {
+    const borderRadius = BorderRadius.all(Radius.circular(10));
+
+    return InputDecoration(
+      labelText: labelText,
+      labelStyle: const TextStyle(color: AppColors.textSecondary),
+      border: const OutlineInputBorder(
+        borderRadius: borderRadius,
+        borderSide: BorderSide(
+          color: AppColors.greyUnknown,
+          width: 1.2,
+        ),
+      ),
+      enabledBorder: const OutlineInputBorder(
+        borderRadius: borderRadius,
+        borderSide: BorderSide(
+          color: AppColors.greyUnknown,
+          width: 1.2,
+        ),
+      ),
+      focusedBorder: const OutlineInputBorder(
+        borderRadius: borderRadius,
+        borderSide: BorderSide(
+          color: AppColors.deepOrange,
+          width: 1.8,
+        ),
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -507,6 +538,12 @@ class _BidDialogState extends State<_BidDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: Colors.white,
+      surfaceTintColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: AppShapes.dialogRadius,
+        side: const BorderSide(color: AppColors.grayDarkStroke),
+      ),
       title: Text(
         widget.existing == null ? widget.l10n.placeBid : widget.l10n.updateBid,
       ),
@@ -518,32 +555,44 @@ class _BidDialogState extends State<_BidDialog> {
               controller: _priceController,
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
-              decoration: InputDecoration(
-                labelText: widget.l10n.proposedPrice,
-                border: const OutlineInputBorder(),
-              ),
+              decoration: _inputDecoration(widget.l10n.proposedPrice),
             ),
             const SizedBox(height: 12),
             TextField(
               controller: _messageController,
               maxLines: 3,
-              decoration: InputDecoration(
-                labelText: widget.l10n.messageOptional,
-                border: const OutlineInputBorder(),
-              ),
+              decoration: _inputDecoration(widget.l10n.messageOptional),
             ),
           ],
         ),
       ),
+      actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: Text(widget.l10n.cancel),
-        ),
-        FilledButton(
-          onPressed: _submit,
-          child: Text(
-            widget.existing == null ? widget.l10n.submitBid : widget.l10n.save,
+        SizedBox(
+          width: double.maxFinite,
+          child: Row(
+            children: [
+              Expanded(
+                child: CustomButton.outlined(
+                  text: widget.l10n.cancel,
+                  backgroundColor: Colors.white,
+                  outlineColor: AppColors.grayDarkStroke,
+                  textColor: AppColors.textPrimary,
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: CustomButton(
+                  text:
+                      widget.existing == null ? widget.l10n.submitBid : widget.l10n.save,
+                  backgroundColor: AppColors.deepOrange,
+                  textColor: AppColors.primary,
+                  shrinkToFit: true,
+                  onPressed: _submit,
+                ),
+              ),
+            ],
           ),
         ),
       ],
