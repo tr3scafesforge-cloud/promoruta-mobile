@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:promoruta/core/constants/colors.dart';
+import 'package:promoruta/shared/widgets/custom_button.dart';
 
 class MercadoPagoOAuthResultPage extends StatelessWidget {
   final String status;
@@ -50,9 +52,10 @@ class MercadoPagoOAuthResultPage extends StatelessWidget {
             const SizedBox(height: 24),
             SizedBox(
               width: double.infinity,
-              child: FilledButton(
+              child: CustomButton(
+                text: 'Volver a métodos de pago',
+                backgroundColor: AppColors.secondary,
                 onPressed: () => context.go('/payment-methods'),
-                child: const Text('Volver a métodos de pago'),
               ),
             ),
           ],
