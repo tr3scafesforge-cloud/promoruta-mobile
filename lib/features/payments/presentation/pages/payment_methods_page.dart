@@ -21,6 +21,7 @@ class _PaymentMethodsPageState extends ConsumerState<PaymentMethodsPage>
     with WidgetsBindingObserver {
   bool _isConnecting = false;
   bool _isDisconnecting = false;
+  bool _isRefreshingStatus = false;
 
   @override
   void initState() {
@@ -37,7 +38,29 @@ class _PaymentMethodsPageState extends ConsumerState<PaymentMethodsPage>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      ref.invalidate(mercadoPagoAccountStatusProvider);
+      _refreshMercadoPagoStatus(showFeedback: false);
+    }
+  }
+
+  Future<void> _refreshMercadoPagoStatus({bool showFeedback = true}) async {
+    if (_isRefreshingStatus) return;
+    setState(() => _isRefreshingStatus = true);
+
+    try {
+      await ref.refresh(mercadoPagoAccountStatusProvider.future);
+      if (!mounted || !showFeedback) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Estado de Mercado Pago actualizado.')),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(_cleanError(e))),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isRefreshingStatus = false);
+      }
     }
   }
 
@@ -142,10 +165,10 @@ class _PaymentMethodsPageState extends ConsumerState<PaymentMethodsPage>
                 statusAsync: ref.watch(mercadoPagoAccountStatusProvider),
                 isConnecting: _isConnecting,
                 isDisconnecting: _isDisconnecting,
+                isRefreshing: _isRefreshingStatus,
                 onConnect: _connectMercadoPago,
                 onDisconnect: _disconnectMercadoPago,
-                onRefresh: () =>
-                    ref.invalidate(mercadoPagoAccountStatusProvider),
+                onRefresh: _refreshMercadoPagoStatus,
               )
             else
               const _AdvertiserPaymentMethodsCard(),
@@ -160,14 +183,16 @@ class _PromoterMercadoPagoCard extends StatelessWidget {
   final AsyncValue<MercadoPagoAccountStatus> statusAsync;
   final bool isConnecting;
   final bool isDisconnecting;
+  final bool isRefreshing;
   final VoidCallback onConnect;
   final VoidCallback onDisconnect;
-  final VoidCallback onRefresh;
+  final Future<void> Function() onRefresh;
 
   const _PromoterMercadoPagoCard({
     required this.statusAsync,
     required this.isConnecting,
     required this.isDisconnecting,
+    required this.isRefreshing,
     required this.onConnect,
     required this.onDisconnect,
     required this.onRefresh,
@@ -206,7 +231,7 @@ class _PromoterMercadoPagoCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 OutlinedButton.icon(
-                  onPressed: onRefresh,
+                  onPressed: isRefreshing ? null : () => onRefresh(),
                   icon: const Icon(Icons.refresh),
                   label: const Text('Reintentar'),
                 ),
@@ -216,6 +241,7 @@ class _PromoterMercadoPagoCard extends StatelessWidget {
               status: status,
               isConnecting: isConnecting,
               isDisconnecting: isDisconnecting,
+              isRefreshing: isRefreshing,
               onConnect: onConnect,
               onDisconnect: onDisconnect,
               onRefresh: onRefresh,
@@ -231,14 +257,16 @@ class _ConnectedState extends StatelessWidget {
   final MercadoPagoAccountStatus status;
   final bool isConnecting;
   final bool isDisconnecting;
+  final bool isRefreshing;
   final VoidCallback onConnect;
   final VoidCallback onDisconnect;
-  final VoidCallback onRefresh;
+  final Future<void> Function() onRefresh;
 
   const _ConnectedState({
     required this.status,
     required this.isConnecting,
     required this.isDisconnecting,
+    required this.isRefreshing,
     required this.onConnect,
     required this.onDisconnect,
     required this.onRefresh,
@@ -259,7 +287,7 @@ class _ConnectedState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isConnected = status.connected;
-    final isBusy = isConnecting || isDisconnecting;
+    final isBusy = isConnecting || isDisconnecting || isRefreshing;
     final subtitle = isConnected
         ? 'Cuenta conectada${status.username != null ? ' (${status.username})' : ''}'
         : 'Cuenta no conectada';
@@ -313,12 +341,19 @@ class _ConnectedState extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        Align(
-          alignment: Alignment.centerRight,
-          child: TextButton.icon(
-            onPressed: (isConnecting || isDisconnecting) ? null : onRefresh,
-            icon: const Icon(Icons.refresh),
-            label: const Text('Actualizar estado'),
+        AbsorbPointer(
+          absorbing: isBusy,
+          child: Opacity(
+            opacity: isBusy ? 0.7 : 1,
+            child: CustomButton(
+              text: isRefreshing ? 'Actualizando...' : 'Actualizar estado',
+              backgroundColor: Colors.white,
+              textColor: AppColors.secondary,
+              isOutlined: true,
+              outlineColor: AppColors.secondary,
+              leadingIcon: isRefreshing ? Icons.hourglass_top : Icons.refresh,
+              onPressed: () => onRefresh(),
+            ),
           ),
         ),
       ],
