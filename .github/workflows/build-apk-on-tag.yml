@@ -1,0 +1,214 @@
+name: Build and Deploy APK on Tag
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+      - '*.*.*'
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.6'
+          channel: 'stable'
+          cache: true
+
+      - name: Resolve release metadata
+        id: release_meta
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          RAW_TAG="${GITHUB_REF_NAME}"
+          TAG_VERSION="${RAW_TAG#v}"
+
+          if [[ ! "$TAG_VERSION" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)(\+([0-9]+))?$ ]]; then
+            echo "::error::Invalid tag '$RAW_TAG'. Use vX.Y.Z, X.Y.Z, vX.Y.Z+BUILD, or X.Y.Z+BUILD."
+            exit 1
+          fi
+
+          APP_VERSION="${BASH_REMATCH[1]}.${BASH_REMATCH[2]}.${BASH_REMATCH[3]}"
+          TAG_BUILD_NUMBER="${BASH_REMATCH[5]:-}"
+
+          if [[ -n "$TAG_BUILD_NUMBER" ]]; then
+            BUILD_NUMBER="$TAG_BUILD_NUMBER"
+          else
+            BUILD_NUMBER="${GITHUB_RUN_NUMBER}"
+          fi
+
+          CURRENT_VERSION_LINE="$(grep -E '^version:\s*[0-9]+\.[0-9]+\.[0-9]+(\+[0-9]+)?' pubspec.yaml | head -n 1 | awk '{print $2}' || true)"
+          if [[ -z "$CURRENT_VERSION_LINE" ]]; then
+            echo "::error::Could not read current app version from pubspec.yaml."
+            exit 1
+          fi
+
+          CURRENT_SEMVER="${CURRENT_VERSION_LINE%%+*}"
+          if [[ "$CURRENT_VERSION_LINE" == *"+"* ]]; then
+            CURRENT_BUILD_NUMBER="${CURRENT_VERSION_LINE#*+}"
+          else
+            CURRENT_BUILD_NUMBER="0"
+          fi
+
+          semver_to_int() {
+            local version="$1"
+            local major minor patch
+            IFS='.' read -r major minor patch <<< "$version"
+            echo $((major * 1000000 + minor * 1000 + patch))
+          }
+
+          APP_VERSION_INT="$(semver_to_int "$APP_VERSION")"
+          CURRENT_VERSION_INT="$(semver_to_int "$CURRENT_SEMVER")"
+
+          if (( APP_VERSION_INT < CURRENT_VERSION_INT )); then
+            echo "::error::Tag version $APP_VERSION is lower than current pubspec version $CURRENT_SEMVER."
+            exit 1
+          fi
+
+          if (( APP_VERSION_INT == CURRENT_VERSION_INT )) && (( BUILD_NUMBER <= CURRENT_BUILD_NUMBER )); then
+            echo "::error::Build number $BUILD_NUMBER must be greater than current pubspec build number $CURRENT_BUILD_NUMBER for version $CURRENT_SEMVER."
+            exit 1
+          fi
+
+          TAG_MESSAGE="$(git for-each-ref "refs/tags/$RAW_TAG" --format='%(contents)' | sed '/^[[:space:]]*$/d' | head -n 20)"
+          if [[ -z "$TAG_MESSAGE" ]]; then
+            TAG_MESSAGE="Release $APP_VERSION"
+          fi
+
+          echo "APP_VERSION=$APP_VERSION" >> "$GITHUB_OUTPUT"
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> "$GITHUB_OUTPUT"
+          {
+            echo "RELEASE_NOTES<<EOF"
+            echo "$TAG_MESSAGE"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Ensure tag points to default branch HEAD
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
+          git fetch origin "$DEFAULT_BRANCH" --depth=1
+
+          TAG_COMMIT="$(git rev-list -n 1 "$GITHUB_REF_NAME")"
+          DEFAULT_HEAD="$(git rev-parse "origin/$DEFAULT_BRANCH")"
+
+          if [[ "$TAG_COMMIT" != "$DEFAULT_HEAD" ]]; then
+            echo "::error::Tag $GITHUB_REF_NAME must point to the latest commit on '$DEFAULT_BRANCH'."
+            echo "::error::Tag commit: $TAG_COMMIT"
+            echo "::error::Branch head: $DEFAULT_HEAD"
+            exit 1
+          fi
+
+      - name: Create .env file
+        run: |
+          echo "MAPBOX_ACCESS_TOKEN=${{ secrets.MAPBOX_ACCESS_TOKEN }}" > .env
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: |
+          flutter build apk --release \
+            --build-name="${{ steps.release_meta.outputs.APP_VERSION }}" \
+            --build-number="${{ steps.release_meta.outputs.BUILD_NUMBER }}"
+
+      - name: Prepare deploy folder
+        env:
+          APP_VERSION: ${{ steps.release_meta.outputs.APP_VERSION }}
+          BUILD_NUMBER: ${{ steps.release_meta.outputs.BUILD_NUMBER }}
+          RELEASE_NOTES: ${{ steps.release_meta.outputs.RELEASE_NOTES }}
+          FTP_BASE_URL: ${{ secrets.FTP_BASE_URL }}
+        run: |
+          set -euo pipefail
+
+          mkdir -p deploy
+          APK_NAME="promoruta-${APP_VERSION}+${BUILD_NUMBER}.apk"
+          cp build/app/outputs/flutter-apk/app-release.apk "deploy/${APK_NAME}"
+
+          NOTES_JSON="$(printf '%s' "$RELEASE_NOTES" | jq -Rs .)"
+          cat > deploy/version.json << EOF
+          {
+            "version": "${APP_VERSION}",
+            "buildNumber": ${BUILD_NUMBER},
+            "downloadUrl": "${FTP_BASE_URL}/releases/${APK_NAME}",
+            "releaseDate": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+            "releaseNotes": ${NOTES_JSON}
+          }
+          EOF
+
+          echo "Generated version.json:"
+          cat deploy/version.json
+          echo "Deploy folder contents:"
+          ls -la deploy/
+
+      - name: Upload to FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          local-dir: deploy/
+          server-dir: releases/
+          dangerous-clean-slate: true
+
+      - name: Update backend version
+        env:
+          APP_VERSION: ${{ steps.release_meta.outputs.APP_VERSION }}
+          BUILD_NUMBER: ${{ steps.release_meta.outputs.BUILD_NUMBER }}
+          RELEASE_NOTES: ${{ steps.release_meta.outputs.RELEASE_NOTES }}
+          FTP_BASE_URL: ${{ secrets.FTP_BASE_URL }}
+          BACKEND_API_URL: ${{ secrets.BACKEND_API_URL }}
+          CICD_API_KEY: ${{ secrets.CICD_API_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          APK_NAME="promoruta-${APP_VERSION}+${BUILD_NUMBER}.apk"
+          DOWNLOAD_URL="${FTP_BASE_URL}/releases/${APK_NAME}"
+
+          PAYLOAD="$(jq -n \
+            --arg platform "android" \
+            --arg version "$APP_VERSION" \
+            --argjson buildNumber "$BUILD_NUMBER" \
+            --arg downloadUrl "$DOWNLOAD_URL" \
+            --arg releaseNotes "$RELEASE_NOTES" \
+            '{platform: $platform, version: $version, buildNumber: $buildNumber, downloadUrl: $downloadUrl, releaseNotes: $releaseNotes}')"
+
+          RESPONSE="$(curl -s -w "\n%{http_code}" -X POST "${BACKEND_API_URL}/api/admin/app/version" \
+            -H "X-API-Key: ${CICD_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d "$PAYLOAD")"
+
+          HTTP_CODE="$(echo "$RESPONSE" | tail -n 1)"
+          BODY="$(echo "$RESPONSE" | sed '$d')"
+          echo "Backend API response (HTTP $HTTP_CODE):"
+          echo "$BODY"
+
+          if [[ "$HTTP_CODE" != "200" ]]; then
+            echo "::warning::Failed to update backend version (HTTP $HTTP_CODE). The APK was uploaded successfully, but version info may need manual update."
+          else
+            echo "Backend version updated successfully"
+          fi
+
+      - name: Upload APK as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: promoruta-${{ steps.release_meta.outputs.APP_VERSION }}+${{ steps.release_meta.outputs.BUILD_NUMBER }}
+          path: deploy/promoruta-${{ steps.release_meta.outputs.APP_VERSION }}+${{ steps.release_meta.outputs.BUILD_NUMBER }}.apk
