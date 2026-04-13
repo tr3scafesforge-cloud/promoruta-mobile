@@ -7,7 +7,7 @@ on:
       - '*.*.*'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build-and-deploy:
@@ -35,19 +35,12 @@ jobs:
           RAW_TAG="${GITHUB_REF_NAME}"
           TAG_VERSION="${RAW_TAG#v}"
 
-          if [[ ! "$TAG_VERSION" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)(\+([0-9]+))?$ ]]; then
-            echo "::error::Invalid tag '$RAW_TAG'. Use vX.Y.Z, X.Y.Z, vX.Y.Z+BUILD, or X.Y.Z+BUILD."
+          if [[ ! "$TAG_VERSION" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            echo "::error::Invalid tag '$RAW_TAG'. Use vX.Y.Z or X.Y.Z (without build suffix)."
             exit 1
           fi
 
           APP_VERSION="${BASH_REMATCH[1]}.${BASH_REMATCH[2]}.${BASH_REMATCH[3]}"
-          TAG_BUILD_NUMBER="${BASH_REMATCH[5]:-}"
-
-          if [[ -n "$TAG_BUILD_NUMBER" ]]; then
-            BUILD_NUMBER="$TAG_BUILD_NUMBER"
-          else
-            BUILD_NUMBER="${GITHUB_RUN_NUMBER}"
-          fi
 
           CURRENT_VERSION_LINE="$(grep -E '^version:\s*[0-9]+\.[0-9]+\.[0-9]+(\+[0-9]+)?' pubspec.yaml | head -n 1 | awk '{print $2}' || true)"
           if [[ -z "$CURRENT_VERSION_LINE" ]]; then
@@ -77,10 +70,7 @@ jobs:
             exit 1
           fi
 
-          if (( APP_VERSION_INT == CURRENT_VERSION_INT )) && (( BUILD_NUMBER < CURRENT_BUILD_NUMBER )); then
-            echo "::error::Build number $BUILD_NUMBER cannot be lower than current pubspec build number $CURRENT_BUILD_NUMBER for version $CURRENT_SEMVER."
-            exit 1
-          fi
+          BUILD_NUMBER="$((CURRENT_BUILD_NUMBER + 1))"
 
           TAG_MESSAGE="$(git for-each-ref "refs/tags/$RAW_TAG" --format='%(contents)' | sed '/^[[:space:]]*$/d' | head -n 20)"
           if [[ -z "$TAG_MESSAGE" ]]; then
@@ -89,6 +79,7 @@ jobs:
 
           echo "APP_VERSION=$APP_VERSION" >> "$GITHUB_OUTPUT"
           echo "BUILD_NUMBER=$BUILD_NUMBER" >> "$GITHUB_OUTPUT"
+          echo "TARGET_VERSION=${APP_VERSION}+${BUILD_NUMBER}" >> "$GITHUB_OUTPUT"
           {
             echo "RELEASE_NOTES<<EOF"
             echo "$TAG_MESSAGE"
@@ -112,6 +103,16 @@ jobs:
             echo "::error::Branch head: $DEFAULT_HEAD"
             exit 1
           fi
+
+      - name: Update pubspec.yaml version
+        env:
+          TARGET_VERSION: ${{ steps.release_meta.outputs.TARGET_VERSION }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          sed -i "s/^version: .*/version: ${TARGET_VERSION}/" pubspec.yaml
+          echo "Updated pubspec version to ${TARGET_VERSION}"
+          grep -E "^version:" pubspec.yaml
 
       - name: Create .env file
         run: |
@@ -212,3 +213,25 @@ jobs:
         with:
           name: promoruta-${{ steps.release_meta.outputs.APP_VERSION }}+${{ steps.release_meta.outputs.BUILD_NUMBER }}
           path: deploy/promoruta-${{ steps.release_meta.outputs.APP_VERSION }}+${{ steps.release_meta.outputs.BUILD_NUMBER }}.apk
+
+      - name: Commit version bump to default branch
+        env:
+          APP_VERSION: ${{ steps.release_meta.outputs.APP_VERSION }}
+          BUILD_NUMBER: ${{ steps.release_meta.outputs.BUILD_NUMBER }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add pubspec.yaml
+
+          if git diff --staged --quiet; then
+            echo "No version changes to commit."
+            exit 0
+          fi
+
+          git commit -m "chore: bump version to ${APP_VERSION}+${BUILD_NUMBER}"
+
+          DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
+          git push origin HEAD:"${DEFAULT_BRANCH}"
