@@ -211,6 +211,7 @@ class _PromoterCampaignDetailsPageState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppCard(
+                  width: double.infinity,
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -255,6 +256,7 @@ class _PromoterCampaignDetailsPageState
 
                 // Bid section
                 AppCard(
+                  width: double.infinity,
                   padding: const EdgeInsets.all(16),
                   child: bidsAsync.when(
                     loading: () =>
@@ -277,6 +279,9 @@ class _PromoterCampaignDetailsPageState
                       final hasActiveBid =
                           hasBid && ownBid.status != CampaignBidStatus.withdrawn;
                       final canSubmitBid =
+                          campaign.status == CampaignStatus.created;
+                      final canWithdrawBid = hasBid &&
+                          ownBid.status == CampaignBidStatus.pending &&
                           campaign.status == CampaignStatus.created;
 
                       return Column(
@@ -331,7 +336,7 @@ class _PromoterCampaignDetailsPageState
                                 ),
                               ),
                             ),
-                          if (hasActiveBid) ...[
+                          if (canWithdrawBid) ...[
                             const SizedBox(height: 8),
                             Opacity(
                               opacity: _isSubmitting ? 0.7 : 1,
