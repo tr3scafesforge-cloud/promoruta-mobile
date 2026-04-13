@@ -342,8 +342,6 @@ class _LoginState extends ConsumerState<Login> {
                                 : () async {
                                     if (_formKey.currentState!.validate()) {
                                       final router = GoRouter.of(context);
-                                      final messenger =
-                                          ScaffoldMessenger.of(context);
                                       final l10n = AppLocalizations.of(context);
                                       final loginFailedMessage =
                                           l10n.loginFailed;
@@ -369,11 +367,12 @@ class _LoginState extends ConsumerState<Login> {
                                             .valueOrNull;
 
                                         if (user == null) {
-                                          messenger.showSnackBar(
-                                            SnackBar(
-                                              content: Text(loginFailedMessage),
-                                              backgroundColor: Colors.red,
-                                            ),
+                                          await ref
+                                              .read(
+                                                  pushNotificationServiceProvider)
+                                              .showSystemNotification(
+                                                title: l10n.login,
+                                                body: loginFailedMessage,
                                           );
                                           return;
                                         }
@@ -407,11 +406,11 @@ class _LoginState extends ConsumerState<Login> {
                                         if (!mounted) return;
                                         final errorMessage =
                                             _getLocalizedLoginError(l10n, e);
-                                        messenger.showSnackBar(
-                                          SnackBar(
-                                            content: Text(errorMessage),
-                                            backgroundColor: Colors.red,
-                                          ),
+                                        await ref
+                                            .read(pushNotificationServiceProvider)
+                                            .showSystemNotification(
+                                              title: l10n.login,
+                                              body: errorMessage,
                                         );
                                       } finally {
                                         if (mounted) {

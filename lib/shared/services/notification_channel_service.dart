@@ -4,6 +4,10 @@ const String campaignAlertsChannelId = 'campaign_alerts';
 const String campaignAlertsChannelName = 'Campaign Alerts';
 const String campaignAlertsChannelDescription =
     'Notifications for newly available campaigns';
+const String authAlertsChannelId = 'auth_alerts';
+const String authAlertsChannelName = 'Authentication Alerts';
+const String authAlertsChannelDescription =
+    'Notifications related to authentication status';
 
 class NotificationChannelService {
   const NotificationChannelService();
@@ -27,6 +31,15 @@ class NotificationChannelService {
         campaignAlertsChannelId,
         campaignAlertsChannelName,
         description: campaignAlertsChannelDescription,
+        importance: Importance.high,
+      ),
+    );
+
+    await androidImplementation?.createNotificationChannel(
+      const AndroidNotificationChannel(
+        authAlertsChannelId,
+        authAlertsChannelName,
+        description: authAlertsChannelDescription,
         importance: Importance.high,
       ),
     );

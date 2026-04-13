@@ -42,13 +42,14 @@ class PushNotificationService {
   final FlutterLocalNotificationsPlugin _localNotifications;
 
   bool _isInitialized = false;
+  bool _isLocalNotificationsInitialized = false;
 
   Future<void> initialize() async {
     if (_isInitialized) return;
     _isInitialized = true;
 
     try {
-      await _notificationChannelService.initialize(_localNotifications);
+      await _ensureLocalNotificationsInitialized();
       await _requestNotificationPermission();
       await _registerCurrentToken();
 
@@ -75,6 +76,37 @@ class PushNotificationService {
 
   Future<void> registerCurrentToken() async {
     await _registerCurrentToken();
+  }
+
+  Future<void> showSystemNotification({
+    required String title,
+    required String body,
+    String? payload,
+  }) async {
+    await _ensureLocalNotificationsInitialized();
+
+    await _localNotifications.show(
+      DateTime.now().millisecondsSinceEpoch.remainder(1 << 31),
+      title,
+      body,
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          authAlertsChannelId,
+          authAlertsChannelName,
+          channelDescription: authAlertsChannelDescription,
+          importance: Importance.high,
+          priority: Priority.high,
+        ),
+        iOS: DarwinNotificationDetails(),
+      ),
+      payload: payload,
+    );
+  }
+
+  Future<void> _ensureLocalNotificationsInitialized() async {
+    if (_isLocalNotificationsInitialized) return;
+    await _notificationChannelService.initialize(_localNotifications);
+    _isLocalNotificationsInitialized = true;
   }
 
   Future<void> _requestNotificationPermission() async {

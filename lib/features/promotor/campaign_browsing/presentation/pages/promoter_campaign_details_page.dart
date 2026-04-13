@@ -374,28 +374,22 @@ class _PromoterCampaignDetailsPageState
                 if (campaign.status == CampaignStatus.accepted &&
                     paymentStatus == PaymentStatus.paid &&
                     campaign.acceptedBy?.id == user?.id)
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => ActiveCampaignMapView(
-                              campaignId: campaign.id ?? '',
-                              campaignName: campaign.title,
-                              location: campaign.zone,
-                              audioUrl: campaign.audioUrl,
-                            ),
+                  CustomButton(
+                    text: l10n.startCampaign,
+                    backgroundColor: AppColors.secondary,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ActiveCampaignMapView(
+                            campaignId: campaign.id ?? '',
+                            campaignName: campaign.title,
+                            location: campaign.zone,
+                            audioUrl: campaign.audioUrl,
                           ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.secondary,
-                        foregroundColor: Colors.white,
-                      ),
-                      child: Text(l10n.startCampaign),
-                    ),
+                        ),
+                      );
+                    },
                   ),
               ],
             ),
