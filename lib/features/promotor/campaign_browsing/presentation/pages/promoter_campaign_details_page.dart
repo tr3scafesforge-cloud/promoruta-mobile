@@ -308,7 +308,15 @@ class _PromoterCampaignDetailsPageState
                                       fontWeight: FontWeight.w600),
                                 ),
                                 const SizedBox(height: 4),
-                                Text(l10n.bidStatusValue(ownBid.status.name)),
+                                Text(
+                                  l10n.bidStatusValue(
+                                    _getBidStatusLabel(
+                                      ownBid.status,
+                                      l10n,
+                                      paymentStatus,
+                                    ),
+                                  ),
+                                ),
                                 if (ownBid.message != null &&
                                     ownBid.message!.isNotEmpty) ...[
                                   const SizedBox(height: 6),
@@ -401,6 +409,25 @@ class _PromoterCampaignDetailsPageState
     return status == CampaignStatus.completed ||
         status == CampaignStatus.canceled ||
         status == CampaignStatus.expired;
+  }
+
+  String _getBidStatusLabel(
+    CampaignBidStatus status,
+    AppLocalizations l10n,
+    PaymentStatus? paymentStatus,
+  ) {
+    switch (status) {
+      case CampaignBidStatus.pending:
+        return l10n.pending;
+      case CampaignBidStatus.accepted:
+        return paymentStatus == PaymentStatus.paid
+            ? l10n.statusReadyToStart
+            : l10n.statusWaitingForPayment;
+      case CampaignBidStatus.rejected:
+        return l10n.statusCanceled;
+      case CampaignBidStatus.withdrawn:
+        return l10n.bidWithdrawn;
+    }
   }
 
   String _formatErrorMessage(Object error) {
