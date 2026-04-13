@@ -36,29 +36,24 @@ class _TwoFactorLoginPageState extends ConsumerState<TwoFactorLoginPage> {
 
   Future<void> _handleVerify() async {
     final l10n = AppLocalizations.of(context);
-    final messenger = ScaffoldMessenger.of(context);
     final code = _useRecoveryCode
         ? _recoveryCodeController.text.trim()
         : _codeController.text.trim();
 
     if (code.isEmpty) {
-      messenger.showSnackBar(
-        SnackBar(
-          content: Text(_useRecoveryCode
-              ? l10n.pleaseEnterRecoveryCode
-              : l10n.pleaseEnterVerificationCode),
-          backgroundColor: Colors.red,
-        ),
+      await ref.read(pushNotificationServiceProvider).showSystemNotification(
+            title: l10n.login,
+            body: _useRecoveryCode
+                ? l10n.pleaseEnterRecoveryCode
+                : l10n.pleaseEnterVerificationCode,
       );
       return;
     }
 
     if (!_useRecoveryCode && code.length != 6) {
-      messenger.showSnackBar(
-        SnackBar(
-          content: Text(l10n.codeMustBeSixDigits),
-          backgroundColor: Colors.red,
-        ),
+      await ref.read(pushNotificationServiceProvider).showSystemNotification(
+            title: l10n.login,
+            body: l10n.codeMustBeSixDigits,
       );
       return;
     }
@@ -90,11 +85,9 @@ class _TwoFactorLoginPageState extends ConsumerState<TwoFactorLoginPage> {
 
       if (!mounted) return;
 
-      messenger.showSnackBar(
-        SnackBar(
-          content: Text(l10n.loginSuccessful),
-          backgroundColor: Colors.green,
-        ),
+      await ref.read(pushNotificationServiceProvider).showSystemNotification(
+            title: l10n.login,
+            body: l10n.loginSuccessful,
       );
 
       // Navigate to appropriate home based on role
@@ -107,11 +100,9 @@ class _TwoFactorLoginPageState extends ConsumerState<TwoFactorLoginPage> {
       }
     } catch (e) {
       if (!mounted) return;
-      messenger.showSnackBar(
-        SnackBar(
-          content: Text(e.toString().replaceAll('Exception: ', '')),
-          backgroundColor: Colors.red,
-        ),
+      await ref.read(pushNotificationServiceProvider).showSystemNotification(
+            title: l10n.login,
+            body: e.toString().replaceAll('Exception: ', ''),
       );
     } finally {
       if (mounted) {
