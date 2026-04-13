@@ -77,8 +77,8 @@ jobs:
             exit 1
           fi
 
-          if (( APP_VERSION_INT == CURRENT_VERSION_INT )) && (( BUILD_NUMBER <= CURRENT_BUILD_NUMBER )); then
-            echo "::error::Build number $BUILD_NUMBER must be greater than current pubspec build number $CURRENT_BUILD_NUMBER for version $CURRENT_SEMVER."
+          if (( APP_VERSION_INT == CURRENT_VERSION_INT )) && (( BUILD_NUMBER < CURRENT_BUILD_NUMBER )); then
+            echo "::error::Build number $BUILD_NUMBER cannot be lower than current pubspec build number $CURRENT_BUILD_NUMBER for version $CURRENT_SEMVER."
             exit 1
           fi
 
