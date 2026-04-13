@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:promoruta/core/constants/app_shapes.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/core/models/campaign.dart';
 import 'package:promoruta/core/models/campaign_bid.dart';
@@ -698,20 +699,29 @@ class _BidCard extends StatelessWidget {
               const SizedBox(height: 12),
               SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: isAccepting ? null : onAccept,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.activeCampaignColor,
-                    foregroundColor: Colors.white,
-                  ),
-                  child: isAccepting
-                      ? const SizedBox(
+                child: isAccepting
+                    ? Container(
+                        height: 45,
+                        decoration: BoxDecoration(
+                          color: AppColors.activeCampaignColor,
+                          borderRadius: AppShapes.buttonRadius,
+                        ),
+                        alignment: Alignment.center,
+                        child: const SizedBox(
                           width: 18,
                           height: 18,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : Text(l10n.acceptBid),
-                ),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
+                        ),
+                      )
+                    : CustomButton(
+                        text: l10n.acceptBid,
+                        backgroundColor: AppColors.activeCampaignColor,
+                        onPressed: onAccept!,
+                      ),
               ),
             ],
           ],

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:promoruta/core/constants/app_shapes.dart';
@@ -466,6 +467,12 @@ class _BidDialog extends StatefulWidget {
 }
 
 class _BidDialogState extends State<_BidDialog> {
+  static final NumberFormat _uyCurrencyFormat = NumberFormat.currency(
+    locale: 'es_UY',
+    symbol: '',
+    decimalDigits: 2,
+  );
+
   late final TextEditingController _priceController;
   late final TextEditingController _messageController;
 
@@ -503,7 +510,9 @@ class _BidDialogState extends State<_BidDialog> {
   void initState() {
     super.initState();
     _priceController = TextEditingController(
-      text: widget.existing?.proposedPrice.toStringAsFixed(2),
+      text: widget.existing == null
+          ? ''
+          : _uyCurrencyFormat.format(widget.existing!.proposedPrice),
     );
     _messageController = TextEditingController(
       text: widget.existing?.message ?? '',
@@ -518,7 +527,7 @@ class _BidDialogState extends State<_BidDialog> {
   }
 
   void _submit() {
-    final price = double.tryParse(_priceController.text.trim());
+    final price = _parseUyCurrency(_priceController.text.trim());
     if (price == null || price <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(widget.l10n.invalidPrice)),
@@ -533,6 +542,19 @@ class _BidDialogState extends State<_BidDialog> {
         message: _messageController.text.trim(),
       ),
     );
+  }
+
+  double? _parseUyCurrency(String value) {
+    final normalizedValue = value
+        .replaceAll('.', '')
+        .replaceAll(',', '.')
+        .replaceAll(RegExp(r'[^0-9.]'), '');
+
+    if (normalizedValue.isEmpty) {
+      return null;
+    }
+
+    return double.tryParse(normalizedValue);
   }
 
   @override
@@ -555,6 +577,7 @@ class _BidDialogState extends State<_BidDialog> {
               controller: _priceController,
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
+              inputFormatters: [_BidUyCurrencyInputFormatter()],
               decoration: _inputDecoration(widget.l10n.proposedPrice),
             ),
             const SizedBox(height: 12),
@@ -596,6 +619,28 @@ class _BidDialogState extends State<_BidDialog> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _BidUyCurrencyInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final digitsOnly = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
+
+    if (digitsOnly.isEmpty) {
+      return const TextEditingValue();
+    }
+
+    final cents = int.parse(digitsOnly);
+    final formattedValue = _BidDialogState._uyCurrencyFormat.format(cents / 100);
+
+    return TextEditingValue(
+      text: formattedValue,
+      selection: TextSelection.collapsed(offset: formattedValue.length),
     );
   }
 }

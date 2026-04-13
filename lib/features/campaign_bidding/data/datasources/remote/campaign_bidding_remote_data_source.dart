@@ -278,12 +278,27 @@ class CampaignBiddingRemoteDataSourceImpl
   }
 
   PaymentInfo _extractPaymentInfo(Map<String, dynamic> data) {
+    final paymentData = <String, dynamic>{};
+
+    // Get payment status from nested payment object
     if (data['payment'] is Map<String, dynamic>) {
-      return PaymentInfo.fromJson(data['payment'] as Map<String, dynamic>);
+      paymentData.addAll(data['payment'] as Map<String, dynamic>);
+    } else if (data['data'] is Map<String, dynamic>) {
+      paymentData.addAll(data['data'] as Map<String, dynamic>);
     }
-    if (data['data'] is Map<String, dynamic>) {
-      return PaymentInfo.fromJson(data['data'] as Map<String, dynamic>);
+
+    // Get checkout_url and preference_id from root level (backend returns these at root)
+    if (data['checkout_url'] != null) {
+      paymentData['checkout_url'] = data['checkout_url'];
     }
-    return PaymentInfo.fromJson(data);
+    if (data['preference_id'] != null) {
+      paymentData['preference_id'] = data['preference_id'];
+    }
+
+    if (paymentData.isEmpty) {
+      return PaymentInfo.fromJson(data);
+    }
+
+    return PaymentInfo.fromJson(paymentData);
   }
 }
