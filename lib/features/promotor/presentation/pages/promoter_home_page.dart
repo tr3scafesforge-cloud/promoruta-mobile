@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/core/models/campaign.dart';
@@ -173,9 +173,10 @@ class _NearbyCampaignCard extends StatelessWidget {
                     children: [
                       Text(
                         campaign.title,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w700,
-                            ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -227,8 +228,8 @@ class _NearbyCampaignCard extends StatelessWidget {
               children: [
                 _miniMetric(Icons.alt_route_rounded,
                     '${campaign.distance.toStringAsFixed(1)}km', l10n.route),
-                _miniMetric(
-                    Icons.timer_outlined, '$durationMinutes min', l10n.duration),
+                _miniMetric(Icons.timer_outlined, '$durationMinutes min',
+                    l10n.duration),
                 _miniMetric(Icons.graphic_eq_rounded,
                     '${campaign.audioDuration}s', l10n.audio),
               ],

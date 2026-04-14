@@ -265,7 +265,8 @@ class CampaignBiddingRepositoryImpl implements CampaignBiddingRepository {
             return ValidationError.fromFields(fieldErrors,
                 cause: error, stackTrace: stackTrace);
           case >= 500:
-            final mappedMessage = serverMessage ?? _mapServerErrorCode(errorCode);
+            final mappedMessage =
+                serverMessage ?? _mapServerErrorCode(errorCode);
             return ServerError(
               message: mappedMessage ?? 'Server error: $statusCode',
               statusCode: statusCode,

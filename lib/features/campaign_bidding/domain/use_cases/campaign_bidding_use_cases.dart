@@ -5,8 +5,7 @@ import 'package:promoruta/core/models/payment_info.dart';
 import 'package:promoruta/shared/shared.dart';
 import '../repositories/campaign_bidding_repository.dart';
 
-class GetCampaignBidsUseCase
-    implements UseCase<CampaignBidsSummary, String> {
+class GetCampaignBidsUseCase implements UseCase<CampaignBidsSummary, String> {
   final CampaignBiddingRepository _repository;
 
   GetCampaignBidsUseCase(this._repository);

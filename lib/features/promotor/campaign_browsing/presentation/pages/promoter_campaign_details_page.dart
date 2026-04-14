@@ -276,8 +276,8 @@ class _PromoterCampaignDetailsPageState
                         ),
                       );
                       final hasBid = ownBid.id.isNotEmpty;
-                      final hasActiveBid =
-                          hasBid && ownBid.status != CampaignBidStatus.withdrawn;
+                      final hasActiveBid = hasBid &&
+                          ownBid.status != CampaignBidStatus.withdrawn;
                       final canSubmitBid =
                           campaign.status == CampaignStatus.created;
                       final canWithdrawBid = hasBid &&
@@ -633,8 +633,9 @@ class _BidDialogState extends State<_BidDialog> {
               const SizedBox(width: 12),
               Expanded(
                 child: CustomButton(
-                  text:
-                      widget.existing == null ? widget.l10n.submitBid : widget.l10n.save,
+                  text: widget.existing == null
+                      ? widget.l10n.submitBid
+                      : widget.l10n.save,
                   backgroundColor: AppColors.deepOrange,
                   textColor: AppColors.primary,
                   shrinkToFit: true,
@@ -662,7 +663,8 @@ class _BidUyCurrencyInputFormatter extends TextInputFormatter {
     }
 
     final cents = int.parse(digitsOnly);
-    final formattedValue = _BidDialogState._uyCurrencyFormat.format(cents / 100);
+    final formattedValue =
+        _BidDialogState._uyCurrencyFormat.format(cents / 100);
 
     return TextEditingValue(
       text: formattedValue,

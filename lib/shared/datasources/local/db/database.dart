@@ -249,7 +249,8 @@ class AppDatabase extends _$AppDatabase {
               AppLogger.database.i('Campaign table migration completed');
             } else {
               // Table doesn't exist, create it with new schema
-              AppLogger.database.i('Creating campaigns_entity table with new schema');
+              AppLogger.database
+                  .i('Creating campaigns_entity table with new schema');
               await m.createTable(campaignsEntity);
             }
           });

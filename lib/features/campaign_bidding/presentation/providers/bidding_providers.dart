@@ -66,7 +66,8 @@ final startCampaignUseCaseProvider = Provider<StartCampaignUseCase>((ref) {
   return StartCampaignUseCase(repository);
 });
 
-final completeCampaignUseCaseProvider = Provider<CompleteCampaignUseCase>((ref) {
+final completeCampaignUseCaseProvider =
+    Provider<CompleteCampaignUseCase>((ref) {
   final repository = ref.watch(campaignBiddingRepositoryProvider);
   return CompleteCampaignUseCase(repository);
 });

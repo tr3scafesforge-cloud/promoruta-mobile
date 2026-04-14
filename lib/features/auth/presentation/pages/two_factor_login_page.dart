@@ -46,7 +46,7 @@ class _TwoFactorLoginPageState extends ConsumerState<TwoFactorLoginPage> {
             body: _useRecoveryCode
                 ? l10n.pleaseEnterRecoveryCode
                 : l10n.pleaseEnterVerificationCode,
-      );
+          );
       return;
     }
 
@@ -54,7 +54,7 @@ class _TwoFactorLoginPageState extends ConsumerState<TwoFactorLoginPage> {
       await ref.read(pushNotificationServiceProvider).showSystemNotification(
             title: l10n.login,
             body: l10n.codeMustBeSixDigits,
-      );
+          );
       return;
     }
 
@@ -88,7 +88,7 @@ class _TwoFactorLoginPageState extends ConsumerState<TwoFactorLoginPage> {
       await ref.read(pushNotificationServiceProvider).showSystemNotification(
             title: l10n.login,
             body: l10n.loginSuccessful,
-      );
+          );
 
       // Navigate to appropriate home based on role
       if (user.role == UserRole.promoter) {
@@ -103,7 +103,7 @@ class _TwoFactorLoginPageState extends ConsumerState<TwoFactorLoginPage> {
       await ref.read(pushNotificationServiceProvider).showSystemNotification(
             title: l10n.login,
             body: e.toString().replaceAll('Exception: ', ''),
-      );
+          );
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);

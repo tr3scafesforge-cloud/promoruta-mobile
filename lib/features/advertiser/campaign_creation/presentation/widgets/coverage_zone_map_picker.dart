@@ -493,7 +493,8 @@ class _CoverageZoneMapPickerState extends ConsumerState<CoverageZoneMapPicker> {
                             side: BorderSide(color: AppColors.grayDarkStroke),
                           ),
                           onPressed: _resetRoute,
-                          child: Icon(Icons.refresh, color: AppColors.secondary),
+                          child:
+                              Icon(Icons.refresh, color: AppColors.secondary),
                         ),
                         const SizedBox(height: 8),
                         // Undo last point button

@@ -59,7 +59,8 @@ final class NetworkError extends AppError {
   }
 
   /// Creates a connection reset error.
-  factory NetworkError.connectionReset({Object? cause, StackTrace? stackTrace}) {
+  factory NetworkError.connectionReset(
+      {Object? cause, StackTrace? stackTrace}) {
     return NetworkError(
       message: 'Connection was reset',
       isTransient: true,
@@ -118,7 +119,8 @@ final class ParsingError extends AppError {
     StackTrace? stackTrace,
   }) {
     return ParsingError(
-      message: 'Type mismatch for field "$field": expected $expectedType, got $actualType',
+      message:
+          'Type mismatch for field "$field": expected $expectedType, got $actualType',
       field: field,
       expectedType: expectedType,
       actualType: actualType,

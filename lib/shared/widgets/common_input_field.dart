@@ -67,13 +67,11 @@ class CommonInputField extends StatelessWidget {
         hintStyle: const TextStyle(color: AppColors.textHint),
         filled: true,
         fillColor: AppColors.surface,
-        prefixIcon:
-            _buildIconButton(
-              icon: headIcon,
-              onPressed: onHeadIconPressed,
-            ),
-        suffixIcon:
-            suffixIcon ??
+        prefixIcon: _buildIconButton(
+          icon: headIcon,
+          onPressed: onHeadIconPressed,
+        ),
+        suffixIcon: suffixIcon ??
             _buildIconButton(
               icon: tailIcon,
               onPressed: onTailIconPressed,

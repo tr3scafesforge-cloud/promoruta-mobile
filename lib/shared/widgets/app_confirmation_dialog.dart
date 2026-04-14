@@ -90,7 +90,8 @@ class AppConfirmationDialog extends StatelessWidget {
                     backgroundColor: Colors.white,
                     outlineColor: AppColors.grayDarkStroke,
                     textColor: AppColors.textPrimary,
-                    onPressed: onCancel ?? () => Navigator.of(context).pop(false),
+                    onPressed:
+                        onCancel ?? () => Navigator.of(context).pop(false),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -98,7 +99,8 @@ class AppConfirmationDialog extends StatelessWidget {
                   child: CustomButton(
                     text: confirmText,
                     backgroundColor: confirmButtonColor ?? AppColors.secondary,
-                    onPressed: onConfirm ?? () => Navigator.of(context).pop(true),
+                    onPressed:
+                        onConfirm ?? () => Navigator.of(context).pop(true),
                   ),
                 ),
               ],

@@ -19,7 +19,7 @@ class PaymentInfo {
           ? PaymentStatus.fromString(json['payment_status'] as String)
           : json['status'] != null
               ? PaymentStatus.fromString(json['status'] as String)
-          : PaymentStatus.pending,
+              : PaymentStatus.pending,
       checkoutUrl: json['checkout_url'] as String?,
       preferenceId: json['preference_id'] as String?,
       gatewayId: json['gateway_id'] as String?,

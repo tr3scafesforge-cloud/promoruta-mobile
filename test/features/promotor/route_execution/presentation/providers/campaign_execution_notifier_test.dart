@@ -17,7 +17,9 @@ import 'package:promoruta/core/models/campaign.dart' as model;
 class MockLocationService extends Mock implements LocationService {}
 
 class MockSyncGpsPointsUseCase extends Mock implements SyncGpsPointsUseCase {}
+
 class MockStartCampaignUseCase extends Mock implements StartCampaignUseCase {}
+
 class MockCompleteCampaignUseCase extends Mock
     implements CompleteCampaignUseCase {}
 
@@ -776,8 +778,7 @@ void main() {
         // Allow sync to complete
         await Future.delayed(const Duration(milliseconds: 100));
 
-        verify(() => mockSyncUseCase.call('campaign-1'))
-            .called(greaterThan(0));
+        verify(() => mockSyncUseCase.call('campaign-1')).called(greaterThan(0));
       });
     });
 

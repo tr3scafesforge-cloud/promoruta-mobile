@@ -187,8 +187,7 @@ final promoterAcceptedCampaignsProvider =
 
 // Provider for advertiser KPI stats from backend
 // Note: keepAlive prevents re-fetching when navigating away and back to dashboard
-final kpiStatsProvider =
-    FutureProvider<model.AdvertiserKpiStats>((ref) async {
+final kpiStatsProvider = FutureProvider<model.AdvertiserKpiStats>((ref) async {
   final repository = ref.watch(campaignRepositoryProvider);
   final result = await repository.getKpiStats();
   return result.fold(
@@ -298,13 +297,10 @@ class CampaignsNotifier
   String? _currentZone;
   String? _currentCreatedBy;
 
-  CampaignsNotifier(
-    this._getCampaignsUseCase,
-    this._createCampaignUseCase,
-    this._updateCampaignUseCase,
-    this._deleteCampaignUseCase,
-    {bool shouldAutoLoad = true}
-  ) : super(const AsyncValue.loading()) {
+  CampaignsNotifier(this._getCampaignsUseCase, this._createCampaignUseCase,
+      this._updateCampaignUseCase, this._deleteCampaignUseCase,
+      {bool shouldAutoLoad = true})
+      : super(const AsyncValue.loading()) {
     if (shouldAutoLoad) {
       loadCampaigns();
     } else {

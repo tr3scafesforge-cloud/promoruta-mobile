@@ -88,10 +88,11 @@ class RetryService {
     }
 
     // Should not reach here, but just in case
-    throw lastError ?? UnknownError(
-      message: 'Retry failed with no error captured',
-      stackTrace: lastStackTrace,
-    );
+    throw lastError ??
+        UnknownError(
+          message: 'Retry failed with no error captured',
+          stackTrace: lastStackTrace,
+        );
   }
 
   /// Determines if an error is transient and can be retried.

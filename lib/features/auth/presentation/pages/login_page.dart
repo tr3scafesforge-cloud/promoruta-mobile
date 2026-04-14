@@ -373,7 +373,7 @@ class _LoginState extends ConsumerState<Login> {
                                               .showSystemNotification(
                                                 title: l10n.login,
                                                 body: loginFailedMessage,
-                                          );
+                                              );
                                           return;
                                         }
 
@@ -407,11 +407,12 @@ class _LoginState extends ConsumerState<Login> {
                                         final errorMessage =
                                             _getLocalizedLoginError(l10n, e);
                                         await ref
-                                            .read(pushNotificationServiceProvider)
+                                            .read(
+                                                pushNotificationServiceProvider)
                                             .showSystemNotification(
                                               title: l10n.login,
                                               body: errorMessage,
-                                        );
+                                            );
                                       } finally {
                                         if (mounted) {
                                           setState(() {

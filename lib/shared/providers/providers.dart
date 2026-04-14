@@ -141,13 +141,16 @@ final notificationServiceProvider = Provider<NotificationService>((ref) {
   return OverlayNotificationService(AppRouter.navigatorKey);
 });
 
-final notificationChannelServiceProvider = Provider<NotificationChannelService>((ref) {
+final notificationChannelServiceProvider =
+    Provider<NotificationChannelService>((ref) {
   return const NotificationChannelService();
 });
 
-final pushNotificationServiceProvider = Provider<PushNotificationService>((ref) {
+final pushNotificationServiceProvider =
+    Provider<PushNotificationService>((ref) {
   final authRepository = ref.watch(authRepositoryProvider);
-  final notificationChannelService = ref.watch(notificationChannelServiceProvider);
+  final notificationChannelService =
+      ref.watch(notificationChannelServiceProvider);
   return PushNotificationService(
     authRepository: authRepository,
     notificationChannelService: notificationChannelService,

@@ -340,7 +340,11 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
                           const SizedBox(height: 4),
                           Text(
                             _routeWaypoints.length >= 2
-                                ? l10n.routePointsDistance(_routeWaypoints.length, _currentRoute?.distanceKm.toStringAsFixed(1) ?? '?')
+                                ? l10n.routePointsDistance(
+                                    _routeWaypoints.length,
+                                    _currentRoute?.distanceKm
+                                            .toStringAsFixed(1) ??
+                                        '?')
                                 : l10n.tapToOpenMap,
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: AppColors.textSecondary,
@@ -630,8 +634,7 @@ class _CreateCampaignPageState extends ConsumerState<CreateCampaignPage> {
             MapConstants.montevideoLat,
             MapConstants.montevideoLng,
           ),
-          initialWaypoints:
-              _routeWaypoints.isEmpty ? null : _routeWaypoints,
+          initialWaypoints: _routeWaypoints.isEmpty ? null : _routeWaypoints,
         ),
       ),
     );

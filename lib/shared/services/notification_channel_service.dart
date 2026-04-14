@@ -22,8 +22,8 @@ class NotificationChannelService {
 
     await localNotifications.initialize(initializationSettings);
 
-    final androidImplementation = localNotifications
-        .resolvePlatformSpecificImplementation<
+    final androidImplementation =
+        localNotifications.resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>();
 
     await androidImplementation?.createNotificationChannel(

@@ -370,7 +370,8 @@ class AdvertiserLiveRemoteDataSourceImpl
   Map<String, dynamic> _asMapOrThrow(dynamic value, String context) {
     if (value is Map<String, dynamic>) return value;
     throw ParsingError(
-      message: 'Expected Map<String, dynamic> for $context, got ${value.runtimeType}',
+      message:
+          'Expected Map<String, dynamic> for $context, got ${value.runtimeType}',
       field: context,
     );
   }
@@ -397,14 +398,16 @@ class AdvertiserLiveRemoteDataSourceImpl
   }
 
   /// Gets a String field with a default value if missing or wrong type.
-  String _getStringOrDefault(Map<String, dynamic> map, String key, String defaultValue) {
+  String _getStringOrDefault(
+      Map<String, dynamic> map, String key, String defaultValue) {
     final value = map[key];
     if (value is String) return value;
     return defaultValue;
   }
 
   /// Gets a bool field with a default value if missing or wrong type.
-  bool _getBoolOrDefault(Map<String, dynamic> map, String key, bool defaultValue) {
+  bool _getBoolOrDefault(
+      Map<String, dynamic> map, String key, bool defaultValue) {
     final value = map[key];
     if (value is bool) return value;
     return defaultValue;

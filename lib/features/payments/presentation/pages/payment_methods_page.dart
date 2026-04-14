@@ -290,7 +290,8 @@ class _ConnectedState extends StatelessWidget {
     final result = await AppConfirmationDialog.show(
       context,
       title: 'Desconectar Mercado Pago',
-      message: 'Estas seguro de que deseas desconectar tu cuenta de Mercado Pago?',
+      message:
+          'Estas seguro de que deseas desconectar tu cuenta de Mercado Pago?',
       confirmText: 'Desconectar',
       cancelText: 'Cancelar',
       confirmButtonColor: const Color(0xFFCC0033),
@@ -332,11 +333,10 @@ class _ConnectedState extends StatelessWidget {
               text: isBusy
                   ? 'Procesando...'
                   : (isConnected
-                        ? 'Desconectar Mercado Pago'
-                        : 'Conectar Mercado Pago'),
-              backgroundColor: isConnected
-                  ? const Color(0xFFCC0033)
-                  : AppColors.secondary,
+                      ? 'Desconectar Mercado Pago'
+                      : 'Conectar Mercado Pago'),
+              backgroundColor:
+                  isConnected ? const Color(0xFFCC0033) : AppColors.secondary,
               leadingIcon: isBusy
                   ? Icons.hourglass_top
                   : (isConnected ? Icons.link_off : Icons.link),
