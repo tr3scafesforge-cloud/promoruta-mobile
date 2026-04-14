@@ -50,7 +50,7 @@ class _PaymentMethodsPageState extends ConsumerState<PaymentMethodsPage>
     setState(() => _isRefreshingStatus = true);
 
     try {
-      await ref.refresh(mercadoPagoAccountStatusProvider.future);
+      final _ = await ref.refresh(mercadoPagoAccountStatusProvider.future);
       if (!mounted || !showFeedback) return;
       _showNotification(
         'Estado de Mercado Pago actualizado.',
