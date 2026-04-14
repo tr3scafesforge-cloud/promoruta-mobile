@@ -91,7 +91,7 @@ class _TwoFactorLoginPageState extends ConsumerState<TwoFactorLoginPage> {
           );
 
       // Navigate to appropriate home based on role
-      if (!context.mounted) return;
+      if (!mounted) return;
       if (user.role == UserRole.promoter) {
         const PromoterHomeRoute().go(context);
       } else if (user.role == UserRole.advertiser) {
