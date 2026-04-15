@@ -8,6 +8,7 @@ import 'package:promoruta/gen/l10n/app_localizations.dart';
 import 'package:promoruta/core/constants/app_shapes.dart';
 import 'package:promoruta/core/constants/colors.dart';
 import 'package:promoruta/shared/providers/providers.dart';
+import 'package:promoruta/shared/widgets/app_confirmation_dialog.dart';
 import 'package:promoruta/features/promotor/route_execution/domain/models/campaign_execution_state.dart';
 import 'package:promoruta/features/promotor/route_execution/presentation/providers/campaign_execution_notifier.dart';
 
@@ -254,27 +255,15 @@ class _ActiveCampaignMapViewState extends ConsumerState<ActiveCampaignMapView> {
 
   Future<bool> _showStartConfirmationDialog() async {
     final l10n = AppLocalizations.of(context);
-    return await showDialog<bool>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text(l10n.startCampaign),
-            content: Text(l10n.startCampaignConfirmation),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: Text(l10n.cancel),
-              ),
-              ElevatedButton(
-                onPressed: () => Navigator.pop(context, true),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.secondary,
-                ),
-                child: Text(l10n.start),
-              ),
-            ],
-          ),
-        ) ??
-        false;
+    final confirmed = await AppConfirmationDialog.show(
+      context,
+      title: l10n.startTracking,
+      message: l10n.startCampaignConfirmation,
+      confirmText: l10n.start,
+      cancelText: l10n.cancel,
+      confirmButtonColor: AppColors.secondary,
+    );
+    return confirmed ?? false;
   }
 
   Future<bool> _showCompleteConfirmationDialog() async {
