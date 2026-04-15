@@ -18,9 +18,16 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-  await dotenv.load(fileName: ".env");
+  await dotenv.load(fileName: '.env', isOptional: true);
 
-  MapboxOptions.setAccessToken(Env.mapboxAccessToken);
+  final mapboxToken = Env.mapboxAccessToken;
+  if (mapboxToken.isEmpty) {
+    throw StateError(
+      'Missing MAPBOX_ACCESS_TOKEN. Set it in .env or pass '
+      '--dart-define=MAPBOX_ACCESS_TOKEN=your_token.',
+    );
+  }
+  MapboxOptions.setAccessToken(mapboxToken);
   runApp(
     // Wrap your app with ProviderScope
     const ProviderScope(
