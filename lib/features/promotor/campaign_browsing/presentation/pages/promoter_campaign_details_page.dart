@@ -599,12 +599,25 @@ class _BidDialogState extends State<_BidDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(
-              controller: _priceController,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [_BidUyCurrencyInputFormatter()],
-              decoration: _inputDecoration(widget.l10n.proposedPrice),
+            ValueListenableBuilder<TextEditingValue>(
+              valueListenable: _priceController,
+              builder: (context, value, _) => TextField(
+                controller: _priceController,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [_BidUyCurrencyInputFormatter()],
+                decoration: _inputDecoration(widget.l10n.proposedPrice)
+                    .copyWith(
+                  suffixIcon: value.text.isEmpty
+                      ? null
+                      : IconButton(
+                          icon: const Icon(Icons.close),
+                          tooltip:
+                              MaterialLocalizations.of(context).clearButtonTooltip,
+                          onPressed: _priceController.clear,
+                        ),
+                ),
+              ),
             ),
             const SizedBox(height: 12),
             TextField(
