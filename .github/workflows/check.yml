@@ -20,6 +20,14 @@ jobs:
           flutter-version: '3.35.6'
           channel: 'stable'
 
+      - name: Create .env file
+        run: |
+          if [ -n "${{ secrets.MAPBOX_ACCESS_TOKEN }}" ]; then
+            echo "MAPBOX_ACCESS_TOKEN=${{ secrets.MAPBOX_ACCESS_TOKEN }}" > .env
+          else
+            echo "MAPBOX_ACCESS_TOKEN=ci-placeholder-token" > .env
+          fi
+
       - name: Install dependencies
         run: flutter pub get
 
