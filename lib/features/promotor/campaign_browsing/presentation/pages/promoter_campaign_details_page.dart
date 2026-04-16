@@ -606,14 +606,14 @@ class _BidDialogState extends State<_BidDialog> {
                 keyboardType:
                     const TextInputType.numberWithOptions(decimal: true),
                 inputFormatters: [_BidUyCurrencyInputFormatter()],
-                decoration: _inputDecoration(widget.l10n.proposedPrice)
-                    .copyWith(
+                decoration:
+                    _inputDecoration(widget.l10n.proposedPrice).copyWith(
                   suffixIcon: value.text.isEmpty
                       ? null
                       : IconButton(
                           icon: const Icon(Icons.close),
-                          tooltip:
-                              MaterialLocalizations.of(context).clearButtonTooltip,
+                          tooltip: MaterialLocalizations.of(context)
+                              .clearButtonTooltip,
                           onPressed: _priceController.clear,
                         ),
                 ),

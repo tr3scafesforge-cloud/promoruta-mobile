@@ -19,7 +19,7 @@ class OverlayNotificationService implements NotificationService {
       context: context,
       type: _getToastificationType(type),
       style: ToastificationStyle.flat,
-      title: Text(message),
+      description: Text(message),
       alignment: Alignment.topCenter,
       autoCloseDuration: const Duration(seconds: 3),
       borderRadius: BorderRadius.circular(8),
