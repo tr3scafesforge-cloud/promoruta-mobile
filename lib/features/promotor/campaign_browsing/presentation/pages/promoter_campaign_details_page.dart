@@ -657,12 +657,17 @@ class _BidUyCurrencyInputFormatter extends TextInputFormatter {
     TextEditingValue newValue,
   ) {
     final digitsOnly = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
+    final isDeleting = newValue.text.length < oldValue.text.length;
 
     if (digitsOnly.isEmpty) {
       return const TextEditingValue();
     }
 
     final cents = int.parse(digitsOnly);
+    if (isDeleting && cents == 0) {
+      return const TextEditingValue();
+    }
+
     final formattedValue =
         _BidDialogState._uyCurrencyFormat.format(cents / 100);
 
