@@ -9,6 +9,22 @@ import 'package:promoruta/gen/l10n/app_localizations.dart';
 class SecuritySettingsPage extends ConsumerWidget {
   const SecuritySettingsPage({super.key});
 
+  Future<bool> _onWillPop(BuildContext context, String fallbackRoute) async {
+    if (context.canPop()) {
+      return true;
+    }
+    context.go(fallbackRoute);
+    return false;
+  }
+
+  void _handleBackNavigation(BuildContext context, String fallbackRoute) {
+    if (context.canPop()) {
+      context.pop();
+      return;
+    }
+    context.go(fallbackRoute);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     const bg = Color(0xFFF3F5F7);
@@ -18,47 +34,53 @@ class SecuritySettingsPage extends ConsumerWidget {
           orElse: () => null,
         );
     final isPromoter = user?.role == model.UserRole.promoter;
+    final fallbackProfileRoute =
+        isPromoter ? '/promoter-home' : '/advertiser-home?tab=profile';
 
-    return Scaffold(
-      backgroundColor: bg,
-      appBar: AppBar(
+    return WillPopScope(
+      onWillPop: () => _onWillPop(context, fallbackProfileRoute),
+      child: Scaffold(
         backgroundColor: bg,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black87),
-          onPressed: () => context.pop(),
+        appBar: AppBar(
+          backgroundColor: bg,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.black87),
+            onPressed: () =>
+                _handleBackNavigation(context, fallbackProfileRoute),
+          ),
+          title: const SizedBox.shrink(),
         ),
-        title: const SizedBox.shrink(),
-      ),
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
-          children: [
-            _SettingsCard(
-              children: [
-                _SettingsTile(
-                  icon: Icons.credit_card,
-                  title: l10n.paymentMethods,
-                  onTap: () => const PaymentMethodsRoute().push(context),
-                ),
-                const _RowDivider(),
-                _SettingsTile(
-                  // three asterisks look from mock; password icon also fine
-                  icon: Icons.password_outlined,
-                  title: l10n.changePassword,
-                  onTap: () => const ChangePasswordRoute().push(context),
-                ),
-                const _RowDivider(),
-                _SettingsTile(
-                  icon: Icons.lock_outline,
-                  title: l10n.twoFactorAuth,
-                  onTap: () => isPromoter
-                      ? const PromoterTwoFactorAuthRoute().push(context)
-                      : const TwoFactorAuthRoute().push(context),
-                ),
-              ],
-            ),
-          ],
+        body: SafeArea(
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+            children: [
+              _SettingsCard(
+                children: [
+                  _SettingsTile(
+                    icon: Icons.credit_card,
+                    title: l10n.paymentMethods,
+                    onTap: () => const PaymentMethodsRoute().push(context),
+                  ),
+                  const _RowDivider(),
+                  _SettingsTile(
+                    // three asterisks look from mock; password icon also fine
+                    icon: Icons.password_outlined,
+                    title: l10n.changePassword,
+                    onTap: () => const ChangePasswordRoute().push(context),
+                  ),
+                  const _RowDivider(),
+                  _SettingsTile(
+                    icon: Icons.lock_outline,
+                    title: l10n.twoFactorAuth,
+                    onTap: () => isPromoter
+                        ? const PromoterTwoFactorAuthRoute().push(context)
+                        : const TwoFactorAuthRoute().push(context),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
