@@ -664,6 +664,8 @@ class _BidDialogState extends State<_BidDialog> {
 }
 
 class _BidUyCurrencyInputFormatter extends TextInputFormatter {
+  static final RegExp _digitRegex = RegExp(r'\d');
+
   @override
   TextEditingValue formatEditUpdate(
     TextEditingValue oldValue,
@@ -683,10 +685,57 @@ class _BidUyCurrencyInputFormatter extends TextInputFormatter {
 
     final formattedValue =
         _BidDialogState._uyCurrencyFormat.format(cents / 100);
+    if (newValue.selection.baseOffset >= newValue.text.length) {
+      return TextEditingValue(
+        text: formattedValue,
+        selection: TextSelection.collapsed(offset: formattedValue.length),
+      );
+    }
+
+    final digitsBeforeCursor = _countDigitsBeforeCursor(newValue);
+    final totalDigits = _countDigits(formattedValue);
+    final normalizedDigitIndex = digitsBeforeCursor < 0
+        ? 0
+        : (digitsBeforeCursor > totalDigits ? totalDigits : digitsBeforeCursor);
+    final cursorOffset =
+        _findCursorOffsetForDigitIndex(formattedValue, normalizedDigitIndex);
 
     return TextEditingValue(
       text: formattedValue,
-      selection: TextSelection.collapsed(offset: formattedValue.length),
+      selection: TextSelection.collapsed(offset: cursorOffset),
     );
+  }
+
+  int _countDigitsBeforeCursor(TextEditingValue value) {
+    final cursorOffset = value.selection.baseOffset;
+    final safeOffset = cursorOffset < 0
+        ? 0
+        : (cursorOffset > value.text.length
+            ? value.text.length
+            : cursorOffset);
+    final textBeforeCursor = value.text.substring(0, safeOffset);
+    return _digitRegex.allMatches(textBeforeCursor).length;
+  }
+
+  int _countDigits(String value) {
+    return _digitRegex.allMatches(value).length;
+  }
+
+  int _findCursorOffsetForDigitIndex(String formattedValue, int digitIndex) {
+    if (digitIndex <= 0) {
+      return 0;
+    }
+
+    var seenDigits = 0;
+    for (var i = 0; i < formattedValue.length; i++) {
+      if (_digitRegex.hasMatch(formattedValue[i])) {
+        seenDigits++;
+        if (seenDigits == digitIndex) {
+          return i + 1;
+        }
+      }
+    }
+
+    return formattedValue.length;
   }
 }
