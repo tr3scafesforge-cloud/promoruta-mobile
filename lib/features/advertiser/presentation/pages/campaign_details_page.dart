@@ -337,18 +337,44 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
                           }
                           return Column(
                             children: summary.bids
-                                .map((bid) => _BidCard(
-                                      bid: bid,
-                                      onAccept: campaign.status ==
-                                              CampaignStatus.created
-                                          ? () => _acceptBid(
-                                                bidId: bid.id,
-                                                campaignId: campaign.id ?? '',
-                                              )
-                                          : null,
-                                      isAccepting: _isAccepting,
-                                      l10n: l10n,
-                                    ))
+                                .map((bid) {
+                                  VoidCallback? onPrimaryAction;
+                                  var primaryActionLabel = l10n.acceptBid;
+                                  var isPrimaryActionLoading = _isAccepting;
+
+                                  final campaignId = campaign.id ?? '';
+                                  final canAcceptBid = campaign.status ==
+                                      CampaignStatus.created;
+                                  final canRetryPaymentOnAcceptedBid =
+                                      campaign.status ==
+                                              CampaignStatus.accepted &&
+                                          paymentStatus != PaymentStatus.paid &&
+                                          bid.status ==
+                                              CampaignBidStatus.accepted &&
+                                          campaignId.isNotEmpty;
+
+                                  if (canAcceptBid && campaignId.isNotEmpty) {
+                                    onPrimaryAction = () => _acceptBid(
+                                          bidId: bid.id,
+                                          campaignId: campaignId,
+                                        );
+                                  } else if (canRetryPaymentOnAcceptedBid) {
+                                    onPrimaryAction = () =>
+                                        _retryPaymentCheckout(campaignId);
+                                    primaryActionLabel = l10n.retryPayment;
+                                    isPrimaryActionLoading =
+                                        _isRetryingPayment;
+                                  }
+
+                                  return _BidCard(
+                                    bid: bid,
+                                    onPrimaryAction: onPrimaryAction,
+                                    primaryActionLabel: primaryActionLabel,
+                                    isPrimaryActionLoading:
+                                        isPrimaryActionLoading,
+                                    l10n: l10n,
+                                  );
+                                })
                                 .toList(),
                           );
                         },
@@ -360,7 +386,8 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
 
                 // Retry payment button (show when accepted but payment pending)
                 if (campaign.status == CampaignStatus.accepted &&
-                    paymentStatus != PaymentStatus.paid)
+                    paymentStatus != PaymentStatus.paid &&
+                    (campaign.id?.isNotEmpty ?? false))
                   Padding(
                     padding: const EdgeInsets.only(bottom: 12),
                     child: SizedBox(
@@ -371,7 +398,7 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
                               text: l10n.retryPayment,
                               backgroundColor: AppColors.primary,
                               onPressed: () =>
-                                  _retryPaymentCheckout(campaign.id ?? ''),
+                                  _retryPaymentCheckout(campaign.id!),
                             ),
                     ),
                   ),
@@ -604,14 +631,16 @@ class _CampaignDetailsPageState extends ConsumerState<CampaignDetailsPage> {
 
 class _BidCard extends StatelessWidget {
   final CampaignBid bid;
-  final VoidCallback? onAccept;
-  final bool isAccepting;
+  final VoidCallback? onPrimaryAction;
+  final String primaryActionLabel;
+  final bool isPrimaryActionLoading;
   final AppLocalizations l10n;
 
   const _BidCard({
     required this.bid,
-    required this.onAccept,
-    required this.isAccepting,
+    required this.onPrimaryAction,
+    required this.primaryActionLabel,
+    required this.isPrimaryActionLoading,
     required this.l10n,
   });
 
@@ -695,11 +724,11 @@ class _BidCard extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ],
-            if (onAccept != null) ...[
+            if (onPrimaryAction != null) ...[
               const SizedBox(height: 12),
               SizedBox(
                 width: double.infinity,
-                child: isAccepting
+                child: isPrimaryActionLoading
                     ? Container(
                         height: 45,
                         decoration: BoxDecoration(
@@ -718,9 +747,9 @@ class _BidCard extends StatelessWidget {
                         ),
                       )
                     : CustomButton(
-                        text: l10n.acceptBid,
+                        text: primaryActionLabel,
                         backgroundColor: AppColors.activeCampaignColor,
-                        onPressed: onAccept!,
+                        onPressed: onPrimaryAction!,
                       ),
               ),
             ],
